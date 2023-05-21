@@ -1,0 +1,16 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - cd uniquity
+        - npm ci
+    build:
+      commands: 
+        - npm run build-web
+  artifacts:
+    baseDirectory: /uniquity/web-build
+    files:
+      - '**/*'
+  cache:
+    paths: []
