@@ -1,0 +1,17 @@
+{
+  "providers": [
+    "awscloudformation"
+  ],
+  "projectName": "amplifypoc",
+  "version": "3.1",
+  "frontend": "javascript",
+  "javascript": {
+    "framework": "react-native",
+    "config": {
+      "SourceDir": "uniquity",
+      "DistributionDir": "uniquity/web-build",
+      "BuildCommand": "npm run-script build-web",
+      "StartCommand": "npm run-script start web"
+    }
+  }
+}

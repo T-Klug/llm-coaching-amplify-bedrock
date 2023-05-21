@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.18.1",
+    "@react-native-community/netinfo": "^9.3.10",
+    "aws-amplify": "^5.2.2"
+  }
+}
