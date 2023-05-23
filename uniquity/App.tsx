@@ -1,4 +1,4 @@
-import { Platform, SafeAreaView, StyleSheet, View } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
 import { Amplify } from "aws-amplify";
 import awsExports from "./aws-exports";
 import { Authenticator } from "@aws-amplify/ui-react-native";
@@ -29,7 +29,7 @@ export default function App() {
     <>
       {Platform.OS === "web" && <WebFontLoad />}
       <SafeAreaProvider>
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
           <View style={styles.content}>
             <ThemeProvider>
               <Authenticator.Provider>
@@ -39,7 +39,7 @@ export default function App() {
               </Authenticator.Provider>
             </ThemeProvider>
           </View>
-        </SafeAreaView>
+        </View>
       </SafeAreaProvider>
     </>
   );

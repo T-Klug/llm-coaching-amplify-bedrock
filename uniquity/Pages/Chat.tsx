@@ -8,7 +8,6 @@ export default function Chat() {
       contentContainerStyle={{
         flex: 1,
         justifyContent: "flex-end",
-        marginBottom: 40,
       }}
     >
       <Input
