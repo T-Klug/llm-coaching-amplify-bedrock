@@ -1,3 +1,4 @@
+# This is the build in AWS Amplify even though there is a build in the GUI this overriddes it.
 version: 1
 frontend:
   phases:
@@ -6,11 +7,11 @@ frontend:
         - cd uniquity
         - npm ci
     build:
-      commands: 
+      commands:
         - npm run build-web
   artifacts:
     baseDirectory: /uniquity/web-build
     files:
-      - '**/*'
+      - "**/*"
   cache:
     paths: []

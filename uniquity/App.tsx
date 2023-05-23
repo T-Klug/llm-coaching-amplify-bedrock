@@ -9,13 +9,14 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import Chat from "./Pages/Chat";
 import { ThemeProvider } from "@rneui/themed";
 
+//configure the amplify resources
 Amplify.configure(awsExports);
+
 const Tab = createBottomTabNavigator();
-export default function App() {
-  return (
-    <>
-      {Platform.OS === "web" && (
-        <style type="text/css">{`
+
+//This is injected for react-native-web to pick up the icons for rneui
+const WebFontLoad = () => (
+  <style type="text/css">{`
   @font-face {
     font-family: 'MaterialIcons';
     src: url(${require("@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/MaterialIcons.ttf")}) format('truetype');
@@ -26,7 +27,12 @@ export default function App() {
     src: url(${require("@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/FontAwesome.ttf")}) format('truetype');
   }
 `}</style>
-      )}
+);
+
+export default function App() {
+  return (
+    <>
+      {Platform.OS === "web" && <WebFontLoad />}
       <SafeAreaView style={styles.container}>
         <View style={styles.content}>
           <ThemeProvider>
