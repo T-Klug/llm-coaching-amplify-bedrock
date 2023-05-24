@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "paths": {
+    "/openai": {
+      "name": "/openai",
+      "lambdaFunction": "openaiFunction",
+      "permissions": {
+        "setting": "private",
+        "auth": ["create", "read", "update", "delete"]
+      }
+    }
+  }
+}

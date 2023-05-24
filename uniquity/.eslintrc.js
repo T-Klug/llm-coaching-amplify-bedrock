@@ -9,6 +9,7 @@ module.exports = {
     "react/react-in-jsx-scope": "off",
     "react/no-unstable-nested-components": "off",
     "react-native/no-inline-styles": "off",
+    "eslint-comments/no-unlimited-disable": "off",
   },
   // Extend the rulesets of react native and eslint prettier
   extends: ["@react-native-community", "eslint-config-prettier"],

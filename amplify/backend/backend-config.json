@@ -1,4 +1,20 @@
 {
+  "api": {
+    "apiOpenAI": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "openaiFunction"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    }
+  },
   "auth": {
     "amplifypoc": {
       "customAuth": false,
@@ -32,6 +48,40 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "Cognito"
+    }
+  },
+  "function": {
+    "openaiFunction": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_openaiFunction_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "openaiFunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_openaiFunction_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "openaiFunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_openaiFunction_secretsPathAmplifyAppId": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "openaiFunction"
+        }
+      ]
     }
   }
 }
