@@ -10,8 +10,8 @@
     "config": {
       "SourceDir": "uniquity",
       "DistributionDir": "uniquity/web-build",
-      "BuildCommand": "npm run-script build-web",
-      "StartCommand": "npm run-script start web"
+      "BuildCommand": "npm run build:web",
+      "StartCommand": "npm run start"
     }
   }
 }
