@@ -75,6 +75,7 @@ export default function Navigation() {
           color: "#fff",
           onPress: () => toggleOverlay((value) => !value),
         }}
+        barStyle="light-content"
       />
 
       <Tab.Navigator screenOptions={{ headerShown: false }}>

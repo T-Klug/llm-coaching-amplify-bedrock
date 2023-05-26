@@ -1,5 +1,4 @@
 import { ScrollView } from "react-native";
-import { StatusBar } from "expo-status-bar";
 import { Input } from "@rneui/themed";
 
 export default function Chat() {
@@ -14,7 +13,6 @@ export default function Chat() {
         placeholder="Comment"
         rightIcon={{ type: "font-awesome", name: "send" }}
       />
-      <StatusBar style="auto" />
     </ScrollView>
   );
 }

@@ -1,5 +1,4 @@
 import { ScrollView, StyleSheet } from "react-native";
-import { StatusBar } from "expo-status-bar";
 import { Card, Button, Text, Icon } from "@rneui/themed";
 const logo = require("../assets/logo.png");
 const anotherLogo = require("../assets/react-native.png");
@@ -56,7 +55,6 @@ export default function Home({ navigation }: { navigation: any }) {
           onPress={() => navigation.navigate("Details")}
         />
       </Card>
-      <StatusBar style="auto" />
     </ScrollView>
   );
 }
