@@ -1,4 +1,8 @@
-import { NavigationContainer } from "@react-navigation/native";
+import {
+  DarkTheme,
+  DefaultTheme,
+  NavigationContainer,
+} from "@react-navigation/native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Chat from "./Pages/Chat";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -6,9 +10,11 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Home from "./Pages/Home";
 import { Header, Overlay, Text, Button, Icon } from "@rneui/themed";
 import { useState } from "react";
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import { useAuthenticator } from "@aws-amplify/ui-react-native";
 import Details from "./Pages/Details";
+import { useColorScheme } from "react-native";
+const logo = require("./assets/logo-no-background.png");
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -29,8 +35,11 @@ const ChatStackNavigator = () => (
 export default function Navigation() {
   const [visible, toggleOverlay] = useState(false);
   const { user, signOut } = useAuthenticator();
+  const colorScheme = useColorScheme();
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+    >
       <Overlay
         isVisible={visible}
         onBackdropPress={() => toggleOverlay((value) => !value)}
@@ -53,17 +62,21 @@ export default function Navigation() {
           onPress={() => signOut()}
         />
       </Overlay>
+
       <Header
-        leftComponent={{
-          icon: "menu",
-          color: "#fff",
+        backgroundImageStyle={{
+          resizeMode: "contain",
+          width: "100%",
+          marginTop: Platform.OS === "web" ? 0 : 50,
         }}
+        backgroundImage={logo}
         rightComponent={{
           icon: "person",
           color: "#fff",
           onPress: () => toggleOverlay((value) => !value),
         }}
       />
+
       <Tab.Navigator screenOptions={{ headerShown: false }}>
         <Tab.Screen
           name="HomeStack"
