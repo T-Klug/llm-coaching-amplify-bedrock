@@ -14,11 +14,14 @@ import { Platform, StyleSheet } from "react-native";
 import { useAuthenticator } from "@aws-amplify/ui-react-native";
 import Details from "./Pages/Details";
 import { useColorScheme } from "react-native";
+import AdminPromptManager from "./Pages/AdminPromptManager";
+import { MaterialIcons } from "@expo/vector-icons";
 const logo = require("./assets/logo-no-background.png");
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
 const ChatStack = createNativeStackNavigator();
+const AdminStack = createNativeStackNavigator();
 
 const HomeStackNavigator = () => (
   <HomeStack.Navigator screenOptions={{ headerShown: false }}>
@@ -32,10 +35,17 @@ const ChatStackNavigator = () => (
   </ChatStack.Navigator>
 );
 
+const AdminStackNavigator = () => (
+  <AdminStack.Navigator screenOptions={{ headerShown: false }}>
+    <AdminStack.Screen name="Prompts" component={AdminPromptManager} />
+  </AdminStack.Navigator>
+);
+
 export default function Navigation() {
   const [visible, toggleOverlay] = useState(false);
   const { user, signOut } = useAuthenticator();
   const colorScheme = useColorScheme();
+
   return (
     <NavigationContainer
       theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
@@ -99,6 +109,25 @@ export default function Navigation() {
             ),
           }}
         />
+        {user
+          .getSignInUserSession()
+          ?.getAccessToken()
+          .payload["cognito:groups"].includes("Admin") ? (
+          <Tab.Screen
+            name="AdminStack"
+            component={AdminStackNavigator}
+            options={{
+              tabBarLabel: "Admin",
+              tabBarIcon: ({ color, size }) => (
+                <MaterialIcons
+                  name="admin-panel-settings"
+                  color={color}
+                  size={size}
+                />
+              ),
+            }}
+          />
+        ) : undefined}
       </Tab.Navigator>
     </NavigationContainer>
   );

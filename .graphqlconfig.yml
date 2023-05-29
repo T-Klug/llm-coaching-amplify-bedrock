@@ -1,0 +1,15 @@
+projects:
+  amplifypoc:
+    schemaPath: amplify/backend/api/amplifypoc/build/schema.graphql
+    includes:
+      - uniquity/graphql/**/*.ts
+    excludes:
+      - ./amplify/**
+    extensions:
+      amplify:
+        codeGenTarget: typescript
+        generatedFileName: uniquity/graphql/API.ts
+        docsFilePath: uniquity/graphql
+        region: us-east-1
+        apiId: null
+        maxDepth: 2

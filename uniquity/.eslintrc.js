@@ -10,6 +10,7 @@ module.exports = {
     "react/no-unstable-nested-components": "off",
     "react-native/no-inline-styles": "off",
     "eslint-comments/no-unlimited-disable": "off",
+    "eslint-comments/no-unused-disable": "off",
   },
   // Extend the rulesets of react native and eslint prettier
   extends: ["@react-native-community", "eslint-config-prettier"],
