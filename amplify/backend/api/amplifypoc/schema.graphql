@@ -1,10 +1,37 @@
+enum OpenAIRoleType {
+  SYSTEM
+  ASSISTANT
+  USER
+}
+
+type MessagesType {
+  role: OpenAIRoleType
+  content: String
+}
+
+type OpenAIChat @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  messages: [MessagesType]
+  user: ID
+  owner: String @auth(rules: [{ allow: owner, operations: [read, delete] }])
+}
+
 enum PromptType {
   SYSTEM
 }
 
-type SystemPrompt @model @auth(rules: [{allow: groups, groups: ["Admin"], operations: [read, create, update, delete]}]) {
+type SystemPrompt
+  @model
+  @auth(
+    rules: [
+      {
+        allow: groups
+        groups: ["Admin"]
+        operations: [read, create, update, delete]
+      }
+    ]
+  ) {
   id: ID!
   prompt: String!
   type: PromptType
 }
- 

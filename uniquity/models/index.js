@@ -2,13 +2,22 @@
 import { initSchema } from '@aws-amplify/datastore';
 import { schema } from './schema';
 
+const OpenAiRoleType = {
+  "SYSTEM": "SYSTEM",
+  "ASSISTANT": "ASSISTANT",
+  "USER": "USER"
+};
+
 const PromptType = {
   "SYSTEM": "SYSTEM"
 };
 
-const { SystemPrompt } = initSchema(schema);
+const { OpenAIChat, SystemPrompt, MessagesType } = initSchema(schema);
 
 export {
+  OpenAIChat,
   SystemPrompt,
-  PromptType
+  OpenAiRoleType,
+  PromptType,
+  MessagesType
 };

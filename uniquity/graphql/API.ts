@@ -2,20 +2,36 @@
 /* eslint-disable */
 //  This file was automatically generated and should not be edited.
 
-export type CreateSystemPromptInput = {
+export type CreateOpenAIChatInput = {
   id?: string | null,
-  prompts?: Array< string > | null,
+  messages?: Array< MessagesTypeInput | null > | null,
+  user?: string | null,
+  owner?: string | null,
   _version?: number | null,
 };
 
-export type ModelSystemPromptConditionInput = {
-  prompts?: ModelStringInput | null,
-  and?: Array< ModelSystemPromptConditionInput | null > | null,
-  or?: Array< ModelSystemPromptConditionInput | null > | null,
-  not?: ModelSystemPromptConditionInput | null,
+export type MessagesTypeInput = {
+  role?: OpenAIRoleType | null,
+  content?: string | null,
 };
 
-export type ModelStringInput = {
+export enum OpenAIRoleType {
+  SYSTEM = "SYSTEM",
+  ASSISTANT = "ASSISTANT",
+  USER = "USER",
+}
+
+
+export type ModelOpenAIChatConditionInput = {
+  user?: ModelIDInput | null,
+  owner?: ModelStringInput | null,
+  and?: Array< ModelOpenAIChatConditionInput | null > | null,
+  or?: Array< ModelOpenAIChatConditionInput | null > | null,
+  not?: ModelOpenAIChatConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type ModelIDInput = {
   ne?: string | null,
   eq?: string | null,
   le?: string | null,
@@ -55,37 +71,7 @@ export type ModelSizeInput = {
   between?: Array< number | null > | null,
 };
 
-export type SystemPrompt = {
-  __typename: "SystemPrompt",
-  id: string,
-  prompts?: Array< string > | null,
-  createdAt: string,
-  updatedAt: string,
-  _version: number,
-  _deleted?: boolean | null,
-  _lastChangedAt: number,
-};
-
-export type UpdateSystemPromptInput = {
-  id: string,
-  prompts?: Array< string > | null,
-  _version?: number | null,
-};
-
-export type DeleteSystemPromptInput = {
-  id: string,
-  _version?: number | null,
-};
-
-export type ModelSystemPromptFilterInput = {
-  id?: ModelIDInput | null,
-  prompts?: ModelStringInput | null,
-  and?: Array< ModelSystemPromptFilterInput | null > | null,
-  or?: Array< ModelSystemPromptFilterInput | null > | null,
-  not?: ModelSystemPromptFilterInput | null,
-};
-
-export type ModelIDInput = {
+export type ModelStringInput = {
   ne?: string | null,
   eq?: string | null,
   le?: string | null,
@@ -101,6 +87,122 @@ export type ModelIDInput = {
   size?: ModelSizeInput | null,
 };
 
+export type ModelBooleanInput = {
+  ne?: boolean | null,
+  eq?: boolean | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
+export type OpenAIChat = {
+  __typename: "OpenAIChat",
+  id: string,
+  messages?:  Array<MessagesType | null > | null,
+  user?: string | null,
+  owner?: string | null,
+  createdAt: string,
+  updatedAt: string,
+  _version: number,
+  _deleted?: boolean | null,
+  _lastChangedAt: number,
+};
+
+export type MessagesType = {
+  __typename: "MessagesType",
+  role?: OpenAIRoleType | null,
+  content?: string | null,
+};
+
+export type UpdateOpenAIChatInput = {
+  id: string,
+  messages?: Array< MessagesTypeInput | null > | null,
+  user?: string | null,
+  owner?: string | null,
+  _version?: number | null,
+};
+
+export type DeleteOpenAIChatInput = {
+  id: string,
+  _version?: number | null,
+};
+
+export type CreateSystemPromptInput = {
+  id?: string | null,
+  prompt: string,
+  type?: PromptType | null,
+  _version?: number | null,
+};
+
+export enum PromptType {
+  SYSTEM = "SYSTEM",
+}
+
+
+export type ModelSystemPromptConditionInput = {
+  prompt?: ModelStringInput | null,
+  type?: ModelPromptTypeInput | null,
+  and?: Array< ModelSystemPromptConditionInput | null > | null,
+  or?: Array< ModelSystemPromptConditionInput | null > | null,
+  not?: ModelSystemPromptConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type ModelPromptTypeInput = {
+  eq?: PromptType | null,
+  ne?: PromptType | null,
+};
+
+export type SystemPrompt = {
+  __typename: "SystemPrompt",
+  id: string,
+  prompt: string,
+  type?: PromptType | null,
+  createdAt: string,
+  updatedAt: string,
+  _version: number,
+  _deleted?: boolean | null,
+  _lastChangedAt: number,
+};
+
+export type UpdateSystemPromptInput = {
+  id: string,
+  prompt?: string | null,
+  type?: PromptType | null,
+  _version?: number | null,
+};
+
+export type DeleteSystemPromptInput = {
+  id: string,
+  _version?: number | null,
+};
+
+export type ModelOpenAIChatFilterInput = {
+  id?: ModelIDInput | null,
+  user?: ModelIDInput | null,
+  owner?: ModelStringInput | null,
+  and?: Array< ModelOpenAIChatFilterInput | null > | null,
+  or?: Array< ModelOpenAIChatFilterInput | null > | null,
+  not?: ModelOpenAIChatFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type ModelOpenAIChatConnection = {
+  __typename: "ModelOpenAIChatConnection",
+  items:  Array<OpenAIChat | null >,
+  nextToken?: string | null,
+  startedAt?: number | null,
+};
+
+export type ModelSystemPromptFilterInput = {
+  id?: ModelIDInput | null,
+  prompt?: ModelStringInput | null,
+  type?: ModelPromptTypeInput | null,
+  and?: Array< ModelSystemPromptFilterInput | null > | null,
+  or?: Array< ModelSystemPromptFilterInput | null > | null,
+  not?: ModelSystemPromptFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
 export type ModelSystemPromptConnection = {
   __typename: "ModelSystemPromptConnection",
   items:  Array<SystemPrompt | null >,
@@ -108,11 +210,12 @@ export type ModelSystemPromptConnection = {
   startedAt?: number | null,
 };
 
-export type ModelSubscriptionSystemPromptFilterInput = {
+export type ModelSubscriptionOpenAIChatFilterInput = {
   id?: ModelSubscriptionIDInput | null,
-  prompts?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionSystemPromptFilterInput | null > | null,
-  or?: Array< ModelSubscriptionSystemPromptFilterInput | null > | null,
+  user?: ModelSubscriptionIDInput | null,
+  and?: Array< ModelSubscriptionOpenAIChatFilterInput | null > | null,
+  or?: Array< ModelSubscriptionOpenAIChatFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelSubscriptionIDInput = {
@@ -130,6 +233,15 @@ export type ModelSubscriptionIDInput = {
   notIn?: Array< string | null > | null,
 };
 
+export type ModelSubscriptionSystemPromptFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  prompt?: ModelSubscriptionStringInput | null,
+  type?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionSystemPromptFilterInput | null > | null,
+  or?: Array< ModelSubscriptionSystemPromptFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
 export type ModelSubscriptionStringInput = {
   ne?: string | null,
   eq?: string | null,
@@ -145,6 +257,78 @@ export type ModelSubscriptionStringInput = {
   notIn?: Array< string | null > | null,
 };
 
+export type CreateOpenAIChatMutationVariables = {
+  input: CreateOpenAIChatInput,
+  condition?: ModelOpenAIChatConditionInput | null,
+};
+
+export type CreateOpenAIChatMutation = {
+  createOpenAIChat?:  {
+    __typename: "OpenAIChat",
+    id: string,
+    messages?:  Array< {
+      __typename: "MessagesType",
+      role?: OpenAIRoleType | null,
+      content?: string | null,
+    } | null > | null,
+    user?: string | null,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type UpdateOpenAIChatMutationVariables = {
+  input: UpdateOpenAIChatInput,
+  condition?: ModelOpenAIChatConditionInput | null,
+};
+
+export type UpdateOpenAIChatMutation = {
+  updateOpenAIChat?:  {
+    __typename: "OpenAIChat",
+    id: string,
+    messages?:  Array< {
+      __typename: "MessagesType",
+      role?: OpenAIRoleType | null,
+      content?: string | null,
+    } | null > | null,
+    user?: string | null,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type DeleteOpenAIChatMutationVariables = {
+  input: DeleteOpenAIChatInput,
+  condition?: ModelOpenAIChatConditionInput | null,
+};
+
+export type DeleteOpenAIChatMutation = {
+  deleteOpenAIChat?:  {
+    __typename: "OpenAIChat",
+    id: string,
+    messages?:  Array< {
+      __typename: "MessagesType",
+      role?: OpenAIRoleType | null,
+      content?: string | null,
+    } | null > | null,
+    user?: string | null,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
 export type CreateSystemPromptMutationVariables = {
   input: CreateSystemPromptInput,
   condition?: ModelSystemPromptConditionInput | null,
@@ -154,7 +338,8 @@ export type CreateSystemPromptMutation = {
   createSystemPrompt?:  {
     __typename: "SystemPrompt",
     id: string,
-    prompts?: Array< string > | null,
+    prompt: string,
+    type?: PromptType | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -172,7 +357,8 @@ export type UpdateSystemPromptMutation = {
   updateSystemPrompt?:  {
     __typename: "SystemPrompt",
     id: string,
-    prompts?: Array< string > | null,
+    prompt: string,
+    type?: PromptType | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -190,12 +376,87 @@ export type DeleteSystemPromptMutation = {
   deleteSystemPrompt?:  {
     __typename: "SystemPrompt",
     id: string,
-    prompts?: Array< string > | null,
+    prompt: string,
+    type?: PromptType | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+  } | null,
+};
+
+export type GetOpenAIChatQueryVariables = {
+  id: string,
+};
+
+export type GetOpenAIChatQuery = {
+  getOpenAIChat?:  {
+    __typename: "OpenAIChat",
+    id: string,
+    messages?:  Array< {
+      __typename: "MessagesType",
+      role?: OpenAIRoleType | null,
+      content?: string | null,
+    } | null > | null,
+    user?: string | null,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type ListOpenAIChatsQueryVariables = {
+  filter?: ModelOpenAIChatFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListOpenAIChatsQuery = {
+  listOpenAIChats?:  {
+    __typename: "ModelOpenAIChatConnection",
+    items:  Array< {
+      __typename: "OpenAIChat",
+      id: string,
+      user?: string | null,
+      owner?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type SyncOpenAIChatsQueryVariables = {
+  filter?: ModelOpenAIChatFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncOpenAIChatsQuery = {
+  syncOpenAIChats?:  {
+    __typename: "ModelOpenAIChatConnection",
+    items:  Array< {
+      __typename: "OpenAIChat",
+      id: string,
+      user?: string | null,
+      owner?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
   } | null,
 };
 
@@ -207,7 +468,8 @@ export type GetSystemPromptQuery = {
   getSystemPrompt?:  {
     __typename: "SystemPrompt",
     id: string,
-    prompts?: Array< string > | null,
+    prompt: string,
+    type?: PromptType | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -228,7 +490,8 @@ export type ListSystemPromptsQuery = {
     items:  Array< {
       __typename: "SystemPrompt",
       id: string,
-      prompts?: Array< string > | null,
+      prompt: string,
+      type?: PromptType | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -253,7 +516,8 @@ export type SyncSystemPromptsQuery = {
     items:  Array< {
       __typename: "SystemPrompt",
       id: string,
-      prompts?: Array< string > | null,
+      prompt: string,
+      type?: PromptType | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -265,6 +529,78 @@ export type SyncSystemPromptsQuery = {
   } | null,
 };
 
+export type OnCreateOpenAIChatSubscriptionVariables = {
+  filter?: ModelSubscriptionOpenAIChatFilterInput | null,
+  owner?: string | null,
+};
+
+export type OnCreateOpenAIChatSubscription = {
+  onCreateOpenAIChat?:  {
+    __typename: "OpenAIChat",
+    id: string,
+    messages?:  Array< {
+      __typename: "MessagesType",
+      role?: OpenAIRoleType | null,
+      content?: string | null,
+    } | null > | null,
+    user?: string | null,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnUpdateOpenAIChatSubscriptionVariables = {
+  filter?: ModelSubscriptionOpenAIChatFilterInput | null,
+  owner?: string | null,
+};
+
+export type OnUpdateOpenAIChatSubscription = {
+  onUpdateOpenAIChat?:  {
+    __typename: "OpenAIChat",
+    id: string,
+    messages?:  Array< {
+      __typename: "MessagesType",
+      role?: OpenAIRoleType | null,
+      content?: string | null,
+    } | null > | null,
+    user?: string | null,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnDeleteOpenAIChatSubscriptionVariables = {
+  filter?: ModelSubscriptionOpenAIChatFilterInput | null,
+  owner?: string | null,
+};
+
+export type OnDeleteOpenAIChatSubscription = {
+  onDeleteOpenAIChat?:  {
+    __typename: "OpenAIChat",
+    id: string,
+    messages?:  Array< {
+      __typename: "MessagesType",
+      role?: OpenAIRoleType | null,
+      content?: string | null,
+    } | null > | null,
+    user?: string | null,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
 export type OnCreateSystemPromptSubscriptionVariables = {
   filter?: ModelSubscriptionSystemPromptFilterInput | null,
 };
@@ -273,7 +609,8 @@ export type OnCreateSystemPromptSubscription = {
   onCreateSystemPrompt?:  {
     __typename: "SystemPrompt",
     id: string,
-    prompts?: Array< string > | null,
+    prompt: string,
+    type?: PromptType | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -290,7 +627,8 @@ export type OnUpdateSystemPromptSubscription = {
   onUpdateSystemPrompt?:  {
     __typename: "SystemPrompt",
     id: string,
-    prompts?: Array< string > | null,
+    prompt: string,
+    type?: PromptType | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -307,7 +645,8 @@ export type OnDeleteSystemPromptSubscription = {
   onDeleteSystemPrompt?:  {
     __typename: "SystemPrompt",
     id: string,
-    prompts?: Array< string > | null,
+    prompt: string,
+    type?: PromptType | null,
     createdAt: string,
     updatedAt: string,
     _version: number,

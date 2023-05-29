@@ -16,15 +16,11 @@
       "auth": {
         "amplifypoc": {}
       },
-      "function": {
-        "openaiFunction": {
-          "secretsPathAmplifyAppId": "d1wywebcdb6lm1",
-          "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
-          "s3Key": "amplify-builds/openaiFunction-4b305a34597547324462-build.zip"
-        }
-      },
       "api": {
-        "apiOpenAI": {}
+        "amplifypoc": {}
+      },
+      "function": {
+        "openaiFunction": {}
       }
     }
   }

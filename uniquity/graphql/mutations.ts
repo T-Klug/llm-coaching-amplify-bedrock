@@ -2,6 +2,69 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const createOpenAIChat = /* GraphQL */ `
+  mutation CreateOpenAIChat(
+    $input: CreateOpenAIChatInput!
+    $condition: ModelOpenAIChatConditionInput
+  ) {
+    createOpenAIChat(input: $input, condition: $condition) {
+      id
+      messages {
+        role
+        content
+      }
+      user
+      owner
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const updateOpenAIChat = /* GraphQL */ `
+  mutation UpdateOpenAIChat(
+    $input: UpdateOpenAIChatInput!
+    $condition: ModelOpenAIChatConditionInput
+  ) {
+    updateOpenAIChat(input: $input, condition: $condition) {
+      id
+      messages {
+        role
+        content
+      }
+      user
+      owner
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const deleteOpenAIChat = /* GraphQL */ `
+  mutation DeleteOpenAIChat(
+    $input: DeleteOpenAIChatInput!
+    $condition: ModelOpenAIChatConditionInput
+  ) {
+    deleteOpenAIChat(input: $input, condition: $condition) {
+      id
+      messages {
+        role
+        content
+      }
+      user
+      owner
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
 export const createSystemPrompt = /* GraphQL */ `
   mutation CreateSystemPrompt(
     $input: CreateSystemPromptInput!
@@ -9,7 +72,8 @@ export const createSystemPrompt = /* GraphQL */ `
   ) {
     createSystemPrompt(input: $input, condition: $condition) {
       id
-      prompts
+      prompt
+      type
       createdAt
       updatedAt
       _version
@@ -25,7 +89,8 @@ export const updateSystemPrompt = /* GraphQL */ `
   ) {
     updateSystemPrompt(input: $input, condition: $condition) {
       id
-      prompts
+      prompt
+      type
       createdAt
       updatedAt
       _version
@@ -41,7 +106,8 @@ export const deleteSystemPrompt = /* GraphQL */ `
   ) {
     deleteSystemPrompt(input: $input, condition: $condition) {
       id
-      prompts
+      prompt
+      type
       createdAt
       updatedAt
       _version
