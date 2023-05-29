@@ -2,7 +2,9 @@ import { ModelInit, MutableModel, __modelMeta__, ManagedIdentifier } from "@aws-
 // @ts-ignore
 import { LazyLoading, LazyLoadingDisabled } from "@aws-amplify/datastore";
 
-
+export enum PromptType {
+  SYSTEM = "SYSTEM"
+}
 
 
 
@@ -12,7 +14,8 @@ type EagerSystemPrompt = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly prompts?: string[] | null;
+  readonly prompt: string;
+  readonly type?: PromptType | keyof typeof PromptType | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -23,7 +26,8 @@ type LazySystemPrompt = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly prompts?: string[] | null;
+  readonly prompt: string;
+  readonly type?: PromptType | keyof typeof PromptType | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

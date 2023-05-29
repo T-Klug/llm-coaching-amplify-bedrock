@@ -11,6 +11,7 @@ module.exports = {
     "react-native/no-inline-styles": "off",
     "eslint-comments/no-unlimited-disable": "off",
     "eslint-comments/no-unused-disable": "off",
+    "no-alert": "off",
   },
   // Extend the rulesets of react native and eslint prettier
   extends: ["@react-native-community", "eslint-config-prettier"],

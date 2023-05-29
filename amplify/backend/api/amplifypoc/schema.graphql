@@ -1,4 +1,10 @@
+enum PromptType {
+  SYSTEM
+}
+
 type SystemPrompt @model @auth(rules: [{allow: groups, groups: ["Admin"], operations: [read, create, update, delete]}]) {
   id: ID!
-  prompts: [AWSJSON!]
-} 
+  prompt: String!
+  type: PromptType
+}
+ 

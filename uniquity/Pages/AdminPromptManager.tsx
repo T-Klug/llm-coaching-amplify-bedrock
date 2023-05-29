@@ -1,32 +1,48 @@
-import { ScrollView } from "react-native";
-import { Input } from "@rneui/themed";
-import { ListSystemPromptsQuery } from "../graphql/API";
-import { API } from "aws-amplify";
-import { GraphQLQuery, graphqlOperation } from "@aws-amplify/api";
-import { listSystemPrompts } from "../graphql/queries";
+import { Alert, Platform, ScrollView } from "react-native";
+import { Button, Input } from "@rneui/themed";
+import { DataStore } from "aws-amplify";
 import { useEffect, useState } from "react";
+import { LazySystemPrompt, SystemPrompt } from "../models";
 
 export default function AdminPromptManager() {
-  const [prompt, setPrompt] = useState<string[] | null | undefined>();
+  const [data, setData] = useState<LazySystemPrompt>();
   useEffect(() => {
-    const fetchData = async () => {
-      const response = await API.graphql<GraphQLQuery<ListSystemPromptsQuery>>(
-        graphqlOperation(listSystemPrompts)
-      );
-      if (
-        response.data?.listSystemPrompts?.items &&
-        response.data.listSystemPrompts.items.length > 0
-      ) {
-        setPrompt(response.data.listSystemPrompts.items[0]?.prompts);
-      }
-    };
-    fetchData().catch(console.error);
+    const sub = DataStore.observeQuery(SystemPrompt).subscribe(({ items }) =>
+      setData(items[0])
+    );
+    return () => sub.unsubscribe();
   }, []);
   return (
     <ScrollView>
-      {prompt?.map((p) => (
-        <Input value={p} />
-      ))}
+      <Input
+        label="This is the Default System Prompt fed to the OpenAI during calls"
+        multiline
+        style={{ maxHeight: 700, minHeight: 500, padding: 10 }}
+        inputContainerStyle={{ borderWidth: 1, margin: 10 }}
+        containerStyle={{ marginTop: 10 }}
+        value={data?.prompt}
+        onChangeText={(text) => {
+          setData(
+            SystemPrompt.copyOf(data!, (draft) => {
+              draft.prompt = text;
+            })
+          );
+        }}
+      />
+      <Button
+        style={{ margin: 20 }}
+        onPress={async () => {
+          if (!data) return;
+          await DataStore.save(data);
+          if (Platform.OS !== "web") {
+            Alert.alert("Prompt saved!");
+          } else {
+            window.confirm("Prompt saved!");
+          }
+        }}
+      >
+        Save
+      </Button>
     </ScrollView>
   );
 }

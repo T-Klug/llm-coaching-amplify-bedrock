@@ -74,6 +74,7 @@ export default function Navigation() {
       </Overlay>
 
       <Header
+        backgroundColor="#000000"
         backgroundImageStyle={{
           resizeMode: "contain",
           width: "100%",

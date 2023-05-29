@@ -10,13 +10,21 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "prompts": {
-                    "name": "prompts",
-                    "isArray": true,
-                    "type": "AWSJSON",
+                "prompt": {
+                    "name": "prompt",
+                    "isArray": false,
+                    "type": "String",
                     "isRequired": true,
-                    "attributes": [],
-                    "isArrayNullable": true
+                    "attributes": []
+                },
+                "type": {
+                    "name": "type",
+                    "isArray": false,
+                    "type": {
+                        "enum": "PromptType"
+                    },
+                    "isRequired": false,
+                    "attributes": []
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -66,8 +74,15 @@ export const schema = {
             ]
         }
     },
-    "enums": {},
+    "enums": {
+        "PromptType": {
+            "name": "PromptType",
+            "values": [
+                "SYSTEM"
+            ]
+        }
+    },
     "nonModels": {},
     "codegenVersion": "3.4.3",
-    "version": "1ac3ebdc1d01a329bccdf6d74f665dd3"
+    "version": "4e309d042134cbe9160cc5fcb792fe6e"
 };

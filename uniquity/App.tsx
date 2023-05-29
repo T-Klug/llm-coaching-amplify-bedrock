@@ -7,16 +7,17 @@ import Navigation from "./Navigation";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useColorScheme } from "react-native";
 import { useEffect } from "react";
+import "@azure/core-asynciterator-polyfill";
 
 //configure the amplify resources
 Amplify.configure(awsExports);
 
 const theme = createTheme({
   lightColors: {
-    primary: "#000000",
+    primary: "#127436",
   },
   darkColors: {
-    primary: "#000000",
+    primary: "#127436",
   },
   mode: "light",
 });
