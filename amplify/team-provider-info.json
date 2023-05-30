@@ -20,7 +20,13 @@
         "amplifypoc": {}
       },
       "function": {
-        "openaiFunction": {}
+        "openaiFunction": {},
+        "createOpenAiChat": {
+          "secretsPathAmplifyAppId": "d1wywebcdb6lm1",
+          "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
+          "s3Key": "amplify-builds/createOpenAiChat-5843464542476d736449-build.zip"
+        },
+        "createOpenAIChat": {}
       }
     }
   }

@@ -64,5 +64,47 @@
       "service": "Cognito"
     }
   },
-  "function": {}
+  "function": {
+    "createOpenAiChat": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ],
+          "category": "api",
+          "resourceName": "amplifypoc"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_createOpenAiChat_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createOpenAiChat"
+        }
+      ]
+    },
+    "AMPLIFY_function_createOpenAiChat_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createOpenAiChat"
+        }
+      ]
+    },
+    "AMPLIFY_function_createOpenAiChat_secretsPathAmplifyAppId": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createOpenAiChat"
+        }
+      ]
+    }
+  }
 }

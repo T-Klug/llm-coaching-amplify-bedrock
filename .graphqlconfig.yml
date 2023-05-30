@@ -7,9 +7,13 @@ projects:
       - ./amplify/**
     extensions:
       amplify:
+        version: 3
         codeGenTarget: typescript
         generatedFileName: uniquity/graphql/API.ts
         docsFilePath: uniquity/graphql
         region: us-east-1
         apiId: null
         maxDepth: 2
+extensions:
+  amplify:
+    version: 3

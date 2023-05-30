@@ -20,6 +20,25 @@ enum PromptType {
   SYSTEM
 }
 
+input MessagesTypeFuncInput {
+  role: OpenAIRoleType
+  content: String
+}
+
+input CreateOpenAIChatFuncInput {
+  id: ID
+  messages: [MessagesTypeFuncInput]
+  user: ID
+  owner: String
+  _version: Int
+}
+
+type Mutation {
+  createOpenAIChatFunc(input: CreateOpenAIChatFuncInput): OpenAIChat
+    @function(name: "createOpenAiChat-${env}")
+    @auth(rules: [{ allow: owner }])
+}
+
 type SystemPrompt
   @model
   @auth(

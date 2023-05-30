@@ -116,3 +116,21 @@ export const deleteSystemPrompt = /* GraphQL */ `
     }
   }
 `;
+export const createOpenAIChatFunc = /* GraphQL */ `
+  mutation CreateOpenAIChatFunc($input: CreateOpenAIChatFuncInput) {
+    createOpenAIChatFunc(input: $input) {
+      id
+      messages {
+        role
+        content
+      }
+      user
+      owner
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
