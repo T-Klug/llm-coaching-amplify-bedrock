@@ -24,12 +24,12 @@ import { defaultProvider } from "@aws-sdk/credential-provider-node";
 import { SignatureV4 } from "@aws-sdk/signature-v4";
 import { HttpRequest } from "@aws-sdk/protocol-http";
 import { default as fetch, Request } from "node-fetch";
-const aws = require("aws-sdk");
+import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
 
 const GRAPHQL_ENDPOINT = process.env.API_AMPLIFYPOC_GRAPHQLAPIENDPOINTOUTPUT;
 const AWS_REGION = process.env.AWS_REGION || "us-east-1";
 const { Sha256 } = crypto;
-
+const SECRET_PATH = process.env.openAIKey;
 const listOpenAIChats = /* GraphQL */ `
   query ListOpenAIChats(
     $filter: ModelOpenAIChatFilterInput
@@ -59,13 +59,14 @@ const listOpenAIChats = /* GraphQL */ `
 
 export const handler = async (event) => {
   console.log(`EVENT: ${JSON.stringify(event)}`);
-  const { Parameters } = await new aws.SSM()
-    .getParameters({
-      Names: ["openAIkeyAPI"].map((secretName) => process.env[secretName]),
-      WithDecryption: true,
-    })
-    .promise();
-
+  const client = new SSMClient();
+  const input = {
+    Name: SECRET_PATH,
+    WithDecryption: true,
+  };
+  console.log(SECRET_PATH);
+  const command = new GetParameterCommand(input);
+  const { Parameter } = await client.send(command);
   const endpoint = new URL(GRAPHQL_ENDPOINT);
 
   const signer = new SignatureV4({

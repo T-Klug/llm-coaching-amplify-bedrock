@@ -36,7 +36,7 @@ input CreateOpenAIChatFuncInput {
 type Mutation {
   createOpenAIChatFunc(input: CreateOpenAIChatFuncInput): OpenAIChat
     @function(name: "createOpenAiChat-${env}")
-    @auth(rules: [{ allow: owner }])
+    @auth(rules: [{ allow: private }])
 }
 
 type SystemPrompt
