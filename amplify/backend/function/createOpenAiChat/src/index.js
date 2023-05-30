@@ -16,13 +16,17 @@ const GRAPHQL_ENDPOINT = process.env.API_AMPLIFYPOC_GRAPHQLAPIENDPOINTOUTPUT;
 const AWS_REGION = process.env.AWS_REGION || "us-east-1";
 const { Sha256 } = crypto;
 
-const listSystemPrompts = /* GraphQL */ `
-  query ListSystemPrompts {
-    listSystemPrompts {
+const listOpenAIChats = /* GraphQL */ `
+  query ListOpenAIChats(
+    $filter: ModelOpenAIChatFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listOpenAIChats(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        prompt
-        type
+        user
+        owner
         createdAt
         updatedAt
         _version
@@ -64,7 +68,7 @@ export const handler = async (event) => {
       host: endpoint.host,
     },
     hostname: endpoint.host,
-    body: JSON.stringify({ listSystemPrompts }),
+    body: JSON.stringify({ listOpenAIChats }),
     path: endpoint.pathname,
   });
 
