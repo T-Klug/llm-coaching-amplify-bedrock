@@ -1,5 +1,5 @@
 import { Platform, StyleSheet, View } from "react-native";
-import { Amplify } from "aws-amplify";
+import { Amplify, DataStore } from "aws-amplify";
 import awsExports from "./aws-exports";
 import { Authenticator } from "@aws-amplify/ui-react-native";
 import { ThemeProvider, createTheme, useThemeMode } from "@rneui/themed";
@@ -11,6 +11,8 @@ import "@azure/core-asynciterator-polyfill";
 
 //configure the amplify resources
 Amplify.configure(awsExports);
+//TODO: DONT FORGET TO REMOVE THIS AND ADD IT TO SIGNOUT
+DataStore.clear();
 
 const theme = createTheme({
   lightColors: {
