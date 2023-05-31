@@ -1,17 +1,3 @@
-/*
-Use the following code to retrieve configured secrets from SSM:
-
-const aws = require('aws-sdk');
-
-const { Parameters } = await (new aws.SSM())
-  .getParameters({
-    Names: ["openAIKey"].map(secretName => process.env[secretName]),
-    WithDecryption: true,
-  })
-  .promise();
-
-Parameters will be of the form { Name: 'secretName', Value: 'secretValue', ... }[]
-*/
 /* Amplify Params - DO NOT EDIT
 	API_AMPLIFYPOC_GRAPHQLAPIENDPOINTOUTPUT
 	API_AMPLIFYPOC_GRAPHQLAPIIDOUTPUT
@@ -77,7 +63,7 @@ const updateOpenAIChat = /* GraphQL */ `
   }
 `;
 
-//Helper Function to create the model
+// Helper Function to create the model
 const createChatModel = async (ownerId) => {
   const variables = {
     input: {
@@ -134,7 +120,7 @@ const updateChatModel = async (chatModel, newContent) => {
       _version: chatModel._version,
     },
   };
-  variables.messages[variables.length() - 1].concat(newContent);
+  variables.messages.push(newContent);
   const signer = new SignatureV4({
     credentials: defaultProvider(),
     region: AWS_REGION,
@@ -187,42 +173,16 @@ export const handler = async (event) => {
   const openai = new OpenAIApi(configuration);
   // Create the Chat Model and add a landing zone for the streamed content.
   let chatModel = await createChatModel(event.identity.claims.username);
-  console.log(JSON.stringify(chatModel));
-  chatModel.messages.push({ role: "ASSISTANT", content: "" });
 
-  //Start the chat with injected prompts and stream
+  //Start the chat with injected prompts
   try {
-    const res = await openai.createChatCompletion(
-      {
-        model: "gpt-3.5-turbo-0301",
-        messages: chatModel.messages,
-      },
-      { responseType: "stream" }
-    );
-    // Stream logic
-    res.data.on("data", (data) => {
-      const lines = data
-        .toString()
-        .split("\n")
-        .filter((line) => line.trim() !== "");
-      for (const line of lines) {
-        const message = line.replace(/^data: /, "");
-        if (message === "[DONE]") {
-          return; // Stream finished
-        }
-        try {
-          // Add the new content to the model and replace the current model
-          const parsed = JSON.parse(message);
-          chatModel = updateChatModel(
-            chatModel,
-            parsed.choices[0].delta.content
-          );
-          console.log(parsed.choices[0].delta.content);
-        } catch (error) {
-          console.error("Could not JSON parse stream message", message, error);
-        }
-      }
+    const res = await openai.createChatCompletion({
+      model: "gpt-3.5-turbo-0301",
+      messages: chatModel.messages,
     });
+
+    //Update the chat model with the chat response
+    chatModel = updateChatModel(chatModel, res.data.choices[0].message);
   } catch (error) {
     if (error.response?.status) {
       console.error(error.response.status, error.message);
@@ -240,13 +200,6 @@ export const handler = async (event) => {
     }
   }
 
-  // The chat is over
-  return {
-    statusCode: 200,
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Headers": "*",
-    },
-    body: JSON.stringify(chatModel),
-  };
+  // The chat turn is over
+  return chatModel;
 };

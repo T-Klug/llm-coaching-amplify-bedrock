@@ -21,6 +21,11 @@ const theme = createTheme({
   darkColors: {
     primary: "#127436",
   },
+  components: {
+    Button: {
+      radius: 8,
+    },
+  },
   mode: "light",
 });
 
@@ -51,7 +56,11 @@ const ThemedContainer = () => {
     <View style={styles.container}>
       <View style={styles.content}>
         <Authenticator.Provider>
-          <Authenticator>
+          <Authenticator
+            components={{
+              SignIn: (props) => <Authenticator.SignIn {...props} hideSignUp />,
+            }}
+          >
             <Navigation />
           </Authenticator>
         </Authenticator.Provider>
