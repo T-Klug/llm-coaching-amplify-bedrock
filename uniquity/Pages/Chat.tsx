@@ -19,6 +19,7 @@ export default function Chat({ navigation }: { navigation: any }) {
   const [selectedId, setSelectedId] = useState<string | undefined>();
   const [loading, setLoading] = useState<boolean>(false);
   const [overlayVisible, setOverlayVisible] = useState<boolean>(true);
+  const [chat, setChat] = useState<string>("");
 
   useFocusEffect(
     useCallback(() => {
@@ -35,22 +36,20 @@ export default function Chat({ navigation }: { navigation: any }) {
     messages: (LazyMessagesType | null)[] | null | undefined
   ) => {
     return (
-      <ListItem containerStyle={{ marginTop: 10, borderRadius: 8 }}>
+      <ListItem
+        key={id}
+        containerStyle={{ marginTop: 10, borderRadius: 8 }}
+        onPress={() => {
+          setSelectedId(id);
+          setOverlayVisible(false);
+        }}
+      >
         <ListItem.Content>
           <ListItem.Title>
             {messages && messages[messages?.length - 1]?.content}
           </ListItem.Title>
         </ListItem.Content>
-        <Icon
-          name="arrow-right"
-          type="FontAwesome"
-          size={30}
-          color="white"
-          onPress={() => {
-            setSelectedId(id);
-            setOverlayVisible(false);
-          }}
-        />
+        <Icon name="arrow-right" type="FontAwesome" size={30} color="white" />
       </ListItem>
     );
   };
@@ -59,11 +58,33 @@ export default function Chat({ navigation }: { navigation: any }) {
     <>
       <Overlay
         isVisible={overlayVisible}
-        overlayStyle={{ margin: 10, borderRadius: 8, maxHeight: 600 }}
+        overlayStyle={{
+          margin: 10,
+          borderRadius: 8,
+          maxHeight: 600,
+          minWidth: 400,
+        }}
       >
-        <Text style={styles.textSecondary}>
-          Select a previous chat or start a new chat
-        </Text>
+        <View
+          style={{
+            flexDirection: "row",
+            marginBottom: 10,
+            justifyContent: "space-between",
+          }}
+        >
+          <Text style={styles.textSecondary}>
+            Select a previous chat or start a new chat
+          </Text>
+          <Icon
+            name="close"
+            type="MaterialIcons"
+            size={25}
+            onPress={() => {
+              navigation.navigate("HomeStack");
+              setOverlayVisible(false);
+            }}
+          />
+        </View>
         <ScrollView style={{ height: "85%" }}>
           {data?.map((d) => BuildListItem(d.id, d.messages))}
         </ScrollView>
@@ -88,24 +109,6 @@ export default function Chat({ navigation }: { navigation: any }) {
               query: createOpenAIChatFunc,
             });
             setSelectedId(response.data?.createOpenAIChatFunc?.id);
-            setOverlayVisible(false);
-          }}
-        />
-        <Button
-          style={{ marginTop: 10 }}
-          icon={
-            <Icon
-              name="arrow-back"
-              type="MaterialIcons"
-              color="white"
-              size={25}
-              iconStyle={{ marginRight: 10 }}
-            />
-          }
-          loading={loading}
-          title="Back"
-          onPress={() => {
-            navigation.navigate("HomeStack");
             setOverlayVisible(false);
           }}
         />
@@ -155,10 +158,26 @@ export default function Chat({ navigation }: { navigation: any }) {
         <Input
           containerStyle={{ marginTop: 50 }}
           placeholder="Chat"
+          value={chat}
+          onChangeText={(t) => setChat(t)}
           rightIcon={{
             type: "font-awesome",
             name: "arrow-circle-up",
             color: "#0A84FF",
+            onPress: async () => {
+              const model = data?.find((d) => d.id === selectedId);
+              const saveModel = OpenAIChat.copyOf(model!, (draft) => {
+                draft.messages?.push({ role: "USER", content: chat });
+              });
+              const functionInput = {
+                id: saveModel.id,
+                messages: saveModel.messages,
+              };
+              await API.graphql<GraphQLQuery<CreateOpenAIChatFuncMutation>>({
+                query: createOpenAIChatFunc,
+                variables: { input: functionInput },
+              });
+            },
           }}
         />
       </ScrollView>

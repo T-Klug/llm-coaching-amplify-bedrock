@@ -106,7 +106,7 @@ const createChatModel = async (ownerId) => {
   } catch (error) {
     console.log(`ERROR CREATING CHAT CATCH: ${JSON.stringify(error.message)}`);
   }
-  console.log(JSON.stringify(body));
+
   return body.data.createOpenAIChat;
 };
 
@@ -117,7 +117,6 @@ const updateChatModel = async (chatModel, newContent) => {
     input: {
       id: chatModel.id,
       messages: chatModel.messages,
-      _version: chatModel._version,
     },
   };
   variables.messages.push(newContent);
@@ -171,10 +170,17 @@ export const handler = async (event) => {
   // Configure OpenAI
   const configuration = new Configuration({ apiKey: Parameter.Value });
   const openai = new OpenAIApi(configuration);
-  // Create the Chat Model and add a landing zone for the streamed content.
-  let chatModel = await createChatModel(event.identity.claims.username);
+  // If we got an input use that model, otherwise create a chat model
+  let chatModel;
+  if (event.arguments?.input?.id) {
+    console.log("Update occuring");
+    chatModel = event.arguments.input;
+  } else {
+    console.log("Create occuring");
+    chatModel = await createChatModel(event.identity.claims.username);
+  }
 
-  //Start the chat with injected prompts
+  // chat with openai
   try {
     const res = await openai.createChatCompletion({
       model: "gpt-3.5-turbo-0301",

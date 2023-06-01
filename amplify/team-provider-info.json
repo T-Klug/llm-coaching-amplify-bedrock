@@ -24,7 +24,7 @@
         "createOpenAiChat": {
           "secretsPathAmplifyAppId": "d1wywebcdb6lm1",
           "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
-          "s3Key": "amplify-builds/createOpenAiChat-394d2b522b4c33437a50-build.zip"
+          "s3Key": "amplify-builds/createOpenAiChat-6e476f6b654a44635456-build.zip"
         },
         "createOpenAIChat": {}
       }
