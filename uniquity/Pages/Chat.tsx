@@ -1,4 +1,10 @@
-import { ScrollView, StyleSheet, View } from "react-native";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  View,
+} from "react-native";
 import { Button, Icon, Input, ListItem, Overlay } from "@rneui/themed";
 import { API, DataStore } from "aws-amplify";
 import { GraphQLQuery } from "@aws-amplify/api";
@@ -135,79 +141,86 @@ export default function Chat({ navigation }: { navigation: any }) {
           }}
         />
       </Overlay>
-      <ScrollView
-        ref={scrollViewRef}
-        contentContainerStyle={{
-          flexGrow: 1,
-          justifyContent: "flex-end",
-        }}
-        onContentSizeChange={() => {
-          if (scrollViewRef.current)
-            scrollViewRef.current.scrollToEnd({ animated: true });
-        }}
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={80}
       >
-        {data &&
-          data?.length > 0 &&
-          data.find((s) => s.id === selectedId) &&
-          data
-            .find((x) => x.id === selectedId)!
-            .messages?.map((m, index) => {
-              if (m?.role === OpenAiRoleType.ASSISTANT)
-                return (
-                  <View key={m.role + index} style={styles.whiteBubble}>
-                    <Text
-                      style={{
-                        fontSize: 16,
-                        color: "#000",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {m.content}
-                    </Text>
-                  </View>
-                );
-              if (m?.role === OpenAiRoleType.USER)
-                return (
-                  <View key={m.role + index} style={styles.blueBubble}>
-                    <Text
-                      style={{
-                        fontSize: 16,
-                        color: "#fff",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {m.content}
-                    </Text>
-                  </View>
-                );
-            })}
-      </ScrollView>
-      {chatLoading && (
-        <DotTypingAnimation
-          style={{ margin: 15 }}
-          dotColor="white"
-          dotRadius={6}
-          dotMargin={8}
-          dotSpeed={0.085}
+        <ScrollView
+          ref={scrollViewRef}
+          contentContainerStyle={{
+            flexGrow: 1,
+            justifyContent: "flex-end",
+          }}
+          onContentSizeChange={() => {
+            if (scrollViewRef.current)
+              scrollViewRef.current.scrollToEnd({ animated: true });
+          }}
+        >
+          {data &&
+            data?.length > 0 &&
+            data.find((s) => s.id === selectedId) &&
+            data
+              .find((x) => x.id === selectedId)!
+              .messages?.map((m, index) => {
+                if (m?.role === OpenAiRoleType.ASSISTANT)
+                  return (
+                    <View key={m.role + index} style={styles.whiteBubble}>
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          color: "#000",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {m.content}
+                      </Text>
+                    </View>
+                  );
+                if (m?.role === OpenAiRoleType.USER)
+                  return (
+                    <View key={m.role + index} style={styles.blueBubble}>
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          color: "#fff",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {m.content}
+                      </Text>
+                    </View>
+                  );
+              })}
+        </ScrollView>
+
+        {chatLoading && (
+          <DotTypingAnimation
+            style={{ margin: 15 }}
+            dotColor="white"
+            dotRadius={6}
+            dotMargin={8}
+            dotSpeed={0.085}
+          />
+        )}
+        <Input
+          multiline
+          numberOfLines={2}
+          containerStyle={{ marginTop: 50 }}
+          inputStyle={{ marginRight: 10 }}
+          placeholder="Chat"
+          value={chat}
+          onChangeText={(t) => setChat(t)}
+          onSubmitEditing={() => submit()}
+          rightIcon={{
+            type: "font-awesome",
+            name: "arrow-circle-up",
+            color: "#0A84FF",
+            size: 25,
+            onPress: () => submit(),
+          }}
         />
-      )}
-      <Input
-        multiline
-        numberOfLines={2}
-        containerStyle={{ marginTop: 50 }}
-        inputStyle={{ marginRight: 10 }}
-        placeholder="Chat"
-        value={chat}
-        onChangeText={(t) => setChat(t)}
-        onSubmitEditing={() => submit()}
-        rightIcon={{
-          type: "font-awesome",
-          name: "arrow-circle-up",
-          color: "#0A84FF",
-          size: 25,
-          onPress: () => submit(),
-        }}
-      />
+      </KeyboardAvoidingView>
     </>
   );
 }
