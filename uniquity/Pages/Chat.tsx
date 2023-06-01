@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
   whiteBubble: {
     backgroundColor: "#dedede",
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 8,
     marginTop: 5,
     marginLeft: "5%",
     maxWidth: "50%",
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#0078fe",
     padding: 10,
     marginLeft: "45%",
-    borderRadius: 5,
+    borderRadius: 8,
     marginTop: 5,
     marginRight: "5%",
     maxWidth: "50%",
