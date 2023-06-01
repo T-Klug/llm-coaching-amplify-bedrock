@@ -13,6 +13,7 @@ import {
 } from "../models";
 import { Text } from "@rneui/themed";
 import { useFocusEffect } from "@react-navigation/native";
+import { DotTypingAnimation } from "../dotsTyping";
 
 export default function Chat({ navigation }: { navigation: any }) {
   const [data, setData] = useState<LazyOpenAIChat[]>();
@@ -20,6 +21,7 @@ export default function Chat({ navigation }: { navigation: any }) {
   const [loading, setLoading] = useState<boolean>(false);
   const [overlayVisible, setOverlayVisible] = useState<boolean>(true);
   const [chat, setChat] = useState<string>("");
+  const [chatLoading, setChatLoading] = useState<boolean>(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -30,6 +32,24 @@ export default function Chat({ navigation }: { navigation: any }) {
       return () => sub.unsubscribe();
     }, [selectedId])
   );
+
+  const submit = async () => {
+    setChatLoading(true);
+    setChat("");
+    const model = data?.find((d) => d.id === selectedId);
+    const saveModel = OpenAIChat.copyOf(model!, (draft) => {
+      draft.messages?.push({ role: "USER", content: chat });
+    });
+    const functionInput = {
+      id: saveModel.id,
+      messages: saveModel.messages,
+    };
+    await API.graphql<GraphQLQuery<CreateOpenAIChatFuncMutation>>({
+      query: createOpenAIChatFunc,
+      variables: { input: functionInput },
+    });
+    setChatLoading(false);
+  };
 
   const BuildListItem = (
     id: string,
@@ -63,6 +83,7 @@ export default function Chat({ navigation }: { navigation: any }) {
           borderRadius: 8,
           maxHeight: 600,
           minWidth: 400,
+          maxWidth: 400,
         }}
       >
         <View
@@ -155,30 +176,30 @@ export default function Chat({ navigation }: { navigation: any }) {
                 );
             })}
       </ScrollView>
+      {chatLoading && (
+        <DotTypingAnimation
+          style={{ margin: 15 }}
+          dotColor="white"
+          dotRadius={6}
+          dotMargin={8}
+          dotSpeed={0.085}
+        />
+      )}
       <Input
+        multiline
+        numberOfLines={2}
         containerStyle={{ marginTop: 50 }}
+        inputStyle={{ marginRight: 10 }}
         placeholder="Chat"
         value={chat}
         onChangeText={(t) => setChat(t)}
+        onSubmitEditing={() => submit()}
         rightIcon={{
           type: "font-awesome",
           name: "arrow-circle-up",
           color: "#0A84FF",
-          onPress: async () => {
-            setChat("");
-            const model = data?.find((d) => d.id === selectedId);
-            const saveModel = OpenAIChat.copyOf(model!, (draft) => {
-              draft.messages?.push({ role: "USER", content: chat });
-            });
-            const functionInput = {
-              id: saveModel.id,
-              messages: saveModel.messages,
-            };
-            await API.graphql<GraphQLQuery<CreateOpenAIChatFuncMutation>>({
-              query: createOpenAIChatFunc,
-              variables: { input: functionInput },
-            });
-          },
+          size: 25,
+          onPress: () => submit(),
         }}
       />
     </>

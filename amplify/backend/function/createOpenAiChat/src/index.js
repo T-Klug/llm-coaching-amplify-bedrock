@@ -113,8 +113,52 @@ const createChatModel = async (ownerId) => {
   return body.data.createOpenAIChat;
 };
 
+const updateUserChatModel = async (chatModel) => {
+  const endpoint = new URL(GRAPHQL_ENDPOINT);
+
+  const variables = {
+    input: {
+      id: chatModel.id,
+      messages: chatModel.messages[chatModel.messages.length - 1],
+    },
+  };
+
+  const signer = new SignatureV4({
+    credentials: defaultProvider(),
+    region: AWS_REGION,
+    service: "appsync",
+    sha256: Sha256,
+  });
+
+  const requestToBeSigned = new HttpRequest({
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      host: endpoint.host,
+    },
+    hostname: endpoint.host,
+    body: JSON.stringify({ query: updateOpenAIChat, variables }),
+    path: endpoint.pathname,
+  });
+
+  const signed = await signer.sign(requestToBeSigned);
+  const request = new Request(endpoint, signed);
+  let response;
+  let body;
+  try {
+    console.log("SENDING THE MUTATION UPDATE TO THE MODEL AFTER CHAT");
+    response = await fetch(request);
+    body = await response.json();
+    if (body.errors)
+      console.log(`ERROR UPDATING CHAT: ${JSON.stringify(body.errors)}`);
+  } catch (error) {
+    console.log(`ERROR UPDATING CHAT CATCH: ${JSON.stringify(error.message)}`);
+  }
+  return body.data.updateOpenAIChat;
+};
+
 // Helper function to update the Model
-const updateChatModel = async (chatModel, newContent, isUpdate) => {
+const updateChatModel = async (chatModel, newContent) => {
   const endpoint = new URL(GRAPHQL_ENDPOINT);
   console.log(newContent);
   const newConvo = {
@@ -128,11 +172,6 @@ const updateChatModel = async (chatModel, newContent, isUpdate) => {
       messages: [newConvo],
     },
   };
-  if (isUpdate) {
-    variables.input.messages.unshift(
-      chatModel.messages[chatModel.messages.length - 1]
-    );
-  }
 
   const signer = new SignatureV4({
     credentials: defaultProvider(),
@@ -192,6 +231,7 @@ export const handler = async (event) => {
     update = true;
     console.log("Update occuring");
     chatModel = event.arguments.input;
+    chatModel = await updateUserChatModel(chatModel);
   } else {
     update = false;
     console.log("Create occuring");
@@ -216,11 +256,7 @@ export const handler = async (event) => {
     console.log(res.data);
 
     //Update the chat model with the chat response
-    chatModel = await updateChatModel(
-      chatModel,
-      res.data.choices[0].message,
-      update
-    );
+    chatModel = await updateChatModel(chatModel, res.data.choices[0].message);
   } catch (error) {
     if (error.response) {
       console.error(
