@@ -68,8 +68,11 @@ const createChatModel = async (ownerId) => {
   const variables = {
     input: {
       messages: [
-        { role: "SYSTEM", content: "Act as a career coach, be concise" },
-        { role: "USER", content: "Hello, can you help me with my coaching?" },
+        { role: "SYSTEM", content: "Act as a career coach, be concise." },
+        {
+          role: "SYSTEM",
+          content: "Ask me how you can help with careeer coaching.",
+        },
       ],
       owner: `${ownerId}::${ownerId}`,
     },
@@ -111,15 +114,26 @@ const createChatModel = async (ownerId) => {
 };
 
 // Helper function to update the Model
-const updateChatModel = async (chatModel, newContent) => {
+const updateChatModel = async (chatModel, newContent, isUpdate) => {
   const endpoint = new URL(GRAPHQL_ENDPOINT);
+  console.log(newContent);
+  const newConvo = {
+    role: newContent.role.toUpperCase(),
+    content: newContent.content,
+  };
+
   const variables = {
     input: {
       id: chatModel.id,
-      messages: chatModel.messages,
+      messages: [newConvo],
     },
   };
-  variables.messages.push(newContent);
+  if (isUpdate) {
+    variables.input.messages.unshift(
+      chatModel.messages[chatModel.messages.length - 1]
+    );
+  }
+
   const signer = new SignatureV4({
     credentials: defaultProvider(),
     region: AWS_REGION,
@@ -143,6 +157,7 @@ const updateChatModel = async (chatModel, newContent) => {
   let response;
   let body;
   try {
+    console.log("SENDING THE MUTATION UPDATE TO THE MODEL AFTER CHAT");
     response = await fetch(request);
     body = await response.json();
     if (body.errors)
@@ -172,32 +187,49 @@ export const handler = async (event) => {
   const openai = new OpenAIApi(configuration);
   // If we got an input use that model, otherwise create a chat model
   let chatModel;
+  let update;
   if (event.arguments?.input?.id) {
+    update = true;
     console.log("Update occuring");
     chatModel = event.arguments.input;
   } else {
+    update = false;
     console.log("Create occuring");
     chatModel = await createChatModel(event.identity.claims.username);
   }
 
-  // chat with openai
+  // chat with openai (Change system to user because gpt3.5turbo is ignoring SYSTEM)
+  const messages = chatModel.messages.map((m) => {
+    if (m.role === "SYSTEM") {
+      return { role: "user", content: m.content };
+    } else {
+      return { role: m.role.toLowerCase(), content: m.content };
+    }
+  });
   try {
+    console.log("Calling ChatGPT");
     const res = await openai.createChatCompletion({
       model: "gpt-3.5-turbo-0301",
-      messages: chatModel.messages,
+      messages: messages,
+      max_tokens: 100,
     });
+    console.log(res.data);
 
     //Update the chat model with the chat response
-    chatModel = updateChatModel(chatModel, res.data.choices[0].message);
+    chatModel = await updateChatModel(
+      chatModel,
+      res.data.choices[0].message,
+      update
+    );
   } catch (error) {
-    if (error.response?.status) {
+    if (error.response) {
       console.error(
         "An error occurred during OpenAI request: ",
         error.response.status,
-        error.message
+        error.response.data
       );
     } else {
-      console.error("An error occurred during OpenAI request", error);
+      console.error("An error occurred during OpenAI request", error.message);
     }
   }
 

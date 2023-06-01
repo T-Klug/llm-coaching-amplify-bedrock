@@ -115,7 +115,7 @@ export default function Chat({ navigation }: { navigation: any }) {
       </Overlay>
       <ScrollView
         contentContainerStyle={{
-          flex: 1,
+          flexGrow: 1,
           justifyContent: "flex-end",
         }}
       >
@@ -154,33 +154,33 @@ export default function Chat({ navigation }: { navigation: any }) {
                   </View>
                 );
             })}
-
-        <Input
-          containerStyle={{ marginTop: 50 }}
-          placeholder="Chat"
-          value={chat}
-          onChangeText={(t) => setChat(t)}
-          rightIcon={{
-            type: "font-awesome",
-            name: "arrow-circle-up",
-            color: "#0A84FF",
-            onPress: async () => {
-              const model = data?.find((d) => d.id === selectedId);
-              const saveModel = OpenAIChat.copyOf(model!, (draft) => {
-                draft.messages?.push({ role: "USER", content: chat });
-              });
-              const functionInput = {
-                id: saveModel.id,
-                messages: saveModel.messages,
-              };
-              await API.graphql<GraphQLQuery<CreateOpenAIChatFuncMutation>>({
-                query: createOpenAIChatFunc,
-                variables: { input: functionInput },
-              });
-            },
-          }}
-        />
       </ScrollView>
+      <Input
+        containerStyle={{ marginTop: 50 }}
+        placeholder="Chat"
+        value={chat}
+        onChangeText={(t) => setChat(t)}
+        rightIcon={{
+          type: "font-awesome",
+          name: "arrow-circle-up",
+          color: "#0A84FF",
+          onPress: async () => {
+            setChat("");
+            const model = data?.find((d) => d.id === selectedId);
+            const saveModel = OpenAIChat.copyOf(model!, (draft) => {
+              draft.messages?.push({ role: "USER", content: chat });
+            });
+            const functionInput = {
+              id: saveModel.id,
+              messages: saveModel.messages,
+            };
+            await API.graphql<GraphQLQuery<CreateOpenAIChatFuncMutation>>({
+              query: createOpenAIChatFunc,
+              variables: { input: functionInput },
+            });
+          },
+        }}
+      />
     </>
   );
 }
@@ -193,7 +193,6 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginLeft: "5%",
     maxWidth: "50%",
-    alignSelf: "flex-start",
   },
 
   blueBubble: {
@@ -204,7 +203,6 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginRight: "5%",
     maxWidth: "50%",
-    alignSelf: "flex-end",
   },
 
   button: {
