@@ -2,7 +2,7 @@ import { ScrollView, StyleSheet, View } from "react-native";
 import { Button, Icon, Input, ListItem, Overlay } from "@rneui/themed";
 import { API, DataStore } from "aws-amplify";
 import { GraphQLQuery } from "@aws-amplify/api";
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { CreateOpenAIChatFuncMutation } from "../graphql/API";
 import { createOpenAIChatFunc } from "../graphql/mutations";
 import {
@@ -22,6 +22,7 @@ export default function Chat({ navigation }: { navigation: any }) {
   const [overlayVisible, setOverlayVisible] = useState<boolean>(true);
   const [chat, setChat] = useState<string>("");
   const [chatLoading, setChatLoading] = useState<boolean>(false);
+  const scrollViewRef = useRef<ScrollView>(null);
 
   useFocusEffect(
     useCallback(() => {
@@ -135,9 +136,14 @@ export default function Chat({ navigation }: { navigation: any }) {
         />
       </Overlay>
       <ScrollView
+        ref={scrollViewRef}
         contentContainerStyle={{
           flexGrow: 1,
           justifyContent: "flex-end",
+        }}
+        onContentSizeChange={() => {
+          if (scrollViewRef.current)
+            scrollViewRef.current.scrollToEnd({ animated: true });
         }}
       >
         {data &&
