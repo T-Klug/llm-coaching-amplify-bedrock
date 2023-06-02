@@ -58,6 +58,17 @@ export default function Chat({ navigation }: { navigation: any }) {
     setChatLoading(false);
   };
 
+  const newChat = async () => {
+    setLoading(true);
+    const response = await API.graphql<
+      GraphQLQuery<CreateOpenAIChatFuncMutation>
+    >({
+      query: createOpenAIChatFunc,
+    });
+    setSelectedId(response.data?.createOpenAIChatFunc?.id);
+    setOverlayVisible(false);
+  };
+
   const BuildListItem = (
     id: string,
     messages: (LazyMessagesType | null)[] | null | undefined
@@ -76,7 +87,7 @@ export default function Chat({ navigation }: { navigation: any }) {
             {messages && messages[messages?.length - 1]?.content}
           </ListItem.Title>
         </ListItem.Content>
-        <Icon name="arrow-right" type="FontAwesome" size={30} color="white" />
+        <Icon name="arrow-right" type="FontAwesome" size={30} />
       </ListItem>
     );
   };
@@ -129,16 +140,7 @@ export default function Chat({ navigation }: { navigation: any }) {
           }
           loading={loading}
           title="New Chat"
-          onPress={async () => {
-            setLoading(true);
-            const response = await API.graphql<
-              GraphQLQuery<CreateOpenAIChatFuncMutation>
-            >({
-              query: createOpenAIChatFunc,
-            });
-            setSelectedId(response.data?.createOpenAIChatFunc?.id);
-            setOverlayVisible(false);
-          }}
+          onPress={() => newChat()}
         />
       </Overlay>
       <KeyboardAvoidingView
@@ -168,7 +170,6 @@ export default function Chat({ navigation }: { navigation: any }) {
                     <View key={m.role + index} style={styles.whiteBubble}>
                       <Text
                         style={{
-                          fontSize: 16,
                           color: "#000",
                           justifyContent: "center",
                         }}
@@ -182,9 +183,8 @@ export default function Chat({ navigation }: { navigation: any }) {
                     <View key={m.role + index} style={styles.blueBubble}>
                       <Text
                         style={{
-                          fontSize: 16,
                           color: "#fff",
-                          justifyContent: "center",
+                          textAlign: "right",
                         }}
                       >
                         {m.content}
@@ -232,26 +232,19 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginTop: 5,
     marginLeft: "5%",
-    maxWidth: "50%",
+    maxWidth: "70%",
+    width: "fit-content",
   },
 
   blueBubble: {
     backgroundColor: "#0078fe",
     padding: 10,
-    marginLeft: "45%",
+    marginLeft: "auto",
     borderRadius: 8,
     marginTop: 5,
     marginRight: "5%",
-    maxWidth: "50%",
-  },
-
-  button: {
-    margin: 10,
-  },
-  textPrimary: {
-    marginVertical: 20,
-    textAlign: "center",
-    fontSize: 20,
+    maxWidth: "70%",
+    width: "fit-content",
   },
   textSecondary: {
     marginBottom: 10,

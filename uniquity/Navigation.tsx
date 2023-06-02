@@ -8,9 +8,8 @@ import Chat from "./Pages/Chat";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Home from "./Pages/Home";
-import { Header, Overlay, Text, Button, Icon } from "@rneui/themed";
-import { useState } from "react";
-import { Platform, StyleSheet } from "react-native";
+import { Header } from "@rneui/themed";
+import { Platform } from "react-native";
 import { useAuthenticator } from "@aws-amplify/ui-react-native";
 import Details from "./Pages/Details";
 import { useColorScheme } from "react-native";
@@ -42,50 +41,21 @@ const AdminStackNavigator = () => (
 );
 
 export default function Navigation() {
-  const [visible, toggleOverlay] = useState(false);
-  const { user, signOut } = useAuthenticator();
+  const { user } = useAuthenticator();
   const colorScheme = useColorScheme();
 
   return (
     <NavigationContainer
       theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
     >
-      <Overlay
-        isVisible={visible}
-        onBackdropPress={() => toggleOverlay((value) => !value)}
-      >
-        <Text style={styles.textPrimary}>Hello!</Text>
-        <Text style={styles.textSecondary}>
-          Welcome {user.attributes?.email}
-        </Text>
-        <Button
-          icon={
-            <Icon
-              name="sign-out"
-              type="font-awesome"
-              color="white"
-              size={25}
-              iconStyle={{ marginRight: 10 }}
-            />
-          }
-          title="Sign Out"
-          onPress={() => signOut()}
-        />
-      </Overlay>
-
       <Header
+        containerStyle={{ minHeight: 50 }}
         backgroundColor="#000000"
         backgroundImageStyle={{
           resizeMode: "contain",
-          width: "100%",
           marginTop: Platform.OS === "web" ? 0 : 50,
         }}
         backgroundImage={logo}
-        rightComponent={{
-          icon: "person",
-          color: "#fff",
-          onPress: () => toggleOverlay((value) => !value),
-        }}
         barStyle="light-content"
       />
 
@@ -133,19 +103,3 @@ export default function Navigation() {
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  button: {
-    margin: 10,
-  },
-  textPrimary: {
-    marginVertical: 20,
-    textAlign: "center",
-    fontSize: 20,
-  },
-  textSecondary: {
-    marginBottom: 10,
-    textAlign: "center",
-    fontSize: 17,
-  },
-});

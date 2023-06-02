@@ -1,10 +1,12 @@
-import { ScrollView, StyleSheet } from "react-native";
-import { Card, Button, Text, Icon } from "@rneui/themed";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { Card, Button, Text, Icon, Divider } from "@rneui/themed";
+import { useAuthenticator } from "@aws-amplify/ui-react-native";
 const logo = require("../assets/logo.png");
 const anotherLogo = require("../assets/react-native.png");
 const andAnotherLogo = require("../assets/openai.jpg");
 
 export default function Home({ navigation }: { navigation: any }) {
+  const { user, signOut } = useAuthenticator();
   return (
     <ScrollView>
       <Card>
@@ -55,6 +57,11 @@ export default function Home({ navigation }: { navigation: any }) {
           onPress={() => navigation.navigate("Details")}
         />
       </Card>
+      <Divider width={50} />
+      <View style={{ margin: 10, flex: 1, alignItems: "center" }}>
+        <Text>{user?.attributes?.email}</Text>
+        <Button onPress={() => signOut()}>Logout</Button>
+      </View>
     </ScrollView>
   );
 }
