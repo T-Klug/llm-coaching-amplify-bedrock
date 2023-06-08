@@ -26,7 +26,6 @@ export default function Home() {
         direction="column"
         alignItems="center"
         justifyContent="center"
-        maxWidth="90%"
       >
         <Grid>
           <Card variant="outlined" sx={{ maxWidth: 400, borderRadius: 4 }}>

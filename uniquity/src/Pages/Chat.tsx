@@ -12,12 +12,12 @@ import {
 import DotsTyping from '../components/typing/dotsTyping';
 import {
   Box,
-  Button,
+  Dialog,
+  Divider,
   Grid,
   ListItem,
   ListItemIcon,
   ListItemText,
-  Modal,
   Paper,
   TextField,
   Typography,
@@ -25,7 +25,6 @@ import {
 import {
   ArrowCircleUp,
   ArrowRightOutlined,
-  ChatOutlined,
   ControlPoint,
   HistoryOutlined,
 } from '@mui/icons-material';
@@ -33,7 +32,7 @@ import {
 export default function Chat() {
   const [data, setData] = useState<LazyOpenAIChat[]>();
   const [selectedId, setSelectedId] = useState<string | undefined>();
-  const [overlayVisible, setOverlayVisible] = useState<boolean>(true);
+  const [overlayVisible, setOverlayVisible] = useState<boolean>(false);
   const [chat, setChat] = useState<string>('');
   const [chatLoading, setChatLoading] = useState<boolean>(false);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -45,20 +44,14 @@ export default function Chat() {
   }, [data]);
 
   useEffect(() => {
-    if (!selectedId) setOverlayVisible(true);
     const sub = DataStore.observeQuery(OpenAIChat).subscribe(({ items }) =>
       setData(items)
     );
     return () => sub.unsubscribe();
   }, [selectedId]);
 
-  const submit = async () => {
-    setChatLoading(true);
-    setChat('');
-    const model = data?.find(d => d.id === selectedId);
-    const saveModel = OpenAIChat.copyOf(model!, draft => {
-      draft.messages?.push({ role: 'USER', content: chat });
-    });
+  const submitOpenAI = async (response: OpenAIChat) => {
+    const saveModel = OpenAIChat.copyOf(response, draft => draft);
     const functionInput = {
       id: saveModel.id,
       messages: saveModel.messages,
@@ -67,17 +60,32 @@ export default function Chat() {
       query: createOpenAIChatFunc,
       variables: { input: functionInput },
     });
-    setChatLoading(false);
   };
 
-  const newChat = async () => {
-    const response = await API.graphql<
-      GraphQLQuery<CreateOpenAIChatFuncMutation>
-    >({
-      query: createOpenAIChatFunc,
-    });
-    setSelectedId(response.data?.createOpenAIChatFunc?.id);
-    setOverlayVisible(false);
+  const newChat = () => setSelectedId(undefined);
+
+  const sendChat = async () => {
+    let response;
+    if (chat && !selectedId) {
+      response = await DataStore.save(
+        new OpenAIChat({ messages: [{ role: 'USER', content: chat }] })
+      );
+      setChat('');
+    } else if (chat && selectedId) {
+      const model = data?.find(d => d.id === selectedId);
+      const saveModel = OpenAIChat.copyOf(model!, draft => {
+        draft.messages?.push({ role: 'USER', content: chat });
+      });
+      response = await DataStore.save(saveModel);
+      console.log(response);
+      setChat('');
+    } else {
+      return;
+    }
+    if (!selectedId) setSelectedId(response.id);
+    setChatLoading(true);
+    await submitOpenAI(response);
+    setChatLoading(false);
   };
 
   const BuildListItem = (
@@ -85,44 +93,45 @@ export default function Chat() {
     messages: (LazyMessagesType | null)[] | null | undefined
   ) => {
     return (
-      <ListItem
-        key={id}
-        onClick={() => {
-          setSelectedId(id);
-          setOverlayVisible(false);
-        }}
-      >
-        <ListItemText
-          primary={messages && messages[messages?.length - 1]?.content}
-        />
-        <ListItemIcon>
-          <ArrowRightOutlined />
-        </ListItemIcon>
-      </ListItem>
+      <div key={id}>
+        <ListItem
+          sx={{ cursor: 'pointer' }}
+          key={id}
+          onClick={() => {
+            setSelectedId(id);
+            setOverlayVisible(false);
+          }}
+        >
+          <ListItemText
+            primary={messages && messages[messages?.length - 1]?.content}
+          />
+          <ListItemIcon>
+            <ArrowRightOutlined />
+          </ListItemIcon>
+        </ListItem>
+        <Divider />
+      </div>
     );
   };
 
   return (
     <>
-      <Modal open={overlayVisible} onClose={() => setOverlayVisible(false)}>
+      <Dialog open={overlayVisible} onClose={() => setOverlayVisible(false)}>
         <>
           <Box
             sx={{
               flexDirection: 'row',
-              marginBottom: 10,
               justifyContent: 'space-between',
             }}
-          >
-            <Typography>Select a previous chat or start a new chat</Typography>
-          </Box>
-          <Paper style={{ height: '85%' }}>
+          ></Box>
+          <Paper>
+            <Typography textAlign="center" variant="h5">
+              Select a previous chat
+            </Typography>
             {data?.map(d => BuildListItem(d.id, d.messages))}
           </Paper>
-          <Button endIcon={<ChatOutlined />} onClick={() => newChat()}>
-            New Chat
-          </Button>
         </>
-      </Modal>
+      </Dialog>
       <Grid container>
         <Grid item xs={12}>
           <Box
@@ -199,11 +208,10 @@ export default function Chat() {
       <Grid
         container
         position="fixed"
-        alignSelf="flex-end"
         sx={{
           top: 'auto',
           bottom: 60,
-          width: '90%',
+          width: '80%',
         }}
       >
         <Grid item xs={12} mb={1}>
@@ -211,19 +219,38 @@ export default function Chat() {
         </Grid>
         <Grid item xs={12}>
           <Grid container>
-            <Grid item xs={10}>
-              <TextField
-                fullWidth
-                multiline
-                placeholder="Chat"
-                value={chat}
-                onChange={t => setChat(t.target.value)}
-              />
-            </Grid>
-            <Grid item xs={2}>
-              <ArrowCircleUp onClick={() => submit()} />
-              <HistoryOutlined />
-              <ControlPoint />
+            <Grid item xs={12}>
+              <Paper>
+                <TextField
+                  fullWidth
+                  multiline
+                  placeholder="Chat"
+                  InputProps={{
+                    endAdornment: (
+                      <>
+                        <ArrowCircleUp
+                          fontSize="large"
+                          color="primary"
+                          sx={{ cursor: 'pointer' }}
+                          onClick={() => sendChat()}
+                        />
+                        <HistoryOutlined
+                          onClick={() => setOverlayVisible(true)}
+                          fontSize="large"
+                          sx={{ cursor: 'pointer' }}
+                        />
+                        <ControlPoint
+                          onClick={() => newChat()}
+                          fontSize="large"
+                          sx={{ cursor: 'pointer' }}
+                        />
+                      </>
+                    ),
+                  }}
+                  value={chat}
+                  onChange={t => setChat(t.target.value)}
+                />
+              </Paper>
             </Grid>
           </Grid>
         </Grid>

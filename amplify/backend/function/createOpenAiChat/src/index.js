@@ -17,29 +17,6 @@ const AWS_REGION = process.env.AWS_REGION || "us-east-1";
 const { Sha256 } = crypto;
 const SECRET_PATH = process.env.openAIKey;
 
-//Create Model
-const createOpenAIChat = /* GraphQL */ `
-  mutation CreateOpenAIChat(
-    $input: CreateOpenAIChatInput!
-    $condition: ModelOpenAIChatConditionInput
-  ) {
-    createOpenAIChat(input: $input, condition: $condition) {
-      id
-      messages {
-        role
-        content
-      }
-      user
-      owner
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-
 // Update Model
 const updateOpenAIChat = /* GraphQL */ `
   mutation UpdateOpenAIChat(
@@ -63,113 +40,24 @@ const updateOpenAIChat = /* GraphQL */ `
   }
 `;
 
-// Helper Function to create the model
-const createChatModel = async (ownerId) => {
-  const variables = {
-    input: {
-      messages: [
-        { role: "SYSTEM", content: "Act as a career coach, be concise." },
-        {
-          role: "SYSTEM",
-          content: "Ask me how you can help with careeer coaching.",
-        },
-      ],
-      owner: `${ownerId}::${ownerId}`,
-    },
-  };
-  const endpoint = new URL(GRAPHQL_ENDPOINT);
-
-  const signer = new SignatureV4({
-    credentials: defaultProvider(),
-    region: AWS_REGION,
-    service: "appsync",
-    sha256: Sha256,
-  });
-
-  const requestToBeSigned = new HttpRequest({
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      host: endpoint.host,
-    },
-    hostname: endpoint.host,
-    body: JSON.stringify({ query: createOpenAIChat, variables }),
-    path: endpoint.pathname,
-  });
-
-  const signed = await signer.sign(requestToBeSigned);
-  const request = new Request(endpoint, signed);
-  let body;
-  let response;
-  try {
-    response = await fetch(request);
-    body = await response.json();
-    if (body.errors)
-      console.log(`ERROR CREATING CHAT: ${JSON.stringify(body.errors)}`);
-  } catch (error) {
-    console.log(`ERROR CREATING CHAT CATCH: ${JSON.stringify(error.message)}`);
-  }
-
-  return body.data.createOpenAIChat;
-};
-
-const updateUserChatModel = async (chatModel) => {
-  const endpoint = new URL(GRAPHQL_ENDPOINT);
-
-  const variables = {
-    input: {
-      id: chatModel.id,
-      messages: chatModel.messages[chatModel.messages.length - 1],
-    },
-  };
-
-  const signer = new SignatureV4({
-    credentials: defaultProvider(),
-    region: AWS_REGION,
-    service: "appsync",
-    sha256: Sha256,
-  });
-
-  const requestToBeSigned = new HttpRequest({
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      host: endpoint.host,
-    },
-    hostname: endpoint.host,
-    body: JSON.stringify({ query: updateOpenAIChat, variables }),
-    path: endpoint.pathname,
-  });
-
-  const signed = await signer.sign(requestToBeSigned);
-  const request = new Request(endpoint, signed);
-  let response;
-  let body;
-  try {
-    console.log("SENDING THE MUTATION UPDATE TO THE MODEL AFTER CHAT");
-    response = await fetch(request);
-    body = await response.json();
-    if (body.errors)
-      console.log(`ERROR UPDATING CHAT: ${JSON.stringify(body.errors)}`);
-  } catch (error) {
-    console.log(`ERROR UPDATING CHAT CATCH: ${JSON.stringify(error.message)}`);
-  }
-  return body.data.updateOpenAIChat;
-};
-
 // Helper function to update the Model
 const updateChatModel = async (chatModel, newContent) => {
   const endpoint = new URL(GRAPHQL_ENDPOINT);
   console.log(newContent);
+  let messages = [];
+  if (chatModel.messages.length <= 2) {
+    messages.push(chatModel.messages[0]);
+  }
   const newConvo = {
     role: newContent.role.toUpperCase(),
     content: newContent.content,
   };
+  messages.push(newConvo);
 
   const variables = {
     input: {
       id: chatModel.id,
-      messages: [newConvo],
+      messages: messages,
     },
   };
 
@@ -226,16 +114,18 @@ export const handler = async (event) => {
   const openai = new OpenAIApi(configuration);
   // If we got an input use that model, otherwise create a chat model
   let chatModel;
-  let update;
+
   if (event.arguments?.input?.id) {
-    update = true;
-    console.log("Update occuring");
     chatModel = event.arguments.input;
-    chatModel = await updateUserChatModel(chatModel);
+    // New convo we need to inject the prompt
+    if (chatModel.messages.length <= 1) {
+      chatModel.messages.unshift({
+        role: "SYSTEM",
+        content: "Act as a career coach, be concise.",
+      });
+    }
   } else {
-    update = false;
-    console.log("Create occuring");
-    chatModel = await createChatModel(event.identity.claims.username);
+    return "400 bad argument";
   }
 
   // chat with openai (Change system to user because gpt3.5turbo is ignoring SYSTEM)
@@ -246,6 +136,7 @@ export const handler = async (event) => {
       return { role: m.role.toLowerCase(), content: m.content };
     }
   });
+  // Call Open AI
   try {
     console.log("Calling ChatGPT");
     const res = await openai.createChatCompletion({
