@@ -10,8 +10,8 @@ import {
   CardMedia,
   Paper,
   Typography,
+  Grid,
 } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import { LaunchOutlined } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
@@ -26,6 +26,7 @@ export default function Home() {
         direction="column"
         alignItems="center"
         justifyContent="center"
+        maxWidth="90%"
       >
         <Grid>
           <Card variant="outlined" sx={{ maxWidth: 400, borderRadius: 4 }}>

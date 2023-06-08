@@ -20,8 +20,8 @@ export default function BottomNav() {
           label={'Home'}
           icon={<HomeOutlined />}
           component={Link}
-          to="/home"
-          value="/home"
+          to="/"
+          value="/"
         />
         <BottomNavigationAction
           label="Chat"
