@@ -29,6 +29,10 @@ export const listOpenAIChats = /* GraphQL */ `
     listOpenAIChats(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        messages {
+          role
+          content
+        }
         user
         owner
         createdAt
@@ -57,6 +61,10 @@ export const syncOpenAIChats = /* GraphQL */ `
     ) {
       items {
         id
+        messages {
+          role
+          content
+        }
         user
         owner
         createdAt

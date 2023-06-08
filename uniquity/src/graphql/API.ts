@@ -457,6 +457,11 @@ export type ListOpenAIChatsQuery = {
     items:  Array< {
       __typename: "OpenAIChat",
       id: string,
+      messages?:  Array< {
+        __typename: "MessagesType",
+        role?: OpenAIRoleType | null,
+        content?: string | null,
+      } | null > | null,
       user?: string | null,
       owner?: string | null,
       createdAt: string,
@@ -483,6 +488,11 @@ export type SyncOpenAIChatsQuery = {
     items:  Array< {
       __typename: "OpenAIChat",
       id: string,
+      messages?:  Array< {
+        __typename: "MessagesType",
+        role?: OpenAIRoleType | null,
+        content?: string | null,
+      } | null > | null,
       user?: string | null,
       owner?: string | null,
       createdAt: string,

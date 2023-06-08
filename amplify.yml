@@ -8,9 +8,9 @@ frontend:
         - npm ci
     build:
       commands:
-        - npm run build-web
+        - npm run build
   artifacts:
-    baseDirectory: /uniquity/web-build
+    baseDirectory: /uniquity/dist
     files:
       - "**/*"
   cache:

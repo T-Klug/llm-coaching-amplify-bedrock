@@ -1,8 +1,8 @@
 # Amplify POC
 
-The amplify POC is the home of both the frontend and backend of Uniquity's application. It is built on [Expo](https://expo.dev/) ([React Native](https://reactnative.dev/)) with [React Native Web](https://necolas.github.io/react-native-web/).
+The amplify POC is the home of both the frontend and backend of Uniquity's application. It is built on Vite.
 
-The front end web portion is deployed using webpack/babel configuration utilizing the Amplify Web Hosting. In other words anything checked into Main will be pushed out to https://app.uniquity.ai
+The front end web is deployed using vite utilizing the Amplify Web Hosting. In other words anything checked into Main will be pushed out to https://app.uniquity.ai
 
 [Amplify](https://aws.amazon.com/amplify/) is doing both our backend and our frontend. This is due to the fact we can quickly add capabilities and auto generated code for backend persistance in dynamodb, as well as connections into Amazon Analytics, predictions, authentication etc.
 
@@ -29,7 +29,7 @@ Once you have done that you will need to configure the aws amplify cli
 
 ```
 amplify configure
-amplify pull --appId d1wywebcdb6lm1 --envName staging
+amplify pull
 ```
 
 To work on the frontend you will want to have an expo account and the expo app to view the iOS version
@@ -48,10 +48,10 @@ npm install
 npm run start
 ```
 
-## Build for Web Delivery
+## Build for Delivery
 
 ```
-npm run build-web
+npm run build
 ```
 
 ## CI-CD
