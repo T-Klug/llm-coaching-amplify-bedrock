@@ -1,4 +1,4 @@
-import { Amplify, DataStore } from 'aws-amplify';
+import { Amplify } from 'aws-amplify';
 import awsExports from '../aws-exports';
 
 // Material UI Font
@@ -27,7 +27,6 @@ import Details from './Pages/Details';
 
 //configure the amplify resources
 Amplify.configure(awsExports);
-await DataStore.clear();
 
 const router = createBrowserRouter([
   {
