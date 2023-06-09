@@ -1,6 +1,6 @@
 import { API, DataStore } from 'aws-amplify';
 import { GraphQLQuery } from '@aws-amplify/api';
-import { useEffect, useRef, useState } from 'react';
+import { forwardRef, useEffect, useRef, useState } from 'react';
 import { CreateOpenAIChatFuncMutation } from '../graphql/API';
 import { createOpenAIChatFunc } from '../graphql/mutations';
 import {
@@ -11,23 +11,44 @@ import {
 } from '../models';
 import DotsTyping from '../components/typing/dotsTyping';
 import {
+  AppBar,
   Box,
   Dialog,
   Divider,
-  Grid,
   ListItem,
   ListItemIcon,
   ListItemText,
   Paper,
+  Slide,
+  SpeedDial,
+  SpeedDialAction,
+  SwipeableDrawer,
   TextField,
   Typography,
+  styled,
 } from '@mui/material';
 import {
   ArrowCircleUp,
   ArrowRightOutlined,
+  Menu,
   ControlPoint,
   HistoryOutlined,
 } from '@mui/icons-material';
+import { TransitionProps } from '@mui/material/transitions';
+const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
+
+const Transition = forwardRef(function Transition(
+  props: TransitionProps & {
+    children: React.ReactElement;
+  },
+  ref: React.Ref<unknown>
+) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
+const iOS =
+  typeof navigator !== 'undefined' &&
+  /iPad|iPhone|iPod/.test(navigator.userAgent);
 
 export default function Chat() {
   const [data, setData] = useState<LazyOpenAIChat[]>();
@@ -103,7 +124,8 @@ export default function Chat() {
           }}
         >
           <ListItemText
-            primary={messages && messages[messages?.length - 1]?.content}
+            primaryTypographyProps={{ noWrap: true }}
+            primary={messages && messages[0]?.content}
           />
           <ListItemIcon>
             <ArrowRightOutlined />
@@ -116,7 +138,14 @@ export default function Chat() {
 
   return (
     <>
-      <Dialog open={overlayVisible} onClose={() => setOverlayVisible(false)}>
+      <SwipeableDrawer
+        disableBackdropTransition={!iOS}
+        disableDiscovery={iOS}
+        anchor="bottom"
+        open={overlayVisible}
+        onClose={() => setOverlayVisible(false)}
+        onOpen={() => setOverlayVisible(true)}
+      >
         <>
           <Box
             sx={{
@@ -131,130 +160,133 @@ export default function Chat() {
             {data?.map(d => BuildListItem(d.id, d.messages))}
           </Paper>
         </>
-      </Dialog>
-      <Grid container>
-        <Grid item xs={12}>
-          <Box
-            sx={{
-              flexGrow: 1,
-              justifyContent: 'flex-end',
-              mb: 14,
-            }}
-          >
-            <>
-              {data &&
-                data?.length > 0 &&
-                data.find(s => s.id === selectedId) &&
-                data
-                  .find(x => x.id === selectedId)!
-                  .messages?.map((m, index) => {
-                    if (m?.role === OpenAiRoleType.ASSISTANT)
-                      return (
-                        <Box
-                          key={m.role + index}
-                          sx={{
-                            backgroundColor: '#dedede',
-                            borderRadius: 6,
-                            marginTop: 2,
-                            p: 2,
-                            marginLeft: '5%',
-                            maxWidth: '70%',
-                            width: 'fit-content',
-                          }}
-                        >
-                          <Typography
-                            variant="body2"
-                            style={{
-                              color: '#000',
-                              justifyContent: 'center',
-                            }}
-                          >
-                            {m.content}
-                          </Typography>
-                        </Box>
-                      );
-                    if (m?.role === OpenAiRoleType.USER)
-                      return (
-                        <Box
-                          key={m.role + index}
-                          sx={{
-                            backgroundColor: '#0078fe',
-                            p: 2,
-                            marginLeft: 'auto',
-                            borderRadius: 6,
-                            marginTop: 2,
-                            marginRight: '5%',
-                            maxWidth: '70%',
-                            width: 'fit-content',
-                          }}
-                        >
-                          <Typography
-                            variant="body2"
-                            style={{
-                              color: '#fff',
-                              textAlign: 'right',
-                            }}
-                          >
-                            {m.content}
-                          </Typography>
-                        </Box>
-                      );
-                  })}
-            </>
-            <div ref={scrollRef} />
-          </Box>
-        </Grid>
-      </Grid>
-      <Grid
-        container
+      </SwipeableDrawer>
+      <SpeedDial
+        ariaLabel="SpeedDial"
+        sx={{
+          position: 'fixed',
+          top: 5,
+          right: 16,
+        }}
+        icon={<Menu />}
+        direction="down"
+        FabProps={{
+          sx: {
+            bgcolor: 'darkgray',
+            '&:hover': {
+              bgcolor: 'darkgray',
+            },
+          },
+        }}
+      >
+        <SpeedDialAction
+          icon={<HistoryOutlined />}
+          tooltipTitle="History"
+          onClick={() => setOverlayVisible(true)}
+        />
+        <SpeedDialAction
+          icon={<ControlPoint />}
+          tooltipTitle="New Chat"
+          onClick={() => newChat()}
+        />
+      </SpeedDial>
+      <Box pt={10}>
+        {data &&
+          data?.length > 0 &&
+          data.find(s => s.id === selectedId) &&
+          data
+            .find(x => x.id === selectedId)!
+            .messages?.map((m, index) => {
+              if (m?.role === OpenAiRoleType.ASSISTANT)
+                return (
+                  <Box
+                    key={m.role + index}
+                    sx={{
+                      backgroundColor: '#dedede',
+                      borderRadius: 6,
+                      marginTop: 2,
+                      p: 2,
+                      marginLeft: '5%',
+                      maxWidth: '70%',
+                      width: 'fit-content',
+                      whiteSpace: 'pre-wrap',
+                    }}
+                  >
+                    <Typography
+                      variant="body2"
+                      style={{
+                        color: '#000',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      {m.content}
+                    </Typography>
+                  </Box>
+                );
+              if (m?.role === OpenAiRoleType.USER)
+                return (
+                  <Box
+                    key={m.role + index}
+                    sx={{
+                      backgroundColor: '#0078fe',
+                      p: 2,
+                      marginLeft: 'auto',
+                      borderRadius: 6,
+                      marginTop: 2,
+                      marginRight: '5%',
+                      maxWidth: '70%',
+                      width: 'fit-content',
+                      whiteSpace: 'pre-wrap',
+                    }}
+                  >
+                    <Typography
+                      variant="body2"
+                      style={{
+                        color: '#fff',
+                      }}
+                    >
+                      {m.content}
+                    </Typography>
+                  </Box>
+                );
+            })}
+        <div ref={scrollRef} />
+      </Box>
+      <Offset sx={{ marginBottom: 3 }} />
+
+      <AppBar
         position="fixed"
         sx={{
           top: 'auto',
-          bottom: 60,
-          width: '80%',
+          bottom: 0,
+          alignContent: 'center',
+          alignItems: 'center',
+          backgroundColor: 'white',
         }}
       >
-        <Grid item xs={12} mb={1}>
-          {chatLoading && <DotsTyping />}
-        </Grid>
-        <Grid item xs={12}>
-          <Grid container>
-            <Grid item xs={12}>
-              <Paper>
-                <TextField
-                  fullWidth
-                  multiline
-                  placeholder="Chat"
-                  InputProps={{
-                    endAdornment: (
-                      <>
-                        <ArrowCircleUp
-                          fontSize="large"
-                          color="primary"
-                          sx={{ cursor: 'pointer' }}
-                          onClick={() => sendChat()}
-                        />
-                        <HistoryOutlined
-                          onClick={() => setOverlayVisible(true)}
-                          fontSize="large"
-                          sx={{ cursor: 'pointer' }}
-                        />
-                        <ControlPoint
-                          onClick={() => newChat()}
-                          fontSize="large"
-                          sx={{ cursor: 'pointer' }}
-                        />
-                      </>
-                    ),
-                  }}
-                  value={chat}
-                  onChange={t => setChat(t.target.value)}
-                />
-              </Paper>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Grid>
+        <TextField
+          fullWidth
+          multiline
+          size="small"
+          placeholder="Chat"
+          InputProps={{
+            sx: { borderRadius: 8 },
+            endAdornment: chatLoading ? (
+              <DotsTyping />
+            ) : (
+              <ArrowCircleUp
+                fontSize="large"
+                color="primary"
+                sx={{ cursor: 'pointer' }}
+                onClick={() => sendChat()}
+              />
+            ),
+          }}
+          sx={{ width: '80%', padding: 1 }}
+          value={chat}
+          onChange={t => setChat(t.target.value)}
+        />
+      </AppBar>
     </>
   );
 }
