@@ -1,4 +1,4 @@
-import { Amplify } from 'aws-amplify';
+import { Amplify, DataStore } from 'aws-amplify';
 import awsExports from '../aws-exports';
 
 // Material UI Font
@@ -20,7 +20,7 @@ import Chat from './Pages/Chat';
 import AdminPromptManager from './Pages/AdminPromptManager';
 import CssBaseline from '@mui/material/CssBaseline';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material';
 import Logo from './assets/logo-black-no-back.svg';
 
@@ -45,6 +45,11 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  // Clear the Data Store for now because of removing bad records etc.
+  useEffect(() => {
+    const clearStore = async () => await DataStore.clear();
+    clearStore();
+  }, []);
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const theme = useMemo(
     () =>
