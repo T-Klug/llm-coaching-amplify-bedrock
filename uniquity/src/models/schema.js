@@ -79,8 +79,8 @@ export const schema = {
                 }
             ]
         },
-        "SystemPrompt": {
-            "name": "SystemPrompt",
+        "OpenAIModel": {
+            "name": "OpenAIModel",
             "fields": {
                 "id": {
                     "name": "id",
@@ -96,13 +96,46 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "type": {
-                    "name": "type",
+                "model": {
+                    "name": "model",
                     "isArray": false,
-                    "type": {
-                        "enum": "PromptType"
-                    },
-                    "isRequired": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "temperature": {
+                    "name": "temperature",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "top_p": {
+                    "name": "top_p",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "max_tokens": {
+                    "name": "max_tokens",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "presence_penalty": {
+                    "name": "presence_penalty",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "frequency_penalty": {
+                    "name": "frequency_penalty",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
                     "attributes": []
                 },
                 "createdAt": {
@@ -123,7 +156,7 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "SystemPrompts",
+            "pluralName": "OpenAIModels",
             "attributes": [
                 {
                     "type": "model",
@@ -161,12 +194,6 @@ export const schema = {
                 "ASSISTANT",
                 "USER"
             ]
-        },
-        "PromptType": {
-            "name": "PromptType",
-            "values": [
-                "SYSTEM"
-            ]
         }
     },
     "nonModels": {
@@ -193,5 +220,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.3",
-    "version": "242673522775c35ca879c1e902b3b440"
+    "version": "aa725da4159c9d3d8d83b74055c3cf4a"
 };

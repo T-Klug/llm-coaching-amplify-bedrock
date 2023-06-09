@@ -78,12 +78,17 @@ export const syncOpenAIChats = /* GraphQL */ `
     }
   }
 `;
-export const getSystemPrompt = /* GraphQL */ `
-  query GetSystemPrompt($id: ID!) {
-    getSystemPrompt(id: $id) {
+export const getOpenAIModel = /* GraphQL */ `
+  query GetOpenAIModel($id: ID!) {
+    getOpenAIModel(id: $id) {
       id
       prompt
-      type
+      model
+      temperature
+      top_p
+      max_tokens
+      presence_penalty
+      frequency_penalty
       createdAt
       updatedAt
       _version
@@ -92,17 +97,22 @@ export const getSystemPrompt = /* GraphQL */ `
     }
   }
 `;
-export const listSystemPrompts = /* GraphQL */ `
-  query ListSystemPrompts(
-    $filter: ModelSystemPromptFilterInput
+export const listOpenAIModels = /* GraphQL */ `
+  query ListOpenAIModels(
+    $filter: ModelOpenAIModelFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listSystemPrompts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listOpenAIModels(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
         prompt
-        type
+        model
+        temperature
+        top_p
+        max_tokens
+        presence_penalty
+        frequency_penalty
         createdAt
         updatedAt
         _version
@@ -114,14 +124,14 @@ export const listSystemPrompts = /* GraphQL */ `
     }
   }
 `;
-export const syncSystemPrompts = /* GraphQL */ `
-  query SyncSystemPrompts(
-    $filter: ModelSystemPromptFilterInput
+export const syncOpenAIModels = /* GraphQL */ `
+  query SyncOpenAIModels(
+    $filter: ModelOpenAIModelFilterInput
     $limit: Int
     $nextToken: String
     $lastSync: AWSTimestamp
   ) {
-    syncSystemPrompts(
+    syncOpenAIModels(
       filter: $filter
       limit: $limit
       nextToken: $nextToken
@@ -130,7 +140,12 @@ export const syncSystemPrompts = /* GraphQL */ `
       items {
         id
         prompt
-        type
+        model
+        temperature
+        top_p
+        max_tokens
+        presence_penalty
+        frequency_penalty
         createdAt
         updatedAt
         _version

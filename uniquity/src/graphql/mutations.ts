@@ -65,15 +65,20 @@ export const deleteOpenAIChat = /* GraphQL */ `
     }
   }
 `;
-export const createSystemPrompt = /* GraphQL */ `
-  mutation CreateSystemPrompt(
-    $input: CreateSystemPromptInput!
-    $condition: ModelSystemPromptConditionInput
+export const createOpenAIModel = /* GraphQL */ `
+  mutation CreateOpenAIModel(
+    $input: CreateOpenAIModelInput!
+    $condition: ModelOpenAIModelConditionInput
   ) {
-    createSystemPrompt(input: $input, condition: $condition) {
+    createOpenAIModel(input: $input, condition: $condition) {
       id
       prompt
-      type
+      model
+      temperature
+      top_p
+      max_tokens
+      presence_penalty
+      frequency_penalty
       createdAt
       updatedAt
       _version
@@ -82,15 +87,20 @@ export const createSystemPrompt = /* GraphQL */ `
     }
   }
 `;
-export const updateSystemPrompt = /* GraphQL */ `
-  mutation UpdateSystemPrompt(
-    $input: UpdateSystemPromptInput!
-    $condition: ModelSystemPromptConditionInput
+export const updateOpenAIModel = /* GraphQL */ `
+  mutation UpdateOpenAIModel(
+    $input: UpdateOpenAIModelInput!
+    $condition: ModelOpenAIModelConditionInput
   ) {
-    updateSystemPrompt(input: $input, condition: $condition) {
+    updateOpenAIModel(input: $input, condition: $condition) {
       id
       prompt
-      type
+      model
+      temperature
+      top_p
+      max_tokens
+      presence_penalty
+      frequency_penalty
       createdAt
       updatedAt
       _version
@@ -99,15 +109,20 @@ export const updateSystemPrompt = /* GraphQL */ `
     }
   }
 `;
-export const deleteSystemPrompt = /* GraphQL */ `
-  mutation DeleteSystemPrompt(
-    $input: DeleteSystemPromptInput!
-    $condition: ModelSystemPromptConditionInput
+export const deleteOpenAIModel = /* GraphQL */ `
+  mutation DeleteOpenAIModel(
+    $input: DeleteOpenAIModelInput!
+    $condition: ModelOpenAIModelConditionInput
   ) {
-    deleteSystemPrompt(input: $input, condition: $condition) {
+    deleteOpenAIModel(input: $input, condition: $condition) {
       id
       prompt
-      type
+      model
+      temperature
+      top_p
+      max_tokens
+      presence_penalty
+      frequency_penalty
       createdAt
       updatedAt
       _version

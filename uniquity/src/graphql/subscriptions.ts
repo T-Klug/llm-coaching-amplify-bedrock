@@ -65,14 +65,19 @@ export const onDeleteOpenAIChat = /* GraphQL */ `
     }
   }
 `;
-export const onCreateSystemPrompt = /* GraphQL */ `
-  subscription OnCreateSystemPrompt(
-    $filter: ModelSubscriptionSystemPromptFilterInput
+export const onCreateOpenAIModel = /* GraphQL */ `
+  subscription OnCreateOpenAIModel(
+    $filter: ModelSubscriptionOpenAIModelFilterInput
   ) {
-    onCreateSystemPrompt(filter: $filter) {
+    onCreateOpenAIModel(filter: $filter) {
       id
       prompt
-      type
+      model
+      temperature
+      top_p
+      max_tokens
+      presence_penalty
+      frequency_penalty
       createdAt
       updatedAt
       _version
@@ -81,14 +86,19 @@ export const onCreateSystemPrompt = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateSystemPrompt = /* GraphQL */ `
-  subscription OnUpdateSystemPrompt(
-    $filter: ModelSubscriptionSystemPromptFilterInput
+export const onUpdateOpenAIModel = /* GraphQL */ `
+  subscription OnUpdateOpenAIModel(
+    $filter: ModelSubscriptionOpenAIModelFilterInput
   ) {
-    onUpdateSystemPrompt(filter: $filter) {
+    onUpdateOpenAIModel(filter: $filter) {
       id
       prompt
-      type
+      model
+      temperature
+      top_p
+      max_tokens
+      presence_penalty
+      frequency_penalty
       createdAt
       updatedAt
       _version
@@ -97,14 +107,19 @@ export const onUpdateSystemPrompt = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteSystemPrompt = /* GraphQL */ `
-  subscription OnDeleteSystemPrompt(
-    $filter: ModelSubscriptionSystemPromptFilterInput
+export const onDeleteOpenAIModel = /* GraphQL */ `
+  subscription OnDeleteOpenAIModel(
+    $filter: ModelSubscriptionOpenAIModelFilterInput
   ) {
-    onDeleteSystemPrompt(filter: $filter) {
+    onDeleteOpenAIModel(filter: $filter) {
       id
       prompt
-      type
+      model
+      temperature
+      top_p
+      max_tokens
+      presence_penalty
+      frequency_penalty
       createdAt
       updatedAt
       _version

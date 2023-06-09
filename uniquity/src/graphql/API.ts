@@ -126,37 +126,42 @@ export type DeleteOpenAIChatInput = {
   _version?: number | null,
 };
 
-export type CreateSystemPromptInput = {
+export type CreateOpenAIModelInput = {
   id?: string | null,
   prompt: string,
-  type?: PromptType | null,
+  model: string,
+  temperature: string,
+  top_p: string,
+  max_tokens: string,
+  presence_penalty: string,
+  frequency_penalty: string,
   _version?: number | null,
 };
 
-export enum PromptType {
-  SYSTEM = "SYSTEM",
-}
-
-
-export type ModelSystemPromptConditionInput = {
+export type ModelOpenAIModelConditionInput = {
   prompt?: ModelStringInput | null,
-  type?: ModelPromptTypeInput | null,
-  and?: Array< ModelSystemPromptConditionInput | null > | null,
-  or?: Array< ModelSystemPromptConditionInput | null > | null,
-  not?: ModelSystemPromptConditionInput | null,
+  model?: ModelStringInput | null,
+  temperature?: ModelStringInput | null,
+  top_p?: ModelStringInput | null,
+  max_tokens?: ModelStringInput | null,
+  presence_penalty?: ModelStringInput | null,
+  frequency_penalty?: ModelStringInput | null,
+  and?: Array< ModelOpenAIModelConditionInput | null > | null,
+  or?: Array< ModelOpenAIModelConditionInput | null > | null,
+  not?: ModelOpenAIModelConditionInput | null,
   _deleted?: ModelBooleanInput | null,
 };
 
-export type ModelPromptTypeInput = {
-  eq?: PromptType | null,
-  ne?: PromptType | null,
-};
-
-export type SystemPrompt = {
-  __typename: "SystemPrompt",
+export type OpenAIModel = {
+  __typename: "OpenAIModel",
   id: string,
   prompt: string,
-  type?: PromptType | null,
+  model: string,
+  temperature: string,
+  top_p: string,
+  max_tokens: string,
+  presence_penalty: string,
+  frequency_penalty: string,
   createdAt: string,
   updatedAt: string,
   _version: number,
@@ -164,14 +169,19 @@ export type SystemPrompt = {
   _lastChangedAt: number,
 };
 
-export type UpdateSystemPromptInput = {
+export type UpdateOpenAIModelInput = {
   id: string,
   prompt?: string | null,
-  type?: PromptType | null,
+  model?: string | null,
+  temperature?: string | null,
+  top_p?: string | null,
+  max_tokens?: string | null,
+  presence_penalty?: string | null,
+  frequency_penalty?: string | null,
   _version?: number | null,
 };
 
-export type DeleteSystemPromptInput = {
+export type DeleteOpenAIModelInput = {
   id: string,
   _version?: number | null,
 };
@@ -206,19 +216,24 @@ export type ModelOpenAIChatConnection = {
   startedAt?: number | null,
 };
 
-export type ModelSystemPromptFilterInput = {
+export type ModelOpenAIModelFilterInput = {
   id?: ModelIDInput | null,
   prompt?: ModelStringInput | null,
-  type?: ModelPromptTypeInput | null,
-  and?: Array< ModelSystemPromptFilterInput | null > | null,
-  or?: Array< ModelSystemPromptFilterInput | null > | null,
-  not?: ModelSystemPromptFilterInput | null,
+  model?: ModelStringInput | null,
+  temperature?: ModelStringInput | null,
+  top_p?: ModelStringInput | null,
+  max_tokens?: ModelStringInput | null,
+  presence_penalty?: ModelStringInput | null,
+  frequency_penalty?: ModelStringInput | null,
+  and?: Array< ModelOpenAIModelFilterInput | null > | null,
+  or?: Array< ModelOpenAIModelFilterInput | null > | null,
+  not?: ModelOpenAIModelFilterInput | null,
   _deleted?: ModelBooleanInput | null,
 };
 
-export type ModelSystemPromptConnection = {
-  __typename: "ModelSystemPromptConnection",
-  items:  Array<SystemPrompt | null >,
+export type ModelOpenAIModelConnection = {
+  __typename: "ModelOpenAIModelConnection",
+  items:  Array<OpenAIModel | null >,
   nextToken?: string | null,
   startedAt?: number | null,
 };
@@ -246,12 +261,17 @@ export type ModelSubscriptionIDInput = {
   notIn?: Array< string | null > | null,
 };
 
-export type ModelSubscriptionSystemPromptFilterInput = {
+export type ModelSubscriptionOpenAIModelFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   prompt?: ModelSubscriptionStringInput | null,
-  type?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionSystemPromptFilterInput | null > | null,
-  or?: Array< ModelSubscriptionSystemPromptFilterInput | null > | null,
+  model?: ModelSubscriptionStringInput | null,
+  temperature?: ModelSubscriptionStringInput | null,
+  top_p?: ModelSubscriptionStringInput | null,
+  max_tokens?: ModelSubscriptionStringInput | null,
+  presence_penalty?: ModelSubscriptionStringInput | null,
+  frequency_penalty?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionOpenAIModelFilterInput | null > | null,
+  or?: Array< ModelSubscriptionOpenAIModelFilterInput | null > | null,
   _deleted?: ModelBooleanInput | null,
 };
 
@@ -342,17 +362,22 @@ export type DeleteOpenAIChatMutation = {
   } | null,
 };
 
-export type CreateSystemPromptMutationVariables = {
-  input: CreateSystemPromptInput,
-  condition?: ModelSystemPromptConditionInput | null,
+export type CreateOpenAIModelMutationVariables = {
+  input: CreateOpenAIModelInput,
+  condition?: ModelOpenAIModelConditionInput | null,
 };
 
-export type CreateSystemPromptMutation = {
-  createSystemPrompt?:  {
-    __typename: "SystemPrompt",
+export type CreateOpenAIModelMutation = {
+  createOpenAIModel?:  {
+    __typename: "OpenAIModel",
     id: string,
     prompt: string,
-    type?: PromptType | null,
+    model: string,
+    temperature: string,
+    top_p: string,
+    max_tokens: string,
+    presence_penalty: string,
+    frequency_penalty: string,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -361,17 +386,22 @@ export type CreateSystemPromptMutation = {
   } | null,
 };
 
-export type UpdateSystemPromptMutationVariables = {
-  input: UpdateSystemPromptInput,
-  condition?: ModelSystemPromptConditionInput | null,
+export type UpdateOpenAIModelMutationVariables = {
+  input: UpdateOpenAIModelInput,
+  condition?: ModelOpenAIModelConditionInput | null,
 };
 
-export type UpdateSystemPromptMutation = {
-  updateSystemPrompt?:  {
-    __typename: "SystemPrompt",
+export type UpdateOpenAIModelMutation = {
+  updateOpenAIModel?:  {
+    __typename: "OpenAIModel",
     id: string,
     prompt: string,
-    type?: PromptType | null,
+    model: string,
+    temperature: string,
+    top_p: string,
+    max_tokens: string,
+    presence_penalty: string,
+    frequency_penalty: string,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -380,17 +410,22 @@ export type UpdateSystemPromptMutation = {
   } | null,
 };
 
-export type DeleteSystemPromptMutationVariables = {
-  input: DeleteSystemPromptInput,
-  condition?: ModelSystemPromptConditionInput | null,
+export type DeleteOpenAIModelMutationVariables = {
+  input: DeleteOpenAIModelInput,
+  condition?: ModelOpenAIModelConditionInput | null,
 };
 
-export type DeleteSystemPromptMutation = {
-  deleteSystemPrompt?:  {
-    __typename: "SystemPrompt",
+export type DeleteOpenAIModelMutation = {
+  deleteOpenAIModel?:  {
+    __typename: "OpenAIModel",
     id: string,
     prompt: string,
-    type?: PromptType | null,
+    model: string,
+    temperature: string,
+    top_p: string,
+    max_tokens: string,
+    presence_penalty: string,
+    frequency_penalty: string,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -506,16 +541,21 @@ export type SyncOpenAIChatsQuery = {
   } | null,
 };
 
-export type GetSystemPromptQueryVariables = {
+export type GetOpenAIModelQueryVariables = {
   id: string,
 };
 
-export type GetSystemPromptQuery = {
-  getSystemPrompt?:  {
-    __typename: "SystemPrompt",
+export type GetOpenAIModelQuery = {
+  getOpenAIModel?:  {
+    __typename: "OpenAIModel",
     id: string,
     prompt: string,
-    type?: PromptType | null,
+    model: string,
+    temperature: string,
+    top_p: string,
+    max_tokens: string,
+    presence_penalty: string,
+    frequency_penalty: string,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -524,20 +564,25 @@ export type GetSystemPromptQuery = {
   } | null,
 };
 
-export type ListSystemPromptsQueryVariables = {
-  filter?: ModelSystemPromptFilterInput | null,
+export type ListOpenAIModelsQueryVariables = {
+  filter?: ModelOpenAIModelFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type ListSystemPromptsQuery = {
-  listSystemPrompts?:  {
-    __typename: "ModelSystemPromptConnection",
+export type ListOpenAIModelsQuery = {
+  listOpenAIModels?:  {
+    __typename: "ModelOpenAIModelConnection",
     items:  Array< {
-      __typename: "SystemPrompt",
+      __typename: "OpenAIModel",
       id: string,
       prompt: string,
-      type?: PromptType | null,
+      model: string,
+      temperature: string,
+      top_p: string,
+      max_tokens: string,
+      presence_penalty: string,
+      frequency_penalty: string,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -549,21 +594,26 @@ export type ListSystemPromptsQuery = {
   } | null,
 };
 
-export type SyncSystemPromptsQueryVariables = {
-  filter?: ModelSystemPromptFilterInput | null,
+export type SyncOpenAIModelsQueryVariables = {
+  filter?: ModelOpenAIModelFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
   lastSync?: number | null,
 };
 
-export type SyncSystemPromptsQuery = {
-  syncSystemPrompts?:  {
-    __typename: "ModelSystemPromptConnection",
+export type SyncOpenAIModelsQuery = {
+  syncOpenAIModels?:  {
+    __typename: "ModelOpenAIModelConnection",
     items:  Array< {
-      __typename: "SystemPrompt",
+      __typename: "OpenAIModel",
       id: string,
       prompt: string,
-      type?: PromptType | null,
+      model: string,
+      temperature: string,
+      top_p: string,
+      max_tokens: string,
+      presence_penalty: string,
+      frequency_penalty: string,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -647,16 +697,21 @@ export type OnDeleteOpenAIChatSubscription = {
   } | null,
 };
 
-export type OnCreateSystemPromptSubscriptionVariables = {
-  filter?: ModelSubscriptionSystemPromptFilterInput | null,
+export type OnCreateOpenAIModelSubscriptionVariables = {
+  filter?: ModelSubscriptionOpenAIModelFilterInput | null,
 };
 
-export type OnCreateSystemPromptSubscription = {
-  onCreateSystemPrompt?:  {
-    __typename: "SystemPrompt",
+export type OnCreateOpenAIModelSubscription = {
+  onCreateOpenAIModel?:  {
+    __typename: "OpenAIModel",
     id: string,
     prompt: string,
-    type?: PromptType | null,
+    model: string,
+    temperature: string,
+    top_p: string,
+    max_tokens: string,
+    presence_penalty: string,
+    frequency_penalty: string,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -665,16 +720,21 @@ export type OnCreateSystemPromptSubscription = {
   } | null,
 };
 
-export type OnUpdateSystemPromptSubscriptionVariables = {
-  filter?: ModelSubscriptionSystemPromptFilterInput | null,
+export type OnUpdateOpenAIModelSubscriptionVariables = {
+  filter?: ModelSubscriptionOpenAIModelFilterInput | null,
 };
 
-export type OnUpdateSystemPromptSubscription = {
-  onUpdateSystemPrompt?:  {
-    __typename: "SystemPrompt",
+export type OnUpdateOpenAIModelSubscription = {
+  onUpdateOpenAIModel?:  {
+    __typename: "OpenAIModel",
     id: string,
     prompt: string,
-    type?: PromptType | null,
+    model: string,
+    temperature: string,
+    top_p: string,
+    max_tokens: string,
+    presence_penalty: string,
+    frequency_penalty: string,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -683,16 +743,21 @@ export type OnUpdateSystemPromptSubscription = {
   } | null,
 };
 
-export type OnDeleteSystemPromptSubscriptionVariables = {
-  filter?: ModelSubscriptionSystemPromptFilterInput | null,
+export type OnDeleteOpenAIModelSubscriptionVariables = {
+  filter?: ModelSubscriptionOpenAIModelFilterInput | null,
 };
 
-export type OnDeleteSystemPromptSubscription = {
-  onDeleteSystemPrompt?:  {
-    __typename: "SystemPrompt",
+export type OnDeleteOpenAIModelSubscription = {
+  onDeleteOpenAIModel?:  {
+    __typename: "OpenAIModel",
     id: string,
     prompt: string,
-    type?: PromptType | null,
+    model: string,
+    temperature: string,
+    top_p: string,
+    max_tokens: string,
+    presence_penalty: string,
+    frequency_penalty: string,
     createdAt: string,
     updatedAt: string,
     _version: number,

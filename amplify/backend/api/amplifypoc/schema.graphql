@@ -16,10 +16,6 @@ type OpenAIChat @model @auth(rules: [{ allow: owner }]) {
   owner: String @auth(rules: [{ allow: owner, operations: [read, delete] }])
 }
 
-enum PromptType {
-  SYSTEM
-}
-
 input MessagesTypeFuncInput {
   role: OpenAIRoleType
   content: String
@@ -39,7 +35,7 @@ type Mutation {
     @auth(rules: [{ allow: private }])
 }
 
-type SystemPrompt
+type OpenAIModel
   @model
   @auth(
     rules: [
@@ -52,5 +48,10 @@ type SystemPrompt
   ) {
   id: ID!
   prompt: String!
-  type: PromptType
+  model: String!
+  temperature: String!
+  top_p: String!
+  max_tokens: String!
+  presence_penalty: String!
+  frequency_penalty: String!
 }
