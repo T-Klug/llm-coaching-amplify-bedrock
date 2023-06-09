@@ -121,7 +121,8 @@ export const handler = async (event) => {
     if (chatModel.messages.length <= 1) {
       chatModel.messages.unshift({
         role: "SYSTEM",
-        content: "Act as a career coach, be concise.",
+        content:
+          "You will act as an unbiased coach. You will favor asking questions over giving directives. You will act in the best interest of the user for their career coaching.",
       });
     }
   } else {
@@ -142,7 +143,6 @@ export const handler = async (event) => {
     const res = await openai.createChatCompletion({
       model: "gpt-3.5-turbo-0301",
       messages: messages,
-      max_tokens: 100,
     });
     console.log(res.data);
 
