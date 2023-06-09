@@ -24,7 +24,7 @@ export default function AdminPromptManager() {
 
   return (
     <>
-      <Paper>
+      <Paper sx={{ mt: 10 }}>
         <TextField
           fullWidth
           label="This is the Default System Prompt fed to the OpenAI during calls"
