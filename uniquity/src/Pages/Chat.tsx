@@ -1,6 +1,6 @@
 import { API, DataStore } from 'aws-amplify';
 import { GraphQLQuery } from '@aws-amplify/api';
-import { forwardRef, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { CreateOpenAIChatFuncMutation } from '../graphql/API';
 import { createOpenAIChatFunc } from '../graphql/mutations';
 import {
@@ -13,13 +13,11 @@ import DotsTyping from '../components/typing/dotsTyping';
 import {
   AppBar,
   Box,
-  Dialog,
   Divider,
   ListItem,
   ListItemIcon,
   ListItemText,
   Paper,
-  Slide,
   SpeedDial,
   SpeedDialAction,
   SwipeableDrawer,
@@ -34,17 +32,7 @@ import {
   ControlPoint,
   HistoryOutlined,
 } from '@mui/icons-material';
-import { TransitionProps } from '@mui/material/transitions';
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
-
-const Transition = forwardRef(function Transition(
-  props: TransitionProps & {
-    children: React.ReactElement;
-  },
-  ref: React.Ref<unknown>
-) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
 
 const iOS =
   typeof navigator !== 'undefined' &&
