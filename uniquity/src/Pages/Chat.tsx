@@ -24,6 +24,7 @@ import {
   TextField,
   Typography,
   styled,
+  useMediaQuery,
 } from '@mui/material';
 import {
   ArrowCircleUp,
@@ -45,6 +46,7 @@ export default function Chat() {
   const [chat, setChat] = useState<string>('');
   const [chatLoading, setChatLoading] = useState<boolean>(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -143,7 +145,7 @@ export default function Chat() {
           ></Box>
           <Paper>
             <Typography textAlign="center" variant="h5">
-              Select a previous chat
+              Previous Coaching Conversations
             </Typography>
             {data?.map(d => BuildListItem(d.id, d.messages))}
           </Paper>
@@ -249,7 +251,7 @@ export default function Chat() {
           bottom: 0,
           alignContent: 'center',
           alignItems: 'center',
-          backgroundColor: 'white',
+          backgroundColor: prefersDarkMode ? 'black' : 'white',
         }}
       >
         <TextField
