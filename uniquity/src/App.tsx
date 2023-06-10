@@ -1,4 +1,5 @@
-import { Amplify, I18n } from 'aws-amplify';
+/* eslint-disable react-refresh/only-export-components */
+import { Amplify, I18n, Notifications } from 'aws-amplify';
 import awsExports from '../aws-exports';
 
 // Material UI Font
@@ -19,13 +20,14 @@ import {
   Theme,
   defaultTheme,
 } from '@aws-amplify/ui-react';
+import { withInAppMessaging } from '@aws-amplify/ui-react-notifications';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import Root from './layout/Root';
 import Chat from './Pages/Chat';
 import AdminPromptManager from './Pages/AdminPromptManager';
 import CssBaseline from '@mui/material/CssBaseline';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material';
 import Logo from './assets/logo-black-no-back.svg';
 
@@ -58,6 +60,12 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  const { InAppMessaging } = Notifications;
+  useEffect(() => {
+    // sync remote in-app messages
+    InAppMessaging.syncMessages();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const components = {
     Header() {
       const { tokens } = useTheme();
@@ -106,4 +114,4 @@ function App() {
   );
 }
 
-export default App;
+export default withInAppMessaging(App);
