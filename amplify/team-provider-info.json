@@ -27,6 +27,9 @@
           "s3Key": "amplify-builds/createOpenAiChat-7552724f2b6a39437466-build.zip"
         },
         "createOpenAIChat": {}
+      },
+      "analytics": {
+        "amplifypoc": {}
       }
     }
   }

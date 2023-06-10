@@ -1,4 +1,10 @@
 {
+  "analytics": {
+    "amplifypoc": {
+      "providerPlugin": "awscloudformation",
+      "service": "Pinpoint"
+    }
+  },
   "api": {
     "amplifypoc": {
       "dependsOn": [
