@@ -158,7 +158,7 @@ export default function Chat() {
           }
         >
           <ListItemText
-            primaryTypographyProps={{ noWrap: true }}
+            primaryTypographyProps={{ noWrap: true, width: '50%' }}
             primary={aiChat && aiChat?.messages && aiChat.messages[0]?.content}
           />
         </ListItem>
