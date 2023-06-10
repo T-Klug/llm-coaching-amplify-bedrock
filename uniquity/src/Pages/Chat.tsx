@@ -3,21 +3,15 @@ import { GraphQLQuery } from '@aws-amplify/api';
 import { useEffect, useRef, useState } from 'react';
 import { CreateOpenAIChatFuncMutation } from '../graphql/API';
 import { createOpenAIChatFunc } from '../graphql/mutations';
-import {
-  LazyMessagesType,
-  LazyOpenAIChat,
-  OpenAIChat,
-  OpenAiRoleType,
-} from '../models';
+import { LazyOpenAIChat, OpenAIChat, OpenAiRoleType } from '../models';
 import DotsTyping from '../components/typing/dotsTyping';
 import {
   AppBar,
   Box,
-  Divider,
+  List,
   ListItem,
-  ListItemIcon,
   ListItemText,
-  Paper,
+  ListSubheader,
   SpeedDial,
   SpeedDialAction,
   SwipeableDrawer,
@@ -28,7 +22,6 @@ import {
 } from '@mui/material';
 import {
   ArrowCircleUp,
-  ArrowRightOutlined,
   Menu,
   ControlPoint,
   HistoryOutlined,
@@ -108,36 +101,75 @@ export default function Chat() {
     setChatLoading(false);
   };
 
-  const BuildListItem = (
-    id: string,
-    messages: (LazyMessagesType | null)[] | null | undefined
-  ) => {
-    return (
-      <div key={id}>
+  function compareDates(date: Date) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+
+    const weekAgo = new Date(today);
+    weekAgo.setDate(today.getDate() - 7);
+
+    const monthAgo = new Date(today);
+    monthAgo.setMonth(today.getMonth() - 1);
+
+    date = new Date(date);
+    date.setHours(0, 0, 0, 0);
+
+    if (+date === +today) {
+      return 'Today';
+    } else if (+date === +yesterday) {
+      return 'Yesterday';
+    } else if (+date > +weekAgo && +date < +yesterday) {
+      return 'This week';
+    } else {
+      return 'Other';
+    }
+  }
+
+  const BuildListItem = (aiChat: LazyOpenAIChat, listName: string) => {
+    const date = new Date(aiChat.createdAt!);
+    if (compareDates(date) === listName) {
+      return (
         <ListItem
-          sx={{ cursor: 'pointer' }}
-          key={id}
+          sx={{
+            cursor: 'pointer',
+            border: 1,
+            borderRadius: 4,
+            width: '90%',
+            m: 'auto',
+            marginBottom: 1,
+          }}
+          dense
+          key={aiChat.id}
           onClick={() => {
-            setSelectedId(id);
+            setSelectedId(aiChat.id);
             setOverlayVisible(false);
           }}
+          secondaryAction={
+            aiChat &&
+            new Date(aiChat.createdAt!).toLocaleDateString(undefined, {
+              weekday: 'long',
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })
+          }
         >
           <ListItemText
             primaryTypographyProps={{ noWrap: true }}
-            primary={messages && messages[0]?.content}
+            primary={aiChat && aiChat?.messages && aiChat.messages[0]?.content}
           />
-          <ListItemIcon>
-            <ArrowRightOutlined />
-          </ListItemIcon>
         </ListItem>
-        <Divider />
-      </div>
-    );
+      );
+    }
   };
 
   return (
     <>
       <SwipeableDrawer
+        PaperProps={{ sx: { maxHeight: 500 } }}
         disableBackdropTransition={!iOS}
         disableDiscovery={iOS}
         anchor="bottom"
@@ -145,20 +177,37 @@ export default function Chat() {
         onClose={() => setOverlayVisible(false)}
         onOpen={() => setOverlayVisible(true)}
       >
-        <>
-          <Box
-            sx={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-            }}
-          ></Box>
-          <Paper>
-            <Typography textAlign="center" variant="h5">
-              Previous Coaching Conversations
-            </Typography>
-            {data?.map(d => BuildListItem(d.id, d.messages))}
-          </Paper>
-        </>
+        <Typography textAlign="center" variant="h5">
+          Previous Coaching Conversations
+        </Typography>
+        {!data
+          ?.map(d => BuildListItem(d, 'Today'))
+          .every((val, _i, arr) => val === arr[0]) && (
+          <List subheader={<ListSubheader>Today</ListSubheader>}>
+            {data?.map(d => BuildListItem(d, 'Today'))}
+          </List>
+        )}
+        {!data
+          ?.map(d => BuildListItem(d, 'Yesterday'))
+          .every((val, _i, arr) => val === arr[0]) && (
+          <List subheader={<ListSubheader>Yesterday</ListSubheader>}>
+            {data?.map(d => BuildListItem(d, 'Yesterday'))}
+          </List>
+        )}
+        {!data
+          ?.map(d => BuildListItem(d, 'This Week'))
+          .every((val, _i, arr) => val === arr[0]) && (
+          <List subheader={<ListSubheader>This Week</ListSubheader>}>
+            {data?.map(d => BuildListItem(d, 'This Week'))}
+          </List>
+        )}
+        {!data
+          ?.map(d => BuildListItem(d, 'Other'))
+          .every((val, _i, arr) => val === arr[0]) && (
+          <List subheader={<ListSubheader>This Month</ListSubheader>}>
+            {data?.map(d => BuildListItem(d, 'Other'))}
+          </List>
+        )}
       </SwipeableDrawer>
       <SpeedDial
         ariaLabel="SpeedDial"
