@@ -34,10 +34,19 @@ import {
   HistoryOutlined,
 } from '@mui/icons-material';
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
+import Logo from '../assets/logo-black-no-back.svg';
 
 const iOS =
   typeof navigator !== 'undefined' &&
   /iPad|iPhone|iPod/.test(navigator.userAgent);
+
+const background = {
+  backgroundImage: `url(${Logo})`,
+  backgroundRepeat: 'no-repeat',
+  backgroundPosition: 'center center',
+  backgroundSize: 'contain',
+  height: 500,
+};
 
 export default function Chat() {
   const [data, setData] = useState<LazyOpenAIChat[]>();
@@ -180,7 +189,7 @@ export default function Chat() {
           onClick={() => newChat()}
         />
       </SpeedDial>
-      <Box pt={10}>
+      <Box sx={selectedId ? undefined : background} pt={10}>
         {data &&
           data?.length > 0 &&
           data.find(s => s.id === selectedId) &&

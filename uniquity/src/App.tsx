@@ -22,7 +22,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useMemo } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material';
-import Logo from './assets/logo-black-no-back.svg';
 
 //configure the amplify resources
 Amplify.configure(awsExports);
@@ -49,21 +48,6 @@ function App() {
   const theme = useMemo(
     () =>
       createTheme({
-        components: {
-          MuiCssBaseline: {
-            styleOverrides: {
-              body: {
-                backgroundImage: `url(${Logo})`,
-                backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'center center',
-                backgroundSize: 'contain',
-                backgroundAttachment: 'fixed',
-                backgroundOpacity: '10%',
-                height: '100%',
-              },
-            },
-          },
-        },
         palette: {
           mode: prefersDarkMode ? 'dark' : 'light',
         },
