@@ -1,4 +1,4 @@
-import { Amplify } from 'aws-amplify';
+import { Amplify, I18n } from 'aws-amplify';
 import awsExports from '../aws-exports';
 
 // Material UI Font
@@ -13,6 +13,11 @@ import {
   Authenticator,
   defaultDarkModeOverride,
   ThemeProvider as AmplifyThemeProvider,
+  useTheme,
+  View,
+  Image,
+  Theme,
+  defaultTheme,
 } from '@aws-amplify/ui-react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import Root from './layout/Root';
@@ -22,9 +27,18 @@ import CssBaseline from '@mui/material/CssBaseline';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useMemo } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material';
+import Logo from './assets/logo-black-no-back.svg';
 
 //configure the amplify resources
 Amplify.configure(awsExports);
+
+I18n.putVocabulariesForLanguage('en', {
+  Loading: 'QR code would show here',
+  Code: '2FA Code',
+  Confirm: 'Confirm 2FA',
+  'Confirm TOTP Code': 'Confirm 2FA Code',
+  'Back to Sign In': 'Back to Login',
+});
 
 const router = createBrowserRouter([
   {
@@ -44,6 +58,17 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  const components = {
+    Header() {
+      const { tokens } = useTheme();
+
+      return (
+        <View textAlign="center" padding={tokens.space.large}>
+          <Image alt="Uniquity Logo" src={Logo} />
+        </View>
+      );
+    },
+  };
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const theme = useMemo(
     () =>
@@ -54,10 +79,18 @@ function App() {
       }),
     [prefersDarkMode]
   );
-  const amplifyTheme = {
+  const amplifyTheme: Theme = {
     name: 'my-theme',
     overrides: [defaultDarkModeOverride],
+    tokens: {
+      colors: {
+        brand: {
+          primary: defaultTheme.tokens.colors.green,
+        },
+      },
+    },
   };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -65,7 +98,7 @@ function App() {
         theme={amplifyTheme}
         colorMode={prefersDarkMode ? 'dark' : 'light'}
       >
-        <Authenticator hideSignUp={true}>
+        <Authenticator hideSignUp={true} components={components}>
           <RouterProvider router={router} />
         </Authenticator>
       </AmplifyThemeProvider>
