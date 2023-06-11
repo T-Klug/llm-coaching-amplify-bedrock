@@ -27,10 +27,6 @@ import { withInAppMessaging } from '@aws-amplify/ui-react-notifications';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 // Root Render - Outlet is here
 import Root from './layout/Root';
-// Main Page
-import Chat from './pages/Chat';
-// Admin Page
-import AdminPromptManager from './pages/AdminPromptManager';
 // Recommended CSS BASELINE provided by material ui
 import CssBaseline from '@mui/material/CssBaseline';
 // Hook to check for Dark mode
@@ -40,6 +36,8 @@ import { useEffect, useMemo } from 'react';
 import LightLogo from './assets/logo-black-no-back.svg';
 import DarkLogo from './assets/logo-no-back.svg';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import Chat from './pages/Chat';
+import AdminPromptManager from './pages/AdminPromptManager';
 
 //configure the amplify resources
 Amplify.configure(awsExports);

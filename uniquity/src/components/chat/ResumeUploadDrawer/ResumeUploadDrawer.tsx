@@ -1,5 +1,6 @@
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import { iOS } from '../../../helpers/ChatHelpers';
+import Dropzone from 'react-dropzone';
 
 export function ResumeUploadDrawer() {
   <SwipeableDrawer
@@ -10,5 +11,7 @@ export function ResumeUploadDrawer() {
     open={true}
     onClose={() => console.log('onClose')}
     onOpen={() => console.log('onOpen')}
-  ></SwipeableDrawer>;
+  >
+    <Dropzone />
+  </SwipeableDrawer>;
 }
