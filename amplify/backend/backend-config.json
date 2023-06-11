@@ -71,6 +71,11 @@
     }
   },
   "function": {
+    "S3Trigger8f157155": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "createOpenAiChat": {
       "build": true,
       "dependsOn": [
@@ -117,6 +122,22 @@
         {
           "category": "analytics",
           "resourceName": "Pinpoint"
+        }
+      ]
+    },
+    "AMPLIFY_function_S3Trigger8f157155_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "S3Trigger8f157155"
+        }
+      ]
+    },
+    "AMPLIFY_function_S3Trigger8f157155_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "S3Trigger8f157155"
         }
       ]
     },
@@ -167,6 +188,23 @@
           "resourceName": "Pinpoint"
         }
       ]
+    }
+  },
+  "storage": {
+    "resumestorage": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn",
+            "LambdaExecutionRole"
+          ],
+          "category": "function",
+          "resourceName": "S3Trigger8f157155"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "S3"
     }
   }
 }

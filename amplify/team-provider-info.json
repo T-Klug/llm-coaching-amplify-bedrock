@@ -26,7 +26,11 @@
           "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
           "s3Key": "amplify-builds/createOpenAiChat-7552724f2b6a39437466-build.zip"
         },
-        "createOpenAIChat": {}
+        "createOpenAIChat": {},
+        "S3Trigger8f157155": {
+          "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
+          "s3Key": "amplify-builds/S3Trigger8f157155-682f7353425552586a41-build.zip"
+        }
       },
       "analytics": {
         "amplifypoc": {},
@@ -42,6 +46,9 @@
           "Id": "90797490ef5a47d79865eb44f745ff4c",
           "Region": "us-east-1"
         }
+      },
+      "storage": {
+        "resumestorage": {}
       }
     }
   }
