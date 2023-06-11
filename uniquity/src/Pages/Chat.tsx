@@ -225,22 +225,46 @@ export default function Chat() {
           Previous Coaching Conversations
         </Typography>
         {shouldDisplayChatGroup(data, 'Today') && (
-          <List subheader={<ListSubheader>Today</ListSubheader>}>
+          <List
+            subheader={
+              <ListSubheader sx={{ backgroundColor: 'unset' }}>
+                Today
+              </ListSubheader>
+            }
+          >
             {data?.map(d => BuildListItem(d, 'Today'))}
           </List>
         )}
         {shouldDisplayChatGroup(data, 'Yesterday') && (
-          <List subheader={<ListSubheader>Yesterday</ListSubheader>}>
+          <List
+            subheader={
+              <ListSubheader sx={{ backgroundColor: 'unset' }}>
+                Yesterday
+              </ListSubheader>
+            }
+          >
             {data?.map(d => BuildListItem(d, 'Yesterday'))}
           </List>
         )}
         {shouldDisplayChatGroup(data, 'This week') && (
-          <List subheader={<ListSubheader>This Week</ListSubheader>}>
+          <List
+            subheader={
+              <ListSubheader sx={{ backgroundColor: 'unset' }}>
+                This Week
+              </ListSubheader>
+            }
+          >
             {data?.map(d => BuildListItem(d, 'This week'))}
           </List>
         )}
         {shouldDisplayChatGroup(data, 'Other') && (
-          <List subheader={<ListSubheader>This Month</ListSubheader>}>
+          <List
+            subheader={
+              <ListSubheader sx={{ backgroundColor: 'unset' }}>
+                This Month+
+              </ListSubheader>
+            }
+          >
             {data?.map(d => BuildListItem(d, 'Other'))}
           </List>
         )}
