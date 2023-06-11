@@ -37,9 +37,9 @@ import CssBaseline from '@mui/material/CssBaseline';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useEffect, useMemo } from 'react';
 // Material UI's theme provider
-import { ThemeProvider, createTheme } from '@mui/material';
 import LightLogo from './assets/logo-black-no-back.svg';
 import DarkLogo from './assets/logo-no-back.svg';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 //configure the amplify resources
 Amplify.configure(awsExports);

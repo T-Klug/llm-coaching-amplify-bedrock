@@ -1,13 +1,11 @@
-import {
-  SwipeableDrawer,
-  Typography,
-  List,
-  ListSubheader,
-  ListItem,
-  ListItemText,
-} from '@mui/material';
+import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import { compareDates, iOS } from '../../../helpers/ChatHelpers';
 import { LazyOpenAIChat } from '../../../models';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import Typography from '@mui/material/Typography';
+import List from '@mui/material/List';
+import ListSubheader from '@mui/material/ListSubheader';
 import { DeleteOutlineOutlined } from '@mui/icons-material';
 import { DataStore } from 'aws-amplify';
 

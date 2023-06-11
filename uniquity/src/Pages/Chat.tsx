@@ -3,19 +3,10 @@ import { useEffect, useRef, useState } from 'react';
 import { LazyOpenAIChat, OpenAIChat, OpenAiRoleType } from '../models';
 import DotsTyping from '../components/chat/typing/dotsTyping';
 import {
-  AppBar,
-  Box,
-  TextField,
-  Typography,
-  styled,
-  useMediaQuery,
-} from '@mui/material';
-import {
   ArrowCircleUp,
   MicOffOutlined,
   MicOutlined,
 } from '@mui/icons-material';
-const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 import LogoLight from '../assets/logo-black-no-back.svg';
 import LogoDark from '../assets/logo-no-back.svg';
 import SpeechRecognition, {
@@ -24,7 +15,14 @@ import SpeechRecognition, {
 import { submitOpenAI } from '../helpers/ChatHelpers';
 import { HistoryDrawer } from '../components/chat/HistoryDrawer/HistoryDrawer';
 import { SpeedDialU } from '../components/chat/SpeedDialU/SpeedDialU';
+import { styled } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import AppBar from '@mui/material/AppBar';
+import TextField from '@mui/material/TextField';
 
+const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 export default function Chat() {
   // Chat data
   const [data, setData] = useState<LazyOpenAIChat[]>();

@@ -1,18 +1,16 @@
 import { DataStore } from 'aws-amplify';
 import { useEffect, useState } from 'react';
 import { OpenAIModel, LazyOpenAIModel } from '../models';
-import {
-  Alert,
-  Box,
-  Button,
-  Grid,
-  Paper,
-  Snackbar,
-  TextField,
-  Typography,
-} from '@mui/material';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { useNavigate } from 'react-router-dom';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 export default function AdminPromptManager() {
   const { user } = useAuthenticator();
