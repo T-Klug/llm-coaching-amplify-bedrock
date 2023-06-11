@@ -12,12 +12,14 @@ import {
   Typography,
 } from '@mui/material';
 import { useAuthenticator } from '@aws-amplify/ui-react';
+import { useNavigate } from 'react-router-dom';
 
 export default function AdminPromptManager() {
   const { user } = useAuthenticator();
   const [data, setData] = useState<LazyOpenAIModel>();
   const [open, setOpen] = useState(false);
   const [openDS, setOpenDS] = useState(false);
+  const navigate = useNavigate();
   useEffect(() => {
     const sub = DataStore.observeQuery(OpenAIModel).subscribe(({ items }) =>
       setData(items[0])
@@ -152,6 +154,9 @@ export default function AdminPromptManager() {
           }}
         >
           Clear DataStore
+        </Button>
+        <Button variant="contained" onClick={() => navigate('/')}>
+          Back to Chat
         </Button>
         <Button
           variant="contained"

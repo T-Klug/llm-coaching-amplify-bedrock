@@ -25,10 +25,14 @@ import {
   Menu,
   ControlPoint,
   HistoryOutlined,
+  LogoutOutlined,
+  AdminPanelSettingsOutlined,
 } from '@mui/icons-material';
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 import LogoLight from '../assets/logo-black-no-back.svg';
 import LogoDark from '../assets/logo-no-back.svg';
+import { useAuthenticator } from '@aws-amplify/ui-react';
+import { useNavigate } from 'react-router-dom';
 const iOS =
   typeof navigator !== 'undefined' &&
   /iPad|iPhone|iPod/.test(navigator.userAgent);
@@ -41,6 +45,8 @@ export default function Chat() {
   const [chatLoading, setChatLoading] = useState<boolean>(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const { user, signOut } = useAuthenticator();
+  const navigate = useNavigate();
 
   const background = {
     backgroundImage: `url(${prefersDarkMode ? LogoDark : LogoLight})`,
@@ -241,6 +247,21 @@ export default function Chat() {
           icon={<ControlPoint />}
           tooltipTitle="New Chat"
           onClick={() => newChat()}
+        />
+        {user
+          .getSignInUserSession()
+          ?.getAccessToken()
+          .payload['cognito:groups'].includes('Admin') && (
+          <SpeedDialAction
+            icon={<AdminPanelSettingsOutlined />}
+            tooltipTitle="Admin"
+            onClick={() => navigate('/admin')}
+          />
+        )}
+        <SpeedDialAction
+          icon={<LogoutOutlined />}
+          tooltipTitle="Sign Out"
+          onClick={() => signOut()}
         />
       </SpeedDial>
       <Box sx={selectedId ? undefined : background} pt={10}>
