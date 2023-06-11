@@ -29,7 +29,8 @@ import CssBaseline from '@mui/material/CssBaseline';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useEffect, useMemo } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material';
-import Logo from './assets/logo-black-no-back.svg';
+import LightLogo from './assets/logo-black-no-back.svg';
+import DarkLogo from './assets/logo-no-back.svg';
 
 //configure the amplify resources
 Amplify.configure(awsExports);
@@ -66,18 +67,22 @@ function App() {
     InAppMessaging.syncMessages();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const components = {
     Header() {
       const { tokens } = useTheme();
 
       return (
         <View textAlign="center" padding={tokens.space.large}>
-          <Image alt="Uniquity Logo" src={Logo} />
+          <Image
+            alt="Uniquity Logo"
+            src={prefersDarkMode ? DarkLogo : LightLogo}
+          />
         </View>
       );
     },
   };
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const theme = useMemo(
     () =>
       createTheme({
