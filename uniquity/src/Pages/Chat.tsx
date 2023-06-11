@@ -75,6 +75,20 @@ export default function Chat() {
     });
   };
 
+  const shouldDisplayChatGroup = (
+    data: LazyOpenAIChat[] | undefined,
+    groupName: string
+  ): boolean => {
+    const list = data?.map(d => BuildListItem(d, groupName));
+    if (list?.length === 1 && list[0] !== undefined) {
+      return true;
+    }
+    if (list?.every((val, _i, arr) => val === arr[0])) {
+      return false;
+    }
+    return true;
+  };
+
   const newChat = () => setSelectedId(undefined);
 
   const sendChat = async () => {
@@ -180,30 +194,22 @@ export default function Chat() {
         <Typography textAlign="center" variant="h5">
           Previous Coaching Conversations
         </Typography>
-        {!data
-          ?.map(d => BuildListItem(d, 'Today'))
-          .every((val, _i, arr) => val === arr[0]) && (
+        {shouldDisplayChatGroup(data, 'Today') && (
           <List subheader={<ListSubheader>Today</ListSubheader>}>
             {data?.map(d => BuildListItem(d, 'Today'))}
           </List>
         )}
-        {!data
-          ?.map(d => BuildListItem(d, 'Yesterday'))
-          .every((val, _i, arr) => val === arr[0]) && (
+        {shouldDisplayChatGroup(data, 'Yesterday') && (
           <List subheader={<ListSubheader>Yesterday</ListSubheader>}>
             {data?.map(d => BuildListItem(d, 'Yesterday'))}
           </List>
         )}
-        {!data
-          ?.map(d => BuildListItem(d, 'This Week'))
-          .every((val, _i, arr) => val === arr[0]) && (
+        {shouldDisplayChatGroup(data, 'This week') && (
           <List subheader={<ListSubheader>This Week</ListSubheader>}>
-            {data?.map(d => BuildListItem(d, 'This Week'))}
+            {data?.map(d => BuildListItem(d, 'This week'))}
           </List>
         )}
-        {!data
-          ?.map(d => BuildListItem(d, 'Other'))
-          .every((val, _i, arr) => val === arr[0]) && (
+        {shouldDisplayChatGroup(data, 'Other') && (
           <List subheader={<ListSubheader>This Month</ListSubheader>}>
             {data?.map(d => BuildListItem(d, 'Other'))}
           </List>
