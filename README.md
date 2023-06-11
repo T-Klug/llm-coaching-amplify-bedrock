@@ -28,7 +28,6 @@ Download the git repository, then in the root folder you will configure amplify.
 Once you have done that you will need to configure the aws amplify cli
 
 ```
-amplify configure
 amplify pull
 ```
 
@@ -39,13 +38,14 @@ To work on the frontend you will want to have an expo account and the expo app t
 Change to the uniquity folder
 
 ```
+cd uniquity
 npm install
 ```
 
 ## Run the application
 
 ```
-npm run start
+npm run dev
 ```
 
 ## Build for Delivery
@@ -57,3 +57,18 @@ npm run build
 ## CI-CD
 
 Edit the `amplify.yml`
+
+## Backend
+
+The Amplify folder `backend` itself has numerous folders
+
+- analytics - this houses all the amazon pinpoint setup
+- api - this houses both the App Sync Graphql Schema - we have overriden it to do some of our more unique use cases
+- auth - this is the Cognito setup and functions
+- function - this is the lambda functions, some are hooked up as graphql resolvers, others are storage triggers etc
+- storage - this is the setup for our buckets available for use in the Amplify Storage
+- types - this is type information for typescript
+
+Amplify documentation is your best bet to utilize any of the backend parts. Updates are simply `amplify update api` for instance.
+
+Adding functions can be as sipmle as `amplify add function`

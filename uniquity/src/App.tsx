@@ -21,14 +21,22 @@ import {
   Theme,
   defaultTheme,
 } from '@aws-amplify/ui-react';
+// Amplify and Pinpoint Messaging
 import { withInAppMessaging } from '@aws-amplify/ui-react-notifications';
+// React Router
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+// Root Render - Outlet is here
 import Root from './layout/Root';
-import Chat from './Pages/Chat';
-import AdminPromptManager from './Pages/AdminPromptManager';
+// Main Page
+import Chat from './pages/Chat';
+// Admin Page
+import AdminPromptManager from './pages/AdminPromptManager';
+// Recommended CSS BASELINE provided by material ui
 import CssBaseline from '@mui/material/CssBaseline';
+// Hook to check for Dark mode
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useEffect, useMemo } from 'react';
+// Material UI's theme provider
 import { ThemeProvider, createTheme } from '@mui/material';
 import LightLogo from './assets/logo-black-no-back.svg';
 import DarkLogo from './assets/logo-no-back.svg';
@@ -36,6 +44,7 @@ import DarkLogo from './assets/logo-no-back.svg';
 //configure the amplify resources
 Amplify.configure(awsExports);
 
+// Change the Amplify Auth TOTP language
 I18n.putVocabulariesForLanguage('en', {
   Loading: 'QR code would show here',
   Code: '2FA Code',
@@ -44,6 +53,7 @@ I18n.putVocabulariesForLanguage('en', {
   'Back to Sign In': 'Back to Login',
 });
 
+// Create the router - Root renders the children inside of it
 const router = createBrowserRouter([
   {
     path: '/',
@@ -70,6 +80,8 @@ function App() {
   }, []);
 
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+
+  // Customization of Auth Header
   const components = {
     Header() {
       const { tokens } = useTheme();
@@ -84,6 +96,8 @@ function App() {
       );
     },
   };
+
+  // Theme for Material UI
   const theme = useMemo(
     () =>
       createTheme({
@@ -93,6 +107,8 @@ function App() {
       }),
     [prefersDarkMode]
   );
+
+  // Amplify Theme
   const amplifyTheme: Theme = {
     name: 'my-theme',
     overrides: [defaultDarkModeOverride],

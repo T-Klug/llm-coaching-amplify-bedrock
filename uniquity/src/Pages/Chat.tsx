@@ -1,8 +1,5 @@
-import { API, DataStore } from 'aws-amplify';
-import { GraphQLQuery } from '@aws-amplify/api';
+import { DataStore } from 'aws-amplify';
 import { useEffect, useRef, useState } from 'react';
-import { CreateOpenAIChatFuncMutation } from '../graphql/API';
-import { createOpenAIChatFunc } from '../graphql/mutations';
 import { LazyOpenAIChat, OpenAIChat, OpenAiRoleType } from '../models';
 import DotsTyping from '../components/typing/dotsTyping';
 import {
@@ -39,25 +36,34 @@ import { useNavigate } from 'react-router-dom';
 import SpeechRecognition, {
   useSpeechRecognition,
 } from 'react-speech-recognition';
-const iOS =
-  typeof navigator !== 'undefined' &&
-  /iPad|iPhone|iPod/.test(navigator.userAgent);
+import { iOS, submitOpenAI, compareDates } from '../helpers/ChatHelpers';
 
 export default function Chat() {
+  // Chat data
   const [data, setData] = useState<LazyOpenAIChat[]>();
+  // Selected Chat ID
   const [selectedId, setSelectedId] = useState<string | undefined>();
+  // Speed Dial visibility
   const [overlayVisible, setOverlayVisible] = useState<boolean>(false);
+  // Controlled input for chat
   const [chat, setChat] = useState<string>('');
+  // Controls chat loading
   const [chatLoading, setChatLoading] = useState<boolean>(false);
+  // Scroll Ref for pushing chat up
   const scrollRef = useRef<HTMLDivElement>(null);
+  // Check if dark or light mode
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  // Auth Context
   const { user, signOut } = useAuthenticator();
+  // Navigation Context
   const navigate = useNavigate();
+  // State for if the microphone is listening
   const [listening, setListening] = useState<boolean>(false);
-
+  // Speech recognition
   const { transcript, resetTranscript, browserSupportsSpeechRecognition } =
     useSpeechRecognition();
 
+  // Background object for Box in middle of screen
   const background = {
     backgroundImage: `url(${prefersDarkMode ? LogoDark : LogoLight})`,
     backgroundRepeat: 'no-repeat',
@@ -65,16 +71,17 @@ export default function Chat() {
     backgroundSize: 'contain',
     height: 500,
   };
-
+  // If they are creating transcripts with the microphone set the chat input to it
   useEffect(() => {
     setChat(transcript);
   }, [transcript]);
+  // Scroll page down as new chats come in
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [data]);
-
+  // Websocket for the chats
   useEffect(() => {
     const sub = DataStore.observeQuery(OpenAIChat).subscribe(({ items }) =>
       setData(items)
@@ -82,18 +89,7 @@ export default function Chat() {
     return () => sub.unsubscribe();
   }, [selectedId]);
 
-  const submitOpenAI = async (response: OpenAIChat) => {
-    const saveModel = OpenAIChat.copyOf(response, draft => draft);
-    const functionInput = {
-      id: saveModel.id,
-      messages: saveModel.messages,
-    };
-    await API.graphql<GraphQLQuery<CreateOpenAIChatFuncMutation>>({
-      query: createOpenAIChatFunc,
-      variables: { input: functionInput },
-    });
-  };
-
+  // Helper method to decide if we should display the history buckets
   const shouldDisplayChatGroup = (
     data: LazyOpenAIChat[] | undefined,
     groupName: string
@@ -108,8 +104,10 @@ export default function Chat() {
     return true;
   };
 
+  // New Chat Method
   const newChat = () => setSelectedId(undefined);
 
+  // Send Chat Method
   const sendChat = async () => {
     if (listening) {
       await SpeechRecognition.stopListening();
@@ -140,39 +138,14 @@ export default function Chat() {
     setChatLoading(false);
   };
 
-  function compareDates(date: Date) {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const yesterday = new Date(today);
-    yesterday.setDate(today.getDate() - 1);
-
-    const weekAgo = new Date(today);
-    weekAgo.setDate(today.getDate() - 7);
-
-    const monthAgo = new Date(today);
-    monthAgo.setMonth(today.getMonth() - 1);
-
-    date = new Date(date);
-    date.setHours(0, 0, 0, 0);
-
-    if (+date === +today) {
-      return 'Today';
-    } else if (+date === +yesterday) {
-      return 'Yesterday';
-    } else if (+date > +weekAgo && +date < +yesterday) {
-      return 'This week';
-    } else {
-      return 'Other';
-    }
-  }
-
+  // Delete Chat Method
   function deleteChat(aiChat: LazyOpenAIChat) {
     if (aiChat && aiChat.id !== selectedId) {
       DataStore.delete(aiChat);
     }
   }
 
+  // History Builder Method
   const BuildListItem = (aiChat: LazyOpenAIChat, listName: string) => {
     const date = new Date(aiChat.createdAt!);
     if (compareDates(date) === listName) {

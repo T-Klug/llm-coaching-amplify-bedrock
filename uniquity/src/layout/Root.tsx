@@ -8,6 +8,8 @@ import { useAuthenticator } from '@aws-amplify/ui-react';
 export default function Root() {
   const { user } = useAuthenticator();
   const { InAppMessaging } = Notifications;
+
+  // Setup the identify User for in app messaging at root and send a root loaded event to analytics
   useEffect(() => {
     const setupMessaging = async () => {
       await InAppMessaging.identifyUser(user.getUsername(), {
@@ -22,6 +24,7 @@ export default function Root() {
     setupMessaging();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return (
     <Container>
       <Outlet />
