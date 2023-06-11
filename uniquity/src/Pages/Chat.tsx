@@ -27,19 +27,11 @@ import {
   HistoryOutlined,
 } from '@mui/icons-material';
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
-import Logo from '../assets/logo-black-no-back.svg';
-
+import LogoLight from '../assets/logo-black-no-back.svg';
+import LogoDark from '../assets/logo-no-back.svg';
 const iOS =
   typeof navigator !== 'undefined' &&
   /iPad|iPhone|iPod/.test(navigator.userAgent);
-
-const background = {
-  backgroundImage: `url(${Logo})`,
-  backgroundRepeat: 'no-repeat',
-  backgroundPosition: 'center center',
-  backgroundSize: 'contain',
-  height: 500,
-};
 
 export default function Chat() {
   const [data, setData] = useState<LazyOpenAIChat[]>();
@@ -50,6 +42,13 @@ export default function Chat() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
+  const background = {
+    backgroundImage: `url(${prefersDarkMode ? LogoDark : LogoLight})`,
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center center',
+    backgroundSize: 'contain',
+    height: 500,
+  };
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollIntoView({ behavior: 'smooth' });
