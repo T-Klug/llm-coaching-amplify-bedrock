@@ -1,4 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
+import 'regenerator-runtime/runtime';
 import { Amplify, I18n, Notifications } from 'aws-amplify';
 import awsExports from '../aws-exports';
 

@@ -28,12 +28,17 @@ import {
   LogoutOutlined,
   AdminPanelSettingsOutlined,
   DeleteOutlineOutlined,
+  MicOffOutlined,
+  MicOutlined,
 } from '@mui/icons-material';
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 import LogoLight from '../assets/logo-black-no-back.svg';
 import LogoDark from '../assets/logo-no-back.svg';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { useNavigate } from 'react-router-dom';
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from 'react-speech-recognition';
 const iOS =
   typeof navigator !== 'undefined' &&
   /iPad|iPhone|iPod/.test(navigator.userAgent);
@@ -49,6 +54,13 @@ export default function Chat() {
   const { user, signOut } = useAuthenticator();
   const navigate = useNavigate();
 
+  const {
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition,
+  } = useSpeechRecognition();
+
   const background = {
     backgroundImage: `url(${prefersDarkMode ? LogoDark : LogoLight})`,
     backgroundRepeat: 'no-repeat',
@@ -56,6 +68,10 @@ export default function Chat() {
     backgroundSize: 'contain',
     height: 500,
   };
+
+  useEffect(() => {
+    setChat(transcript);
+  }, [transcript]);
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -104,6 +120,7 @@ export default function Chat() {
         new OpenAIChat({ messages: [{ role: 'USER', content: chat }] })
       );
       setChat('');
+      resetTranscript();
     } else if (chat && selectedId) {
       const model = data?.find(d => d.id === selectedId);
       const saveModel = OpenAIChat.copyOf(model!, draft => {
@@ -112,6 +129,7 @@ export default function Chat() {
       response = await DataStore.save(saveModel);
       console.log(response);
       setChat('');
+      resetTranscript();
     } else {
       return;
     }
@@ -354,12 +372,25 @@ export default function Chat() {
             endAdornment: chatLoading ? (
               <DotsTyping />
             ) : (
-              <ArrowCircleUp
-                fontSize="large"
-                color="primary"
-                sx={{ cursor: 'pointer' }}
-                onClick={() => sendChat()}
-              />
+              <>
+                <ArrowCircleUp
+                  fontSize="large"
+                  color="primary"
+                  sx={{ cursor: 'pointer' }}
+                  onClick={() => sendChat()}
+                />
+                {browserSupportsSpeechRecognition && listening ? (
+                  <MicOutlined
+                    sx={{ cursor: 'pointer' }}
+                    onClick={() => SpeechRecognition.stopListening()}
+                  />
+                ) : (
+                  <MicOffOutlined
+                    sx={{ cursor: 'pointer' }}
+                    onClick={() => SpeechRecognition.startListening()}
+                  />
+                )}
+              </>
             ),
           }}
           sx={{ width: '80%', padding: 1 }}
