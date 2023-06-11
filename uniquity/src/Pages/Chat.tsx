@@ -27,6 +27,7 @@ import {
   HistoryOutlined,
   LogoutOutlined,
   AdminPanelSettingsOutlined,
+  DeleteOutlineOutlined,
 } from '@mui/icons-material';
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 import LogoLight from '../assets/logo-black-no-back.svg';
@@ -147,13 +148,18 @@ export default function Chat() {
     }
   }
 
+  function deleteChat(aiChat: LazyOpenAIChat) {
+    if (aiChat && aiChat.id !== selectedId) {
+      DataStore.delete(aiChat);
+    }
+  }
+
   const BuildListItem = (aiChat: LazyOpenAIChat, listName: string) => {
     const date = new Date(aiChat.createdAt!);
     if (compareDates(date) === listName) {
       return (
         <ListItem
           sx={{
-            cursor: 'pointer',
             border: 1,
             borderRadius: 4,
             width: '90%',
@@ -162,22 +168,22 @@ export default function Chat() {
           }}
           dense
           key={aiChat.id}
-          onClick={() => {
-            setSelectedId(aiChat.id);
-            setOverlayVisible(false);
-          }}
           secondaryAction={
-            aiChat &&
-            new Date(aiChat.createdAt!).toLocaleDateString(undefined, {
-              weekday: 'long',
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-            })
+            aiChat && (
+              <DeleteOutlineOutlined
+                sx={{ cursor: 'pointer' }}
+                onClick={() => deleteChat(aiChat)}
+              />
+            )
           }
         >
           <ListItemText
-            primaryTypographyProps={{ noWrap: true, width: '50%' }}
+            sx={{ cursor: 'pointer' }}
+            onClick={() => {
+              setSelectedId(aiChat.id);
+              setOverlayVisible(false);
+            }}
+            primaryTypographyProps={{ noWrap: true, width: '85%' }}
             primary={aiChat && aiChat?.messages && aiChat.messages[0]?.content}
           />
         </ListItem>

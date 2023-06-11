@@ -1,21 +1,22 @@
 {
-    "appName": "amplifypoc",
-    "roleName": "pinpointLambdaRole094673e6",
-    "cloudformationPolicyName": "cloudformationPolicy094673e6",
-    "cloudWatchPolicyName": "cloudWatchPolicy094673e6",
-    "pinpointPolicyName": "pinpointPolicy094673e6",
-    "authPolicyName": "pinpoint_amplify_094673e6",
-    "unauthPolicyName": "pinpoint_amplify_094673e6",
-    "authRoleName": {
-        "Ref": "AuthRoleName"
-    },
-    "unauthRoleName": {
-        "Ref": "UnauthRoleName"
-    },
-    "authRoleArn": {
-        "Fn::GetAtt": [
-            "AuthRole",
-            "Arn"
-        ]
-    }
+  "appName": "amplifypoc",
+  "roleName": "pinpointLambdaRole094673e6",
+  "cloudformationPolicyName": "cloudformationPolicy094673e6",
+  "cloudWatchPolicyName": "cloudWatchPolicy094673e6",
+  "pinpointPolicyName": "pinpointPolicy094673e6",
+  "authPolicyName": "pinpoint_amplify_094673e6",
+  "unauthPolicyName": "pinpoint_amplify_094673e6",
+  "authRoleName": {
+    "Ref": "AuthRoleName"
+  },
+  "unauthRoleName": {
+    "Ref": "UnauthRoleName"
+  },
+  "authRoleArn": {
+    "Fn::GetAtt": [
+      "AuthRole",
+      "Arn"
+    ]
+  },
+  "pinpointInAppMessagingPolicyName": "pinpointInAppMessagingPolicyName094673e6"
 }

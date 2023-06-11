@@ -29,7 +29,19 @@
         "createOpenAIChat": {}
       },
       "analytics": {
-        "amplifypoc": {}
+        "amplifypoc": {},
+        "Pinpoint": {
+          "Name": "amplifypoc-staging",
+          "Id": "90797490ef5a47d79865eb44f745ff4c",
+          "Region": "us-east-1"
+        }
+      },
+      "notifications": {
+        "Pinpoint": {
+          "Name": "amplifypoc-staging",
+          "Id": "90797490ef5a47d79865eb44f745ff4c",
+          "Region": "us-east-1"
+        }
       }
     }
   }
