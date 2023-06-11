@@ -1,17 +1,10 @@
 import { DataStore } from 'aws-amplify';
 import { useEffect, useRef, useState } from 'react';
 import { LazyOpenAIChat, OpenAIChat, OpenAiRoleType } from '../models';
-import DotsTyping from '../components/typing/dotsTyping';
+import DotsTyping from '../components/chat/typing/dotsTyping';
 import {
   AppBar,
   Box,
-  List,
-  ListItem,
-  ListItemText,
-  ListSubheader,
-  SpeedDial,
-  SpeedDialAction,
-  SwipeableDrawer,
   TextField,
   Typography,
   styled,
@@ -19,24 +12,18 @@ import {
 } from '@mui/material';
 import {
   ArrowCircleUp,
-  Menu,
-  ControlPoint,
-  HistoryOutlined,
-  LogoutOutlined,
-  AdminPanelSettingsOutlined,
-  DeleteOutlineOutlined,
   MicOffOutlined,
   MicOutlined,
 } from '@mui/icons-material';
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 import LogoLight from '../assets/logo-black-no-back.svg';
 import LogoDark from '../assets/logo-no-back.svg';
-import { useAuthenticator } from '@aws-amplify/ui-react';
-import { useNavigate } from 'react-router-dom';
 import SpeechRecognition, {
   useSpeechRecognition,
 } from 'react-speech-recognition';
-import { iOS, submitOpenAI, compareDates } from '../helpers/ChatHelpers';
+import { submitOpenAI } from '../helpers/ChatHelpers';
+import { HistoryDrawer } from '../components/chat/HistoryDrawer/HistoryDrawer';
+import { SpeedDialU } from '../components/chat/SpeedDialU/SpeedDialU';
 
 export default function Chat() {
   // Chat data
@@ -53,10 +40,6 @@ export default function Chat() {
   const scrollRef = useRef<HTMLDivElement>(null);
   // Check if dark or light mode
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-  // Auth Context
-  const { user, signOut } = useAuthenticator();
-  // Navigation Context
-  const navigate = useNavigate();
   // State for if the microphone is listening
   const [listening, setListening] = useState<boolean>(false);
   // Speech recognition
@@ -89,24 +72,6 @@ export default function Chat() {
     return () => sub.unsubscribe();
   }, [selectedId]);
 
-  // Helper method to decide if we should display the history buckets
-  const shouldDisplayChatGroup = (
-    data: LazyOpenAIChat[] | undefined,
-    groupName: string
-  ): boolean => {
-    const list = data?.map(d => BuildListItem(d, groupName));
-    if (list?.length === 1 && list[0] !== undefined) {
-      return true;
-    }
-    if (list?.every((val, _i, arr) => val === arr[0])) {
-      return false;
-    }
-    return true;
-  };
-
-  // New Chat Method
-  const newChat = () => setSelectedId(undefined);
-
   // Send Chat Method
   const sendChat = async () => {
     if (listening) {
@@ -138,154 +103,19 @@ export default function Chat() {
     setChatLoading(false);
   };
 
-  // Delete Chat Method
-  function deleteChat(aiChat: LazyOpenAIChat) {
-    if (aiChat && aiChat.id !== selectedId) {
-      DataStore.delete(aiChat);
-    }
-  }
-
-  // History Builder Method
-  const BuildListItem = (aiChat: LazyOpenAIChat, listName: string) => {
-    const date = new Date(aiChat.createdAt!);
-    if (compareDates(date) === listName) {
-      return (
-        <ListItem
-          sx={{
-            border: 1,
-            borderRadius: 4,
-            width: '90%',
-            m: 'auto',
-            marginBottom: 1,
-          }}
-          dense
-          key={aiChat.id}
-          secondaryAction={
-            aiChat && (
-              <DeleteOutlineOutlined
-                sx={{ cursor: 'pointer' }}
-                onClick={() => deleteChat(aiChat)}
-              />
-            )
-          }
-        >
-          <ListItemText
-            sx={{ cursor: 'pointer' }}
-            onClick={() => {
-              setSelectedId(aiChat.id);
-              setOverlayVisible(false);
-            }}
-            primaryTypographyProps={{ noWrap: true, width: '85%' }}
-            primary={aiChat && aiChat?.messages && aiChat.messages[0]?.content}
-          />
-        </ListItem>
-      );
-    }
-  };
-
   return (
     <>
-      <SwipeableDrawer
-        PaperProps={{ sx: { maxHeight: 500 } }}
-        disableBackdropTransition={!iOS}
-        disableDiscovery={iOS}
-        anchor="bottom"
-        open={overlayVisible}
-        onClose={() => setOverlayVisible(false)}
-        onOpen={() => setOverlayVisible(true)}
-      >
-        <Typography textAlign="center" variant="h5">
-          Previous Coaching Conversations
-        </Typography>
-        {shouldDisplayChatGroup(data, 'Today') && (
-          <List
-            subheader={
-              <ListSubheader sx={{ backgroundColor: 'unset' }}>
-                Today
-              </ListSubheader>
-            }
-          >
-            {data?.map(d => BuildListItem(d, 'Today'))}
-          </List>
-        )}
-        {shouldDisplayChatGroup(data, 'Yesterday') && (
-          <List
-            subheader={
-              <ListSubheader sx={{ backgroundColor: 'unset' }}>
-                Yesterday
-              </ListSubheader>
-            }
-          >
-            {data?.map(d => BuildListItem(d, 'Yesterday'))}
-          </List>
-        )}
-        {shouldDisplayChatGroup(data, 'This week') && (
-          <List
-            subheader={
-              <ListSubheader sx={{ backgroundColor: 'unset' }}>
-                This Week
-              </ListSubheader>
-            }
-          >
-            {data?.map(d => BuildListItem(d, 'This week'))}
-          </List>
-        )}
-        {shouldDisplayChatGroup(data, 'Other') && (
-          <List
-            subheader={
-              <ListSubheader sx={{ backgroundColor: 'unset' }}>
-                This Month+
-              </ListSubheader>
-            }
-          >
-            {data?.map(d => BuildListItem(d, 'Other'))}
-          </List>
-        )}
-      </SwipeableDrawer>
-      <SpeedDial
-        ariaLabel="SpeedDial"
-        sx={{
-          position: 'fixed',
-          top: 5,
-          right: 16,
-        }}
-        icon={<Menu />}
-        direction="down"
-        FabProps={{
-          sx: {
-            bgcolor: 'darkgray',
-            '&:hover': {
-              bgcolor: 'darkgray',
-            },
-          },
-        }}
-      >
-        <SpeedDialAction
-          icon={<HistoryOutlined />}
-          tooltipTitle="History"
-          onClick={() => setOverlayVisible(true)}
-        />
-        <SpeedDialAction
-          icon={<ControlPoint />}
-          tooltipTitle="New Chat"
-          onClick={() => newChat()}
-        />
-        {user
-          .getSignInUserSession()
-          ?.getAccessToken()
-          .payload['cognito:groups'].includes('Admin') && (
-          <SpeedDialAction
-            icon={<AdminPanelSettingsOutlined />}
-            tooltipTitle="Admin"
-            onClick={() => navigate('/admin')}
-          />
-        )}
-        <SpeedDialAction
-          icon={<LogoutOutlined />}
-          tooltipTitle="Sign Out"
-          onClick={() => signOut()}
-        />
-      </SpeedDial>
+      <HistoryDrawer
+        data={data}
+        selectedId={selectedId}
+        setSelectedId={setSelectedId}
+        overlayVisible={overlayVisible}
+        setOverlayVisible={setOverlayVisible}
+      />
+      <SpeedDialU
+        setSelectedId={setSelectedId}
+        setOverlayVisible={setOverlayVisible}
+      />
       <Box sx={selectedId ? undefined : background} pt={10}>
         {data &&
           data?.length > 0 &&
