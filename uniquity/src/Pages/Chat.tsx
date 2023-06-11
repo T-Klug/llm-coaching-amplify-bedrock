@@ -53,13 +53,10 @@ export default function Chat() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const { user, signOut } = useAuthenticator();
   const navigate = useNavigate();
+  const [listening, setListening] = useState<boolean>(false);
 
-  const {
-    transcript,
-    listening,
-    resetTranscript,
-    browserSupportsSpeechRecognition,
-  } = useSpeechRecognition();
+  const { transcript, resetTranscript, browserSupportsSpeechRecognition } =
+    useSpeechRecognition();
 
   const background = {
     backgroundImage: `url(${prefersDarkMode ? LogoDark : LogoLight})`,
@@ -114,6 +111,11 @@ export default function Chat() {
   const newChat = () => setSelectedId(undefined);
 
   const sendChat = async () => {
+    if (listening) {
+      await SpeechRecognition.stopListening();
+      setListening(false);
+    }
+
     let response;
     if (chat && !selectedId) {
       response = await DataStore.save(
@@ -127,7 +129,6 @@ export default function Chat() {
         draft.messages?.push({ role: 'USER', content: chat });
       });
       response = await DataStore.save(saveModel);
-      console.log(response);
       setChat('');
       resetTranscript();
     } else {
@@ -382,12 +383,20 @@ export default function Chat() {
                 {browserSupportsSpeechRecognition && listening ? (
                   <MicOutlined
                     sx={{ cursor: 'pointer' }}
-                    onClick={() => SpeechRecognition.stopListening()}
+                    onClick={async () => {
+                      await SpeechRecognition.stopListening();
+                      setListening(false);
+                    }}
                   />
                 ) : (
                   <MicOffOutlined
                     sx={{ cursor: 'pointer' }}
-                    onClick={() => SpeechRecognition.startListening()}
+                    onClick={async () => {
+                      await SpeechRecognition.startListening({
+                        continuous: true,
+                      });
+                      setListening(true);
+                    }}
                   />
                 )}
               </>
