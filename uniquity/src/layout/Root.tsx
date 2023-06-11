@@ -2,24 +2,26 @@ import { Outlet } from 'react-router-dom';
 
 import { Container } from '@mui/material';
 import { useEffect } from 'react';
-import { Analytics } from 'aws-amplify';
+import { Analytics, Notifications } from 'aws-amplify';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 
 export default function Root() {
   const { user } = useAuthenticator();
+  const { InAppMessaging } = Notifications;
   useEffect(() => {
-    Analytics.updateEndpoint({
-      address: user.attributes?.email, // The unique identifier for the recipient. For example, an address could be a device token, email address, or mobile phone number.
-      attributes: {
-        group: user.getSignInUserSession()?.getAccessToken().payload[
-          'cognito:groups'
-        ],
-      },
-      optOut: 'NONE',
-      // Customized userId
-      userId: user.attributes?.email,
-    });
-  }, [user]);
+    const setupMessaging = async () => {
+      await InAppMessaging.identifyUser(user.getUsername(), {
+        attributes: {
+          group: user.getSignInUserSession()?.getAccessToken().payload[
+            'cognito:groups'
+          ],
+        },
+      });
+      await Analytics.record({ name: 'Root-Loaded' });
+    };
+    setupMessaging();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <Container>
       <Outlet />
