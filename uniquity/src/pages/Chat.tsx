@@ -12,7 +12,7 @@ import LogoDark from '../assets/logo-no-back.svg';
 import SpeechRecognition, {
   useSpeechRecognition,
 } from 'react-speech-recognition';
-import { submitOpenAI } from '../helpers/ChatHelpers';
+import { helperPrompts, submitOpenAI } from '../helpers/ChatHelpers';
 import { HistoryDrawer } from '../components/chat/HistoryDrawer/HistoryDrawer';
 import { SpeedDialU } from '../components/chat/SpeedDialU/SpeedDialU';
 import { styled } from '@mui/material/styles';
@@ -21,9 +21,17 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import AppBar from '@mui/material/AppBar';
 import TextField from '@mui/material/TextField';
+import Divider from '@mui/material/Divider';
+import { Button } from '@mui/material';
+import { useDraggable } from 'react-use-draggable-scroll';
+import './Chat.css';
 
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 export default function Chat() {
+  const ref = useRef<HTMLDivElement>(null);
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //@ts-ignore
+  const { events } = useDraggable(ref);
   // Chat data
   const [data, setData] = useState<LazyOpenAIChat[]>();
   // Selected Chat ID
@@ -44,14 +52,6 @@ export default function Chat() {
   const { transcript, resetTranscript, browserSupportsSpeechRecognition } =
     useSpeechRecognition();
 
-  // Background object for Box in middle of screen
-  const background = {
-    backgroundImage: `url(${prefersDarkMode ? LogoDark : LogoLight})`,
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center center',
-    backgroundSize: 'contain',
-    height: 500,
-  };
   // If they are creating transcripts with the microphone set the chat input to it
   useEffect(() => {
     setChat(transcript);
@@ -72,23 +72,30 @@ export default function Chat() {
   }, []);
 
   // Send Chat Method
-  const sendChat = async () => {
+  const sendChat = async (chatFromPrompt?: string | undefined) => {
     if (listening) {
       await SpeechRecognition.stopListening();
       setListening(false);
     }
 
     let response;
-    if (chat && !selectedId) {
+    if ((chat || chatFromPrompt) && !selectedId) {
       response = await DataStore.save(
-        new OpenAIChat({ messages: [{ role: 'USER', content: chat }] })
+        new OpenAIChat({
+          messages: [
+            { role: 'USER', content: chatFromPrompt ? chatFromPrompt : chat },
+          ],
+        })
       );
       setChat('');
       resetTranscript();
-    } else if (chat && selectedId) {
+    } else if ((chat || chatFromPrompt) && selectedId) {
       const model = data?.find(d => d.id === selectedId);
       const saveModel = OpenAIChat.copyOf(model!, draft => {
-        draft.messages?.push({ role: 'USER', content: chat });
+        draft.messages?.push({
+          role: 'USER',
+          content: chatFromPrompt ? chatFromPrompt : chat,
+        });
       });
       response = await DataStore.save(saveModel);
       setChat('');
@@ -115,7 +122,56 @@ export default function Chat() {
         setSelectedId={setSelectedId}
         setOverlayVisible={setOverlayVisible}
       />
-      <Box sx={selectedId ? undefined : background} pt={10}>
+      <Box pt={10}>
+        <div
+          style={{ width: '100%', display: 'flex', justifyContent: 'center' }}
+        >
+          <img
+            style={{ maxWidth: 300 }}
+            src={prefersDarkMode ? LogoDark : LogoLight}
+          />
+        </div>
+        <Divider sx={{ mt: 2, mb: 2 }} />
+        <div
+          style={{
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+            flexDirection: 'column',
+            textAlign: 'center',
+          }}
+        >
+          <Typography variant="h4">Welcome to Uniquity</Typography>
+          <br></br>
+          <Typography>
+            Unlock your full potential at work with our AI coach
+          </Typography>
+          <div
+            ref={ref}
+            {...events}
+            className="keep-scrolling"
+            style={{
+              paddingTop: 20,
+              paddingBottom: 20,
+              overflow: 'auto',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {helperPrompts.map(b => (
+              <Button
+                key={b}
+                onClick={async () => {
+                  sendChat(b);
+                }}
+                sx={{ mr: 2, borderRadius: 8 }}
+                variant="outlined"
+              >
+                {b}
+              </Button>
+            ))}
+          </div>
+        </div>
+        <Divider sx={{ mt: 2, mb: 2 }} />
         {data &&
           data?.length > 0 &&
           data.find(s => s.id === selectedId) &&

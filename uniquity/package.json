@@ -23,6 +23,7 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.11.2",
     "react-speech-recognition": "^3.10.0",
+    "react-use-draggable-scroll": "^0.4.7",
     "regenerator-runtime": "^0.13.11"
   },
   "devDependencies": {
