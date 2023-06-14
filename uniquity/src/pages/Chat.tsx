@@ -64,11 +64,12 @@ export default function Chat() {
   }, [data]);
   // Websocket for the chats
   useEffect(() => {
-    const sub = DataStore.observeQuery(OpenAIChat).subscribe(({ items }) =>
-      setData(items)
-    );
+    const sub = DataStore.observeQuery(OpenAIChat).subscribe(({ items }) => {
+      setData(items);
+      if (items && items.length >= 1) setSelectedId(items[items.length - 1].id);
+    });
     return () => sub.unsubscribe();
-  }, [selectedId]);
+  }, []);
 
   // Send Chat Method
   const sendChat = async () => {

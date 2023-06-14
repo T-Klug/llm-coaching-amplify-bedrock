@@ -101,7 +101,7 @@ export function HistoryDrawer(props: HistoryDrawerPropsType) {
             </ListSubheader>
           }
         >
-          {data?.map(d => BuildListItem(d, 'Today'))}
+          {data?.map(d => BuildListItem(d, 'Today')).reverse()}
         </List>
       )}
       {shouldDisplayChatGroup(data, 'Yesterday') && (
@@ -112,7 +112,7 @@ export function HistoryDrawer(props: HistoryDrawerPropsType) {
             </ListSubheader>
           }
         >
-          {data?.map(d => BuildListItem(d, 'Yesterday'))}
+          {data?.map(d => BuildListItem(d, 'Yesterday')).reverse()}
         </List>
       )}
       {shouldDisplayChatGroup(data, 'This week') && (
@@ -123,7 +123,7 @@ export function HistoryDrawer(props: HistoryDrawerPropsType) {
             </ListSubheader>
           }
         >
-          {data?.map(d => BuildListItem(d, 'This week'))}
+          {data?.map(d => BuildListItem(d, 'This week')).reverse()}
         </List>
       )}
       {shouldDisplayChatGroup(data, 'Other') && (
@@ -134,7 +134,7 @@ export function HistoryDrawer(props: HistoryDrawerPropsType) {
             </ListSubheader>
           }
         >
-          {data?.map(d => BuildListItem(d, 'Other'))}
+          {data?.map(d => BuildListItem(d, 'Other')).reverse()}
         </List>
       )}
     </SwipeableDrawer>

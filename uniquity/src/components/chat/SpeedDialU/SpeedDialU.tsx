@@ -43,14 +43,14 @@ export function SpeedDialU(props: SpeedDialUType) {
       }}
     >
       <SpeedDialAction
-        icon={<HistoryOutlined />}
-        tooltipTitle="History"
-        onClick={() => setOverlayVisible(true)}
-      />
-      <SpeedDialAction
         icon={<ControlPoint />}
         tooltipTitle="New Chat"
         onClick={() => newChat()}
+      />
+      <SpeedDialAction
+        icon={<HistoryOutlined />}
+        tooltipTitle="History"
+        onClick={() => setOverlayVisible(true)}
       />
       {user
         .getSignInUserSession()
