@@ -190,6 +190,13 @@
       ]
     }
   },
+  "predictions": {
+    "InterpretUniquity": {
+      "interpretType": "interpretText",
+      "providerPlugin": "awscloudformation",
+      "service": "Comprehend"
+    }
+  },
   "storage": {
     "resumestorage": {
       "dependsOn": [

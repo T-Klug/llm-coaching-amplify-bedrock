@@ -188,13 +188,9 @@ export const handler = async (event) => {
     return "400 bad argument";
   }
 
-  // chat with openai (Change system to user because gpt3.5turbo is ignoring SYSTEM)
+  // chat with openai
   const messages = chatModel.messages.map((m) => {
-    if (m.role === "SYSTEM") {
-      return { role: "user", content: m.content };
-    } else {
-      return { role: m.role.toLowerCase(), content: m.content };
-    }
+    return { role: m.role.toLowerCase(), content: m.content };
   });
   // Call Open AI
   try {

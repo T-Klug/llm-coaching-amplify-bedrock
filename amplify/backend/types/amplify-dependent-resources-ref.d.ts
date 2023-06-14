@@ -39,6 +39,12 @@ export type AmplifyDependentResourcesAttributes = {
       "Region": "string"
     }
   },
+  "predictions": {
+    "InterpretUniquity": {
+      "region": "string",
+      "type": "string"
+    }
+  },
   "storage": {
     "resumestorage": {
       "BucketName": "string",
