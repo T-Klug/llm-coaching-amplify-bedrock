@@ -34,6 +34,20 @@ const listOpenAIModels = /* GraphQL */ `
   }
 `;
 
+const listUserSpecificPrompts = /* GraphQL */ `
+  query ListUserSpecificPrompts($filter: ModelUserSpecificPromptFilterInput) {
+    listUserSpecificPrompts(filter: $filter) {
+      items {
+        id
+        userId
+        prompt
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+
 // Update Model
 const updateOpenAIChat = /* GraphQL */ `
   mutation UpdateOpenAIChat(
@@ -56,6 +70,55 @@ const updateOpenAIChat = /* GraphQL */ `
     }
   }
 `;
+
+// Helper function to get a user specific promopt representation
+const getUserSpecificPrompt = async (userId) => {
+  const endpoint = new URL(GRAPHQL_ENDPOINT);
+  const variables = {
+    filter: {
+      userId: { eq: userId },
+    },
+  };
+
+  const signer = new SignatureV4({
+    credentials: defaultProvider(),
+    region: AWS_REGION,
+    service: "appsync",
+    sha256: Sha256,
+  });
+
+  const requestToBeSigned = new HttpRequest({
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      host: endpoint.host,
+    },
+    hostname: endpoint.host,
+    body: JSON.stringify({ query: listUserSpecificPrompts, variables }),
+    path: endpoint.pathname,
+  });
+
+  const signed = await signer.sign(requestToBeSigned);
+  const request = new Request(endpoint, signed);
+  let response;
+  let body;
+  try {
+    console.log("GETTING USER SPECIFIC PROMPTS");
+    response = await fetch(request);
+    body = await response.json();
+    if (body.errors)
+      console.log(
+        `ERROR GETTING USER SPECIFIC PROMPTS: ${JSON.stringify(body.errors)}`
+      );
+  } catch (error) {
+    console.log(
+      `ERROR GETTING USER SPECIFIC PROMPTS: ${JSON.stringify(error.message)}`
+    );
+  }
+  console.log("User Prompts", body.data.listUserSpecificPrompts);
+  return body.data.listUserSpecificPrompts;
+};
+
 // Helper function to get Admin Settings
 const getOpenAIModel = async () => {
   const endpoint = new URL(GRAPHQL_ENDPOINT);
@@ -97,19 +160,24 @@ const getOpenAIModel = async () => {
 };
 
 // Helper function to update the Model
-const updateChatModel = async (chatModel, newContent) => {
+const updateChatModel = async (chatModel, newContent, messagesSent) => {
   const endpoint = new URL(GRAPHQL_ENDPOINT);
   console.log(newContent);
   let messages = [];
-  if (chatModel.messages.length <= 2) {
-    messages.push(chatModel.messages[0]);
+  const sysMessages = chatModel.messages.filter((m) => m.role === "SYSTEM");
+  if (sysMessages && sysMessages.length <= 0) {
+    messagesSent
+      .filter((s) => s.role === "system")
+      .map((r) =>
+        messages.push({ role: r.role.toUpperCase(), content: r.content })
+      );
   }
   const newConvo = {
     role: newContent.role.toUpperCase(),
     content: newContent.content,
   };
   messages.push(newConvo);
-
+  console.log("Updating with these messages", messages);
   const variables = {
     input: {
       id: chatModel.id,
@@ -177,13 +245,6 @@ export const handler = async (event) => {
 
   if (event.arguments?.input?.id) {
     chatModel = event.arguments.input;
-    // New convo we need to inject the prompt
-    if (chatModel.messages.length <= 1) {
-      chatModel.messages.unshift({
-        role: "SYSTEM",
-        content: openAIModel.prompt,
-      });
-    }
   } else {
     return "400 bad argument";
   }
@@ -192,6 +253,27 @@ export const handler = async (event) => {
   const messages = chatModel.messages.map((m) => {
     return { role: m.role.toLowerCase(), content: m.content };
   });
+  //Get User Specific Prompts
+  if (chatModel.messages.length <= 1) {
+    // New convo we need to inject the prompt
+    const userSpecificPrompts = await getUserSpecificPrompt(
+      event.identity.claims.username
+    );
+    if (
+      userSpecificPrompts &&
+      userSpecificPrompts.items &&
+      userSpecificPrompts.items.length >= 1
+    ) {
+      userSpecificPrompts.items.map((u) =>
+        messages.unshift({ role: "system", content: u.prompt })
+      );
+    }
+    messages.unshift({
+      role: "system",
+      content: openAIModel.prompt,
+    });
+  }
+  console.log("Messages sent to ChatGPT", messages);
   // Call Open AI
   try {
     console.log("Calling ChatGPT");
@@ -206,7 +288,11 @@ export const handler = async (event) => {
     });
 
     //Update the chat model with the chat response
-    chatModel = await updateChatModel(chatModel, res.data.choices[0].message);
+    chatModel = await updateChatModel(
+      chatModel,
+      res.data.choices[0].message,
+      messages
+    );
   } catch (error) {
     if (error.response) {
       console.error(
