@@ -9,6 +9,7 @@ export const getOpenAIChat = /* GraphQL */ `
       messages {
         role
         content
+        __typename
       }
       user
       owner
@@ -17,6 +18,7 @@ export const getOpenAIChat = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -32,6 +34,7 @@ export const listOpenAIChats = /* GraphQL */ `
         messages {
           role
           content
+          __typename
         }
         user
         owner
@@ -40,9 +43,11 @@ export const listOpenAIChats = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        __typename
       }
       nextToken
       startedAt
+      __typename
     }
   }
 `;
@@ -64,6 +69,7 @@ export const syncOpenAIChats = /* GraphQL */ `
         messages {
           role
           content
+          __typename
         }
         user
         owner
@@ -72,9 +78,11 @@ export const syncOpenAIChats = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        __typename
       }
       nextToken
       startedAt
+      __typename
     }
   }
 `;
@@ -94,6 +102,7 @@ export const getOpenAIModel = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -118,9 +127,11 @@ export const listOpenAIModels = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        __typename
       }
       nextToken
       startedAt
+      __typename
     }
   }
 `;
@@ -151,9 +162,156 @@ export const syncOpenAIModels = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        __typename
       }
       nextToken
       startedAt
+      __typename
+    }
+  }
+`;
+export const getFeedback = /* GraphQL */ `
+  query GetFeedback($id: ID!) {
+    getFeedback(id: $id) {
+      id
+      like
+      comment
+      owner
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const listFeedbacks = /* GraphQL */ `
+  query ListFeedbacks(
+    $filter: ModelFeedbackFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listFeedbacks(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        like
+        comment
+        owner
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const syncFeedbacks = /* GraphQL */ `
+  query SyncFeedbacks(
+    $filter: ModelFeedbackFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncFeedbacks(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        like
+        comment
+        owner
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const getUserSpecificPrompt = /* GraphQL */ `
+  query GetUserSpecificPrompt($id: ID!) {
+    getUserSpecificPrompt(id: $id) {
+      id
+      userId
+      prompt
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const listUserSpecificPrompts = /* GraphQL */ `
+  query ListUserSpecificPrompts(
+    $filter: ModelUserSpecificPromptFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUserSpecificPrompts(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        userId
+        prompt
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const syncUserSpecificPrompts = /* GraphQL */ `
+  query SyncUserSpecificPrompts(
+    $filter: ModelUserSpecificPromptFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncUserSpecificPrompts(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        userId
+        prompt
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
     }
   }
 `;

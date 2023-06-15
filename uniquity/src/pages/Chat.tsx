@@ -1,11 +1,18 @@
 import { DataStore } from 'aws-amplify';
 import { useEffect, useRef, useState } from 'react';
-import { LazyOpenAIChat, OpenAIChat, OpenAiRoleType } from '../models';
+import {
+  Feedback,
+  LazyOpenAIChat,
+  OpenAIChat,
+  OpenAiRoleType,
+} from '../models';
 import DotsTyping from '../components/chat/typing/dotsTyping';
 import {
   ArrowCircleUp,
   MicOffOutlined,
   MicOutlined,
+  ThumbDownRounded,
+  ThumbUpRounded,
 } from '@mui/icons-material';
 import LogoLight from '../assets/logo-black-no-back.svg';
 import LogoDark from '../assets/logo-no-back.svg';
@@ -22,9 +29,11 @@ import Typography from '@mui/material/Typography';
 import AppBar from '@mui/material/AppBar';
 import TextField from '@mui/material/TextField';
 import Divider from '@mui/material/Divider';
-import { Button } from '@mui/material';
 import { useDraggable } from 'react-use-draggable-scroll';
 import './Chat.css';
+import Button from '@mui/material/Button';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 export default function Chat() {
@@ -51,6 +60,8 @@ export default function Chat() {
   // Speech recognition
   const { transcript, resetTranscript, browserSupportsSpeechRecognition } =
     useSpeechRecognition();
+  // Snack Bar
+  const [snackbarOpen, setSnackBarOpen] = useState<boolean>(false);
 
   // If they are creating transcripts with the microphone set the chat input to it
   useEffect(() => {
@@ -70,6 +81,17 @@ export default function Chat() {
     });
     return () => sub.unsubscribe();
   }, []);
+
+  //Send Feedback
+  const sendFeedback = async (
+    like: boolean,
+    content: string | null | undefined
+  ) => {
+    if (content) {
+      DataStore.save(new Feedback({ like, comment: content }));
+      setSnackBarOpen(true);
+    }
+  };
 
   // Send Chat Method
   const sendChat = async (chatFromPrompt?: string | undefined) => {
@@ -111,6 +133,20 @@ export default function Chat() {
 
   return (
     <>
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={() => setSnackBarOpen(false)}
+      >
+        <Alert
+          onClose={() => setSnackBarOpen(false)}
+          severity="success"
+          sx={{ width: '100%' }}
+        >
+          Thanks for the feedback!
+        </Alert>
+      </Snackbar>
       <HistoryDrawer
         data={data}
         selectedId={selectedId}
@@ -180,34 +216,53 @@ export default function Chat() {
             .messages?.map((m, index) => {
               if (m?.role === OpenAiRoleType.ASSISTANT)
                 return (
-                  <Box
-                    key={m.role + index}
-                    sx={{
-                      backgroundColor: '#dedede',
-                      borderRadius: 6,
-                      marginTop: 2,
-                      p: 2,
-                      marginLeft: '5%',
-                      maxWidth: '70%',
-                      width: 'fit-content',
-                      whiteSpace: 'pre-wrap',
-                    }}
-                  >
-                    <Typography
-                      variant="body2"
-                      style={{
-                        color: '#000',
-                        justifyContent: 'center',
+                  <div key={m.role + index}>
+                    <Box
+                      key={m.role + index}
+                      sx={{
+                        backgroundColor: '#dedede',
+                        borderRadius: 6,
+                        marginTop: 2,
+                        p: 2,
+                        marginLeft: '5%',
+                        maxWidth: '70%',
+                        width: 'fit-content',
+                        whiteSpace: 'pre-wrap',
                       }}
                     >
-                      {m.content}
-                    </Typography>
-                  </Box>
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          justifyContent: 'flex-end',
+                        }}
+                      >
+                        <ThumbUpRounded
+                          sx={{ cursor: 'pointer' }}
+                          color="primary"
+                          onClick={() => sendFeedback(true, m.content)}
+                        />
+                        <ThumbDownRounded
+                          sx={{ cursor: 'pointer' }}
+                          color="primary"
+                          onClick={() => sendFeedback(false, m.content)}
+                        />
+                      </div>
+                      <Typography
+                        variant="body2"
+                        style={{
+                          color: '#000',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        {m.content}
+                      </Typography>
+                    </Box>
+                  </div>
                 );
               if (m?.role === OpenAiRoleType.USER)
                 return (
                   <Box
-                    key={m.role + index}
                     sx={{
                       backgroundColor: '#0078fe',
                       p: 2,

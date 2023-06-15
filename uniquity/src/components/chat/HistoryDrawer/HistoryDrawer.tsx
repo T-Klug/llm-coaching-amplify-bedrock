@@ -82,7 +82,13 @@ export function HistoryDrawer(props: HistoryDrawerPropsType) {
 
   return (
     <SwipeableDrawer
-      PaperProps={{ sx: { maxHeight: 500 } }}
+      PaperProps={{
+        sx: {
+          maxHeight: 500,
+          borderTopLeftRadius: 15,
+          borderTopRightRadius: 15,
+        },
+      }}
       disableBackdropTransition={!iOS}
       disableDiscovery={iOS}
       anchor="bottom"

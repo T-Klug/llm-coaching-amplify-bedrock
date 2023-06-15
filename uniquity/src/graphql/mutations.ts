@@ -12,6 +12,7 @@ export const createOpenAIChat = /* GraphQL */ `
       messages {
         role
         content
+        __typename
       }
       user
       owner
@@ -20,6 +21,7 @@ export const createOpenAIChat = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -33,6 +35,7 @@ export const updateOpenAIChat = /* GraphQL */ `
       messages {
         role
         content
+        __typename
       }
       user
       owner
@@ -41,6 +44,7 @@ export const updateOpenAIChat = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -54,6 +58,7 @@ export const deleteOpenAIChat = /* GraphQL */ `
       messages {
         role
         content
+        __typename
       }
       user
       owner
@@ -62,6 +67,7 @@ export const deleteOpenAIChat = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -84,6 +90,7 @@ export const createOpenAIModel = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -106,6 +113,7 @@ export const updateOpenAIModel = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -128,6 +136,118 @@ export const deleteOpenAIModel = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const createFeedback = /* GraphQL */ `
+  mutation CreateFeedback(
+    $input: CreateFeedbackInput!
+    $condition: ModelFeedbackConditionInput
+  ) {
+    createFeedback(input: $input, condition: $condition) {
+      id
+      like
+      comment
+      owner
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const updateFeedback = /* GraphQL */ `
+  mutation UpdateFeedback(
+    $input: UpdateFeedbackInput!
+    $condition: ModelFeedbackConditionInput
+  ) {
+    updateFeedback(input: $input, condition: $condition) {
+      id
+      like
+      comment
+      owner
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const deleteFeedback = /* GraphQL */ `
+  mutation DeleteFeedback(
+    $input: DeleteFeedbackInput!
+    $condition: ModelFeedbackConditionInput
+  ) {
+    deleteFeedback(input: $input, condition: $condition) {
+      id
+      like
+      comment
+      owner
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const createUserSpecificPrompt = /* GraphQL */ `
+  mutation CreateUserSpecificPrompt(
+    $input: CreateUserSpecificPromptInput!
+    $condition: ModelUserSpecificPromptConditionInput
+  ) {
+    createUserSpecificPrompt(input: $input, condition: $condition) {
+      id
+      userId
+      prompt
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const updateUserSpecificPrompt = /* GraphQL */ `
+  mutation UpdateUserSpecificPrompt(
+    $input: UpdateUserSpecificPromptInput!
+    $condition: ModelUserSpecificPromptConditionInput
+  ) {
+    updateUserSpecificPrompt(input: $input, condition: $condition) {
+      id
+      userId
+      prompt
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const deleteUserSpecificPrompt = /* GraphQL */ `
+  mutation DeleteUserSpecificPrompt(
+    $input: DeleteUserSpecificPromptInput!
+    $condition: ModelUserSpecificPromptConditionInput
+  ) {
+    deleteUserSpecificPrompt(input: $input, condition: $condition) {
+      id
+      userId
+      prompt
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
     }
   }
 `;
@@ -138,6 +258,7 @@ export const createOpenAIChatFunc = /* GraphQL */ `
       messages {
         role
         content
+        __typename
       }
       user
       owner
@@ -146,6 +267,7 @@ export const createOpenAIChatFunc = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;

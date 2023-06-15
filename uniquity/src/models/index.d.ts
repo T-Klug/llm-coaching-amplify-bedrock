@@ -93,3 +93,65 @@ export declare type OpenAIModel = LazyLoading extends LazyLoadingDisabled ? Eage
 export declare const OpenAIModel: (new (init: ModelInit<OpenAIModel>) => OpenAIModel) & {
   copyOf(source: OpenAIModel, mutator: (draft: MutableModel<OpenAIModel>) => MutableModel<OpenAIModel> | void): OpenAIModel;
 }
+
+type EagerFeedback = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Feedback, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly like?: boolean | null;
+  readonly comment?: string | null;
+  readonly owner?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyFeedback = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Feedback, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly like?: boolean | null;
+  readonly comment?: string | null;
+  readonly owner?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Feedback = LazyLoading extends LazyLoadingDisabled ? EagerFeedback : LazyFeedback
+
+export declare const Feedback: (new (init: ModelInit<Feedback>) => Feedback) & {
+  copyOf(source: Feedback, mutator: (draft: MutableModel<Feedback>) => MutableModel<Feedback> | void): Feedback;
+}
+
+type EagerUserSpecificPrompt = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<UserSpecificPrompt, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly userId?: string | null;
+  readonly prompt?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyUserSpecificPrompt = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<UserSpecificPrompt, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly userId?: string | null;
+  readonly prompt?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type UserSpecificPrompt = LazyLoading extends LazyLoadingDisabled ? EagerUserSpecificPrompt : LazyUserSpecificPrompt
+
+export declare const UserSpecificPrompt: (new (init: ModelInit<UserSpecificPrompt>) => UserSpecificPrompt) & {
+  copyOf(source: UserSpecificPrompt, mutator: (draft: MutableModel<UserSpecificPrompt>) => MutableModel<UserSpecificPrompt> | void): UserSpecificPrompt;
+}

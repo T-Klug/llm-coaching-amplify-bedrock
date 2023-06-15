@@ -186,6 +186,90 @@ export type DeleteOpenAIModelInput = {
   _version?: number | null,
 };
 
+export type CreateFeedbackInput = {
+  id?: string | null,
+  like?: boolean | null,
+  comment?: string | null,
+  owner?: string | null,
+  _version?: number | null,
+};
+
+export type ModelFeedbackConditionInput = {
+  like?: ModelBooleanInput | null,
+  comment?: ModelStringInput | null,
+  owner?: ModelStringInput | null,
+  and?: Array< ModelFeedbackConditionInput | null > | null,
+  or?: Array< ModelFeedbackConditionInput | null > | null,
+  not?: ModelFeedbackConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type Feedback = {
+  __typename: "Feedback",
+  id: string,
+  like?: boolean | null,
+  comment?: string | null,
+  owner?: string | null,
+  createdAt: string,
+  updatedAt: string,
+  _version: number,
+  _deleted?: boolean | null,
+  _lastChangedAt: number,
+};
+
+export type UpdateFeedbackInput = {
+  id: string,
+  like?: boolean | null,
+  comment?: string | null,
+  owner?: string | null,
+  _version?: number | null,
+};
+
+export type DeleteFeedbackInput = {
+  id: string,
+  _version?: number | null,
+};
+
+export type CreateUserSpecificPromptInput = {
+  id?: string | null,
+  userId?: string | null,
+  prompt?: string | null,
+  _version?: number | null,
+};
+
+export type ModelUserSpecificPromptConditionInput = {
+  userId?: ModelStringInput | null,
+  prompt?: ModelStringInput | null,
+  and?: Array< ModelUserSpecificPromptConditionInput | null > | null,
+  or?: Array< ModelUserSpecificPromptConditionInput | null > | null,
+  not?: ModelUserSpecificPromptConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type UserSpecificPrompt = {
+  __typename: "UserSpecificPrompt",
+  id: string,
+  userId?: string | null,
+  prompt?: string | null,
+  createdAt: string,
+  updatedAt: string,
+  _version: number,
+  _deleted?: boolean | null,
+  _lastChangedAt: number,
+};
+
+export type UpdateUserSpecificPromptInput = {
+  id: string,
+  userId?: string | null,
+  prompt?: string | null,
+  _version?: number | null,
+};
+
+export type DeleteUserSpecificPromptInput = {
+  id: string,
+  _version?: number | null,
+};
+
 export type CreateOpenAIChatFuncInput = {
   id?: string | null,
   messages?: Array< MessagesTypeFuncInput | null > | null,
@@ -234,6 +318,41 @@ export type ModelOpenAIModelFilterInput = {
 export type ModelOpenAIModelConnection = {
   __typename: "ModelOpenAIModelConnection",
   items:  Array<OpenAIModel | null >,
+  nextToken?: string | null,
+  startedAt?: number | null,
+};
+
+export type ModelFeedbackFilterInput = {
+  id?: ModelIDInput | null,
+  like?: ModelBooleanInput | null,
+  comment?: ModelStringInput | null,
+  owner?: ModelStringInput | null,
+  and?: Array< ModelFeedbackFilterInput | null > | null,
+  or?: Array< ModelFeedbackFilterInput | null > | null,
+  not?: ModelFeedbackFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type ModelFeedbackConnection = {
+  __typename: "ModelFeedbackConnection",
+  items:  Array<Feedback | null >,
+  nextToken?: string | null,
+  startedAt?: number | null,
+};
+
+export type ModelUserSpecificPromptFilterInput = {
+  id?: ModelIDInput | null,
+  userId?: ModelStringInput | null,
+  prompt?: ModelStringInput | null,
+  and?: Array< ModelUserSpecificPromptFilterInput | null > | null,
+  or?: Array< ModelUserSpecificPromptFilterInput | null > | null,
+  not?: ModelUserSpecificPromptFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type ModelUserSpecificPromptConnection = {
+  __typename: "ModelUserSpecificPromptConnection",
+  items:  Array<UserSpecificPrompt | null >,
   nextToken?: string | null,
   startedAt?: number | null,
 };
@@ -288,6 +407,29 @@ export type ModelSubscriptionStringInput = {
   beginsWith?: string | null,
   in?: Array< string | null > | null,
   notIn?: Array< string | null > | null,
+};
+
+export type ModelSubscriptionFeedbackFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  like?: ModelSubscriptionBooleanInput | null,
+  comment?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionFeedbackFilterInput | null > | null,
+  or?: Array< ModelSubscriptionFeedbackFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type ModelSubscriptionBooleanInput = {
+  ne?: boolean | null,
+  eq?: boolean | null,
+};
+
+export type ModelSubscriptionUserSpecificPromptFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  userId?: ModelSubscriptionStringInput | null,
+  prompt?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionUserSpecificPromptFilterInput | null > | null,
+  or?: Array< ModelSubscriptionUserSpecificPromptFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type CreateOpenAIChatMutationVariables = {
@@ -426,6 +568,123 @@ export type DeleteOpenAIModelMutation = {
     max_tokens: string,
     presence_penalty: string,
     frequency_penalty: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type CreateFeedbackMutationVariables = {
+  input: CreateFeedbackInput,
+  condition?: ModelFeedbackConditionInput | null,
+};
+
+export type CreateFeedbackMutation = {
+  createFeedback?:  {
+    __typename: "Feedback",
+    id: string,
+    like?: boolean | null,
+    comment?: string | null,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type UpdateFeedbackMutationVariables = {
+  input: UpdateFeedbackInput,
+  condition?: ModelFeedbackConditionInput | null,
+};
+
+export type UpdateFeedbackMutation = {
+  updateFeedback?:  {
+    __typename: "Feedback",
+    id: string,
+    like?: boolean | null,
+    comment?: string | null,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type DeleteFeedbackMutationVariables = {
+  input: DeleteFeedbackInput,
+  condition?: ModelFeedbackConditionInput | null,
+};
+
+export type DeleteFeedbackMutation = {
+  deleteFeedback?:  {
+    __typename: "Feedback",
+    id: string,
+    like?: boolean | null,
+    comment?: string | null,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type CreateUserSpecificPromptMutationVariables = {
+  input: CreateUserSpecificPromptInput,
+  condition?: ModelUserSpecificPromptConditionInput | null,
+};
+
+export type CreateUserSpecificPromptMutation = {
+  createUserSpecificPrompt?:  {
+    __typename: "UserSpecificPrompt",
+    id: string,
+    userId?: string | null,
+    prompt?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type UpdateUserSpecificPromptMutationVariables = {
+  input: UpdateUserSpecificPromptInput,
+  condition?: ModelUserSpecificPromptConditionInput | null,
+};
+
+export type UpdateUserSpecificPromptMutation = {
+  updateUserSpecificPrompt?:  {
+    __typename: "UserSpecificPrompt",
+    id: string,
+    userId?: string | null,
+    prompt?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type DeleteUserSpecificPromptMutationVariables = {
+  input: DeleteUserSpecificPromptInput,
+  condition?: ModelUserSpecificPromptConditionInput | null,
+};
+
+export type DeleteUserSpecificPromptMutation = {
+  deleteUserSpecificPrompt?:  {
+    __typename: "UserSpecificPrompt",
+    id: string,
+    userId?: string | null,
+    prompt?: string | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -625,6 +884,147 @@ export type SyncOpenAIModelsQuery = {
   } | null,
 };
 
+export type GetFeedbackQueryVariables = {
+  id: string,
+};
+
+export type GetFeedbackQuery = {
+  getFeedback?:  {
+    __typename: "Feedback",
+    id: string,
+    like?: boolean | null,
+    comment?: string | null,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type ListFeedbacksQueryVariables = {
+  filter?: ModelFeedbackFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListFeedbacksQuery = {
+  listFeedbacks?:  {
+    __typename: "ModelFeedbackConnection",
+    items:  Array< {
+      __typename: "Feedback",
+      id: string,
+      like?: boolean | null,
+      comment?: string | null,
+      owner?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type SyncFeedbacksQueryVariables = {
+  filter?: ModelFeedbackFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncFeedbacksQuery = {
+  syncFeedbacks?:  {
+    __typename: "ModelFeedbackConnection",
+    items:  Array< {
+      __typename: "Feedback",
+      id: string,
+      like?: boolean | null,
+      comment?: string | null,
+      owner?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type GetUserSpecificPromptQueryVariables = {
+  id: string,
+};
+
+export type GetUserSpecificPromptQuery = {
+  getUserSpecificPrompt?:  {
+    __typename: "UserSpecificPrompt",
+    id: string,
+    userId?: string | null,
+    prompt?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type ListUserSpecificPromptsQueryVariables = {
+  filter?: ModelUserSpecificPromptFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListUserSpecificPromptsQuery = {
+  listUserSpecificPrompts?:  {
+    __typename: "ModelUserSpecificPromptConnection",
+    items:  Array< {
+      __typename: "UserSpecificPrompt",
+      id: string,
+      userId?: string | null,
+      prompt?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type SyncUserSpecificPromptsQueryVariables = {
+  filter?: ModelUserSpecificPromptFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncUserSpecificPromptsQuery = {
+  syncUserSpecificPrompts?:  {
+    __typename: "ModelUserSpecificPromptConnection",
+    items:  Array< {
+      __typename: "UserSpecificPrompt",
+      id: string,
+      userId?: string | null,
+      prompt?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
 export type OnCreateOpenAIChatSubscriptionVariables = {
   filter?: ModelSubscriptionOpenAIChatFilterInput | null,
   owner?: string | null,
@@ -758,6 +1158,117 @@ export type OnDeleteOpenAIModelSubscription = {
     max_tokens: string,
     presence_penalty: string,
     frequency_penalty: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnCreateFeedbackSubscriptionVariables = {
+  filter?: ModelSubscriptionFeedbackFilterInput | null,
+};
+
+export type OnCreateFeedbackSubscription = {
+  onCreateFeedback?:  {
+    __typename: "Feedback",
+    id: string,
+    like?: boolean | null,
+    comment?: string | null,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnUpdateFeedbackSubscriptionVariables = {
+  filter?: ModelSubscriptionFeedbackFilterInput | null,
+};
+
+export type OnUpdateFeedbackSubscription = {
+  onUpdateFeedback?:  {
+    __typename: "Feedback",
+    id: string,
+    like?: boolean | null,
+    comment?: string | null,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnDeleteFeedbackSubscriptionVariables = {
+  filter?: ModelSubscriptionFeedbackFilterInput | null,
+};
+
+export type OnDeleteFeedbackSubscription = {
+  onDeleteFeedback?:  {
+    __typename: "Feedback",
+    id: string,
+    like?: boolean | null,
+    comment?: string | null,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnCreateUserSpecificPromptSubscriptionVariables = {
+  filter?: ModelSubscriptionUserSpecificPromptFilterInput | null,
+};
+
+export type OnCreateUserSpecificPromptSubscription = {
+  onCreateUserSpecificPrompt?:  {
+    __typename: "UserSpecificPrompt",
+    id: string,
+    userId?: string | null,
+    prompt?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnUpdateUserSpecificPromptSubscriptionVariables = {
+  filter?: ModelSubscriptionUserSpecificPromptFilterInput | null,
+};
+
+export type OnUpdateUserSpecificPromptSubscription = {
+  onUpdateUserSpecificPrompt?:  {
+    __typename: "UserSpecificPrompt",
+    id: string,
+    userId?: string | null,
+    prompt?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnDeleteUserSpecificPromptSubscriptionVariables = {
+  filter?: ModelSubscriptionUserSpecificPromptFilterInput | null,
+};
+
+export type OnDeleteUserSpecificPromptSubscription = {
+  onDeleteUserSpecificPrompt?:  {
+    __typename: "UserSpecificPrompt",
+    id: string,
+    userId?: string | null,
+    prompt?: string | null,
     createdAt: string,
     updatedAt: string,
     _version: number,

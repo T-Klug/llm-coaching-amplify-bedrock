@@ -12,6 +12,7 @@ export const onCreateOpenAIChat = /* GraphQL */ `
       messages {
         role
         content
+        __typename
       }
       user
       owner
@@ -20,6 +21,7 @@ export const onCreateOpenAIChat = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -33,6 +35,7 @@ export const onUpdateOpenAIChat = /* GraphQL */ `
       messages {
         role
         content
+        __typename
       }
       user
       owner
@@ -41,6 +44,7 @@ export const onUpdateOpenAIChat = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -54,6 +58,7 @@ export const onDeleteOpenAIChat = /* GraphQL */ `
       messages {
         role
         content
+        __typename
       }
       user
       owner
@@ -62,6 +67,7 @@ export const onDeleteOpenAIChat = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -83,6 +89,7 @@ export const onCreateOpenAIModel = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -104,6 +111,7 @@ export const onUpdateOpenAIModel = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -125,6 +133,106 @@ export const onDeleteOpenAIModel = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onCreateFeedback = /* GraphQL */ `
+  subscription OnCreateFeedback($filter: ModelSubscriptionFeedbackFilterInput) {
+    onCreateFeedback(filter: $filter) {
+      id
+      like
+      comment
+      owner
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onUpdateFeedback = /* GraphQL */ `
+  subscription OnUpdateFeedback($filter: ModelSubscriptionFeedbackFilterInput) {
+    onUpdateFeedback(filter: $filter) {
+      id
+      like
+      comment
+      owner
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onDeleteFeedback = /* GraphQL */ `
+  subscription OnDeleteFeedback($filter: ModelSubscriptionFeedbackFilterInput) {
+    onDeleteFeedback(filter: $filter) {
+      id
+      like
+      comment
+      owner
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onCreateUserSpecificPrompt = /* GraphQL */ `
+  subscription OnCreateUserSpecificPrompt(
+    $filter: ModelSubscriptionUserSpecificPromptFilterInput
+  ) {
+    onCreateUserSpecificPrompt(filter: $filter) {
+      id
+      userId
+      prompt
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onUpdateUserSpecificPrompt = /* GraphQL */ `
+  subscription OnUpdateUserSpecificPrompt(
+    $filter: ModelSubscriptionUserSpecificPromptFilterInput
+  ) {
+    onUpdateUserSpecificPrompt(filter: $filter) {
+      id
+      userId
+      prompt
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onDeleteUserSpecificPrompt = /* GraphQL */ `
+  subscription OnDeleteUserSpecificPrompt(
+    $filter: ModelSubscriptionUserSpecificPromptFilterInput
+  ) {
+    onDeleteUserSpecificPrompt(filter: $filter) {
+      id
+      userId
+      prompt
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
     }
   }
 `;

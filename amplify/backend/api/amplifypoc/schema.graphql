@@ -55,3 +55,37 @@ type OpenAIModel
   presence_penalty: String!
   frequency_penalty: String!
 }
+
+type Feedback
+  @model
+  @auth(
+    rules: [
+      {
+        allow: groups
+        groups: ["Admin"]
+        operations: [read, create, update, delete]
+      }
+      { allow: owner, operations: [create] }
+    ]
+  ) {
+  id: ID!
+  like: Boolean
+  comment: String
+  owner: String
+}
+
+type UserSpecificPrompt
+  @model
+  @auth(
+    rules: [
+      {
+        allow: groups
+        groups: ["Admin"]
+        operations: [read, create, update, delete]
+      }
+    ]
+  ) {
+  id: ID!
+  userId: String
+  prompt: String
+}

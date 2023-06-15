@@ -1,6 +1,11 @@
 import { DataStore } from 'aws-amplify';
 import { useEffect, useState } from 'react';
-import { OpenAIModel, LazyOpenAIModel } from '../models';
+import {
+  OpenAIModel,
+  LazyOpenAIModel,
+  Feedback,
+  LazyFeedback,
+} from '../models';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { useNavigate } from 'react-router-dom';
 import Paper from '@mui/material/Paper';
@@ -11,16 +16,26 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import Divider from '@mui/material/Divider';
 
 export default function AdminPromptManager() {
   const { user } = useAuthenticator();
   const [data, setData] = useState<LazyOpenAIModel>();
+  const [feedback, setFeedback] = useState<LazyFeedback[]>();
   const [open, setOpen] = useState(false);
   const [openDS, setOpenDS] = useState(false);
   const navigate = useNavigate();
+
   useEffect(() => {
     const sub = DataStore.observeQuery(OpenAIModel).subscribe(({ items }) =>
       setData(items[0])
+    );
+    return () => sub.unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    const sub = DataStore.observeQuery(Feedback).subscribe(({ items }) =>
+      setFeedback(items)
     );
     return () => sub.unsubscribe();
   }, []);
@@ -167,6 +182,19 @@ export default function AdminPromptManager() {
           Save
         </Button>
       </Box>
+      <Divider sx={{ mt: 1 }} />
+      <Paper>
+        <Typography variant="h5">Feedback</Typography>
+        {feedback?.map(f => (
+          <TextField
+            fullWidth
+            disabled
+            value={`Like: ${f.like === null ? 'N/A' : f.like}, Comment: ${
+              f.comment
+            }`}
+          />
+        ))}
+      </Paper>
       <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         open={open}
