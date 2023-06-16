@@ -30,6 +30,11 @@
         "S3Trigger8f157155": {
           "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
           "s3Key": "amplify-builds/S3Trigger8f157155-682f7353425552586a41-build.zip"
+        },
+        "promptpersonlize": {
+          "secretsPathAmplifyAppId": "d1wywebcdb6lm1",
+          "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
+          "s3Key": "amplify-builds/promptpersonlize-79523965395a54694a64-build.zip"
         }
       },
       "analytics": {

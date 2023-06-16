@@ -12,6 +12,7 @@ import SpeedDialAction from '@mui/material/SpeedDialAction';
 import { useNavigate } from 'react-router-dom';
 import AlertDialogSlide from '../AlertDialogSlideIn/AlertDialogSlideIn';
 import { useState } from 'react';
+import { DataStore } from 'aws-amplify';
 
 type SpeedDialUType = {
   setOverlayVisible: React.Dispatch<React.SetStateAction<boolean>>;
@@ -67,7 +68,7 @@ export function SpeedDialU(props: SpeedDialUType) {
         {user
           .getSignInUserSession()
           ?.getAccessToken()
-          .payload['cognito:groups'].includes('Admin') && (
+          .payload['cognito:groups']?.includes('Admin') && (
           <SpeedDialAction
             icon={<AdminPanelSettingsOutlined />}
             tooltipTitle="Admin"
@@ -77,7 +78,10 @@ export function SpeedDialU(props: SpeedDialUType) {
         <SpeedDialAction
           icon={<LogoutOutlined />}
           tooltipTitle="Sign Out"
-          onClick={() => signOut()}
+          onClick={async () => {
+            signOut();
+            await DataStore.clear();
+          }}
         />
       </SpeedDial>
     </>
