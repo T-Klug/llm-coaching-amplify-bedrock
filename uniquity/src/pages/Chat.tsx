@@ -303,6 +303,7 @@ export default function Chat() {
         <TextField
           fullWidth
           multiline
+          maxRows={5}
           size="small"
           placeholder="Chat"
           InputProps={{

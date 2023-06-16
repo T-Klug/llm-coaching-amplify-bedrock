@@ -29,6 +29,26 @@ const listOpenAIChats = /* GraphQL */ `
   }
 `;
 
+export const listOpenAIChatsUser = /* GraphQL */ `
+  query ListOpenAIChats(
+    $filter: ModelOpenAIChatFilterInput
+    $nextToken: String
+  ) {
+    listOpenAIChats(filter: $filter, nextToken: $nextToken) {
+      items {
+        id
+        messages {
+          role
+          content
+          __typename
+        }
+        owner
+      }
+      nextToken
+    }
+  }
+`;
+
 const getChatOwners = async () => {
   const endpoint = new URL(GRAPHQL_ENDPOINT);
 
@@ -71,6 +91,54 @@ const getChatOwners = async () => {
   return body.data.listOpenAIChats;
 };
 
+const listChatsforOwner = async (ownerId) => {
+  const endpoint = new URL(GRAPHQL_ENDPOINT);
+
+  const variables = {
+    filter: {
+      ownerId: { eq: ownerId },
+    },
+  };
+
+  const signer = new SignatureV4({
+    credentials: defaultProvider(),
+    region: AWS_REGION,
+    service: "appsync",
+    sha256: Sha256,
+  });
+
+  const requestToBeSigned = new HttpRequest({
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      host: endpoint.host,
+    },
+    hostname: endpoint.host,
+    body: JSON.stringify({ query: listOpenAIChatsUser, variables }),
+    path: endpoint.pathname,
+  });
+
+  const signed = await signer.sign(requestToBeSigned);
+  const request = new Request(endpoint, signed);
+  let response;
+  let body;
+  try {
+    console.log("GETTING CHATS FOR USER");
+    response = await fetch(request);
+    body = await response.json();
+    if (body.errors)
+      console.log(
+        `ERROR GETTING CHATS FOR USER: ${JSON.stringify(body.errors)}`
+      );
+  } catch (error) {
+    console.log(
+      `ERROR GETTING CHATS FOR USER: ${JSON.stringify(error.message)}`
+    );
+  }
+  console.log("CHATS FOR USER", body.data.listOpenAIChats);
+  return body.data.listOpenAIChats;
+};
+
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
@@ -86,4 +154,7 @@ export const handler = async (event) => {
   const { Parameter } = await client.send(command);
 
   const listOwners = await getChatOwners();
+  if (listOwners && listOwners.items && listOwners.items.length > 0) {
+    //listOwners.forEach(o => )
+  }
 };
