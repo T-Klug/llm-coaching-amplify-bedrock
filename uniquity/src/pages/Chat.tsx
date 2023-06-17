@@ -263,6 +263,7 @@ export default function Chat() {
               if (m?.role === OpenAiRoleType.USER)
                 return (
                   <Box
+                    key={m.role + index}
                     sx={{
                       backgroundColor: '#0078fe',
                       p: 2,

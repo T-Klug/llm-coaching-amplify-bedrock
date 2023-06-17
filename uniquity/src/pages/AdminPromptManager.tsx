@@ -43,7 +43,7 @@ export default function AdminPromptManager() {
     !user
       .getSignInUserSession()
       ?.getAccessToken()
-      .payload['cognito:groups'].includes('Admin')
+      .payload['cognito:groups']?.includes('Admin')
   )
     return <div />;
 
