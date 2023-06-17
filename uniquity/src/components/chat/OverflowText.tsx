@@ -79,7 +79,7 @@ export default function OverflowText(props: OverflowTextProps) {
           ref={overflowingText}
           variant="body2"
           sx={{
-            maxHeight: 200,
+            maxHeight: 500,
             overflow: 'hidden',
             color: chatPosition === 'right' ? '#FFF' : '#000',
             justifyContent: 'center',
