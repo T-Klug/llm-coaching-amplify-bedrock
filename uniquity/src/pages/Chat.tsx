@@ -34,6 +34,7 @@ import './Chat.css';
 import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import OverflowText from '../components/chat/OverflowText';
 
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 export default function Chat() {
@@ -248,15 +249,7 @@ export default function Chat() {
                           onClick={() => sendFeedback(false, m.content)}
                         />
                       </div>
-                      <Typography
-                        variant="body2"
-                        style={{
-                          color: '#000',
-                          justifyContent: 'center',
-                        }}
-                      >
-                        {m.content}
-                      </Typography>
+                      <OverflowText chatPosition="left" content={m.content} />
                     </Box>
                   </div>
                 );
@@ -276,14 +269,7 @@ export default function Chat() {
                       whiteSpace: 'pre-wrap',
                     }}
                   >
-                    <Typography
-                      variant="body2"
-                      style={{
-                        color: '#fff',
-                      }}
-                    >
-                      {m.content}
-                    </Typography>
+                    <OverflowText chatPosition="right" content={m.content} />
                   </Box>
                 );
             })}
