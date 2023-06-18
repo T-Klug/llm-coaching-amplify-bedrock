@@ -5,10 +5,10 @@ import { createOpenAIChatFunc } from '../graphql/mutations';
 import { GraphQLQuery } from '@aws-amplify/api';
 
 export const helperPrompts = [
-  'Can you help me with prioritization?',
-  'What are some goals I can set for myself?',
-  'How can I communicate effectively to my team?',
-  'I am burned out - What can I do?',
+  'I need help setting development goals.',
+  'I feel overwhelmed and need help prioritizing my time.',
+  'My team is burned out. What should  I do?',
+  'I am not good at delegating work. How can I change?',
 ];
 
 export const iOS =
