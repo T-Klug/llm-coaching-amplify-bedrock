@@ -178,10 +178,10 @@ export default function Chat() {
             textAlign: 'center',
           }}
         >
-          <Typography variant="h4">Welcome to Uniquity</Typography>
-          <br></br>
           <Typography>
-            Unlock your full potential at work with our AI coach
+            <b>
+              <i>Unlock your full potential at work with our AI coach</i>
+            </b>
           </Typography>
           <div
             ref={ref}
