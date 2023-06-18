@@ -7,7 +7,7 @@ import { GraphQLQuery } from '@aws-amplify/api';
 export const helperPrompts = [
   'I need help setting development goals.',
   'I feel overwhelmed and need help prioritizing my time.',
-  'My team is burned out. What should  I do?',
+  'My team is burned out. What should I do?',
   'I am not good at delegating work. How can I change?',
 ];
 
