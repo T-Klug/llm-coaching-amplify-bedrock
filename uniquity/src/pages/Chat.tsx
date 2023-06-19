@@ -79,7 +79,8 @@ export default function Chat() {
   useEffect(() => {
     const sub = DataStore.observeQuery(OpenAIChat).subscribe(({ items }) => {
       setData(items);
-      if (items && items.length >= 1) setSelectedId(items[items.length - 1].id);
+      // Land in a new chat remove this comment to go back to the last chat
+      //if (items && items.length >= 1) setSelectedId(items[items.length - 1].id);
     });
     return () => sub.unsubscribe();
   }, []);

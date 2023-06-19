@@ -43,6 +43,7 @@ const listOpenAIChatsUser = /* GraphQL */ `
           __typename
         }
         owner
+        updatedAt
       }
       nextToken
     }
@@ -60,6 +61,7 @@ const listUserSpecificPrompts = /* GraphQL */ `
         userId
         prompt
         lastChatId
+        _version
       }
       nextToken
     }
@@ -145,6 +147,7 @@ const updateUserSpecificPromptModel = async (
   ownerId
 ) => {
   const endpoint = new URL(GRAPHQL_ENDPOINT);
+  console.log("LastChatId sent to update", lastChatId);
   const variables = {
     input: {
       lastChatId: lastChatId,
@@ -155,9 +158,10 @@ const updateUserSpecificPromptModel = async (
   let query = createUserSpecificPrompt;
   if (userPrompt) {
     variables.input.id = userPrompt.id;
+    variables.input._version = userPrompt._version;
     query = updateUserSpecificPrompt;
   }
-
+  console.log(variables);
   const signer = new SignatureV4({
     credentials: defaultProvider(),
     region: AWS_REGION,
@@ -196,15 +200,15 @@ const updateUserSpecificPromptModel = async (
 const createOpenAIPrompt = async (ownerId, openAIclient, userPrompt) => {
   const ownerChats = await listChatsforOwner(ownerId);
   if (userPrompt) {
-    if (
-      userPrompt.lastChatId === ownerChats.items[ownerChats.items.length - 1].id
-    ) {
+    console.log("UserPromptID: ", userPrompt.lastChatId);
+    console.log("OwnerChatsID 0: ", ownerChats[0].id);
+    if (userPrompt.lastChatId === ownerChats[0].id) {
       console.log("NO NEW CHATS WE NEED TO END HERE");
       return;
     }
   }
 
-  const messages = ownerChats.items
+  const messages = ownerChats
     .map((c) =>
       c.messages.map((m) => {
         if (m.role === "USER") {
@@ -229,7 +233,7 @@ const createOpenAIPrompt = async (ownerId, openAIclient, userPrompt) => {
     console.log("New User Prompt", res.data.choices[0].message);
     await updateUserSpecificPromptModel(
       userPrompt,
-      ownerChats.items[ownerChats.items.length - 1].id,
+      ownerChats[0].id,
       res.data.choices[0].message,
       ownerId
     );
@@ -340,8 +344,11 @@ const listChatsforOwner = async (ownerId) => {
       `ERROR GETTING CHATS FOR USER: ${JSON.stringify(error.message)}`
     );
   }
-  console.log("CHATS FOR USER", body.data.listOpenAIChats);
-  return body.data.listOpenAIChats;
+  const sorted = body.data.listOpenAIChats.items.sort(function (a, b) {
+    return new Date(b.updatedAt) - new Date(a.updatedAt);
+  });
+  console.log("Chats for user", sorted);
+  return sorted;
 };
 
 /**
