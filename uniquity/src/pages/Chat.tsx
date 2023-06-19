@@ -52,8 +52,6 @@ export default function Chat() {
   const [chat, setChat] = useState<string>('');
   // Controls chat loading
   const [chatLoading, setChatLoading] = useState<boolean>(false);
-  // // Scroll Ref for pushing chat up
-  // const scrollRef = useRef<HTMLDivElement>(null);
   // Check if dark or light mode
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   // State for if the microphone is listening
@@ -213,7 +211,8 @@ export default function Chat() {
         </div>
         <Divider sx={{ mt: 2, mb: 2 }} />
 
-        {data && data?.length > 0 &&
+        {data &&
+          data?.length > 0 &&
           data.find(s => s.id === selectedId) &&
           data
             .find(x => x.id === selectedId)!
@@ -285,8 +284,6 @@ export default function Chat() {
                   </div>
                 );
             })}
-
-        {/* <div ref={scrollRef} /> */}
       </Box>
       <Offset sx={{ marginBottom: 3 }} />
 
