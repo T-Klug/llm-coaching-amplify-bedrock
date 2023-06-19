@@ -1,5 +1,5 @@
 import { DataStore } from 'aws-amplify';
-import { createRef, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   Feedback,
   LazyOpenAIChat,
@@ -52,8 +52,8 @@ export default function Chat() {
   const [chat, setChat] = useState<string>('');
   // Controls chat loading
   const [chatLoading, setChatLoading] = useState<boolean>(false);
-  // Scroll Ref for pushing chat up
-  const scrollRef = useRef<HTMLDivElement>(null);
+  // // Scroll Ref for pushing chat up
+  // const scrollRef = useRef<HTMLDivElement>(null);
   // Check if dark or light mode
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   // State for if the microphone is listening
@@ -69,34 +69,13 @@ export default function Chat() {
     setChat(transcript);
   }, [transcript]);
 
-  // Initialize a state variable for the message refs
-  const [messageRefs, setMessageRefs] = useState<
-    React.RefObject<HTMLDivElement>[]
-  >([]);
+  const lastMessageRef = useRef<HTMLDivElement | null>(null);
 
-  // When the data changes, create new refs and save them in state
   useEffect(() => {
-    setMessageRefs(refs => {
-      const chatObject = data?.find(x => x.id === selectedId);
-      const messagesLength = chatObject ? chatObject.messages?.length : 0;
-
-      return Array(messagesLength)
-        .fill(null)
-        .map((_, i) => refs[i] || createRef());
-    });
-  }, [data, selectedId]);
-
-  // Scroll to the last message when the refs change
-  useEffect(() => {
-    if (messageRefs.length === 0) {
-      return;
+    if (lastMessageRef.current) {
+      lastMessageRef.current.scrollIntoView({ behavior: 'smooth' });
     }
-    const lastMessageRef = messageRefs[messageRefs.length - 1];
-    lastMessageRef.current?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
-    });
-  }, [messageRefs]);
+  }, [data]);
 
   // Websocket for the chats
   useEffect(() => {
@@ -234,56 +213,61 @@ export default function Chat() {
         </div>
         <Divider sx={{ mt: 2, mb: 2 }} />
 
-        {data?.length &&
-          (() => {
-            const chatObj = data.find(s => s.id === selectedId);
-            if (chatObj && chatObj.messages) {
-              return chatObj.messages.map((m, index) => {
-                const messageRef = messageRefs[index];
+        {data && data?.length > 0 &&
+          data.find(s => s.id === selectedId) &&
+          data
+            .find(x => x.id === selectedId)!
+            .messages?.map((m, index, array) => {
+              const isLastMessage = index === array.length - 1;
 
-                if (m?.role === OpenAiRoleType.ASSISTANT)
-                  return (
-                    <div key={m.role + index} ref={messageRef}>
-                      <Box
-                        sx={{
-                          backgroundColor: '#dedede',
-                          borderRadius: 6,
-                          marginTop: 2,
-                          p: 2,
-                          marginLeft: '5%',
-                          maxWidth: '70%',
-                          width: 'fit-content',
-                          whiteSpace: 'pre-wrap',
+              if (m?.role === OpenAiRoleType.ASSISTANT)
+                return (
+                  <div
+                    key={m.role + index}
+                    ref={isLastMessage ? lastMessageRef : null}
+                  >
+                    <Box
+                      sx={{
+                        backgroundColor: '#dedede',
+                        borderRadius: 6,
+                        marginTop: 2,
+                        p: 2,
+                        marginLeft: '5%',
+                        maxWidth: '70%',
+                        width: 'fit-content',
+                        whiteSpace: 'pre-wrap',
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          justifyContent: 'flex-end',
                         }}
                       >
-                        <div
-                          style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'flex-end',
-                          }}
-                        >
-                          <ThumbUpRounded
-                            sx={{ cursor: 'pointer' }}
-                            color="primary"
-                            onClick={() => sendFeedback(true, m.content)}
-                          />
-                          <ThumbDownRounded
-                            sx={{ cursor: 'pointer' }}
-                            color="primary"
-                            onClick={() => sendFeedback(false, m.content)}
-                          />
-                        </div>
-                        <OverflowText chatPosition="left" content={m.content} />
-                      </Box>
-                    </div>
-                  );
+                        <ThumbUpRounded
+                          sx={{ cursor: 'pointer' }}
+                          color="primary"
+                          onClick={() => sendFeedback(true, m.content)}
+                        />
+                        <ThumbDownRounded
+                          sx={{ cursor: 'pointer' }}
+                          color="primary"
+                          onClick={() => sendFeedback(false, m.content)}
+                        />
+                      </div>
+                      <OverflowText chatPosition="left" content={m.content} />
+                    </Box>
+                  </div>
+                );
 
-                if (m?.role === OpenAiRoleType.USER)
-                  return (
+              if (m?.role === OpenAiRoleType.USER)
+                return (
+                  <div
+                    key={m.role + index}
+                    ref={isLastMessage ? lastMessageRef : null}
+                  >
                     <Box
-                      key={m.role + index}
-                      ref={messageRef}
                       sx={{
                         backgroundColor: '#0078fe',
                         p: 2,
@@ -298,12 +282,11 @@ export default function Chat() {
                     >
                       <OverflowText chatPosition="right" content={m.content} />
                     </Box>
-                  );
-              });
-            }
-          })()}
+                  </div>
+                );
+            })}
 
-        <div ref={scrollRef} />
+        {/* <div ref={scrollRef} /> */}
       </Box>
       <Offset sx={{ marginBottom: 3 }} />
 
