@@ -52,8 +52,6 @@ export default function Chat() {
   const [chat, setChat] = useState<string>('');
   // Controls chat loading
   const [chatLoading, setChatLoading] = useState<boolean>(false);
-  // Scroll Ref for pushing chat up
-  const scrollRef = useRef<HTMLDivElement>(null);
   // Check if dark or light mode
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   // State for if the microphone is listening
@@ -68,12 +66,15 @@ export default function Chat() {
   useEffect(() => {
     setChat(transcript);
   }, [transcript]);
-  // Scroll page down as new chats come in
+
+  const lastMessageRef = useRef<HTMLDivElement | null>(null);
+
   useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollIntoView({ behavior: 'smooth' });
+    if (lastMessageRef.current) {
+      lastMessageRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [data]);
+
   // Websocket for the chats
   useEffect(() => {
     const sub = DataStore.observeQuery(OpenAIChat).subscribe(({ items }) => {
@@ -209,17 +210,22 @@ export default function Chat() {
           </div>
         </div>
         <Divider sx={{ mt: 2, mb: 2 }} />
+
         {data &&
           data?.length > 0 &&
           data.find(s => s.id === selectedId) &&
           data
             .find(x => x.id === selectedId)!
-            .messages?.map((m, index) => {
+            .messages?.map((m, index, array) => {
+              const isLastMessage = index === array.length - 1;
+
               if (m?.role === OpenAiRoleType.ASSISTANT)
                 return (
-                  <div key={m.role + index}>
+                  <div
+                    key={m.role + index}
+                    ref={isLastMessage ? lastMessageRef : null}
+                  >
                     <Box
-                      key={m.role + index}
                       sx={{
                         backgroundColor: '#dedede',
                         borderRadius: 6,
@@ -253,27 +259,31 @@ export default function Chat() {
                     </Box>
                   </div>
                 );
+
               if (m?.role === OpenAiRoleType.USER)
                 return (
-                  <Box
+                  <div
                     key={m.role + index}
-                    sx={{
-                      backgroundColor: '#0078fe',
-                      p: 2,
-                      marginLeft: 'auto',
-                      borderRadius: 6,
-                      marginTop: 2,
-                      marginRight: '5%',
-                      maxWidth: '70%',
-                      width: 'fit-content',
-                      whiteSpace: 'pre-wrap',
-                    }}
+                    ref={isLastMessage ? lastMessageRef : null}
                   >
-                    <OverflowText chatPosition="right" content={m.content} />
-                  </Box>
+                    <Box
+                      sx={{
+                        backgroundColor: '#0078fe',
+                        p: 2,
+                        marginLeft: 'auto',
+                        borderRadius: 6,
+                        marginTop: 2,
+                        marginRight: '5%',
+                        maxWidth: '70%',
+                        width: 'fit-content',
+                        whiteSpace: 'pre-wrap',
+                      }}
+                    >
+                      <OverflowText chatPosition="right" content={m.content} />
+                    </Box>
+                  </div>
                 );
             })}
-        <div ref={scrollRef} />
       </Box>
       <Offset sx={{ marginBottom: 3 }} />
 
