@@ -248,6 +248,7 @@ export const getUserSpecificPrompt = /* GraphQL */ `
       id
       userId
       prompt
+      lastChatId
       createdAt
       updatedAt
       _version
@@ -272,6 +273,7 @@ export const listUserSpecificPrompts = /* GraphQL */ `
         id
         userId
         prompt
+        lastChatId
         createdAt
         updatedAt
         _version
@@ -302,6 +304,7 @@ export const syncUserSpecificPrompts = /* GraphQL */ `
         id
         userId
         prompt
+        lastChatId
         createdAt
         updatedAt
         _version

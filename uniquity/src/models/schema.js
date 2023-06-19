@@ -296,6 +296,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "lastChatId": {
+                    "name": "lastChatId",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -378,5 +385,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "c744813d3ceaee941de3b3d7748203af"
+    "version": "95fefef812ccb3d93c069baf8b73aa41"
 };

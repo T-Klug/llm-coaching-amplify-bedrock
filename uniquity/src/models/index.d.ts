@@ -134,6 +134,7 @@ type EagerUserSpecificPrompt = {
   readonly id: string;
   readonly userId?: string | null;
   readonly prompt?: string | null;
+  readonly lastChatId?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -146,6 +147,7 @@ type LazyUserSpecificPrompt = {
   readonly id: string;
   readonly userId?: string | null;
   readonly prompt?: string | null;
+  readonly lastChatId?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

@@ -193,6 +193,7 @@ export const onCreateUserSpecificPrompt = /* GraphQL */ `
       id
       userId
       prompt
+      lastChatId
       createdAt
       updatedAt
       _version
@@ -210,6 +211,7 @@ export const onUpdateUserSpecificPrompt = /* GraphQL */ `
       id
       userId
       prompt
+      lastChatId
       createdAt
       updatedAt
       _version
@@ -227,6 +229,7 @@ export const onDeleteUserSpecificPrompt = /* GraphQL */ `
       id
       userId
       prompt
+      lastChatId
       createdAt
       updatedAt
       _version
