@@ -4,7 +4,6 @@
 	ENV
 	REGION
 Amplify Params - DO NOT EDIT */
-
 import { Configuration, OpenAIApi } from "openai";
 import crypto from "@aws-crypto/sha256-js";
 import { defaultProvider } from "@aws-sdk/credential-provider-node";
@@ -12,100 +11,28 @@ import { SignatureV4 } from "@aws-sdk/signature-v4";
 import { HttpRequest } from "@aws-sdk/protocol-http";
 import { default as fetch, Request } from "node-fetch";
 import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
+import {
+  listOpenAIChats,
+  listOpenAIChatsUser,
+  listUserSpecificPrompts,
+  createUserSpecificPrompt,
+  updateUserSpecificPrompt,
+} from "./constants.js";
 
 const GRAPHQL_ENDPOINT = process.env.API_AMPLIFYPOC_GRAPHQLAPIENDPOINTOUTPUT;
 const AWS_REGION = process.env.AWS_REGION || "us-east-1";
 const { Sha256 } = crypto;
 const SECRET_PATH = process.env.openAIKey;
 
-const listOpenAIChats = /* GraphQL */ `
-  query ListOpenAIChats($nextToken: String) {
-    listOpenAIChats(nextToken: $nextToken) {
-      items {
-        owner
-      }
-      nextToken
-    }
-  }
-`;
-
-const listOpenAIChatsUser = /* GraphQL */ `
-  query ListOpenAIChats(
-    $filter: ModelOpenAIChatFilterInput
-    $nextToken: String
-  ) {
-    listOpenAIChats(filter: $filter, nextToken: $nextToken) {
-      items {
-        id
-        messages {
-          role
-          content
-          __typename
-        }
-        owner
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-
-const listUserSpecificPrompts = /* GraphQL */ `
-  query ListUserSpecificPrompts(
-    $filter: ModelUserSpecificPromptFilterInput
-    $nextToken: String
-  ) {
-    listUserSpecificPrompts(filter: $filter, nextToken: $nextToken) {
-      items {
-        id
-        userId
-        prompt
-        lastChatId
-        _version
-      }
-      nextToken
-    }
-  }
-`;
-
-const updateUserSpecificPrompt = /* GraphQL */ `
-  mutation UpdateUserSpecificPrompt($input: UpdateUserSpecificPromptInput!) {
-    updateUserSpecificPrompt(input: $input) {
-      id
-      userId
-      prompt
-      lastChatId
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-const createUserSpecificPrompt = /* GraphQL */ `
-  mutation CreateUserSpecificPrompt($input: CreateUserSpecificPromptInput!) {
-    createUserSpecificPrompt(input: $input) {
-      id
-      userId
-      prompt
-      lastChatId
-    }
-  }
-`;
-
-// Get the distinct list of users with chats
-const getChatOwners = async () => {
+// Call GraphQL
+const callGraphQL = async (query, variables) => {
   const endpoint = new URL(GRAPHQL_ENDPOINT);
-
   const signer = new SignatureV4({
     credentials: defaultProvider(),
     region: AWS_REGION,
     service: "appsync",
     sha256: Sha256,
   });
-
   const requestToBeSigned = new HttpRequest({
     method: "POST",
     headers: {
@@ -113,41 +40,45 @@ const getChatOwners = async () => {
       host: endpoint.host,
     },
     hostname: endpoint.host,
-    body: JSON.stringify({ query: listOpenAIChats }),
+    body: variables
+      ? JSON.stringify({ query, variables })
+      : JSON.stringify({ query }),
     path: endpoint.pathname,
   });
-
   const signed = await signer.sign(requestToBeSigned);
   const request = new Request(endpoint, signed);
   let response;
   let body;
   try {
-    console.log("GETTING OWNERS WITH CHATS");
     response = await fetch(request);
     body = await response.json();
     if (body.errors)
       console.log(
-        `ERROR GETTING OWNERS WITH CHATS: ${JSON.stringify(body.errors)}`
+        `Error getting ${query.toString()}: ${JSON.stringify(body.errors)}`
       );
   } catch (error) {
     console.log(
-      `ERROR GETTING OWNERS WITH CHATS: ${JSON.stringify(error.message)}`
+      `ERROR GETTING ${query.toString()}: ${JSON.stringify(error.message)}`
     );
   }
+  return body;
+};
 
+// Get the distinct list of users with chats
+const getChatOwners = async () => {
+  const body = await callGraphQL(listOpenAIChats, undefined);
   return [
     ...new Set(body.data.listOpenAIChats.items.map((item) => item.owner)),
   ];
 };
 
+// Update the User Specific Model
 const updateUserSpecificPromptModel = async (
   userPrompt,
   lastChatId,
   newPrompt,
   ownerId
 ) => {
-  const endpoint = new URL(GRAPHQL_ENDPOINT);
-  console.log("LastChatId sent to update", lastChatId);
   const variables = {
     input: {
       lastChatId: lastChatId,
@@ -161,38 +92,7 @@ const updateUserSpecificPromptModel = async (
     variables.input._version = userPrompt._version;
     query = updateUserSpecificPrompt;
   }
-  console.log(variables);
-  const signer = new SignatureV4({
-    credentials: defaultProvider(),
-    region: AWS_REGION,
-    service: "appsync",
-    sha256: Sha256,
-  });
-
-  const requestToBeSigned = new HttpRequest({
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      host: endpoint.host,
-    },
-    hostname: endpoint.host,
-    body: JSON.stringify({ query, variables }),
-    path: endpoint.pathname,
-  });
-
-  const signed = await signer.sign(requestToBeSigned);
-  const request = new Request(endpoint, signed);
-  let response;
-  let body;
-  try {
-    console.log("SENDING THE MUTATION UPDATE TO THE USER PROMPT MODEL");
-    response = await fetch(request);
-    body = await response.json();
-    if (body.errors)
-      console.log(`ERROR UPDATING USER PROMPT: ${JSON.stringify(body.errors)}`);
-  } catch (error) {
-    console.log(`ERROR UPDATING USER PROMPT: ${JSON.stringify(error.message)}`);
-  }
+  const body = await callGraphQL(query, variables);
   return body.data.updateUserSpecificPrompt;
 };
 
@@ -200,10 +100,8 @@ const updateUserSpecificPromptModel = async (
 const createOpenAIPrompt = async (ownerId, openAIclient, userPrompt) => {
   const ownerChats = await listChatsforOwner(ownerId);
   if (userPrompt) {
-    console.log("UserPromptID: ", userPrompt.lastChatId);
-    console.log("OwnerChatsID 0: ", ownerChats[0].id);
     if (userPrompt.lastChatId === ownerChats[0].id) {
-      console.log("NO NEW CHATS WE NEED TO END HERE");
+      console.log("NO NEW CHATS");
       return;
     }
   }
@@ -230,7 +128,7 @@ const createOpenAIPrompt = async (ownerId, openAIclient, userPrompt) => {
         },
       ],
     });
-    console.log("New User Prompt", res.data.choices[0].message);
+
     await updateUserSpecificPromptModel(
       userPrompt,
       ownerChats[0].id,
@@ -252,46 +150,13 @@ const createOpenAIPrompt = async (ownerId, openAIclient, userPrompt) => {
 
 // Get the Users Prompt
 const getUserSpecificPrompt = async (ownerId) => {
-  const endpoint = new URL(GRAPHQL_ENDPOINT);
-
   const variables = {
     filter: {
       userId: { eq: ownerId },
     },
   };
 
-  const signer = new SignatureV4({
-    credentials: defaultProvider(),
-    region: AWS_REGION,
-    service: "appsync",
-    sha256: Sha256,
-  });
-
-  const requestToBeSigned = new HttpRequest({
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      host: endpoint.host,
-    },
-    hostname: endpoint.host,
-    body: JSON.stringify({ query: listUserSpecificPrompts, variables }),
-    path: endpoint.pathname,
-  });
-
-  const signed = await signer.sign(requestToBeSigned);
-  const request = new Request(endpoint, signed);
-  let response;
-  let body;
-  try {
-    console.log("GETTING USER PROMPT");
-    response = await fetch(request);
-    body = await response.json();
-    if (body.errors)
-      console.log(`ERROR GETTING USER PROMPT: ${JSON.stringify(body.errors)}`);
-  } catch (error) {
-    console.log(`ERROR GETTING USER PROMPT: ${JSON.stringify(error.message)}`);
-  }
-  console.log("USER PROMPT", body.data.listUserSpecificPrompts);
+  const body = await callGraphQL(listUserSpecificPrompts, variables);
   if (body.data.listUserSpecificPrompts.items.length >= 1) {
     return body.data.listUserSpecificPrompts.items[0];
   } else {
@@ -301,53 +166,16 @@ const getUserSpecificPrompt = async (ownerId) => {
 
 // Helper method for getting the users chats
 const listChatsforOwner = async (ownerId) => {
-  const endpoint = new URL(GRAPHQL_ENDPOINT);
-
   const variables = {
     filter: {
       owner: { eq: `${ownerId}::${ownerId}` },
     },
   };
 
-  const signer = new SignatureV4({
-    credentials: defaultProvider(),
-    region: AWS_REGION,
-    service: "appsync",
-    sha256: Sha256,
-  });
-
-  const requestToBeSigned = new HttpRequest({
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      host: endpoint.host,
-    },
-    hostname: endpoint.host,
-    body: JSON.stringify({ query: listOpenAIChatsUser, variables }),
-    path: endpoint.pathname,
-  });
-
-  const signed = await signer.sign(requestToBeSigned);
-  const request = new Request(endpoint, signed);
-  let response;
-  let body;
-  try {
-    console.log("GETTING CHATS FOR USER");
-    response = await fetch(request);
-    body = await response.json();
-    if (body.errors)
-      console.log(
-        `ERROR GETTING CHATS FOR USER: ${JSON.stringify(body.errors)}`
-      );
-  } catch (error) {
-    console.log(
-      `ERROR GETTING CHATS FOR USER: ${JSON.stringify(error.message)}`
-    );
-  }
+  const body = await callGraphQL(listOpenAIChatsUser, variables);
   const sorted = body.data.listOpenAIChats.items.sort(function (a, b) {
     return new Date(b.updatedAt) - new Date(a.updatedAt);
   });
-  console.log("Chats for user", sorted);
   return sorted;
 };
 
