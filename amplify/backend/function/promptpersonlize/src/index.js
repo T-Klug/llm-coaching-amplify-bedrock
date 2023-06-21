@@ -116,15 +116,17 @@ const createOpenAIPrompt = async (ownerId, openAIclient, userPrompt) => {
     )
     .flat()
     .filter((i) => i);
+  let messageString = messages.join(", ");
+  if (messageString.length > 15000) {
+    messageString = messageString.slice(messageString.length - 15000);
+  }
   try {
     const res = await openAIclient.createChatCompletion({
       model: "gpt-3.5-turbo-0613",
       messages: [
         {
           role: "user",
-          content: `Given the following chat messages summarize the user in the context of career coaching, ${messages.join(
-            ", "
-          )}`,
+          content: `Given the following chat messages summarize the user in the context of career coaching, ${messageString}`,
         },
       ],
     });
