@@ -49,6 +49,7 @@ I18n.putVocabulariesForLanguage('en', {
   Confirm: 'Confirm 2FA',
   'Confirm TOTP Code': 'Confirm 2FA Code',
   'Back to Sign In': 'Back to Login',
+  'Setup TOTP': 'Setup 2FA',
 });
 
 // Create the router - Root renders the children inside of it
