@@ -7,7 +7,7 @@ import { GraphQLQuery } from '@aws-amplify/api';
 export const helperPrompts = [
   'I felt really overwhelmed at work this week.',
   'Help me write a status email to my manager.',
-  'My team is burned out, and I am not sure what to do.',
+  'My team told me they were burned out this week, and I am not sure what to do.',
   'My manager never gives me feedback.',
   'I was in a meeting today and do not feel like people listened to what I had to say.',
 ];
