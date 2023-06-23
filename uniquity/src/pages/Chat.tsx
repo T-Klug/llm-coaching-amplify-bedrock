@@ -19,7 +19,7 @@ import LogoDark from '../assets/logo-no-back.svg';
 import SpeechRecognition, {
   useSpeechRecognition,
 } from 'react-speech-recognition';
-import { helperPrompts, submitOpenAI } from '../helpers/ChatHelpers';
+import { helperPrompts, intros, submitOpenAI } from '../helpers/ChatHelpers';
 import { HistoryDrawer } from '../components/chat/HistoryDrawer/HistoryDrawer';
 import { SpeedDialU } from '../components/chat/SpeedDialU/SpeedDialU';
 import { styled } from '@mui/material/styles';
@@ -61,6 +61,9 @@ export default function Chat() {
     useSpeechRecognition();
   // Snack Bar
   const [snackbarOpen, setSnackBarOpen] = useState<boolean>(false);
+  const [chatIntro, setChatIntro] = useState<string>(
+    intros[Math.floor(Math.random() * intros.length)]
+  );
 
   // If they are creating transcripts with the microphone set the chat input to it
   useEffect(() => {
@@ -160,6 +163,7 @@ export default function Chat() {
       <SpeedDialU
         setSelectedId={setSelectedId}
         setOverlayVisible={setOverlayVisible}
+        setIntroChat={setChatIntro}
       />
       <Box pt={10}>
         <div
@@ -211,7 +215,32 @@ export default function Chat() {
           </div>
         </div>
         <Divider sx={{ mt: 2, mb: 2 }} />
-
+        <div>
+          <Box
+            sx={{
+              backgroundColor: '#dedede',
+              borderRadius: 6,
+              marginTop: 2,
+              p: 2,
+              marginLeft: '5%',
+              maxWidth: '70%',
+              width: 'fit-content',
+              whiteSpace: 'pre-wrap',
+            }}
+          >
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+              }}
+            >
+              <ThumbUpRounded sx={{ cursor: 'pointer' }} color="primary" />
+              <ThumbDownRounded sx={{ cursor: 'pointer' }} color="primary" />
+            </div>
+            <OverflowText chatPosition="left" content={chatIntro} />
+          </Box>
+        </div>
         {data &&
           data?.length > 0 &&
           data.find(s => s.id === selectedId) &&
