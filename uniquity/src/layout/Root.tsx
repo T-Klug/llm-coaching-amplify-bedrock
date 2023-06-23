@@ -12,6 +12,16 @@ export default function Root() {
   // Setup the identify User for in app messaging at root and send a root loaded event to analytics
   useEffect(() => {
     const setupMessaging = async () => {
+      // Update the endpoint to accept email
+      Analytics.updateEndpoint({
+        address: user.attributes?.email,
+        channelType: 'EMAIL',
+        optOut: 'NONE',
+        userId: user.username,
+        userAttributes: {
+          username: [user.username],
+        },
+      });
       await InAppMessaging.identifyUser(user.getUsername(), {
         attributes: {
           group: user.getSignInUserSession()?.getAccessToken().payload[

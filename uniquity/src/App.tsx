@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import 'regenerator-runtime/runtime';
-import { Amplify, I18n, Notifications } from 'aws-amplify';
+import { Amplify, Analytics, I18n, Notifications } from 'aws-amplify';
 import awsExports from '../aws-exports';
 
 // Material UI Font
@@ -41,6 +41,26 @@ import AdminPromptManager from './pages/AdminPromptManager';
 
 //configure the amplify resources
 Amplify.configure(awsExports);
+
+// Setup autoTrack
+Analytics.autoTrack('session', {
+  enable: true,
+  immediate: true,
+  provider: 'AWSPinpoint',
+});
+
+Analytics.autoTrack('pageView', {
+  enable: true,
+  type: 'SPA',
+  immediate: true,
+  provider: 'AWSPinpoint',
+});
+
+Analytics.autoTrack('event', {
+  enable: true,
+  immediate: true,
+  provider: 'AWSPinpoint',
+});
 
 // Change the Amplify Auth TOTP language
 I18n.putVocabulariesForLanguage('en', {
