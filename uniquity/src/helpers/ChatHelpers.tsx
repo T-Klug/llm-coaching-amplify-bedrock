@@ -5,6 +5,8 @@ import { createOpenAIChatFunc } from '../graphql/mutations';
 import { GraphQLQuery } from '@aws-amplify/api';
 
 export const helperPrompts = [
+  'I need help setting development goal at work.',
+  'I need help building my confidence.',
   'I felt really overwhelmed at work this week.',
   'Help me write a status email to my manager.',
   'My team told me they were burned out this week, and I am not sure what to do.',
