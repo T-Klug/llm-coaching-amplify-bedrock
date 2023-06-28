@@ -4,14 +4,18 @@ import { CreateOpenAIChatFuncMutation } from '../graphql/API';
 import { createOpenAIChatFunc } from '../graphql/mutations';
 import { GraphQLQuery } from '@aws-amplify/api';
 
-export const helperPrompts = [
+export const individualContributorHelperPrompts = [
   'I need help setting development goals at work.',
   'I need help building my confidence.',
   'I felt really overwhelmed at work this week.',
   'Help me write a status email to my manager.',
-  'My team told me they were burned out this week, and I am not sure what to do.',
   'My manager never gives me feedback.',
-  'I was in a meeting today and do not feel like people listened to what I had to say.',
+];
+
+export const managerHelperPrompts = [
+  'I need help setting development goals at work.',
+  'I felt really overwhelmed at work this week.',
+  'My team told me they were burned out this week, and I am not sure what to do.',
 ];
 
 export const intros = [
