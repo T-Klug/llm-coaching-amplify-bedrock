@@ -145,7 +145,6 @@ export default function Chat() {
       'cognito:groups'
     ];
 
-    console.log(groups)
     if (groups?.includes('Manager')) {
       return managerHelperPrompts;
     } else if (groups?.includes('individualContributor')) {
