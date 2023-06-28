@@ -19,7 +19,7 @@ import LogoDark from '../assets/logo-no-back.svg';
 import SpeechRecognition, {
   useSpeechRecognition,
 } from 'react-speech-recognition';
-import { helperPrompts, intros, submitOpenAI } from '../helpers/ChatHelpers';
+import { individualContributorHelperPrompts, managerHelperPrompts, intros, submitOpenAI } from '../helpers/ChatHelpers';
 import { HistoryDrawer } from '../components/chat/HistoryDrawer/HistoryDrawer';
 import { SpeedDialU } from '../components/chat/SpeedDialU/SpeedDialU';
 import { styled } from '@mui/material/styles';
@@ -35,9 +35,12 @@ import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import OverflowText from '../components/chat/OverflowText';
+import { useAuthenticator } from '@aws-amplify/ui-react';
 
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
+
 export default function Chat() {
+  const { user } = useAuthenticator();
   const ref = useRef<HTMLDivElement>(null);
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
@@ -137,6 +140,21 @@ export default function Chat() {
     setChatLoading(false);
   };
 
+  const getHelperPrompts = () => {
+    const groups = user.getSignInUserSession()?.getAccessToken().payload[
+      'cognito:groups'
+    ];
+
+    console.log(groups)
+    if (groups?.includes('Manager')) {
+      return managerHelperPrompts;
+    } else if (groups?.includes('individualContributor')) {
+      return individualContributorHelperPrompts;
+    } else {
+      return individualContributorHelperPrompts;
+    }
+  };
+
   return (
     <>
       <Snackbar
@@ -199,8 +217,8 @@ export default function Chat() {
               overflow: 'auto',
               whiteSpace: 'nowrap',
             }}
-          >
-            {helperPrompts.map(b => (
+          >            
+            {getHelperPrompts().map(b => (
               <Button
                 key={b}
                 onClick={async () => {
