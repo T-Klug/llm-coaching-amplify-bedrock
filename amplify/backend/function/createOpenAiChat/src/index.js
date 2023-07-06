@@ -160,24 +160,14 @@ const getOpenAIModel = async () => {
 };
 
 // Helper function to update the Model
-const updateChatModel = async (chatModel, newContent, messagesSent) => {
+const updateChatModel = async (chatModel, newContent) => {
   const endpoint = new URL(GRAPHQL_ENDPOINT);
-  console.log(newContent);
-  let messages = [];
-  const sysMessages = chatModel.messages.filter((m) => m.role === "SYSTEM");
-  if (sysMessages && sysMessages.length <= 0) {
-    messagesSent
-      .filter((s) => s.role === "system")
-      .map((r) =>
-        messages.push({ role: r.role.toUpperCase(), content: r.content })
-      );
-  }
-  const newConvo = {
-    role: newContent.role.toUpperCase(),
-    content: newContent.content,
-  };
-  messages.push(newConvo);
-  console.log("Updating with these messages", messages);
+  const messages = [
+    {
+      role: newContent.role.toUpperCase(),
+      content: newContent.content,
+    },
+  ];
   const variables = {
     input: {
       id: chatModel.id,
@@ -240,7 +230,7 @@ export const handler = async (event) => {
   // Get the Admin entered settings
   const openAIModel = await getOpenAIModel();
 
-  // If we got an input use that model, otherwise create a chat model
+  // Use the input
   let chatModel;
 
   if (event.arguments?.input?.id) {
@@ -253,26 +243,31 @@ export const handler = async (event) => {
   const messages = chatModel.messages.map((m) => {
     return { role: m.role.toLowerCase(), content: m.content };
   });
+
   //Get User Specific Prompts
-  if (chatModel.messages.length <= 1) {
-    // New convo we need to inject the prompt
-    const userSpecificPrompts = await getUserSpecificPrompt(
-      event.identity.claims.username
+  const userSpecificPrompts = await getUserSpecificPrompt(
+    event.identity.claims.username
+  );
+  if (
+    userSpecificPrompts &&
+    userSpecificPrompts.items &&
+    userSpecificPrompts.items.length >= 1
+  ) {
+    userSpecificPrompts.items.map((u) =>
+      messages.splice(-1, 0, { role: "system", content: u.prompt })
     );
-    if (
-      userSpecificPrompts &&
-      userSpecificPrompts.items &&
-      userSpecificPrompts.items.length >= 1
-    ) {
-      userSpecificPrompts.items.map((u) =>
-        messages.unshift({ role: "system", content: u.prompt })
-      );
-    }
-    messages.unshift({
-      role: "system",
-      content: openAIModel.prompt,
-    });
   }
+  messages.splice(-1, 0, {
+    role: "system",
+    content: openAIModel.prompt,
+  });
+
+  if (messages.length > 8) {
+    while (messages.length > 8) {
+      messages.shift();
+    }
+  }
+
   console.log("Messages sent to ChatGPT", messages);
   // Call Open AI
   try {
@@ -288,11 +283,7 @@ export const handler = async (event) => {
     });
 
     //Update the chat model with the chat response
-    chatModel = await updateChatModel(
-      chatModel,
-      res.data.choices[0].message,
-      messages
-    );
+    chatModel = await updateChatModel(chatModel, res.data.choices[0].message);
   } catch (error) {
     if (error.response) {
       console.error(

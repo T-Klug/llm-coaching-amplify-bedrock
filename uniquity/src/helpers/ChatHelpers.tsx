@@ -18,29 +18,6 @@ export const managerHelperPrompts = [
   'My team told me they were burned out this week, and I am not sure what to do.',
 ];
 
-export const intros = [
-  'What did you enjoy most about today? Or is there something else you would like to talk about?',
-  'Is there anything specific that made your day memorable? Or is there something else you would like to talk about?',
-  "Is there something you accomplished today that you're proud of? Or is there something else you would like to talk about?",
-  'Did you learn anything new or interesting today? Or is there something else you would like to talk about?',
-  "Is there something you've been struggling with that you'd like to discuss? Or is there something else you would like to talk about?",
-  "What's one thing that made you smile today? Or is there something else you would like to talk about?",
-  "Is there a challenge or obstacle you're currently facing? Or is there something else you would like to talk about?",
-  'Did you have any interesting conversations today? What were they about? Or is there something else you would like to talk about?',
-  "Is there something you're looking forward to in the near future? Or is there something else you would like to talk about?",
-  'Did you encounter any setbacks today? How did you handle them? Or is there something else you would like to talk about?',
-  "Is there something you'd like to vent or express your frustrations about? Or is there something else you would like to talk about?",
-  "Is there someone you'd like to thank or show appreciation to? Or is there something else you would like to talk about?",
-  'Did you try something new or step out of your comfort zone today? Or is there something else you would like to talk about?',
-  "Is there a decision you're currently struggling to make? Or is there something else you would like to talk about?",
-  'Did you receive any feedback or criticism today? How did you handle it? Or is there something else you would like to talk about?',
-  "Is there a goal or dream you're working towards? How's the progress? Or is there something else you would like to talk about?",
-  'Did you make any meaningful connections or build new relationships today? Or is there something else you would like to talk about?',
-  'Did you face any unexpected opportunities today? What were they? Or is there something else you would like to talk about?',
-  'Did you encounter any moments of self-reflection or personal growth today? Or is there something else you would like to talk about?',
-  "Is there something you're grateful for today? Or is there something else you would like to talk about?",
-];
-
 export const iOS =
   typeof navigator !== 'undefined' &&
   /iPad|iPhone|iPod/.test(navigator.userAgent);

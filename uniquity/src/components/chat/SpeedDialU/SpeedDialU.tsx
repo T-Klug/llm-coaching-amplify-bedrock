@@ -13,15 +13,13 @@ import { useNavigate } from 'react-router-dom';
 import AlertDialogSlide from '../AlertDialogSlideIn/AlertDialogSlideIn';
 import { useState } from 'react';
 import { DataStore } from 'aws-amplify';
-import { intros } from '../../../helpers/ChatHelpers';
 
 type SpeedDialUType = {
   setOverlayVisible: React.Dispatch<React.SetStateAction<boolean>>;
   setSelectedId: React.Dispatch<React.SetStateAction<string | undefined>>;
-  setIntroChat: React.Dispatch<React.SetStateAction<string>>;
 };
 export function SpeedDialU(props: SpeedDialUType) {
-  const { setOverlayVisible, setSelectedId, setIntroChat } = props;
+  const { setOverlayVisible, setSelectedId } = props;
   // Auth Context
   const { user, signOut } = useAuthenticator();
   // Navigation Context
@@ -29,7 +27,6 @@ export function SpeedDialU(props: SpeedDialUType) {
   // New Chat Method
   const newChat = () => {
     setSelectedId(undefined);
-    setIntroChat(intros[Math.floor(Math.random() * intros.length)]);
   };
   // Feedback form dialog
   const [feedbackOpen, setFeedbackOpen] = useState<boolean>(false);

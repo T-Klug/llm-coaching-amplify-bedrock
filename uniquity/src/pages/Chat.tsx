@@ -19,7 +19,11 @@ import LogoDark from '../assets/logo-no-back.svg';
 import SpeechRecognition, {
   useSpeechRecognition,
 } from 'react-speech-recognition';
-import { individualContributorHelperPrompts, managerHelperPrompts, intros, submitOpenAI } from '../helpers/ChatHelpers';
+import {
+  individualContributorHelperPrompts,
+  managerHelperPrompts,
+  submitOpenAI,
+} from '../helpers/ChatHelpers';
 import { HistoryDrawer } from '../components/chat/HistoryDrawer/HistoryDrawer';
 import { SpeedDialU } from '../components/chat/SpeedDialU/SpeedDialU';
 import { styled } from '@mui/material/styles';
@@ -64,10 +68,9 @@ export default function Chat() {
     useSpeechRecognition();
   // Snack Bar
   const [snackbarOpen, setSnackBarOpen] = useState<boolean>(false);
-  const [chatIntro, setChatIntro] = useState<string>(
-    intros[Math.floor(Math.random() * intros.length)]
-  );
 
+  const chatIntro =
+    "Hi there! I'm Uniquity AI, your personal development coach. Whether it's prioritization, goal setting, or advice on work scenarios, I'm here to help. Let's chat! What's your first challenge for us to tackle today?";
   // If they are creating transcripts with the microphone set the chat input to it
   useEffect(() => {
     setChat(transcript);
@@ -114,6 +117,7 @@ export default function Chat() {
       response = await DataStore.save(
         new OpenAIChat({
           messages: [
+            { role: 'ASSISTANT', content: chatIntro },
             { role: 'USER', content: chatFromPrompt ? chatFromPrompt : chat },
           ],
         })
@@ -180,7 +184,6 @@ export default function Chat() {
       <SpeedDialU
         setSelectedId={setSelectedId}
         setOverlayVisible={setOverlayVisible}
-        setIntroChat={setChatIntro}
       />
       <Box pt={10}>
         <div
@@ -216,7 +219,7 @@ export default function Chat() {
               overflow: 'auto',
               whiteSpace: 'nowrap',
             }}
-          >            
+          >
             {getHelperPrompts().map(b => (
               <Button
                 key={b}
@@ -255,6 +258,7 @@ export default function Chat() {
               <ThumbUpRounded sx={{ cursor: 'pointer' }} color="primary" />
               <ThumbDownRounded sx={{ cursor: 'pointer' }} color="primary" />
             </div>
+
             <OverflowText chatPosition="left" content={chatIntro} />
           </Box>
         </div>
@@ -265,7 +269,7 @@ export default function Chat() {
             .find(x => x.id === selectedId)!
             .messages?.map((m, index, array) => {
               const isLastMessage = index === array.length - 1;
-
+              if (m?.content === chatIntro) return;
               if (m?.role === OpenAiRoleType.ASSISTANT)
                 return (
                   <div
