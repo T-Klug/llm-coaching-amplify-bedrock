@@ -1,6 +1,6 @@
 # Amplify POC
 
-The amplify POC is the home of both the frontend and backend of Uniquity's application. It is built on Vite.
+The amplify POC is the home of both the frontend and backend of Uniquity's application. It is built on [Vite](https://vitejs.dev/).
 
 The front end web is deployed using vite utilizing the Amplify Web Hosting. In other words anything checked into Main will be pushed out to https://app.uniquity.ai
 
