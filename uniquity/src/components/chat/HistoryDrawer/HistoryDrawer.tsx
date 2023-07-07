@@ -51,7 +51,7 @@ export function HistoryDrawer(props: HistoryDrawerPropsType) {
               setOverlayVisible(false);
             }}
             primaryTypographyProps={{ noWrap: true, width: '85%' }}
-            primary={aiChat && aiChat?.messages && aiChat.messages[0]?.content}
+            primary={aiChat && aiChat?.messages && aiChat.messages[1]?.content}
           />
         </ListItem>
       );
