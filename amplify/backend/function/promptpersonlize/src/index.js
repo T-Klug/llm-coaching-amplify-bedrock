@@ -66,7 +66,7 @@ const callGraphQL = async (query, variables) => {
 
 // Get the distinct list of users with chats
 const getChatOwners = async () => {
-  const body = await callGraphQL(listOpenAIChats, undefined);
+  const body = await callGraphQL(listOpenAIChats, { limit: 1000 });
   return [
     ...new Set(body.data.listOpenAIChats.items.map((item) => item.owner)),
   ];

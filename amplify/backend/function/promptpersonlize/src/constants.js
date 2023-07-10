@@ -1,6 +1,10 @@
 export const listOpenAIChats = /* GraphQL */ `
-  query ListOpenAIChats($nextToken: String) {
-    listOpenAIChats(nextToken: $nextToken) {
+  query ListOpenAIChats(
+    $filter: ModelOpenAIChatFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listOpenAIChats(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         owner
       }
