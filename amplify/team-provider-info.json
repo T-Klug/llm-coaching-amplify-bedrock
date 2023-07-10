@@ -26,10 +26,6 @@
           "s3Key": "amplify-builds/createOpenAiChat-5155324556526e414955-build.zip"
         },
         "createOpenAIChat": {},
-        "S3Trigger8f157155": {
-          "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
-          "s3Key": "amplify-builds/S3Trigger8f157155-682f7353425552586a41-build.zip"
-        },
         "promptpersonlize": {
           "secretsPathAmplifyAppId": "d1wywebcdb6lm1",
           "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
@@ -50,9 +46,6 @@
           "Id": "90797490ef5a47d79865eb44f745ff4c",
           "Region": "us-east-1"
         }
-      },
-      "storage": {
-        "resumestorage": {}
       }
     }
   }
