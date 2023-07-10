@@ -7,6 +7,11 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "api": {
+    "AdminQueries": {
+      "ApiId": "string",
+      "ApiName": "string",
+      "RootUrl": "string"
+    },
     "amplifypoc": {
       "GraphQLAPIEndpointOutput": "string",
       "GraphQLAPIIdOutput": "string"
@@ -29,6 +34,13 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "function": {
+    "AdminQueries9694e67c": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "createOpenAiChat": {
       "Arn": "string",
       "LambdaExecutionRole": "string",

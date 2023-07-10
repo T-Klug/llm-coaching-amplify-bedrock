@@ -17,7 +17,8 @@
         "userPoolGroups": {}
       },
       "api": {
-        "amplifypoc": {}
+        "amplifypoc": {},
+        "AdminQueries": {}
       },
       "function": {
         "openaiFunction": {},
@@ -31,6 +32,10 @@
           "secretsPathAmplifyAppId": "d1wywebcdb6lm1",
           "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
           "s3Key": "amplify-builds/promptpersonlize-656a692b2b676f663264-build.zip"
+        },
+        "AdminQueries9694e67c": {
+          "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
+          "s3Key": "amplify-builds/AdminQueries9694e67c-764649344e6968577668-build.zip"
         }
       },
       "analytics": {

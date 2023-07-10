@@ -6,6 +6,28 @@
     }
   },
   "api": {
+    "AdminQueries": {
+      "authorizationType": "AMAZON_COGNITO_USER_POOLS",
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "amplifypoc"
+        },
+        {
+          "attributes": [
+            "Arn",
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "AdminQueries9694e67c"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    },
     "amplifypoc": {
       "dependsOn": [
         {
@@ -87,6 +109,20 @@
     }
   },
   "function": {
+    "AdminQueries9694e67c": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "amplifypoc"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "createOpenAiChat": {
       "build": true,
       "dependsOn": [
@@ -149,6 +185,22 @@
         {
           "category": "analytics",
           "resourceName": "Pinpoint"
+        }
+      ]
+    },
+    "AMPLIFY_function_AdminQueries9694e67c_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "AdminQueries9694e67c"
+        }
+      ]
+    },
+    "AMPLIFY_function_AdminQueries9694e67c_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "AdminQueries9694e67c"
         }
       ]
     },
