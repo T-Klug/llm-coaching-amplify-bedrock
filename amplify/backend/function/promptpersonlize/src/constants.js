@@ -16,9 +16,10 @@ export const listOpenAIChats = /* GraphQL */ `
 export const listOpenAIChatsUser = /* GraphQL */ `
   query ListOpenAIChats(
     $filter: ModelOpenAIChatFilterInput
+    $limit: Int
     $nextToken: String
   ) {
-    listOpenAIChats(filter: $filter, nextToken: $nextToken) {
+    listOpenAIChats(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
         messages {

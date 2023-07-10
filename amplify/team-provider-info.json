@@ -30,7 +30,7 @@
         "promptpersonlize": {
           "secretsPathAmplifyAppId": "d1wywebcdb6lm1",
           "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
-          "s3Key": "amplify-builds/promptpersonlize-7367466d694d53433755-build.zip"
+          "s3Key": "amplify-builds/promptpersonlize-656a692b2b676f663264-build.zip"
         }
       },
       "analytics": {

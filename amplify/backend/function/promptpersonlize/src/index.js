@@ -61,6 +61,7 @@ const callGraphQL = async (query, variables) => {
       `ERROR GETTING ${query.toString()}: ${JSON.stringify(error.message)}`
     );
   }
+  console.log(body);
   return body;
 };
 
@@ -99,6 +100,10 @@ const updateUserSpecificPromptModel = async (
 // Create the OPEN AI prompt using the users past information
 const createOpenAIPrompt = async (ownerId, openAIclient, userPrompt) => {
   const ownerChats = await listChatsforOwner(ownerId);
+  if (ownerChats.length <= 0) {
+    console.log("No Chats available");
+    return;
+  }
   if (userPrompt) {
     if (userPrompt.lastChatId === ownerChats[0].id) {
       console.log("NO NEW CHATS");
@@ -172,12 +177,15 @@ const listChatsforOwner = async (ownerId) => {
     filter: {
       owner: { eq: `${ownerId}::${ownerId}` },
     },
+    limit: 1000,
   };
 
   const body = await callGraphQL(listOpenAIChatsUser, variables);
+  console.log(body.data.listOpenAIChats.items, ownerId);
   const sorted = body.data.listOpenAIChats.items.sort(function (a, b) {
     return new Date(b.updatedAt) - new Date(a.updatedAt);
   });
+  console.log(sorted);
   return sorted;
 };
 
@@ -201,7 +209,7 @@ export const handler = async (event) => {
 
   // Get Distinct users that have chats
   const listOwners = await getChatOwners();
-
+  console.log(listOwners);
   // if the list of owners then iterate over them to generate prompts
   if (listOwners && listOwners.length > 0) {
     // TODO: This should be optmized with a Promise.await all
