@@ -85,11 +85,13 @@ export default function Chat() {
   useEffect(() => {
     const sub = DataStore.observeQuery(OpenAIChat).subscribe(({ items }) => {
       setData(items);
-      // if they have past impromptu chats present them - otherwwise just land in a new chat
-      if (items && items.length >= 1) setOverlayVisible(true);
     });
     return () => sub.unsubscribe();
   }, []);
+
+  useEffect(() => {
+    if (!selectedId) setOverlayVisible(true);
+  }, [selectedId]);
 
   //Send Feedback
   const sendFeedback = async (
