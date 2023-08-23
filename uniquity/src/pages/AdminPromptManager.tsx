@@ -28,14 +28,14 @@ export default function AdminPromptManager() {
 
   useEffect(() => {
     const sub = DataStore.observeQuery(OpenAIModel).subscribe(({ items }) =>
-      setData(items[0])
+      setData(items[0]),
     );
     return () => sub.unsubscribe();
   }, []);
 
   useEffect(() => {
     const sub = DataStore.observeQuery(Feedback).subscribe(({ items }) =>
-      setFeedback(items)
+      setFeedback(items),
     );
     return () => sub.unsubscribe();
   }, []);
@@ -65,7 +65,7 @@ export default function AdminPromptManager() {
                   setData(
                     OpenAIModel.copyOf(data!, draft => {
                       draft.prompt = event.target.value;
-                    })
+                    }),
                   );
                 }}
               />
@@ -79,7 +79,7 @@ export default function AdminPromptManager() {
                   setData(
                     OpenAIModel.copyOf(data!, draft => {
                       draft.model = event.target.value;
-                    })
+                    }),
                   );
                 }}
               />
@@ -93,7 +93,7 @@ export default function AdminPromptManager() {
                   setData(
                     OpenAIModel.copyOf(data!, draft => {
                       draft.temperature = event.target.value;
-                    })
+                    }),
                   );
                 }}
               />
@@ -107,7 +107,7 @@ export default function AdminPromptManager() {
                   setData(
                     OpenAIModel.copyOf(data!, draft => {
                       draft.top_p = event.target.value;
-                    })
+                    }),
                   );
                 }}
               />
@@ -121,7 +121,7 @@ export default function AdminPromptManager() {
                   setData(
                     OpenAIModel.copyOf(data!, draft => {
                       draft.max_tokens = event.target.value;
-                    })
+                    }),
                   );
                 }}
               />
@@ -135,7 +135,7 @@ export default function AdminPromptManager() {
                   setData(
                     OpenAIModel.copyOf(data!, draft => {
                       draft.presence_penalty = event.target.value;
-                    })
+                    }),
                   );
                 }}
               />
@@ -149,7 +149,7 @@ export default function AdminPromptManager() {
                   setData(
                     OpenAIModel.copyOf(data!, draft => {
                       draft.frequency_penalty = event.target.value;
-                    })
+                    }),
                   );
                 }}
               />
@@ -187,6 +187,7 @@ export default function AdminPromptManager() {
         <Typography variant="h5">Feedback</Typography>
         {feedback?.map(f => (
           <TextField
+            key={f.id}
             fullWidth
             disabled
             value={`Like: ${f.like === null ? 'N/A' : f.like}, Comment: ${

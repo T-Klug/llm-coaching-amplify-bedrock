@@ -5,6 +5,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
+import Button from '@mui/material/Button';
 import ListSubheader from '@mui/material/ListSubheader';
 import { DeleteOutlineOutlined } from '@mui/icons-material';
 import { DataStore } from 'aws-amplify';
@@ -55,7 +56,7 @@ export function HistoryDrawer(props: HistoryDrawerPropsType) {
               aiChat &&
               aiChat?.messages &&
               (aiChat.messages[0]?.content?.includes(
-                "Hi there! I'm Uniquity AI, your personal development coach."
+                "Hi there! I'm Uniquity AI, your personal development coach.",
               )
                 ? aiChat.messages[1]?.content
                 : aiChat.messages[0]?.content)
@@ -76,7 +77,7 @@ export function HistoryDrawer(props: HistoryDrawerPropsType) {
   // Helper method to decide if we should display the history buckets
   const shouldDisplayChatGroup = (
     data: LazyOpenAIChat[] | undefined,
-    groupName: string
+    groupName: string,
   ): boolean => {
     const list = data?.map(d => BuildListItem(d, groupName));
     if (list?.length === 1 && list[0] !== undefined) {
@@ -97,6 +98,7 @@ export function HistoryDrawer(props: HistoryDrawerPropsType) {
           borderTopRightRadius: 15,
         },
       }}
+      disableEscapeKeyDown
       disableBackdropTransition={!iOS}
       disableDiscovery={iOS}
       anchor="bottom"
@@ -105,8 +107,13 @@ export function HistoryDrawer(props: HistoryDrawerPropsType) {
       onOpen={() => setOverlayVisible(true)}
     >
       <Typography textAlign="center" variant="h5">
-        Previous Coaching Conversations
+        Past Impromtu Coaching Sessions
       </Typography>
+      <div style={{ marginLeft: 'auto', paddingRight: 10 }}>
+        <Button onClick={() => setOverlayVisible(false)} variant="contained">
+          Start a New Chat
+        </Button>
+      </div>
       {shouldDisplayChatGroup(data, 'Today') && (
         <List
           subheader={

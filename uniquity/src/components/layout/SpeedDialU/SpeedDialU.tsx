@@ -1,11 +1,13 @@
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import {
   Menu,
-  HistoryOutlined,
-  ControlPoint,
   AdminPanelSettingsOutlined,
   LogoutOutlined,
-  Feedback,
+  HomeOutlined,
+  PersonOutlineOutlined,
+  FlagOutlined,
+  ChatBubbleOutline,
+  FeedbackOutlined,
 } from '@mui/icons-material';
 import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
@@ -14,20 +16,11 @@ import AlertDialogSlide from '../AlertDialogSlideIn/AlertDialogSlideIn';
 import { useState } from 'react';
 import { DataStore } from 'aws-amplify';
 
-type SpeedDialUType = {
-  setOverlayVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  setSelectedId: React.Dispatch<React.SetStateAction<string | undefined>>;
-};
-export function SpeedDialU(props: SpeedDialUType) {
-  const { setOverlayVisible, setSelectedId } = props;
+export function SpeedDialU() {
   // Auth Context
   const { user, signOut } = useAuthenticator();
   // Navigation Context
   const navigate = useNavigate();
-  // New Chat Method
-  const newChat = () => {
-    setSelectedId(undefined);
-  };
   // Feedback form dialog
   const [feedbackOpen, setFeedbackOpen] = useState<boolean>(false);
 
@@ -53,20 +46,31 @@ export function SpeedDialU(props: SpeedDialUType) {
         }}
       >
         <SpeedDialAction
-          icon={<Feedback />}
+          icon={<HomeOutlined />}
+          tooltipTitle="Home"
+          onClick={() => navigate('/')}
+        />
+        <SpeedDialAction
+          icon={<PersonOutlineOutlined />}
+          tooltipTitle="Profile"
+          onClick={() => navigate('/profile')}
+        />
+        <SpeedDialAction
+          icon={<FlagOutlined />}
+          tooltipTitle="Goal Coaching"
+          onClick={() => navigate('/goals')}
+        />
+        <SpeedDialAction
+          icon={<ChatBubbleOutline />}
+          tooltipTitle="Impromptu Coaching"
+          onClick={() => navigate('/chat')}
+        />
+        <SpeedDialAction
+          icon={<FeedbackOutlined />}
           tooltipTitle="Feedback"
           onClick={() => setFeedbackOpen(true)}
         />
-        <SpeedDialAction
-          icon={<ControlPoint />}
-          tooltipTitle="New Chat"
-          onClick={() => newChat()}
-        />
-        <SpeedDialAction
-          icon={<HistoryOutlined />}
-          tooltipTitle="History"
-          onClick={() => setOverlayVisible(true)}
-        />
+
         {user
           .getSignInUserSession()
           ?.getAccessToken()

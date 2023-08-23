@@ -38,6 +38,9 @@ import DarkLogo from './assets/logo-no-back.svg';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Chat from './pages/Chat';
 import AdminPromptManager from './pages/AdminPromptManager';
+import Landing from './pages/Landing';
+import GoalChat from './pages/GoalChat';
+import UserProfile from './pages/UserProfile';
 
 //configure the amplify resources
 Amplify.configure(awsExports);
@@ -80,6 +83,18 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
+        element: <Landing />,
+      },
+      {
+        path: 'profile',
+        element: <UserProfile />,
+      },
+      {
+        path: 'goals',
+        element: <GoalChat />,
+      },
+      {
+        path: 'chat',
         element: <Chat />,
       },
       {
@@ -124,7 +139,7 @@ function App() {
           mode: prefersDarkMode ? 'dark' : 'light',
         },
       }),
-    [prefersDarkMode]
+    [prefersDarkMode],
   );
 
   // Amplify Theme

@@ -1,14 +1,18 @@
 import { Outlet } from 'react-router-dom';
-
-import { Container } from '@mui/material';
+import Container from '@mui/material/Container';
+import Divider from '@mui/material/Divider';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { useEffect } from 'react';
 import { Analytics, Notifications } from 'aws-amplify';
 import { useAuthenticator } from '@aws-amplify/ui-react';
+import LogoLight from '../assets/logo-black-no-back.svg';
+import LogoDark from '../assets/logo-no-back.svg';
+import { SpeedDialU } from '../components/layout/SpeedDialU/SpeedDialU';
 
 export default function Root() {
   const { user } = useAuthenticator();
   const { InAppMessaging } = Notifications;
-
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   // Setup the identify User for in app messaging at root and send a root loaded event to analytics
   useEffect(() => {
     const setupMessaging = async () => {
@@ -69,6 +73,21 @@ export default function Root() {
 
   return (
     <Container>
+      <SpeedDialU />
+      <div
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          marginTop: 40,
+        }}
+      >
+        <img
+          style={{ maxWidth: 300 }}
+          src={prefersDarkMode ? LogoDark : LogoLight}
+        />
+      </div>
+      <Divider sx={{ mt: 2, mb: 2 }} />
       <Outlet />
     </Container>
   );

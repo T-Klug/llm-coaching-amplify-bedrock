@@ -14,8 +14,6 @@ import {
   ThumbDownRounded,
   ThumbUpRounded,
 } from '@mui/icons-material';
-import LogoLight from '../assets/logo-black-no-back.svg';
-import LogoDark from '../assets/logo-no-back.svg';
 import SpeechRecognition, {
   useSpeechRecognition,
 } from 'react-speech-recognition';
@@ -25,7 +23,6 @@ import {
   submitOpenAI,
 } from '../helpers/ChatHelpers';
 import { HistoryDrawer } from '../components/chat/HistoryDrawer/HistoryDrawer';
-import { SpeedDialU } from '../components/chat/SpeedDialU/SpeedDialU';
 import { styled } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Box from '@mui/material/Box';
@@ -88,8 +85,8 @@ export default function Chat() {
   useEffect(() => {
     const sub = DataStore.observeQuery(OpenAIChat).subscribe(({ items }) => {
       setData(items);
-      // Land in a new chat remove this comment to go back to the last chat
-      //if (items && items.length >= 1) setSelectedId(items[items.length - 1].id);
+      // if they have past impromptu chats present them - otherwwise just land in a new chat
+      if (items && items.length >= 1) setOverlayVisible(true);
     });
     return () => sub.unsubscribe();
   }, []);
@@ -97,7 +94,7 @@ export default function Chat() {
   //Send Feedback
   const sendFeedback = async (
     like: boolean,
-    content: string | null | undefined
+    content: string | null | undefined,
   ) => {
     if (content) {
       DataStore.save(new Feedback({ like, comment: content }));
@@ -120,7 +117,7 @@ export default function Chat() {
             { role: 'ASSISTANT', content: chatIntro },
             { role: 'USER', content: chatFromPrompt ? chatFromPrompt : chat },
           ],
-        })
+        }),
       );
       setChat('');
       resetTranscript();
@@ -181,20 +178,7 @@ export default function Chat() {
         overlayVisible={overlayVisible}
         setOverlayVisible={setOverlayVisible}
       />
-      <SpeedDialU
-        setSelectedId={setSelectedId}
-        setOverlayVisible={setOverlayVisible}
-      />
-      <Box pt={10}>
-        <div
-          style={{ width: '100%', display: 'flex', justifyContent: 'center' }}
-        >
-          <img
-            style={{ maxWidth: 300 }}
-            src={prefersDarkMode ? LogoDark : LogoLight}
-          />
-        </div>
-        <Divider sx={{ mt: 2, mb: 2 }} />
+      <Box>
         <div
           style={{
             width: '100%',
