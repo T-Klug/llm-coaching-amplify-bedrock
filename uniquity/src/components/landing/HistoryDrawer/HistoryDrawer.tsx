@@ -9,6 +9,7 @@ import ListSubheader from '@mui/material/ListSubheader';
 import { DeleteOutlineOutlined } from '@mui/icons-material';
 import { DataStore } from 'aws-amplify';
 import ListItemButton from '@mui/material/ListItemButton';
+import { Link } from 'react-router-dom';
 
 type HistoryDrawerPropsType = {
   data: LazyOpenAIChat[] | undefined;
@@ -41,8 +42,8 @@ export function HistoryDrawer(props: HistoryDrawerPropsType) {
               borderRadius: 4,
             }}
             onClick={() => setOverlayVisible(false)}
-            component="a"
-            href={`/chat/${aiChat.id}`}
+            component={Link}
+            to={`/chat/${aiChat.id}`}
           >
             <ListItemText
               primaryTypographyProps={{ noWrap: true, width: '85%' }}

@@ -20,7 +20,7 @@ import Divider from '@mui/material/Divider';
 import Card from '@mui/material/Card';
 import Button from '@mui/material/Button';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { DataStore } from 'aws-amplify';
 import { LazyOpenAIChat, OpenAIChat } from '../models';
 import { HistoryDrawer } from '../components/landing/HistoryDrawer/HistoryDrawer';
@@ -264,7 +264,7 @@ export default function Landing() {
                     d =>
                       d.messages && (
                         <ListItem key={d.id}>
-                          <ListItemButton component="a" href={`/chat/${d.id}`}>
+                          <ListItemButton component={Link} to={`/chat/${d.id}`}>
                             <ListItemText
                               primaryTypographyProps={{
                                 noWrap: true,
