@@ -72,7 +72,7 @@ const steps = [
   {
     label: 'Take a personality test',
     description:
-      'Take a test to help our Coach tailor their tone and approach to you.',
+      'Take a test to help our AI Coach tailor their tone and approach to you.',
   },
   {
     label: 'Share your professional background',
@@ -83,7 +83,7 @@ const steps = [
     description: `Take a look at your profile and make any corrections needed.`,
   },
   {
-    label: 'Introduction to your coach',
+    label: 'Get to know your AI coach',
     description:
       'Get to know your personalized coach a little with some fun icebreakers.',
   },
@@ -142,12 +142,11 @@ export default function Landing() {
         <Card raised sx={{ borderRadius: 6, width: '85%' }}>
           <CardContent>
             <div style={{ marginBottom: 10 }}>
-              <Typography variant="h5">Your Coaching Streak</Typography>
+              <Typography variant="h5">Your coaching streak</Typography>
               <Divider flexItem variant="middle" />
             </div>
             <Typography>
-              Talk to your coach every week to unlock your full potential at
-              work.
+              Talk to your AI coach every week to learn and grow.
             </Typography>
             <StyledRating
               IconContainerComponent={IconContainer}
@@ -160,7 +159,7 @@ export default function Landing() {
         <Card raised sx={{ borderRadius: 6, marginTop: 5, width: '85%' }}>
           <CardContent>
             <div style={{ marginBottom: 10 }}>
-              <Typography variant="h5">Personalize Your Coach</Typography>
+              <Typography variant="h5">Personalize your AI coach</Typography>
               <Divider flexItem variant="middle" />
             </div>
             <Box>
@@ -216,7 +215,7 @@ export default function Landing() {
         <Card raised sx={{ borderRadius: 6, marginTop: 5, width: '85%' }}>
           <CardContent>
             <div style={{ marginBottom: 10 }}>
-              <Typography variant="h5">Work On Your Goals</Typography>
+              <Typography variant="h5">Work towards your goals with your AI coach</Typography>
               <Divider flexItem variant="middle" />
             </div>
             <Typography>TBD</Typography>
@@ -228,15 +227,23 @@ export default function Landing() {
         <Card raised sx={{ borderRadius: 6, marginTop: 5, width: '85%' }}>
           <CardContent>
             <div style={{ marginBottom: 10 }}>
-              <Typography variant="h5">Get Impromptu Help</Typography>
+              <Typography variant="h5">Get impromptu help from your AI coach</Typography>
               <Divider flexItem variant="middle" />
             </div>
             <Typography>TBD</Typography>
 
-            <Typography sx={{ marginTop: 10 }} variant="h6">
+              <Button
+                variant="contained"
+                sx={{ margin: 3 }}
+                onClick={() => navigate('/chat')}
+              >
+                Start A New Chat
+              </Button>
+        
+            <Typography sx={{ marginTop: 3}} variant="h6">
               Previous Chats
             </Typography>
-            <Divider flexItem variant="middle" />
+            
             <List
               sx={{
                 display: 'inline-block',
@@ -266,17 +273,10 @@ export default function Landing() {
                             </ListItemIcon>
                           </ListItemButton>
                         </ListItem>
-                      ),
+                      )
                   )}
             </List>
             <div>
-              <Button
-                variant="contained"
-                sx={{ margin: 3 }}
-                onClick={() => navigate('/chat')}
-              >
-                Start A New Chat
-              </Button>
               <Button
                 variant="contained"
                 sx={{ margin: 3 }}
