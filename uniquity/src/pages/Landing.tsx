@@ -165,9 +165,10 @@ export default function Landing() {
         <Card raised sx={{ borderRadius: 6, marginTop: 5, width: '85%' }}>
           <CardContent>
             <div style={{ marginBottom: 10 }}>
-              <Typography variant="h5">Set Your Goals</Typography>
+              <Typography variant="h5">Work On Your Goals</Typography>
               <Divider flexItem variant="middle" />
             </div>
+            <Typography>TBD</Typography>
             <Button variant="contained" sx={{ marginTop: 3 }}>
               Set your First Goal
             </Button>
@@ -179,6 +180,7 @@ export default function Landing() {
               <Typography variant="h5">Get Impromptu Help</Typography>
               <Divider flexItem variant="middle" />
             </div>
+            <Typography>TBD</Typography>
             <Button
               variant="contained"
               sx={{ marginTop: 3 }}

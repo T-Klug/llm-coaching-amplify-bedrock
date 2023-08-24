@@ -26,7 +26,6 @@ import { HistoryDrawer } from '../components/chat/HistoryDrawer/HistoryDrawer';
 import { styled } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import AppBar from '@mui/material/AppBar';
 import TextField from '@mui/material/TextField';
 import Divider from '@mui/material/Divider';
@@ -190,11 +189,6 @@ export default function Chat() {
             textAlign: 'center',
           }}
         >
-          <Typography>
-            <b>
-              <i>Unlock your full potential at work with our AI coach</i>
-            </b>
-          </Typography>
           <div
             ref={ref}
             {...events}
