@@ -5,35 +5,25 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
-import Button from '@mui/material/Button';
 import ListSubheader from '@mui/material/ListSubheader';
 import { DeleteOutlineOutlined } from '@mui/icons-material';
 import { DataStore } from 'aws-amplify';
+import ListItemButton from '@mui/material/ListItemButton';
 
 type HistoryDrawerPropsType = {
   data: LazyOpenAIChat[] | undefined;
   overlayVisible: boolean;
   setOverlayVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  selectedId: string | undefined;
-  setSelectedId: React.Dispatch<React.SetStateAction<string | undefined>>;
 };
 
 export function HistoryDrawer(props: HistoryDrawerPropsType) {
-  const { data, setOverlayVisible, overlayVisible, selectedId, setSelectedId } =
-    props;
+  const { data, setOverlayVisible, overlayVisible } = props;
   // History Builder Method
   const BuildListItem = (aiChat: LazyOpenAIChat, listName: string) => {
     const date = new Date(aiChat.createdAt!);
     if (compareDates(date) === listName) {
       return (
         <ListItem
-          sx={{
-            border: 1,
-            borderRadius: 4,
-            width: '90%',
-            m: 'auto',
-            marginBottom: 1,
-          }}
           dense
           key={aiChat.id}
           secondaryAction={
@@ -45,23 +35,28 @@ export function HistoryDrawer(props: HistoryDrawerPropsType) {
             )
           }
         >
-          <ListItemText
-            sx={{ cursor: 'pointer' }}
-            onClick={() => {
-              setSelectedId(aiChat.id);
-              setOverlayVisible(false);
+          <ListItemButton
+            sx={{
+              border: 1,
+              borderRadius: 4,
             }}
-            primaryTypographyProps={{ noWrap: true, width: '85%' }}
-            primary={
-              aiChat &&
-              aiChat?.messages &&
-              (aiChat.messages[0]?.content?.includes(
-                "Hi there! I'm Uniquity AI, your personal development coach.",
-              )
-                ? aiChat.messages[1]?.content
-                : aiChat.messages[0]?.content)
-            }
-          />
+            onClick={() => setOverlayVisible(false)}
+            component="a"
+            href={`/chat/${aiChat.id}`}
+          >
+            <ListItemText
+              primaryTypographyProps={{ noWrap: true, width: '85%' }}
+              primary={
+                aiChat &&
+                aiChat?.messages &&
+                (aiChat.messages[0]?.content?.includes(
+                  "Hi there! I'm Uniquity AI, your personal development coach.",
+                )
+                  ? aiChat.messages[1]?.content
+                  : aiChat.messages[0]?.content)
+              }
+            />
+          </ListItemButton>
         </ListItem>
       );
     }
@@ -69,9 +64,7 @@ export function HistoryDrawer(props: HistoryDrawerPropsType) {
 
   // Delete Chat Method
   function deleteChat(aiChat: LazyOpenAIChat) {
-    if (aiChat && aiChat.id !== selectedId) {
-      DataStore.delete(aiChat);
-    }
+    DataStore.delete(aiChat);
   }
 
   // Helper method to decide if we should display the history buckets
@@ -109,11 +102,6 @@ export function HistoryDrawer(props: HistoryDrawerPropsType) {
       <Typography textAlign="center" variant="h5">
         Past Impromtu Coaching Sessions
       </Typography>
-      <div style={{ marginLeft: 'auto', paddingRight: 10 }}>
-        <Button onClick={() => setOverlayVisible(false)} variant="contained">
-          Start a New Chat
-        </Button>
-      </div>
       {shouldDisplayChatGroup(data, 'Today') && (
         <List
           subheader={

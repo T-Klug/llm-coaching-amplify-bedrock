@@ -22,7 +22,6 @@ import {
   managerHelperPrompts,
   submitOpenAI,
 } from '../helpers/ChatHelpers';
-import { HistoryDrawer } from '../components/chat/HistoryDrawer/HistoryDrawer';
 import { styled } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Box from '@mui/material/Box';
@@ -36,10 +35,12 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import OverflowText from '../components/chat/OverflowText';
 import { useAuthenticator } from '@aws-amplify/ui-react';
+import { useParams } from 'react-router-dom';
 
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
 export default function Chat() {
+  const { chatId } = useParams();
   const { user } = useAuthenticator();
   const ref = useRef<HTMLDivElement>(null);
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -48,9 +49,7 @@ export default function Chat() {
   // Chat data
   const [data, setData] = useState<LazyOpenAIChat[]>();
   // Selected Chat ID
-  const [selectedId, setSelectedId] = useState<string | undefined>();
-  // Speed Dial visibility
-  const [overlayVisible, setOverlayVisible] = useState<boolean>(false);
+  const [selectedId, setSelectedId] = useState<string | undefined>(chatId);
   // Controlled input for chat
   const [chat, setChat] = useState<string>('');
   // Controls chat loading
@@ -87,10 +86,6 @@ export default function Chat() {
     });
     return () => sub.unsubscribe();
   }, []);
-
-  useEffect(() => {
-    if (!selectedId) setOverlayVisible(true);
-  }, [selectedId]);
 
   //Send Feedback
   const sendFeedback = async (
@@ -172,13 +167,7 @@ export default function Chat() {
           Thanks for the feedback!
         </Alert>
       </Snackbar>
-      <HistoryDrawer
-        data={data}
-        selectedId={selectedId}
-        setSelectedId={setSelectedId}
-        overlayVisible={overlayVisible}
-        setOverlayVisible={setOverlayVisible}
-      />
+
       <Box>
         <div
           style={{

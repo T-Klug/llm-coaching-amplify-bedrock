@@ -94,6 +94,10 @@ const router = createBrowserRouter([
         element: <GoalChat />,
       },
       {
+        path: 'chat/:chatId',
+        element: <Chat />,
+      },
+      {
         path: 'chat',
         element: <Chat />,
       },
