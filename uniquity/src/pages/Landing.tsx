@@ -215,7 +215,9 @@ export default function Landing() {
         <Card raised sx={{ borderRadius: 6, marginTop: 5, width: '85%' }}>
           <CardContent>
             <div style={{ marginBottom: 10 }}>
-              <Typography variant="h5">Work towards your goals with your AI coach</Typography>
+              <Typography variant="h5">
+                Work towards your goals with your AI coach
+              </Typography>
               <Divider flexItem variant="middle" />
             </div>
             <Typography>TBD</Typography>
@@ -227,23 +229,25 @@ export default function Landing() {
         <Card raised sx={{ borderRadius: 6, marginTop: 5, width: '85%' }}>
           <CardContent>
             <div style={{ marginBottom: 10 }}>
-              <Typography variant="h5">Get impromptu help from your AI coach</Typography>
+              <Typography variant="h5">
+                Get impromptu help from your AI coach
+              </Typography>
               <Divider flexItem variant="middle" />
             </div>
             <Typography>TBD</Typography>
 
-              <Button
-                variant="contained"
-                sx={{ margin: 3 }}
-                onClick={() => navigate('/chat')}
-              >
-                Start A New Chat
-              </Button>
-        
-            <Typography sx={{ marginTop: 3}} variant="h6">
+            <Button
+              variant="contained"
+              sx={{ margin: 3 }}
+              onClick={() => navigate('/chat')}
+            >
+              Start A New Chat
+            </Button>
+
+            <Typography sx={{ marginTop: 3 }} variant="h6">
               Previous Chats
             </Typography>
-            
+
             <List
               sx={{
                 display: 'inline-block',
@@ -264,16 +268,23 @@ export default function Landing() {
                             <ListItemText
                               primaryTypographyProps={{
                                 noWrap: true,
-                                width: '85%',
                               }}
-                              primary={d.messages[1]!.content}
+                              primary={
+                                d.messages[0]?.content?.includes(
+                                  "Hi there! I'm Uniquity AI, your personal development coach.",
+                                )
+                                  ? d.messages[1]?.content
+                                  : d.messages[0]?.content
+                              }
                             />
-                            <ListItemIcon sx={{ fontSize: 20 }}>
+                            <ListItemIcon
+                              sx={{ fontSize: 20, minWidth: 'unset' }}
+                            >
                               <ArrowForwardIosOutlined />
                             </ListItemIcon>
                           </ListItemButton>
                         </ListItem>
-                      )
+                      ),
                   )}
             </List>
             <div>
