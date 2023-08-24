@@ -2,8 +2,6 @@ import Typography from '@mui/material/Typography';
 import Rating, { IconContainerProps } from '@mui/material/Rating';
 import {
   ArrowForwardIosOutlined,
-  KeyboardArrowLeft,
-  KeyboardArrowRight,
   Looks3Outlined,
   Looks4Outlined,
   Looks5Outlined,
@@ -18,7 +16,6 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Box from '@mui/material/Box';
 import CardContent from '@mui/material/CardContent';
-import MobileStepper from '@mui/material/MobileStepper';
 import Divider from '@mui/material/Divider';
 import Card from '@mui/material/Card';
 import Button from '@mui/material/Button';
@@ -26,7 +23,12 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DataStore } from 'aws-amplify';
 import { LazyOpenAIChat, OpenAIChat } from '../models';
-import { HistoryDrawer } from '../components/chat/HistoryDrawer/HistoryDrawer';
+import { HistoryDrawer } from '../components/landing/HistoryDrawer/HistoryDrawer';
+import Paper from '@mui/material/Paper';
+import Step from '@mui/material/Step';
+import StepContent from '@mui/material/StepContent';
+import Stepper from '@mui/material/Stepper';
+import StepLabel from '@mui/material/StepLabel';
 
 const StyledRating = styled(Rating)({
   '& .MuiRating-iconFilled': {
@@ -64,8 +66,8 @@ const customIcons: {
 
 const steps = [
   {
-    label: 'Get to know each other',
-    description: `Meet your new Coach, and answer some questions about yourself.`,
+    label: 'What is your name?',
+    description: `Enter your name so we know what to call you.`,
   },
   {
     label: 'Take a personality test',
@@ -80,6 +82,11 @@ const steps = [
     label: 'Review your profile',
     description: `Take a look at your profile and make any corrections needed.`,
   },
+  {
+    label: 'Introduction to your coach',
+    description:
+      'Get to know your personalized coach a little with some fun icebreakers.',
+  },
 ];
 
 function IconContainer(props: IconContainerProps) {
@@ -90,7 +97,6 @@ function IconContainer(props: IconContainerProps) {
 export default function Landing() {
   const [activeStep, setActiveStep] = useState(0);
   const [overlayVisible, setOverlayVisible] = useState<boolean>(false);
-  const maxSteps = steps.length;
   const navigate = useNavigate();
   // Chat data
   const [data, setData] = useState<LazyOpenAIChat[]>();
@@ -101,6 +107,10 @@ export default function Landing() {
 
   const handleBack = () => {
     setActiveStep(prevActiveStep => prevActiveStep - 1);
+  };
+
+  const handleReset = () => {
+    setActiveStep(0);
   };
 
   // Websocket for the chats
@@ -154,39 +164,52 @@ export default function Landing() {
               <Divider flexItem variant="middle" />
             </div>
             <Box>
-              <Typography variant="h6" sx={{ width: '100%', marginTop: 10 }}>
-                {steps[activeStep].label}
-              </Typography>
-
-              <Box sx={{ marginBottom: 10, width: '100%', p: 2 }}>
-                {steps[activeStep].description}
-              </Box>
-              <MobileStepper
-                variant="dots"
-                steps={maxSteps}
-                position="static"
-                activeStep={activeStep}
-                nextButton={
-                  <Button
-                    size="small"
-                    onClick={handleNext}
-                    disabled={activeStep === maxSteps - 1}
-                  >
-                    Next
-                    <KeyboardArrowRight />
+              <Stepper activeStep={activeStep} orientation="vertical">
+                {steps.map((step, index) => (
+                  <Step key={step?.label}>
+                    <StepLabel
+                      optional={
+                        index === 4 ? (
+                          <Typography variant="caption">Last step</Typography>
+                        ) : null
+                      }
+                    >
+                      {step?.label}
+                    </StepLabel>
+                    <StepContent>
+                      <Typography>{step.description}</Typography>
+                      <Box sx={{ mb: 2 }}>
+                        <div>
+                          <Button
+                            variant="contained"
+                            onClick={handleNext}
+                            sx={{ mt: 1, mr: 1 }}
+                          >
+                            {index === steps.length - 1 ? 'Finish' : 'Continue'}
+                          </Button>
+                          <Button
+                            disabled={index === 0}
+                            onClick={handleBack}
+                            sx={{ mt: 1, mr: 1 }}
+                          >
+                            Back
+                          </Button>
+                        </div>
+                      </Box>
+                    </StepContent>
+                  </Step>
+                ))}
+              </Stepper>
+              {activeStep === steps.length && (
+                <Paper square elevation={0} sx={{ p: 3 }}>
+                  <Typography>
+                    All steps completed - you&apos;re finished
+                  </Typography>
+                  <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
+                    Reset
                   </Button>
-                }
-                backButton={
-                  <Button
-                    size="small"
-                    onClick={handleBack}
-                    disabled={activeStep === 0}
-                  >
-                    <KeyboardArrowLeft />
-                    Back
-                  </Button>
-                }
-              />
+                </Paper>
+              )}
             </Box>
           </CardContent>
         </Card>
@@ -229,7 +252,7 @@ export default function Landing() {
                   .map(
                     d =>
                       d.messages && (
-                        <ListItem>
+                        <ListItem key={d.id}>
                           <ListItemButton component="a" href={`/chat/${d.id}`}>
                             <ListItemText
                               primaryTypographyProps={{
