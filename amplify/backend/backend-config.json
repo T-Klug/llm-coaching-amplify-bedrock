@@ -152,6 +152,11 @@
       ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
+    },
+    "textResponse": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     }
   },
   "notifications": {
@@ -249,6 +254,38 @@
         {
           "category": "function",
           "resourceName": "promptpersonlize"
+        }
+      ]
+    },
+    "AMPLIFY_function_textResponse_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "textResponse"
+        }
+      ]
+    },
+    "AMPLIFY_function_textResponse_pinpointApplicationId": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "textResponse"
+        }
+      ]
+    },
+    "AMPLIFY_function_textResponse_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "textResponse"
+        }
+      ]
+    },
+    "AMPLIFY_function_textResponse_secretsPathAmplifyAppId": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "textResponse"
         }
       ]
     },
