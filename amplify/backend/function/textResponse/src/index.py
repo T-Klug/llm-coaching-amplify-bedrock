@@ -8,11 +8,10 @@ def handler(event, context):
   print('received event:')
   print(event)
   message = json.loads(event['Records'][0]['Sns']['Message'])
-  customerPhoneNumber = message.originationNumber
-  chatBotPhoneNumber = message.destinationNumber
-  paramsSMS = {
-        'ApplicationId': AppId,
-        'MessageRequest': {
+  print(message)
+  customerPhoneNumber = message['originationNumber']
+  chatBotPhoneNumber = message['destinationNumber']
+  client.send_messages(ApplicationId = AppId, MessageRequest={
             'Addresses': {
                 customerPhoneNumber: {
                     'ChannelType': 'SMS'
@@ -25,7 +24,5 @@ def handler(event, context):
                     'OriginationNumber': chatBotPhoneNumber
                 }
             }
-        }
-    }
-  client.send_messages(paramsSMS)
+        })
   return 
