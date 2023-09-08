@@ -82,5 +82,6 @@ export const handler = async (event) => {
   const pinpoint = new PinpointClient();
   const smsCommand = new SendMessagesCommand(inputSMS);
   const pinpointStatus = await pinpoint.send(smsCommand);
+  console.log(pinpointStatus);
   return;
 };
