@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "{\"createdOn\":\"Mac\",\"createdBy\":\"Amplify\",\"createdWith\":\"12.3.0\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
+  "Description": "{\"createdOn\":\"Mac\",\"createdBy\":\"Amplify\",\"createdWith\":\"12.4.0\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
   "Parameters": {
     "CloudWatchRule": {
       "Type": "String",
@@ -16,10 +16,10 @@
     "s3Key": {
       "Type": "String"
     },
-    "secretsPathAmplifyAppId": {
+    "pinpointApplicationId": {
       "Type": "String"
     },
-    "pinpointApplicationId": {
+    "secretsPathAmplifyAppId": {
       "Type": "String"
     }
   },
@@ -53,12 +53,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "textResponse",
+            "textResponseNew",
             {
               "Fn::Join": [
                 "",
                 [
-                  "textResponse",
+                  "textResponseNew",
                   "-",
                   {
                     "Ref": "env"
@@ -76,7 +76,10 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
-            "openAIKey": {
+            "PinpointApplicationId": {
+              "Ref": "pinpointApplicationId"
+            },
+            "OpenAIKey": {
               "Fn::Join": [
                 "",
                 [
@@ -90,16 +93,13 @@
                         "env": {
                           "Ref": "env"
                         },
-                        "functionName": "textResponse"
+                        "functionName": "textResponseNew"
                       }
                     ]
                   },
-                  "openAIKey"
+                  "OpenAIKey"
                 ]
               ]
-            },
-            "PinpointApplicationId": {
-              "Ref": "pinpointApplicationId"
             }
           }
         },
@@ -109,9 +109,10 @@
             "Arn"
           ]
         },
-        "Runtime": "python3.8",
+        "Runtime": "nodejs18.x",
         "Layers": [],
-        "Timeout": 25
+        "MemorySize": 1024,
+        "Timeout": 60
       }
     },
     "LambdaExecutionRole": {
@@ -120,12 +121,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "amplifypocLambdaRolee966160a",
+            "amplifypocLambdaRole2e7ffe99",
             {
               "Fn::Join": [
                 "",
                 [
-                  "amplifypocLambdaRolee966160a",
+                  "amplifypocLambdaRole2e7ffe99",
                   "-",
                   {
                     "Ref": "env"
@@ -237,7 +238,7 @@
                           "env": {
                             "Ref": "env"
                           },
-                          "functionName": "textResponse"
+                          "functionName": "textResponseNew"
                         }
                       ]
                     },

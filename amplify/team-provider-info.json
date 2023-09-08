@@ -37,12 +37,13 @@
           "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
           "s3Key": "amplify-builds/AdminQueries9694e67c-764649344e6968577668-build.zip"
         },
-        "textResponse": {
+        "textResponseNew": {
+          "pinpointApplicationId": "90797490ef5a47d79865eb44f745ff4c",
           "secretsPathAmplifyAppId": "d1wywebcdb6lm1",
           "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
-          "s3Key": "amplify-builds/textResponse-7854304b586b51705a41-build.zip",
-          "pinpointApplicationId": "90797490ef5a47d79865eb44f745ff4c"
-        }
+          "s3Key": "amplify-builds/textResponseNew-4e6176766934784b6f78-build.zip"
+        },
+        "textResponse": {}
       },
       "analytics": {
         "amplifypoc": {},

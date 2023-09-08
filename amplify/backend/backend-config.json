@@ -153,8 +153,9 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "textResponse": {
+    "textResponseNew": {
       "build": true,
+      "dependsOn": [],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     }
@@ -163,7 +164,8 @@
     "amplifypoc": {
       "channels": [
         "InAppMessaging",
-        "Email"
+        "Email",
+        "SMS"
       ],
       "service": "Pinpoint"
     }
@@ -257,35 +259,35 @@
         }
       ]
     },
-    "AMPLIFY_function_textResponse_deploymentBucketName": {
+    "AMPLIFY_function_textResponseNew_deploymentBucketName": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "textResponse"
+          "resourceName": "textResponseNew"
         }
       ]
     },
-    "AMPLIFY_function_textResponse_pinpointApplicationId": {
+    "AMPLIFY_function_textResponseNew_pinpointApplicationId": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "textResponse"
+          "resourceName": "textResponseNew"
         }
       ]
     },
-    "AMPLIFY_function_textResponse_s3Key": {
+    "AMPLIFY_function_textResponseNew_s3Key": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "textResponse"
+          "resourceName": "textResponseNew"
         }
       ]
     },
-    "AMPLIFY_function_textResponse_secretsPathAmplifyAppId": {
+    "AMPLIFY_function_textResponseNew_secretsPathAmplifyAppId": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "textResponse"
+          "resourceName": "textResponseNew"
         }
       ]
     },

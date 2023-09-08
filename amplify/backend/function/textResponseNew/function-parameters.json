@@ -1,12 +1,13 @@
 {
+  "permissions": {},
   "lambdaLayers": [],
-  "secretNames": [
-    "openAIKey"
-  ],
   "environmentVariableList": [
     {
       "cloudFormationParameterName": "pinpointApplicationId",
       "environmentVariableName": "PinpointApplicationId"
     }
+  ],
+  "secretNames": [
+    "OpenAIKey"
   ]
 }
