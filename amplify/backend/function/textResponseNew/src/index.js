@@ -49,10 +49,13 @@ export const handler = async (event) => {
   const chatPrompt = ChatPromptTemplate.fromPromptMessages([
     [
       "system",
-      "You are AI developed for the purpose of career coaching. You only respond conversationally with a single statement, and a single follow up question around the user's topic.",
+      "You are AI developed for the purpose of career coaching. You only respond conversationally and compassionately",
     ],
     new MessagesPlaceholder("history"),
-    ["human", "{input}"],
+    [
+      "human",
+      "Respond to the input conversationally, and with a format of a statement followed by a question to learn more. The input is: {input}",
+    ],
   ]);
 
   const chat = new ChatOpenAI({
