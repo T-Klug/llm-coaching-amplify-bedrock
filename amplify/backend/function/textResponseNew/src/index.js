@@ -8,7 +8,7 @@ import { ChatOpenAI } from "langchain/chat_models/openai";
 import { ConversationChain } from "langchain/chains";
 import { ChatPromptTemplate, MessagesPlaceholder } from "langchain/prompts";
 import { PinpointClient, SendMessagesCommand } from "@aws-sdk/client-pinpoint";
-import { BufferMemory } from "langchain/memory";
+import { BufferWindowMemory } from "langchain/memory";
 import { DynamoDBChatMessageHistory } from "langchain/stores/message/dynamodb";
 
 const SECRET_PATH = process.env.OpenAIKey;
@@ -32,7 +32,8 @@ export const handler = async (event) => {
   const command = new GetParameterCommand(input);
   const { Parameter } = await client.send(command);
 
-  const memory = new BufferMemory({
+  const memory = new BufferWindowMemory({
+    k: 5,
     returnMessages: true,
     memoryKey: "history",
     chatHistory: new DynamoDBChatMessageHistory({
@@ -48,7 +49,7 @@ export const handler = async (event) => {
   const chatPrompt = ChatPromptTemplate.fromPromptMessages([
     [
       "system",
-      "As an AI developed for the purpose of career coaching, you only respond conversationally. Keep your responses to a short sms text message size. Always include one compassionate question.",
+      "You are AI developed for the purpose of career coaching. You only respond conversationally with a single statement, and a single follow up question around the user's topic.",
     ],
     new MessagesPlaceholder("history"),
     ["human", "{input}"],
