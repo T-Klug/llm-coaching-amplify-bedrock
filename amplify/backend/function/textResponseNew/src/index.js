@@ -5,13 +5,11 @@
 Amplify Params - DO NOT EDIT */
 import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
 import { ChatOpenAI } from "langchain/chat_models/openai";
-import { LLMChain } from "langchain/chains";
-import {
-  ChatPromptTemplate,
-  SystemMessagePromptTemplate,
-  HumanMessagePromptTemplate,
-} from "langchain/prompts";
+import { ConversationChain } from "langchain/chains";
+import { ChatPromptTemplate, MessagesPlaceholder } from "langchain/prompts";
 import { PinpointClient, SendMessagesCommand } from "@aws-sdk/client-pinpoint";
+import { BufferMemory } from "langchain/memory";
+import { DynamoDBChatMessageHistory } from "langchain/stores/message/dynamodb";
 
 const SECRET_PATH = process.env.OpenAIKey;
 const AppId = process.env.PinpointApplicationId;
@@ -34,31 +32,40 @@ export const handler = async (event) => {
   const command = new GetParameterCommand(input);
   const { Parameter } = await client.send(command);
 
-  const template =
-    "As an AI developed for the purpose of career coaching, you only respond with an open-ended single question. ";
-  const systemMessagePrompt =
-    SystemMessagePromptTemplate.fromTemplate(template);
-  const humanTemplate = "{text}";
-  const humanMessagePrompt =
-    HumanMessagePromptTemplate.fromTemplate(humanTemplate);
+  const memory = new BufferMemory({
+    returnMessages: true,
+    memoryKey: "history",
+    chatHistory: new DynamoDBChatMessageHistory({
+      tableName: "langchain",
+      partitionKey: "id",
+      sessionId: customerPhoneNumber,
+      config: {
+        region: "us-east-1",
+      },
+    }),
+  });
 
   const chatPrompt = ChatPromptTemplate.fromPromptMessages([
-    systemMessagePrompt,
-    humanMessagePrompt,
+    [
+      "system",
+      "As an AI developed for the purpose of career coaching, you only respond conversationally. Keep your responses to a short sms text message size. Always include one compassionate question.",
+    ],
+    new MessagesPlaceholder("history"),
+    ["human", "{input}"],
   ]);
 
   const chat = new ChatOpenAI({
-    temperature: 0,
     openAIApiKey: Parameter.Value,
   });
 
-  const chain = new LLMChain({
+  const chain = new ConversationChain({
     llm: chat,
     prompt: chatPrompt,
+    memory: memory,
   });
 
   const result = await chain.call({
-    text: response,
+    input: response,
   });
   console.log(result);
   const inputSMS = {
@@ -71,7 +78,7 @@ export const handler = async (event) => {
       },
       MessageConfiguration: {
         SMSMessage: {
-          Body: result.text,
+          Body: result.response,
           MessageType: "TRANSACTIONAL",
           OriginationNumber: chatbotPhoneNumber,
         },

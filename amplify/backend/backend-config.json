@@ -314,8 +314,55 @@
           "resourceName": "Pinpoint"
         }
       ]
+    },
+    "AMPLIFY_storage_langchain_arn": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "langchain"
+        }
+      ]
+    },
+    "AMPLIFY_storage_langchain_partitionKeyName": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "langchain"
+        }
+      ]
+    },
+    "AMPLIFY_storage_langchain_partitionKeyType": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "langchain"
+        }
+      ]
+    },
+    "AMPLIFY_storage_langchain_region": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "langchain"
+        }
+      ]
+    },
+    "AMPLIFY_storage_langchain_tableName": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "langchain"
+        }
+      ]
     }
   },
   "predictions": {},
-  "storage": {}
+  "storage": {
+    "langchain": {
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB",
+      "serviceType": "imported"
+    }
+  }
 }

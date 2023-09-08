@@ -2,5 +2,20 @@
   {
     "Action": ["mobiletargeting:SendMessages"],
     "Resource": ["arn:aws:mobiletargeting:us-east-1:210396912496:apps/*"]
+  },
+  {
+    "Action": [
+      "dynamodb:BatchGetItem",
+      "dynamodb:BatchWriteItem",
+      "dynamodb:ConditionCheckItem",
+      "dynamodb:PutItem",
+      "dynamodb:DescribeTable",
+      "dynamodb:DeleteItem",
+      "dynamodb:GetItem",
+      "dynamodb:Scan",
+      "dynamodb:Query",
+      "dynamodb:UpdateItem"
+    ],
+    "Resource": ["arn:aws:dynamodb:us-east-1:210396912496:table/langchain"]
   }
 ]
