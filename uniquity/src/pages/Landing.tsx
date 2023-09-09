@@ -78,32 +78,73 @@ const assessment = [
   },
   {
     id: 2,
-    question: 'I enjoy exploring new ideas and concepts.',
+    question: 'I am open to trying different approaches to problem-solving.',
     rating: 0,
   },
   {
     id: 3,
-    question: 'I enjoy exploring new ideas and concepts.',
+    question: 'I find value in seeking out diverse perspectives.',
     rating: 0,
   },
   {
     id: 4,
-    question: 'I enjoy exploring new ideas and concepts.',
+    question: 'I am organized and like to plan my tasks in advance.',
     rating: 0,
   },
   {
     id: 5,
-    question: 'I enjoy exploring new ideas and concepts.',
-    rating: 0,
-  },
-  {
-    id: 5,
-    question: 'I enjoy exploring new ideas and concepts.',
+    question: 'I pay attention to detail and accuracy in my work.',
     rating: 0,
   },
   {
     id: 6,
-    question: 'I enjoy exploring new ideas and concepts.',
+    question:
+      'I set specific goals for myself and work towards achieving them.',
+    rating: 0,
+  },
+  {
+    id: 7,
+    question: 'I enjoy socializing and interacting with new people.',
+    rating: 0,
+  },
+  {
+    id: 8,
+    question: 'I feel energized by attending social events and gatherings.',
+    rating: 0,
+  },
+  {
+    id: 9,
+    question: 'I am comfortable expressing my opinions in group settings.',
+    rating: 0,
+  },
+  {
+    id: 10,
+    question: 'I find it important to maintain harmonious relationships.',
+    rating: 0,
+  },
+  {
+    id: 11,
+    question: 'I am approachable and willing to help others.',
+    rating: 0,
+  },
+  {
+    id: 12,
+    question: 'I enjoy collaborating and finding common ground with others.',
+    rating: 0,
+  },
+  {
+    id: 13,
+    question: 'I often experience worry and anxiety about future outcomes.',
+    rating: 0,
+  },
+  {
+    id: 14,
+    question: 'I tend to dwell on negative experiences and thoughts.',
+    rating: 0,
+  },
+  {
+    id: 15,
+    question: 'I am sensitive to criticism and feedback from others.',
     rating: 0,
   },
 ];
@@ -194,7 +235,17 @@ export default function Landing() {
     {
       label: 'Take a personality test',
       component: assess.map((q, index) => (
-        <div key={index}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginTop: 5,
+            borderBottomStyle: 'solid',
+            borderBottomWidth: 1,
+          }}
+          key={index}
+        >
           <Typography component="legend">{q.question}</Typography>
           <Rating
             value={q.rating}
