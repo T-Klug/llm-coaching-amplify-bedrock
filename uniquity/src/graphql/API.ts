@@ -274,6 +274,66 @@ export type DeleteUserSpecificPromptInput = {
   _version?: number | null,
 };
 
+export type CreateUserProfileInput = {
+  id?: string | null,
+  userId?: string | null,
+  name?: string | null,
+  personalityTest?: string | null,
+  background?: string | null,
+  phone?: string | null,
+  optInText?: boolean | null,
+  owner?: string | null,
+  _version?: number | null,
+};
+
+export type ModelUserProfileConditionInput = {
+  userId?: ModelStringInput | null,
+  name?: ModelStringInput | null,
+  personalityTest?: ModelStringInput | null,
+  background?: ModelStringInput | null,
+  phone?: ModelStringInput | null,
+  optInText?: ModelBooleanInput | null,
+  owner?: ModelStringInput | null,
+  and?: Array< ModelUserProfileConditionInput | null > | null,
+  or?: Array< ModelUserProfileConditionInput | null > | null,
+  not?: ModelUserProfileConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type UserProfile = {
+  __typename: "UserProfile",
+  id: string,
+  userId?: string | null,
+  name?: string | null,
+  personalityTest?: string | null,
+  background?: string | null,
+  phone?: string | null,
+  optInText?: boolean | null,
+  owner?: string | null,
+  createdAt: string,
+  updatedAt: string,
+  _version: number,
+  _deleted?: boolean | null,
+  _lastChangedAt: number,
+};
+
+export type UpdateUserProfileInput = {
+  id: string,
+  userId?: string | null,
+  name?: string | null,
+  personalityTest?: string | null,
+  background?: string | null,
+  phone?: string | null,
+  optInText?: boolean | null,
+  owner?: string | null,
+  _version?: number | null,
+};
+
+export type DeleteUserProfileInput = {
+  id: string,
+  _version?: number | null,
+};
+
 export type CreateOpenAIChatFuncInput = {
   id?: string | null,
   messages?: Array< MessagesTypeFuncInput | null > | null,
@@ -362,6 +422,28 @@ export type ModelUserSpecificPromptConnection = {
   startedAt?: number | null,
 };
 
+export type ModelUserProfileFilterInput = {
+  id?: ModelIDInput | null,
+  userId?: ModelStringInput | null,
+  name?: ModelStringInput | null,
+  personalityTest?: ModelStringInput | null,
+  background?: ModelStringInput | null,
+  phone?: ModelStringInput | null,
+  optInText?: ModelBooleanInput | null,
+  owner?: ModelStringInput | null,
+  and?: Array< ModelUserProfileFilterInput | null > | null,
+  or?: Array< ModelUserProfileFilterInput | null > | null,
+  not?: ModelUserProfileFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type ModelUserProfileConnection = {
+  __typename: "ModelUserProfileConnection",
+  items:  Array<UserProfile | null >,
+  nextToken?: string | null,
+  startedAt?: number | null,
+};
+
 export type ModelSubscriptionOpenAIChatFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   user?: ModelSubscriptionIDInput | null,
@@ -435,6 +517,19 @@ export type ModelSubscriptionUserSpecificPromptFilterInput = {
   lastChatId?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionUserSpecificPromptFilterInput | null > | null,
   or?: Array< ModelSubscriptionUserSpecificPromptFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type ModelSubscriptionUserProfileFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  userId?: ModelSubscriptionStringInput | null,
+  name?: ModelSubscriptionStringInput | null,
+  personalityTest?: ModelSubscriptionStringInput | null,
+  background?: ModelSubscriptionStringInput | null,
+  phone?: ModelSubscriptionStringInput | null,
+  optInText?: ModelSubscriptionBooleanInput | null,
+  and?: Array< ModelSubscriptionUserProfileFilterInput | null > | null,
+  or?: Array< ModelSubscriptionUserProfileFilterInput | null > | null,
   _deleted?: ModelBooleanInput | null,
 };
 
@@ -694,6 +789,78 @@ export type DeleteUserSpecificPromptMutation = {
     userId?: string | null,
     prompt?: string | null,
     lastChatId?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type CreateUserProfileMutationVariables = {
+  input: CreateUserProfileInput,
+  condition?: ModelUserProfileConditionInput | null,
+};
+
+export type CreateUserProfileMutation = {
+  createUserProfile?:  {
+    __typename: "UserProfile",
+    id: string,
+    userId?: string | null,
+    name?: string | null,
+    personalityTest?: string | null,
+    background?: string | null,
+    phone?: string | null,
+    optInText?: boolean | null,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type UpdateUserProfileMutationVariables = {
+  input: UpdateUserProfileInput,
+  condition?: ModelUserProfileConditionInput | null,
+};
+
+export type UpdateUserProfileMutation = {
+  updateUserProfile?:  {
+    __typename: "UserProfile",
+    id: string,
+    userId?: string | null,
+    name?: string | null,
+    personalityTest?: string | null,
+    background?: string | null,
+    phone?: string | null,
+    optInText?: boolean | null,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type DeleteUserProfileMutationVariables = {
+  input: DeleteUserProfileInput,
+  condition?: ModelUserProfileConditionInput | null,
+};
+
+export type DeleteUserProfileMutation = {
+  deleteUserProfile?:  {
+    __typename: "UserProfile",
+    id: string,
+    userId?: string | null,
+    name?: string | null,
+    personalityTest?: string | null,
+    background?: string | null,
+    phone?: string | null,
+    optInText?: boolean | null,
+    owner?: string | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -1037,6 +1204,90 @@ export type SyncUserSpecificPromptsQuery = {
   } | null,
 };
 
+export type GetUserProfileQueryVariables = {
+  id: string,
+};
+
+export type GetUserProfileQuery = {
+  getUserProfile?:  {
+    __typename: "UserProfile",
+    id: string,
+    userId?: string | null,
+    name?: string | null,
+    personalityTest?: string | null,
+    background?: string | null,
+    phone?: string | null,
+    optInText?: boolean | null,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type ListUserProfilesQueryVariables = {
+  filter?: ModelUserProfileFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListUserProfilesQuery = {
+  listUserProfiles?:  {
+    __typename: "ModelUserProfileConnection",
+    items:  Array< {
+      __typename: "UserProfile",
+      id: string,
+      userId?: string | null,
+      name?: string | null,
+      personalityTest?: string | null,
+      background?: string | null,
+      phone?: string | null,
+      optInText?: boolean | null,
+      owner?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type SyncUserProfilesQueryVariables = {
+  filter?: ModelUserProfileFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncUserProfilesQuery = {
+  syncUserProfiles?:  {
+    __typename: "ModelUserProfileConnection",
+    items:  Array< {
+      __typename: "UserProfile",
+      id: string,
+      userId?: string | null,
+      name?: string | null,
+      personalityTest?: string | null,
+      background?: string | null,
+      phone?: string | null,
+      optInText?: boolean | null,
+      owner?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
 export type OnCreateOpenAIChatSubscriptionVariables = {
   filter?: ModelSubscriptionOpenAIChatFilterInput | null,
   owner?: string | null,
@@ -1284,6 +1535,78 @@ export type OnDeleteUserSpecificPromptSubscription = {
     userId?: string | null,
     prompt?: string | null,
     lastChatId?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnCreateUserProfileSubscriptionVariables = {
+  filter?: ModelSubscriptionUserProfileFilterInput | null,
+  owner?: string | null,
+};
+
+export type OnCreateUserProfileSubscription = {
+  onCreateUserProfile?:  {
+    __typename: "UserProfile",
+    id: string,
+    userId?: string | null,
+    name?: string | null,
+    personalityTest?: string | null,
+    background?: string | null,
+    phone?: string | null,
+    optInText?: boolean | null,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnUpdateUserProfileSubscriptionVariables = {
+  filter?: ModelSubscriptionUserProfileFilterInput | null,
+  owner?: string | null,
+};
+
+export type OnUpdateUserProfileSubscription = {
+  onUpdateUserProfile?:  {
+    __typename: "UserProfile",
+    id: string,
+    userId?: string | null,
+    name?: string | null,
+    personalityTest?: string | null,
+    background?: string | null,
+    phone?: string | null,
+    optInText?: boolean | null,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnDeleteUserProfileSubscriptionVariables = {
+  filter?: ModelSubscriptionUserProfileFilterInput | null,
+  owner?: string | null,
+};
+
+export type OnDeleteUserProfileSubscription = {
+  onDeleteUserProfile?:  {
+    __typename: "UserProfile",
+    id: string,
+    userId?: string | null,
+    name?: string | null,
+    personalityTest?: string | null,
+    background?: string | null,
+    phone?: string | null,
+    optInText?: boolean | null,
+    owner?: string | null,
     createdAt: string,
     updatedAt: string,
     _version: number,

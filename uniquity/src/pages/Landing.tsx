@@ -22,13 +22,19 @@ import Button from '@mui/material/Button';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { DataStore } from 'aws-amplify';
-import { LazyOpenAIChat, OpenAIChat } from '../models';
+import {
+  LazyOpenAIChat,
+  LazyUserProfile,
+  OpenAIChat,
+  UserProfile,
+} from '../models';
 import { HistoryDrawer } from '../components/landing/HistoryDrawer/HistoryDrawer';
 import Paper from '@mui/material/Paper';
 import Step from '@mui/material/Step';
 import StepContent from '@mui/material/StepContent';
 import Stepper from '@mui/material/Stepper';
 import StepLabel from '@mui/material/StepLabel';
+import TextField from '@mui/material/TextField';
 
 const StyledRating = styled(Rating)({
   '& .MuiRating-iconFilled': {
@@ -64,28 +70,41 @@ const customIcons: {
   },
 };
 
-const steps = [
+const assessment = [
   {
-    label: 'What is your name?',
-    description: `Enter your name so we know what to call you.`,
+    id: 1,
+    question: 'I enjoy exploring new ideas and concepts.',
+    rating: 0,
   },
   {
-    label: 'Take a personality test',
-    description:
-      'Take a test to help our AI Coach tailor their tone and approach to you.',
+    id: 2,
+    question: 'I enjoy exploring new ideas and concepts.',
+    rating: 0,
   },
   {
-    label: 'Share your professional background',
-    description: `Add your resume or linkedIn so we sessions are further tailored to you.`,
+    id: 3,
+    question: 'I enjoy exploring new ideas and concepts.',
+    rating: 0,
   },
   {
-    label: 'Review your profile',
-    description: `Take a look at your profile and make any corrections needed.`,
+    id: 4,
+    question: 'I enjoy exploring new ideas and concepts.',
+    rating: 0,
   },
   {
-    label: 'Get to know your AI coach',
-    description:
-      'Get to know your personalized coach a little with some fun icebreakers.',
+    id: 5,
+    question: 'I enjoy exploring new ideas and concepts.',
+    rating: 0,
+  },
+  {
+    id: 5,
+    question: 'I enjoy exploring new ideas and concepts.',
+    rating: 0,
+  },
+  {
+    id: 6,
+    question: 'I enjoy exploring new ideas and concepts.',
+    rating: 0,
   },
 ];
 
@@ -100,8 +119,121 @@ export default function Landing() {
   const navigate = useNavigate();
   // Chat data
   const [data, setData] = useState<LazyOpenAIChat[]>();
+  const [userProfile, setUserProfile] = useState<LazyUserProfile>(
+    new UserProfile({
+      name: '',
+      personalityTest: '',
+      background: '',
+    }),
+  );
+  const [assess, setAssess] = useState(assessment);
+  useEffect(() => {
+    const sub = DataStore.observeQuery(UserProfile).subscribe(({ items }) => {
+      if (items && items.length > 0) {
+        setUserProfile(items[0]);
+        setAssess(JSON.parse(items[0].personalityTest!));
+        if (!items[0].name) {
+          setActiveStep(0);
+        } else if (
+          !items[0].personalityTest ||
+          items[0].personalityTest?.includes('0')
+        ) {
+          setActiveStep(1);
+        } else if (!items[0].background) {
+          setActiveStep(2);
+        } else if (
+          items[0].name &&
+          items[0].personalityTest &&
+          !items[0].personalityTest?.includes('0') &&
+          items[0].background
+        ) {
+          setActiveStep(3);
+        }
+      }
+    });
+    return () => sub.unsubscribe();
+  }, []);
 
-  const handleNext = () => {
+  // Websocket for the chats
+  useEffect(() => {
+    const sub = DataStore.observeQuery(OpenAIChat).subscribe(({ items }) => {
+      setData(items);
+    });
+    return () => sub.unsubscribe();
+  }, []);
+
+  function handleRating(index: number, newValue: number | null) {
+    const nextAssess = assess.map((q, i) => {
+      if (i === index) {
+        q.rating = newValue || 0;
+        return q;
+      } else {
+        return q;
+      }
+    });
+    setAssess(nextAssess);
+  }
+
+  const steps = [
+    {
+      label: 'What is your name?',
+      component: (
+        <TextField
+          sx={{ width: '60%' }}
+          value={userProfile.name}
+          onChange={event =>
+            setUserProfile(prev =>
+              UserProfile.copyOf(prev, draft => {
+                draft.name = event.target.value;
+              }),
+            )
+          }
+        />
+      ),
+    },
+    {
+      label: 'Take a personality test',
+      component: assess.map((q, index) => (
+        <div key={index}>
+          <Typography component="legend">{q.question}</Typography>
+          <Rating
+            value={q.rating}
+            onChange={(_event, newValue) => handleRating(index, newValue)}
+          ></Rating>
+        </div>
+      )),
+    },
+    {
+      label: 'Share your professional background',
+      description: `Add your resume or linkedIn so we sessions are further tailored to you.`,
+      component: (
+        <TextField
+          fullWidth
+          multiline
+          minRows={10}
+          value={userProfile.background}
+          onChange={event =>
+            setUserProfile(prev =>
+              UserProfile.copyOf(prev, draft => {
+                draft.background = event.target.value;
+              }),
+            )
+          }
+        />
+      ),
+    },
+    {
+      label: 'Get to know your AI coach',
+      description:
+        'Get to know your personalized coach a little with some fun icebreakers.',
+    },
+  ];
+
+  const handleNext = async () => {
+    const saveData = UserProfile.copyOf(userProfile, d => {
+      d.personalityTest = JSON.stringify(assess);
+    });
+    await DataStore.save(saveData);
     setActiveStep(prevActiveStep => prevActiveStep + 1);
   };
 
@@ -112,14 +244,6 @@ export default function Landing() {
   const handleReset = () => {
     setActiveStep(0);
   };
-
-  // Websocket for the chats
-  useEffect(() => {
-    const sub = DataStore.observeQuery(OpenAIChat).subscribe(({ items }) => {
-      setData(items);
-    });
-    return () => sub.unsubscribe();
-  }, []);
 
   return (
     <>
@@ -178,13 +302,16 @@ export default function Landing() {
                     <StepContent>
                       <Typography>{step.description}</Typography>
                       <Box sx={{ mb: 2 }}>
+                        {step.component}
                         <div>
                           <Button
                             variant="contained"
                             onClick={handleNext}
                             sx={{ mt: 1, mr: 1 }}
                           >
-                            {index === steps.length - 1 ? 'Finish' : 'Continue'}
+                            {index === steps.length - 1
+                              ? 'Start Chatting Now'
+                              : 'Continue'}
                           </Button>
                           <Button
                             disabled={index === 0}

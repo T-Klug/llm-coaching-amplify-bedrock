@@ -239,3 +239,72 @@ export const onDeleteUserSpecificPrompt = /* GraphQL */ `
     }
   }
 `;
+export const onCreateUserProfile = /* GraphQL */ `
+  subscription OnCreateUserProfile(
+    $filter: ModelSubscriptionUserProfileFilterInput
+    $owner: String
+  ) {
+    onCreateUserProfile(filter: $filter, owner: $owner) {
+      id
+      userId
+      name
+      personalityTest
+      background
+      phone
+      optInText
+      owner
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onUpdateUserProfile = /* GraphQL */ `
+  subscription OnUpdateUserProfile(
+    $filter: ModelSubscriptionUserProfileFilterInput
+    $owner: String
+  ) {
+    onUpdateUserProfile(filter: $filter, owner: $owner) {
+      id
+      userId
+      name
+      personalityTest
+      background
+      phone
+      optInText
+      owner
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onDeleteUserProfile = /* GraphQL */ `
+  subscription OnDeleteUserProfile(
+    $filter: ModelSubscriptionUserProfileFilterInput
+    $owner: String
+  ) {
+    onDeleteUserProfile(filter: $filter, owner: $owner) {
+      id
+      userId
+      name
+      personalityTest
+      background
+      phone
+      optInText
+      owner
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;

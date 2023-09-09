@@ -91,3 +91,16 @@ type UserSpecificPrompt
   prompt: String
   lastChatId: String
 }
+
+type UserProfile
+  @model
+  @auth(rules: [{ allow: owner, operations: [read, create, update, delete] }]) {
+  id: ID!
+  userId: String
+  name: String
+  personalityTest: String
+  background: String
+  phone: String
+  optInText: Boolean
+  owner: String @auth(rules: [{ allow: owner, operations: [read, delete] }])
+}

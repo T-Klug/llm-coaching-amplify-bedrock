@@ -254,6 +254,75 @@ export const deleteUserSpecificPrompt = /* GraphQL */ `
     }
   }
 `;
+export const createUserProfile = /* GraphQL */ `
+  mutation CreateUserProfile(
+    $input: CreateUserProfileInput!
+    $condition: ModelUserProfileConditionInput
+  ) {
+    createUserProfile(input: $input, condition: $condition) {
+      id
+      userId
+      name
+      personalityTest
+      background
+      phone
+      optInText
+      owner
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const updateUserProfile = /* GraphQL */ `
+  mutation UpdateUserProfile(
+    $input: UpdateUserProfileInput!
+    $condition: ModelUserProfileConditionInput
+  ) {
+    updateUserProfile(input: $input, condition: $condition) {
+      id
+      userId
+      name
+      personalityTest
+      background
+      phone
+      optInText
+      owner
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const deleteUserProfile = /* GraphQL */ `
+  mutation DeleteUserProfile(
+    $input: DeleteUserProfileInput!
+    $condition: ModelUserProfileConditionInput
+  ) {
+    deleteUserProfile(input: $input, condition: $condition) {
+      id
+      userId
+      name
+      personalityTest
+      background
+      phone
+      optInText
+      owner
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
 export const createOpenAIChatFunc = /* GraphQL */ `
   mutation CreateOpenAIChatFunc($input: CreateOpenAIChatFuncInput) {
     createOpenAIChatFunc(input: $input) {
