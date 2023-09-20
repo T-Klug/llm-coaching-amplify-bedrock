@@ -5,6 +5,8 @@ import {
   LazyIcebreakerChat,
   IcebreakerChat,
   OpenAiRoleType,
+  LazyUserProfile,
+  UserProfile,
 } from '../models';
 import DotsTyping from '../components/chat/typing/dotsTyping';
 import {
@@ -27,12 +29,14 @@ import './Chat.css';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import OverflowText from '../components/chat/OverflowText';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import Button from '@mui/material/Button';
 
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
 export default function IceBreakerChatPage() {
   const { icebreakerId } = useParams();
+  const navigate = useNavigate();
   // Chat data
   const [data, setData] = useState<LazyIcebreakerChat[]>();
   // Selected Chat ID
@@ -52,6 +56,18 @@ export default function IceBreakerChatPage() {
     useSpeechRecognition();
   // Snack Bar
   const [snackbarOpen, setSnackBarOpen] = useState<boolean>(false);
+  const [userProfile, setUserProfile] = useState<LazyUserProfile>();
+
+  async function handleChatDone() {
+    if (userProfile) {
+      await DataStore.save(
+        UserProfile.copyOf(userProfile, draft => {
+          draft.completedIcebreakers = true;
+        }),
+      );
+      navigate('/');
+    }
+  }
 
   // TODO: Replace with a function to get an icebreaker
   const chatIntro =
@@ -60,6 +76,15 @@ export default function IceBreakerChatPage() {
   useEffect(() => {
     setChat(transcript);
   }, [transcript]);
+
+  useEffect(() => {
+    const sub = DataStore.observeQuery(UserProfile).subscribe(({ items }) => {
+      if (items && items.length > 0) {
+        setUserProfile(items[0]);
+      }
+    });
+    return () => sub.unsubscribe();
+  }, []);
 
   const lastMessageRef = useRef<HTMLDivElement | null>(null);
 
@@ -257,6 +282,8 @@ export default function IceBreakerChatPage() {
           bottom: 0,
           alignContent: 'center',
           alignItems: 'center',
+          justifyContent: 'space-around',
+          flexDirection: 'row',
           backgroundColor: prefersDarkMode ? 'black' : 'white',
         }}
       >
@@ -304,6 +331,13 @@ export default function IceBreakerChatPage() {
           value={chat}
           onChange={t => setChat(t.target.value)}
         />
+        <Button
+          onClick={handleChatDone}
+          sx={{ borderRadius: 8 }}
+          variant="contained"
+        >
+          I know my coach
+        </Button>
       </AppBar>
     </>
   );

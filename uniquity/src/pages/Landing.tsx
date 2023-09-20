@@ -29,7 +29,6 @@ import {
   UserProfile,
 } from '../models';
 import { HistoryDrawer } from '../components/landing/HistoryDrawer/HistoryDrawer';
-import Paper from '@mui/material/Paper';
 import Step from '@mui/material/Step';
 import StepContent from '@mui/material/StepContent';
 import Stepper from '@mui/material/Stepper';
@@ -186,9 +185,12 @@ export default function Landing() {
           items[0].name &&
           items[0].personalityTest &&
           !items[0].personalityTest?.includes('":0') &&
-          items[0].background
+          items[0].background &&
+          !items[0].completedIcebreakers
         ) {
           setActiveStep(3);
+        } else if (items[0].completedIcebreakers) {
+          setActiveStep(4);
         }
       }
     });
@@ -369,6 +371,7 @@ export default function Landing() {
                               : 'Continue'}
                           </Button>
                           <Button
+                            variant="outlined"
                             disabled={index === 0}
                             onClick={handleBack}
                             sx={{ mt: 1, mr: 1 }}
@@ -382,14 +385,16 @@ export default function Landing() {
                 ))}
               </Stepper>
               {activeStep === steps.length && (
-                <Paper square elevation={0} sx={{ p: 3 }}>
-                  <Typography>
-                    All steps completed - you&apos;re finished
-                  </Typography>
-                  <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
-                    Reset
+                <>
+                  <Typography>All steps completed!</Typography>
+                  <Button
+                    variant="contained"
+                    onClick={handleReset}
+                    sx={{ mt: 1, mr: 1 }}
+                  >
+                    Restart
                   </Button>
-                </Paper>
+                </>
               )}
             </Box>
           </CardContent>

@@ -402,6 +402,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "completedIcebreakers": {
+                    "name": "completedIcebreakers",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "owner": {
                     "name": "owner",
                     "isArray": false,
@@ -568,5 +575,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "79ec347cdb5d8bc62c78ce6b31f7b5e8"
+    "version": "dca17b6239200e589967cc9b70f1fd4d"
 };
