@@ -412,3 +412,23 @@ export const createOpenAIChatFunc = /* GraphQL */ `
     }
   }
 `;
+export const chatIcebreakerFunc = /* GraphQL */ `
+  mutation ChatIcebreakerFunc($input: ChatIcebreakerFuncInput) {
+    chatIcebreakerFunc(input: $input) {
+      id
+      messages {
+        role
+        content
+        __typename
+      }
+      user
+      owner
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;

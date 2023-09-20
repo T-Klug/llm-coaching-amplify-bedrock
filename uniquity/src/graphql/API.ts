@@ -390,6 +390,14 @@ export type MessagesTypeFuncInput = {
   content?: string | null,
 };
 
+export type ChatIcebreakerFuncInput = {
+  id?: string | null,
+  messages?: Array< MessagesTypeFuncInput | null > | null,
+  user?: string | null,
+  owner?: string | null,
+  _version?: number | null,
+};
+
 export type ModelOpenAIChatFilterInput = {
   id?: ModelIDInput | null,
   user?: ModelIDInput | null,
@@ -1016,6 +1024,29 @@ export type CreateOpenAIChatFuncMutationVariables = {
 export type CreateOpenAIChatFuncMutation = {
   createOpenAIChatFunc?:  {
     __typename: "OpenAIChat",
+    id: string,
+    messages?:  Array< {
+      __typename: "MessagesType",
+      role?: OpenAIRoleType | null,
+      content?: string | null,
+    } | null > | null,
+    user?: string | null,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type ChatIcebreakerFuncMutationVariables = {
+  input?: ChatIcebreakerFuncInput | null,
+};
+
+export type ChatIcebreakerFuncMutation = {
+  chatIcebreakerFunc?:  {
+    __typename: "IcebreakerChat",
     id: string,
     messages?:  Array< {
       __typename: "MessagesType",

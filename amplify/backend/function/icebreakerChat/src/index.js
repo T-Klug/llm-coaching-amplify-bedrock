@@ -85,7 +85,7 @@ const updateChatModel = async (id, newContent) => {
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
-exports.handler = async (event) => {
+export const handler = async (event) => {
   console.log(`EVENT: ${JSON.stringify(event)}`);
   if (!event.arguments?.input?.id) {
     return "400 bad argument";

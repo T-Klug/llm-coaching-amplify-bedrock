@@ -30,9 +30,20 @@ input CreateOpenAIChatFuncInput {
   _version: Int
 }
 
+input ChatIcebreakerFuncInput {
+  id: ID
+  messages: [MessagesTypeFuncInput]
+  user: ID
+  owner: String
+  _version: Int
+}
+
 type Mutation {
   createOpenAIChatFunc(input: CreateOpenAIChatFuncInput): OpenAIChat
     @function(name: "createOpenAiChat-${env}")
+    @auth(rules: [{ allow: private }])
+  chatIcebreakerFunc(input: ChatIcebreakerFuncInput): IcebreakerChat
+    @function(name: "icebreakerChat-${env}")
     @auth(rules: [{ allow: private }])
 }
 

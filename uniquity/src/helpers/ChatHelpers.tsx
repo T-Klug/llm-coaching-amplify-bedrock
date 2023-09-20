@@ -1,10 +1,10 @@
 import { API } from 'aws-amplify';
 import { IcebreakerChat, OpenAIChat } from '../models';
 import {
-  CreateIcebreakerChatInput,
+  ChatIcebreakerFuncInput,
   CreateOpenAIChatFuncMutation,
 } from '../graphql/API';
-import { createOpenAIChatFunc } from '../graphql/mutations';
+import { chatIcebreakerFunc, createOpenAIChatFunc } from '../graphql/mutations';
 import { GraphQLQuery } from '@aws-amplify/api';
 
 export const individualContributorHelperPrompts = [
@@ -43,8 +43,8 @@ export const submitIceBreaker = async (response: IcebreakerChat) => {
     id: saveModel.id,
     messages: saveModel.messages,
   };
-  await API.graphql<GraphQLQuery<CreateIcebreakerChatInput>>({
-    query: createOpenAIChatFunc,
+  await API.graphql<GraphQLQuery<ChatIcebreakerFuncInput>>({
+    query: chatIcebreakerFunc,
     variables: { input: functionInput },
   });
 };
