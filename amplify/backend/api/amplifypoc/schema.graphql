@@ -113,6 +113,7 @@ type UserProfile
   background: String
   phone: String
   optInText: Boolean
+  completedIcebreakers: Boolean
   owner: String @auth(rules: [{ allow: owner, operations: [read, delete] }])
 }
 
