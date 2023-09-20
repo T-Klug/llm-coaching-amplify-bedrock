@@ -45,6 +45,36 @@ const updateIcebreakerChat = /* GraphQL */ `
   }
 `;
 
+const listUserProfiles = /* GraphQL */ `
+  query ListUserProfiles(
+    $filter: ModelUserProfileFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUserProfiles(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        userId
+        name
+        personalityTest
+        background
+        phone
+        optInText
+        owner
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+
 // Helper function to update the Model
 const updateChatModel = async (id, newContent) => {
   const endpoint = new URL(GRAPHQL_ENDPOINT);
@@ -95,6 +125,50 @@ const updateChatModel = async (id, newContent) => {
   return body.data.updateIcebreakerChat;
 };
 
+// Helper to get UserProfile
+const getUserProfile = async (userId) => {
+  const endpoint = new URL(GRAPHQL_ENDPOINT);
+  const variables = {
+    filter: {
+      owner: { eq: `${userId}::${userId}` },
+    },
+  };
+
+  const signer = new SignatureV4({
+    credentials: defaultProvider(),
+    region: AWS_REGION,
+    service: "appsync",
+    sha256: Sha256,
+  });
+
+  const requestToBeSigned = new HttpRequest({
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      host: endpoint.host,
+    },
+    hostname: endpoint.host,
+    body: JSON.stringify({ query: listUserProfiles, variables }),
+    path: endpoint.pathname,
+  });
+
+  const signed = await signer.sign(requestToBeSigned);
+  const request = new Request(endpoint, signed);
+  let response;
+  let body;
+  try {
+    console.log("GETTING USER PROFILE");
+    response = await fetch(request);
+    body = await response.json();
+    if (body.errors)
+      console.log(`ERROR GETTING USER PROFILE: ${JSON.stringify(body.errors)}`);
+  } catch (error) {
+    console.log(`ERROR GETTING USER PROFILE: ${JSON.stringify(error.message)}`);
+  }
+
+  return body.data.listUserProfiles;
+};
+
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
@@ -125,6 +199,8 @@ export const handler = async (event) => {
     }),
   });
 
+  const userProfile = await getUserProfile(event.identity.claims.username);
+  console.log(userProfile);
   const chatPrompt = ChatPromptTemplate.fromPromptMessages([
     [
       "system",
@@ -133,7 +209,7 @@ export const handler = async (event) => {
     new MessagesPlaceholder("history"),
     [
       "human",
-      "Respond to the input conversationally, and with an icebreaker format. The input is: {input}",
+      `Respond to the input conversationally, and with an icebreaker format the users name is ${userProfile.name} and you should refer to them as such. The input is: {input}`,
     ],
   ]);
 

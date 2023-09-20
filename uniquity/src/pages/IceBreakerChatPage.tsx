@@ -71,11 +71,10 @@ export default function IceBreakerChatPage() {
 
   // TODO: Replace with a function to get an icebreaker
   const chatIntro =
-    "Hi there! I'm Uniquity AI, your personal development coach. It is great to meet you! I would love to understand what is important to you when it comes to your career?";
-  // If they are creating transcripts with the microphone set the chat input to it
-  useEffect(() => {
-    setChat(transcript);
-  }, [transcript]);
+    // If they are creating transcripts with the microphone set the chat input to it
+    useEffect(() => {
+      setChat(transcript);
+    }, [transcript]);
 
   useEffect(() => {
     const sub = DataStore.observeQuery(UserProfile).subscribe(({ items }) => {
@@ -127,7 +126,10 @@ export default function IceBreakerChatPage() {
       response = await DataStore.save(
         new IcebreakerChat({
           messages: [
-            { role: 'ASSISTANT', content: chatIntro },
+            {
+              role: 'ASSISTANT',
+              content: `Hi ${userProfile?.name}! I'm Uniquity AI, your personal development coach. It is great to meet you! I would love to understand what is important to you when it comes to your career?`,
+            },
             { role: 'USER', content: chat },
           ],
         }),
@@ -196,7 +198,10 @@ export default function IceBreakerChatPage() {
               <ThumbDownRounded sx={{ cursor: 'pointer' }} color="primary" />
             </div>
 
-            <OverflowText chatPosition="left" content={chatIntro} />
+            <OverflowText
+              chatPosition="left"
+              content={`Hi ${userProfile?.name}! I'm Uniquity AI, your personal development coach. It is great to meet you! I would love to understand what is important to you when it comes to your career?`}
+            />
           </Box>
         </div>
         {data &&
