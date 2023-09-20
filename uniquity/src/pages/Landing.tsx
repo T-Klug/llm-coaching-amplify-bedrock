@@ -34,6 +34,11 @@ import StepContent from '@mui/material/StepContent';
 import Stepper from '@mui/material/Stepper';
 import StepLabel from '@mui/material/StepLabel';
 import TextField from '@mui/material/TextField';
+import CardMedia from '@mui/material/CardMedia';
+import getToKnowImage from '../assets/get-to-know.jpg';
+import goalImage from '../assets/goals.jpg';
+import adhocImage from '../assets/adhoc.jpg';
+import celebrateImage from '../assets/celebrate.jpg';
 
 const StyledRating = styled(Rating)({
   '& .MuiRating-iconFilled': {
@@ -317,6 +322,12 @@ export default function Landing() {
         }}
       >
         <Card raised sx={{ borderRadius: 6, width: '85%' }}>
+          <CardMedia
+            sx={{ objectPosition: '20% 80%' }}
+            height={200}
+            component="img"
+            image={celebrateImage}
+          />
           <CardContent>
             <div style={{ marginBottom: 10 }}>
               <Typography variant="h5">Your coaching streak</Typography>
@@ -334,9 +345,11 @@ export default function Landing() {
           </CardContent>
         </Card>
         <Card raised sx={{ borderRadius: 6, marginTop: 5, width: '85%' }}>
+          <CardMedia height={200} component="img" image={getToKnowImage} />
           <CardContent>
             <div style={{ marginBottom: 10 }}>
               <Typography variant="h5">Personalize your AI coach</Typography>
+
               <Divider flexItem variant="middle" />
             </div>
             <Box>
@@ -400,6 +413,12 @@ export default function Landing() {
           </CardContent>
         </Card>
         <Card raised sx={{ borderRadius: 6, marginTop: 5, width: '85%' }}>
+          <CardMedia
+            sx={{ objectPosition: 'top' }}
+            height={200}
+            component="img"
+            image={goalImage}
+          />
           <CardContent>
             <div style={{ marginBottom: 10 }}>
               <Typography variant="h5">
@@ -414,6 +433,7 @@ export default function Landing() {
           </CardContent>
         </Card>
         <Card raised sx={{ borderRadius: 6, marginTop: 5, width: '85%' }}>
+          <CardMedia height={200} component="img" image={adhocImage} />
           <CardContent>
             <div style={{ marginBottom: 10 }}>
               <Typography variant="h5">
