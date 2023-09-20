@@ -40,7 +40,7 @@ import Chat from './pages/Chat';
 import AdminPromptManager from './pages/AdminPromptManager';
 import Landing from './pages/Landing';
 import GoalChat from './pages/GoalChat';
-import UserProfile from './pages/UserProfile';
+import UserProfile from './pages/UserProfilePage';
 import IceBreakerChatPage from './pages/IceBreakerChatPage';
 
 //configure the amplify resources
