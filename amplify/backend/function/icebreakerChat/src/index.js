@@ -1,3 +1,15 @@
+import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
+import { ChatOpenAI } from "langchain/chat_models/openai";
+import { ConversationChain } from "langchain/chains";
+import { ChatPromptTemplate, MessagesPlaceholder } from "langchain/prompts";
+import { BufferWindowMemory } from "langchain/memory";
+import { DynamoDBChatMessageHistory } from "langchain/stores/message/dynamodb";
+import crypto from "@aws-crypto/sha256-js";
+import { defaultProvider } from "@aws-sdk/credential-provider-node";
+import { SignatureV4 } from "@aws-sdk/signature-v4";
+import { HttpRequest } from "@aws-sdk/protocol-http";
+import { default as fetch, Request } from "node-fetch";
+
 /* Amplify Params - DO NOT EDIT
 	API_AMPLIFYPOC_GRAPHQLAPIENDPOINTOUTPUT
 	API_AMPLIFYPOC_GRAPHQLAPIIDOUTPUT
@@ -7,6 +19,7 @@ Amplify Params - DO NOT EDIT */
 const SECRET_PATH = process.env.OpenAIKey;
 const GRAPHQL_ENDPOINT = process.env.API_AMPLIFYPOC_GRAPHQLAPIENDPOINTOUTPUT;
 const AWS_REGION = process.env.AWS_REGION || "us-east-1";
+const { Sha256 } = crypto;
 
 const updateIcebreakerChat = /* GraphQL */ `
   mutation UpdateIcebreakerChat(
@@ -135,7 +148,9 @@ export const handler = async (event) => {
   });
 
   const result = await chain.call({
-    input: response,
+    input:
+      event.arguments.input.messages[event.arguments.input.messages.length - 1]
+        .content,
   });
 
   const chatModel = await updateChatModel(event.arguments?.input?.id, result);
