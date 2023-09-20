@@ -308,3 +308,72 @@ export const onDeleteUserProfile = /* GraphQL */ `
     }
   }
 `;
+export const onCreateIcebreakerChat = /* GraphQL */ `
+  subscription OnCreateIcebreakerChat(
+    $filter: ModelSubscriptionIcebreakerChatFilterInput
+    $owner: String
+  ) {
+    onCreateIcebreakerChat(filter: $filter, owner: $owner) {
+      id
+      messages {
+        role
+        content
+        __typename
+      }
+      user
+      owner
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onUpdateIcebreakerChat = /* GraphQL */ `
+  subscription OnUpdateIcebreakerChat(
+    $filter: ModelSubscriptionIcebreakerChatFilterInput
+    $owner: String
+  ) {
+    onUpdateIcebreakerChat(filter: $filter, owner: $owner) {
+      id
+      messages {
+        role
+        content
+        __typename
+      }
+      user
+      owner
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onDeleteIcebreakerChat = /* GraphQL */ `
+  subscription OnDeleteIcebreakerChat(
+    $filter: ModelSubscriptionIcebreakerChatFilterInput
+    $owner: String
+  ) {
+    onDeleteIcebreakerChat(filter: $filter, owner: $owner) {
+      id
+      messages {
+        role
+        content
+        __typename
+      }
+      user
+      owner
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;

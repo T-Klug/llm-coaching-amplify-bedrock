@@ -104,3 +104,10 @@ type UserProfile
   optInText: Boolean
   owner: String @auth(rules: [{ allow: owner, operations: [read, delete] }])
 }
+
+type IcebreakerChat @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  messages: [MessagesType]
+  user: ID
+  owner: String @auth(rules: [{ allow: owner, operations: [read, delete] }])
+}

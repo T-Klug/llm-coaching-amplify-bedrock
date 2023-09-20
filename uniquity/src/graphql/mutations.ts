@@ -323,6 +323,75 @@ export const deleteUserProfile = /* GraphQL */ `
     }
   }
 `;
+export const createIcebreakerChat = /* GraphQL */ `
+  mutation CreateIcebreakerChat(
+    $input: CreateIcebreakerChatInput!
+    $condition: ModelIcebreakerChatConditionInput
+  ) {
+    createIcebreakerChat(input: $input, condition: $condition) {
+      id
+      messages {
+        role
+        content
+        __typename
+      }
+      user
+      owner
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const updateIcebreakerChat = /* GraphQL */ `
+  mutation UpdateIcebreakerChat(
+    $input: UpdateIcebreakerChatInput!
+    $condition: ModelIcebreakerChatConditionInput
+  ) {
+    updateIcebreakerChat(input: $input, condition: $condition) {
+      id
+      messages {
+        role
+        content
+        __typename
+      }
+      user
+      owner
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const deleteIcebreakerChat = /* GraphQL */ `
+  mutation DeleteIcebreakerChat(
+    $input: DeleteIcebreakerChatInput!
+    $condition: ModelIcebreakerChatConditionInput
+  ) {
+    deleteIcebreakerChat(input: $input, condition: $condition) {
+      id
+      messages {
+        role
+        content
+        __typename
+      }
+      user
+      owner
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
 export const createOpenAIChatFunc = /* GraphQL */ `
   mutation CreateOpenAIChatFunc($input: CreateOpenAIChatFuncInput) {
     createOpenAIChatFunc(input: $input) {

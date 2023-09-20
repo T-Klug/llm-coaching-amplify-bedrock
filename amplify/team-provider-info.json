@@ -43,7 +43,12 @@
           "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
           "s3Key": "amplify-builds/textResponseNew-536a6a4c386145337a6f-build.zip"
         },
-        "textResponse": {}
+        "textResponse": {},
+        "icebreakerChat": {
+          "secretsPathAmplifyAppId": "d1wywebcdb6lm1",
+          "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
+          "s3Key": "amplify-builds/icebreakerChat-7a4f4b514b6371637642-build.zip"
+        }
       },
       "analytics": {
         "amplifypoc": {},
@@ -65,6 +70,13 @@
           "tableName": "langchain",
           "region": "us-east-1",
           "arn": "arn:aws:dynamodb:us-east-1:210396912496:table/langchain",
+          "partitionKeyName": "id",
+          "partitionKeyType": "S"
+        },
+        "icebreakerchat": {
+          "tableName": "icebreaker-chat",
+          "region": "us-east-1",
+          "arn": "arn:aws:dynamodb:us-east-1:210396912496:table/icebreaker-chat",
           "partitionKeyName": "id",
           "partitionKeyType": "S"
         }

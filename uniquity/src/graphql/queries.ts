@@ -402,3 +402,87 @@ export const syncUserProfiles = /* GraphQL */ `
     }
   }
 `;
+export const getIcebreakerChat = /* GraphQL */ `
+  query GetIcebreakerChat($id: ID!) {
+    getIcebreakerChat(id: $id) {
+      id
+      messages {
+        role
+        content
+        __typename
+      }
+      user
+      owner
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const listIcebreakerChats = /* GraphQL */ `
+  query ListIcebreakerChats(
+    $filter: ModelIcebreakerChatFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listIcebreakerChats(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        messages {
+          role
+          content
+          __typename
+        }
+        user
+        owner
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const syncIcebreakerChats = /* GraphQL */ `
+  query SyncIcebreakerChats(
+    $filter: ModelIcebreakerChatFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncIcebreakerChats(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        messages {
+          role
+          content
+          __typename
+        }
+        user
+        owner
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;

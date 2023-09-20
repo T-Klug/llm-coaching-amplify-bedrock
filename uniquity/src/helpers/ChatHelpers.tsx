@@ -1,6 +1,9 @@
 import { API } from 'aws-amplify';
-import { OpenAIChat } from '../models';
-import { CreateOpenAIChatFuncMutation } from '../graphql/API';
+import { IcebreakerChat, OpenAIChat } from '../models';
+import {
+  CreateIcebreakerChatInput,
+  CreateOpenAIChatFuncMutation,
+} from '../graphql/API';
 import { createOpenAIChatFunc } from '../graphql/mutations';
 import { GraphQLQuery } from '@aws-amplify/api';
 
@@ -29,6 +32,18 @@ export const submitOpenAI = async (response: OpenAIChat) => {
     messages: saveModel.messages,
   };
   await API.graphql<GraphQLQuery<CreateOpenAIChatFuncMutation>>({
+    query: createOpenAIChatFunc,
+    variables: { input: functionInput },
+  });
+};
+
+export const submitIceBreaker = async (response: IcebreakerChat) => {
+  const saveModel = IcebreakerChat.copyOf(response, draft => draft);
+  const functionInput = {
+    id: saveModel.id,
+    messages: saveModel.messages,
+  };
+  await API.graphql<GraphQLQuery<CreateIcebreakerChatInput>>({
     query: createOpenAIChatFunc,
     variables: { input: functionInput },
   });

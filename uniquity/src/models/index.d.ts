@@ -197,3 +197,35 @@ export declare type UserProfile = LazyLoading extends LazyLoadingDisabled ? Eage
 export declare const UserProfile: (new (init: ModelInit<UserProfile>) => UserProfile) & {
   copyOf(source: UserProfile, mutator: (draft: MutableModel<UserProfile>) => MutableModel<UserProfile> | void): UserProfile;
 }
+
+type EagerIcebreakerChat = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<IcebreakerChat, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly messages?: (MessagesType | null)[] | null;
+  readonly user?: string | null;
+  readonly owner?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyIcebreakerChat = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<IcebreakerChat, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly messages?: (MessagesType | null)[] | null;
+  readonly user?: string | null;
+  readonly owner?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type IcebreakerChat = LazyLoading extends LazyLoadingDisabled ? EagerIcebreakerChat : LazyIcebreakerChat
+
+export declare const IcebreakerChat: (new (init: ModelInit<IcebreakerChat>) => IcebreakerChat) & {
+  copyOf(source: IcebreakerChat, mutator: (draft: MutableModel<IcebreakerChat>) => MutableModel<IcebreakerChat> | void): IcebreakerChat;
+}

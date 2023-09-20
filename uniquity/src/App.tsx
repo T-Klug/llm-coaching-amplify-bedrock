@@ -41,6 +41,7 @@ import AdminPromptManager from './pages/AdminPromptManager';
 import Landing from './pages/Landing';
 import GoalChat from './pages/GoalChat';
 import UserProfile from './pages/UserProfile';
+import IceBreakerChatPage from './pages/IceBreakerChatPage';
 
 //configure the amplify resources
 Amplify.configure(awsExports);
@@ -100,6 +101,14 @@ const router = createBrowserRouter([
       {
         path: 'chat',
         element: <Chat />,
+      },
+      {
+        path: 'icebreaker/:icebreakerId',
+        element: <IceBreakerChatPage />,
+      },
+      {
+        path: 'icebreaker',
+        element: <IceBreakerChatPage />,
       },
       {
         path: 'admin',

@@ -138,6 +138,21 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "icebreakerChat": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ],
+          "category": "api",
+          "resourceName": "amplifypoc"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "promptpersonlize": {
       "build": true,
       "dependsOn": [
@@ -235,6 +250,30 @@
         }
       ]
     },
+    "AMPLIFY_function_icebreakerChat_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "icebreakerChat"
+        }
+      ]
+    },
+    "AMPLIFY_function_icebreakerChat_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "icebreakerChat"
+        }
+      ]
+    },
+    "AMPLIFY_function_icebreakerChat_secretsPathAmplifyAppId": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "icebreakerChat"
+        }
+      ]
+    },
     "AMPLIFY_function_promptpersonlize_deploymentBucketName": {
       "usedBy": [
         {
@@ -315,6 +354,46 @@
         }
       ]
     },
+    "AMPLIFY_storage_icebreakerchat_arn": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "icebreakerchat"
+        }
+      ]
+    },
+    "AMPLIFY_storage_icebreakerchat_partitionKeyName": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "icebreakerchat"
+        }
+      ]
+    },
+    "AMPLIFY_storage_icebreakerchat_partitionKeyType": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "icebreakerchat"
+        }
+      ]
+    },
+    "AMPLIFY_storage_icebreakerchat_region": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "icebreakerchat"
+        }
+      ]
+    },
+    "AMPLIFY_storage_icebreakerchat_tableName": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "icebreakerchat"
+        }
+      ]
+    },
     "AMPLIFY_storage_langchain_arn": {
       "usedBy": [
         {
@@ -358,6 +437,12 @@
   },
   "predictions": {},
   "storage": {
+    "icebreakerchat": {
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB",
+      "serviceType": "imported"
+    },
     "langchain": {
       "dependsOn": [],
       "providerPlugin": "awscloudformation",

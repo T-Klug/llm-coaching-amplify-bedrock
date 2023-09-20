@@ -357,7 +357,11 @@ export default function Landing() {
                         <div>
                           <Button
                             variant="contained"
-                            onClick={handleNext}
+                            onClick={
+                              index === steps.length - 1
+                                ? () => navigate('/icebreaker')
+                                : handleNext
+                            }
                             sx={{ mt: 1, mr: 1 }}
                           >
                             {index === steps.length - 1

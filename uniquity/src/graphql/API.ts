@@ -334,6 +334,49 @@ export type DeleteUserProfileInput = {
   _version?: number | null,
 };
 
+export type CreateIcebreakerChatInput = {
+  id?: string | null,
+  messages?: Array< MessagesTypeInput | null > | null,
+  user?: string | null,
+  owner?: string | null,
+  _version?: number | null,
+};
+
+export type ModelIcebreakerChatConditionInput = {
+  user?: ModelIDInput | null,
+  owner?: ModelStringInput | null,
+  and?: Array< ModelIcebreakerChatConditionInput | null > | null,
+  or?: Array< ModelIcebreakerChatConditionInput | null > | null,
+  not?: ModelIcebreakerChatConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type IcebreakerChat = {
+  __typename: "IcebreakerChat",
+  id: string,
+  messages?:  Array<MessagesType | null > | null,
+  user?: string | null,
+  owner?: string | null,
+  createdAt: string,
+  updatedAt: string,
+  _version: number,
+  _deleted?: boolean | null,
+  _lastChangedAt: number,
+};
+
+export type UpdateIcebreakerChatInput = {
+  id: string,
+  messages?: Array< MessagesTypeInput | null > | null,
+  user?: string | null,
+  owner?: string | null,
+  _version?: number | null,
+};
+
+export type DeleteIcebreakerChatInput = {
+  id: string,
+  _version?: number | null,
+};
+
 export type CreateOpenAIChatFuncInput = {
   id?: string | null,
   messages?: Array< MessagesTypeFuncInput | null > | null,
@@ -444,6 +487,23 @@ export type ModelUserProfileConnection = {
   startedAt?: number | null,
 };
 
+export type ModelIcebreakerChatFilterInput = {
+  id?: ModelIDInput | null,
+  user?: ModelIDInput | null,
+  owner?: ModelStringInput | null,
+  and?: Array< ModelIcebreakerChatFilterInput | null > | null,
+  or?: Array< ModelIcebreakerChatFilterInput | null > | null,
+  not?: ModelIcebreakerChatFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type ModelIcebreakerChatConnection = {
+  __typename: "ModelIcebreakerChatConnection",
+  items:  Array<IcebreakerChat | null >,
+  nextToken?: string | null,
+  startedAt?: number | null,
+};
+
 export type ModelSubscriptionOpenAIChatFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   user?: ModelSubscriptionIDInput | null,
@@ -530,6 +590,14 @@ export type ModelSubscriptionUserProfileFilterInput = {
   optInText?: ModelSubscriptionBooleanInput | null,
   and?: Array< ModelSubscriptionUserProfileFilterInput | null > | null,
   or?: Array< ModelSubscriptionUserProfileFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type ModelSubscriptionIcebreakerChatFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  user?: ModelSubscriptionIDInput | null,
+  and?: Array< ModelSubscriptionIcebreakerChatFilterInput | null > | null,
+  or?: Array< ModelSubscriptionIcebreakerChatFilterInput | null > | null,
   _deleted?: ModelBooleanInput | null,
 };
 
@@ -860,6 +928,78 @@ export type DeleteUserProfileMutation = {
     background?: string | null,
     phone?: string | null,
     optInText?: boolean | null,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type CreateIcebreakerChatMutationVariables = {
+  input: CreateIcebreakerChatInput,
+  condition?: ModelIcebreakerChatConditionInput | null,
+};
+
+export type CreateIcebreakerChatMutation = {
+  createIcebreakerChat?:  {
+    __typename: "IcebreakerChat",
+    id: string,
+    messages?:  Array< {
+      __typename: "MessagesType",
+      role?: OpenAIRoleType | null,
+      content?: string | null,
+    } | null > | null,
+    user?: string | null,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type UpdateIcebreakerChatMutationVariables = {
+  input: UpdateIcebreakerChatInput,
+  condition?: ModelIcebreakerChatConditionInput | null,
+};
+
+export type UpdateIcebreakerChatMutation = {
+  updateIcebreakerChat?:  {
+    __typename: "IcebreakerChat",
+    id: string,
+    messages?:  Array< {
+      __typename: "MessagesType",
+      role?: OpenAIRoleType | null,
+      content?: string | null,
+    } | null > | null,
+    user?: string | null,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type DeleteIcebreakerChatMutationVariables = {
+  input: DeleteIcebreakerChatInput,
+  condition?: ModelIcebreakerChatConditionInput | null,
+};
+
+export type DeleteIcebreakerChatMutation = {
+  deleteIcebreakerChat?:  {
+    __typename: "IcebreakerChat",
+    id: string,
+    messages?:  Array< {
+      __typename: "MessagesType",
+      role?: OpenAIRoleType | null,
+      content?: string | null,
+    } | null > | null,
+    user?: string | null,
     owner?: string | null,
     createdAt: string,
     updatedAt: string,
@@ -1288,6 +1428,90 @@ export type SyncUserProfilesQuery = {
   } | null,
 };
 
+export type GetIcebreakerChatQueryVariables = {
+  id: string,
+};
+
+export type GetIcebreakerChatQuery = {
+  getIcebreakerChat?:  {
+    __typename: "IcebreakerChat",
+    id: string,
+    messages?:  Array< {
+      __typename: "MessagesType",
+      role?: OpenAIRoleType | null,
+      content?: string | null,
+    } | null > | null,
+    user?: string | null,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type ListIcebreakerChatsQueryVariables = {
+  filter?: ModelIcebreakerChatFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListIcebreakerChatsQuery = {
+  listIcebreakerChats?:  {
+    __typename: "ModelIcebreakerChatConnection",
+    items:  Array< {
+      __typename: "IcebreakerChat",
+      id: string,
+      messages?:  Array< {
+        __typename: "MessagesType",
+        role?: OpenAIRoleType | null,
+        content?: string | null,
+      } | null > | null,
+      user?: string | null,
+      owner?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type SyncIcebreakerChatsQueryVariables = {
+  filter?: ModelIcebreakerChatFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncIcebreakerChatsQuery = {
+  syncIcebreakerChats?:  {
+    __typename: "ModelIcebreakerChatConnection",
+    items:  Array< {
+      __typename: "IcebreakerChat",
+      id: string,
+      messages?:  Array< {
+        __typename: "MessagesType",
+        role?: OpenAIRoleType | null,
+        content?: string | null,
+      } | null > | null,
+      user?: string | null,
+      owner?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
 export type OnCreateOpenAIChatSubscriptionVariables = {
   filter?: ModelSubscriptionOpenAIChatFilterInput | null,
   owner?: string | null,
@@ -1606,6 +1830,78 @@ export type OnDeleteUserProfileSubscription = {
     background?: string | null,
     phone?: string | null,
     optInText?: boolean | null,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnCreateIcebreakerChatSubscriptionVariables = {
+  filter?: ModelSubscriptionIcebreakerChatFilterInput | null,
+  owner?: string | null,
+};
+
+export type OnCreateIcebreakerChatSubscription = {
+  onCreateIcebreakerChat?:  {
+    __typename: "IcebreakerChat",
+    id: string,
+    messages?:  Array< {
+      __typename: "MessagesType",
+      role?: OpenAIRoleType | null,
+      content?: string | null,
+    } | null > | null,
+    user?: string | null,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnUpdateIcebreakerChatSubscriptionVariables = {
+  filter?: ModelSubscriptionIcebreakerChatFilterInput | null,
+  owner?: string | null,
+};
+
+export type OnUpdateIcebreakerChatSubscription = {
+  onUpdateIcebreakerChat?:  {
+    __typename: "IcebreakerChat",
+    id: string,
+    messages?:  Array< {
+      __typename: "MessagesType",
+      role?: OpenAIRoleType | null,
+      content?: string | null,
+    } | null > | null,
+    user?: string | null,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnDeleteIcebreakerChatSubscriptionVariables = {
+  filter?: ModelSubscriptionIcebreakerChatFilterInput | null,
+  owner?: string | null,
+};
+
+export type OnDeleteIcebreakerChatSubscription = {
+  onDeleteIcebreakerChat?:  {
+    __typename: "IcebreakerChat",
+    id: string,
+    messages?:  Array< {
+      __typename: "MessagesType",
+      role?: OpenAIRoleType | null,
+      content?: string | null,
+    } | null > | null,
+    user?: string | null,
     owner?: string | null,
     createdAt: string,
     updatedAt: string,
