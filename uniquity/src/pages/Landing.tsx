@@ -177,7 +177,7 @@ export default function Landing() {
           setActiveStep(0);
         } else if (
           !items[0].personalityTest ||
-          items[0].personalityTest?.includes('0')
+          items[0].personalityTest?.includes('":0')
         ) {
           setActiveStep(1);
         } else if (!items[0].background) {
@@ -185,7 +185,7 @@ export default function Landing() {
         } else if (
           items[0].name &&
           items[0].personalityTest &&
-          !items[0].personalityTest?.includes('0') &&
+          !items[0].personalityTest?.includes('":0') &&
           items[0].background
         ) {
           setActiveStep(3);
