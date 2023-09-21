@@ -1,12 +1,13 @@
-import {
-  Box,
-  Grid,
-  InputAdornment,
-  Rating,
-  TextField,
-  Tooltip,
-  Typography,
-} from '@mui/material';
+import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import InputAdornment from '@mui/material/InputAdornment';
+import Rating from '@mui/material/Rating';
+import Snackbar from '@mui/material/Snackbar';
+import TextField from '@mui/material/TextField';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
 import { DataStore } from 'aws-amplify';
 import { useEffect, useState } from 'react';
 import { LazyUserProfile, UserProfile } from '../models';
@@ -17,6 +18,8 @@ export default function UserProfilePage() {
   const [userProfile, setUserProfile] = useState<LazyUserProfile>();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [assess, setAssess] = useState<any>();
+  // Snack Bar
+  const [snackbarOpen, setSnackBarOpen] = useState<boolean>(false);
   useEffect(() => {
     const sub = DataStore.observeQuery(UserProfile).subscribe(({ items }) => {
       if (items && items.length > 0) {
@@ -56,6 +59,20 @@ export default function UserProfilePage() {
         alignContent: 'center',
       }}
     >
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={() => setSnackBarOpen(false)}
+      >
+        <Alert
+          onClose={() => setSnackBarOpen(false)}
+          severity="success"
+          sx={{ width: '100%' }}
+        >
+          Profile Saved
+        </Alert>
+      </Snackbar>
       <Box m={2}>
         <Grid mb={5} item xs={12}>
           <img
@@ -72,7 +89,7 @@ export default function UserProfilePage() {
               fullWidth
               value={userProfile ? userProfile.name : ''}
               onChange={event => {
-                DataStore.save(
+                setUserProfile(
                   UserProfile.copyOf(userProfile!, draft => {
                     draft.name = event.target.value;
                   }),
@@ -84,7 +101,8 @@ export default function UserProfilePage() {
             <TextField
               label="Phone number"
               fullWidth
-              helperText="(123)-123-1234"
+              helperText="123-123-1234"
+              value={userProfile ? userProfile.phone : ''}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -97,6 +115,13 @@ export default function UserProfilePage() {
                   </InputAdornment>
                 ),
               }}
+              onChange={event => {
+                setUserProfile(
+                  UserProfile.copyOf(userProfile!, draft => {
+                    draft.phone = event.target.value;
+                  }),
+                );
+              }}
             />
           </Grid>
 
@@ -108,13 +133,25 @@ export default function UserProfilePage() {
               minRows={10}
               value={userProfile ? userProfile.background : ''}
               onChange={event => {
-                DataStore.save(
+                setUserProfile(
                   UserProfile.copyOf(userProfile!, draft => {
                     draft.background = event.target.value;
                   }),
                 );
               }}
             />
+          </Grid>
+          <Grid item xs={12}>
+            <Button
+              onClick={async () => {
+                await DataStore.save(userProfile!);
+                setSnackBarOpen(true);
+              }}
+              sx={{ float: 'right', width: 80 }}
+              variant="contained"
+            >
+              Save
+            </Button>
           </Grid>
           <Grid mb={5} item xs={12}>
             <Typography mt={5} variant="h5">
