@@ -267,6 +267,7 @@ export const createUserProfile = /* GraphQL */ `
       background
       phone
       optInText
+      completedIcebreakers
       owner
       createdAt
       updatedAt
@@ -290,6 +291,7 @@ export const updateUserProfile = /* GraphQL */ `
       background
       phone
       optInText
+      completedIcebreakers
       owner
       createdAt
       updatedAt
@@ -313,6 +315,7 @@ export const deleteUserProfile = /* GraphQL */ `
       background
       phone
       optInText
+      completedIcebreakers
       owner
       createdAt
       updatedAt

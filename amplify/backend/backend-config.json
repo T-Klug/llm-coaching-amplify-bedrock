@@ -170,7 +170,16 @@
     },
     "textResponseNew": {
       "build": true,
-      "dependsOn": [],
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ],
+          "category": "api",
+          "resourceName": "amplifypoc"
+        }
+      ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     }

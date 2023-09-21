@@ -1,4 +1,4 @@
-# Force update
+# Force updated
 enum OpenAIRoleType {
   SYSTEM
   ASSISTANT

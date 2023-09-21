@@ -101,7 +101,7 @@ export default function UserProfilePage() {
             <TextField
               label="Phone number"
               fullWidth
-              helperText="123-123-1234"
+              helperText="1231231234"
               value={userProfile ? userProfile.phone : ''}
               InputProps={{
                 endAdornment: (

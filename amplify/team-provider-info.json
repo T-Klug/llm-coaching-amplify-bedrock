@@ -38,10 +38,10 @@
           "s3Key": "amplify-builds/AdminQueries9694e67c-764649344e6968577668-build.zip"
         },
         "textResponseNew": {
-          "pinpointApplicationId": "90797490ef5a47d79865eb44f745ff4c",
           "secretsPathAmplifyAppId": "d1wywebcdb6lm1",
           "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
-          "s3Key": "amplify-builds/textResponseNew-536a6a4c386145337a6f-build.zip"
+          "s3Key": "amplify-builds/textResponseNew-466375565568596d6a61-build.zip",
+          "pinpointApplicationId": "90797490ef5a47d79865eb44f745ff4c"
         },
         "textResponse": {},
         "icebreakerChat": {
