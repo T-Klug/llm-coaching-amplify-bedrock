@@ -179,7 +179,7 @@ export default function Landing() {
       ),
     },
     {
-      label: 'Let us know what motivates you at work',
+      label: 'What motivates you at work',
       component: assess.map((q, index) => (
         <div
           style={{
@@ -202,7 +202,7 @@ export default function Landing() {
     },
     {
       label: 'Share your professional background',
-      description: `Add your resume or linkedIn so we sessions are further tailored to you.`,
+      description: `Describe your background, copy in your resume, or copy in your linkedin profile contents`,
       component: (
         <TextField
           fullWidth
@@ -222,7 +222,7 @@ export default function Landing() {
     {
       label: 'Get to know your AI coach',
       description:
-        'Get to know your personalized coach more with some fun icebreakers.',
+        'Get to know your personalized coach with some fun icebreakers.',
     },
   ];
 
@@ -325,7 +325,6 @@ export default function Landing() {
                 <>
                   <Typography mb={3}>
                     All steps completed! This is the your peronal summary you're coach will start using. You can always change it in your profile.
-                    you.
                   </Typography>
                   <TextField
                     disabled
