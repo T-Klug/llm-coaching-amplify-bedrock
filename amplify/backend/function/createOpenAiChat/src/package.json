@@ -6,13 +6,13 @@
   "main": "index.js",
   "license": "Apache-2.0",
   "dependencies": {
-    "@aws-crypto/sha256-js": "^2.0.1",
-    "@aws-sdk/client-ssm": "^3.341.0",
-    "@aws-sdk/credential-provider-node": "^3.76.0",
-    "@aws-sdk/protocol-http": "^3.58.0",
-    "@aws-sdk/signature-v4": "^3.58.0",
-    "node-fetch": "^3.2.3",
-    "openai": "^3.2.1"
+    "@aws-crypto/sha256-js": "^5.0.0",
+    "@aws-sdk/client-ssm": "^3.414.0",
+    "@aws-sdk/credential-provider-node": "^3.414.0",
+    "@aws-sdk/protocol-http": "^3.374.0",
+    "@aws-sdk/signature-v4": "^3.374.0",
+    "node-fetch": "^3.3.2",
+    "langchain": "^0.0.152"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.92"

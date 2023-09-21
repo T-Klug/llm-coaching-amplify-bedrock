@@ -86,23 +86,6 @@ type Feedback
   owner: String
 }
 
-type UserSpecificPrompt
-  @model
-  @auth(
-    rules: [
-      {
-        allow: groups
-        groups: ["Admin"]
-        operations: [read, create, update, delete]
-      }
-    ]
-  ) {
-  id: ID!
-  userId: String
-  prompt: String
-  lastChatId: String
-}
-
 type UserProfile
   @model
   @auth(rules: [{ allow: owner, operations: [read, create, update, delete] }]) {

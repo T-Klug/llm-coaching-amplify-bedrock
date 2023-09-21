@@ -126,38 +126,6 @@ export declare const Feedback: (new (init: ModelInit<Feedback>) => Feedback) & {
   copyOf(source: Feedback, mutator: (draft: MutableModel<Feedback>) => MutableModel<Feedback> | void): Feedback;
 }
 
-type EagerUserSpecificPrompt = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<UserSpecificPrompt, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly userId?: string | null;
-  readonly prompt?: string | null;
-  readonly lastChatId?: string | null;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-}
-
-type LazyUserSpecificPrompt = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<UserSpecificPrompt, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly userId?: string | null;
-  readonly prompt?: string | null;
-  readonly lastChatId?: string | null;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-}
-
-export declare type UserSpecificPrompt = LazyLoading extends LazyLoadingDisabled ? EagerUserSpecificPrompt : LazyUserSpecificPrompt
-
-export declare const UserSpecificPrompt: (new (init: ModelInit<UserSpecificPrompt>) => UserSpecificPrompt) & {
-  copyOf(source: UserSpecificPrompt, mutator: (draft: MutableModel<UserSpecificPrompt>) => MutableModel<UserSpecificPrompt> | void): UserSpecificPrompt;
-}
-
 type EagerUserProfile = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<UserProfile, 'id'>;

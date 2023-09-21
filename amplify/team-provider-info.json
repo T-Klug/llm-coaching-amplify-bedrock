@@ -25,14 +25,9 @@
         "createOpenAiChat": {
           "secretsPathAmplifyAppId": "d1wywebcdb6lm1",
           "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
-          "s3Key": "amplify-builds/createOpenAiChat-5155324556526e414955-build.zip"
+          "s3Key": "amplify-builds/createOpenAiChat-4a4c34396d6744542f77-build.zip"
         },
         "createOpenAIChat": {},
-        "promptpersonlize": {
-          "secretsPathAmplifyAppId": "d1wywebcdb6lm1",
-          "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
-          "s3Key": "amplify-builds/promptpersonlize-656a692b2b676f663264-build.zip"
-        },
         "AdminQueries9694e67c": {
           "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
           "s3Key": "amplify-builds/AdminQueries9694e67c-764649344e6968577668-build.zip"
@@ -47,8 +42,9 @@
         "icebreakerChat": {
           "secretsPathAmplifyAppId": "d1wywebcdb6lm1",
           "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
-          "s3Key": "amplify-builds/icebreakerChat-7171396f6e4177526f6b-build.zip"
-        }
+          "s3Key": "amplify-builds/icebreakerChat-48784655494f59552b33-build.zip"
+        },
+        "promptpersonlize": {}
       },
       "analytics": {
         "amplifypoc": {},
@@ -77,6 +73,13 @@
           "tableName": "icebreaker-chat",
           "region": "us-east-1",
           "arn": "arn:aws:dynamodb:us-east-1:210396912496:table/icebreaker-chat",
+          "partitionKeyName": "id",
+          "partitionKeyType": "S"
+        },
+        "adhocchatmemory": {
+          "tableName": "adhoc-chat-memory",
+          "region": "us-east-1",
+          "arn": "arn:aws:dynamodb:us-east-1:210396912496:table/adhoc-chat-memory",
           "partitionKeyName": "id",
           "partitionKeyType": "S"
         }

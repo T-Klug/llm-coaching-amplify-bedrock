@@ -230,50 +230,6 @@ export type DeleteFeedbackInput = {
   _version?: number | null,
 };
 
-export type CreateUserSpecificPromptInput = {
-  id?: string | null,
-  userId?: string | null,
-  prompt?: string | null,
-  lastChatId?: string | null,
-  _version?: number | null,
-};
-
-export type ModelUserSpecificPromptConditionInput = {
-  userId?: ModelStringInput | null,
-  prompt?: ModelStringInput | null,
-  lastChatId?: ModelStringInput | null,
-  and?: Array< ModelUserSpecificPromptConditionInput | null > | null,
-  or?: Array< ModelUserSpecificPromptConditionInput | null > | null,
-  not?: ModelUserSpecificPromptConditionInput | null,
-  _deleted?: ModelBooleanInput | null,
-};
-
-export type UserSpecificPrompt = {
-  __typename: "UserSpecificPrompt",
-  id: string,
-  userId?: string | null,
-  prompt?: string | null,
-  lastChatId?: string | null,
-  createdAt: string,
-  updatedAt: string,
-  _version: number,
-  _deleted?: boolean | null,
-  _lastChangedAt: number,
-};
-
-export type UpdateUserSpecificPromptInput = {
-  id: string,
-  userId?: string | null,
-  prompt?: string | null,
-  lastChatId?: string | null,
-  _version?: number | null,
-};
-
-export type DeleteUserSpecificPromptInput = {
-  id: string,
-  _version?: number | null,
-};
-
 export type CreateUserProfileInput = {
   id?: string | null,
   userId?: string | null,
@@ -459,24 +415,6 @@ export type ModelFeedbackConnection = {
   startedAt?: number | null,
 };
 
-export type ModelUserSpecificPromptFilterInput = {
-  id?: ModelIDInput | null,
-  userId?: ModelStringInput | null,
-  prompt?: ModelStringInput | null,
-  lastChatId?: ModelStringInput | null,
-  and?: Array< ModelUserSpecificPromptFilterInput | null > | null,
-  or?: Array< ModelUserSpecificPromptFilterInput | null > | null,
-  not?: ModelUserSpecificPromptFilterInput | null,
-  _deleted?: ModelBooleanInput | null,
-};
-
-export type ModelUserSpecificPromptConnection = {
-  __typename: "ModelUserSpecificPromptConnection",
-  items:  Array<UserSpecificPrompt | null >,
-  nextToken?: string | null,
-  startedAt?: number | null,
-};
-
 export type ModelUserProfileFilterInput = {
   id?: ModelIDInput | null,
   userId?: ModelStringInput | null,
@@ -581,16 +519,6 @@ export type ModelSubscriptionFeedbackFilterInput = {
 export type ModelSubscriptionBooleanInput = {
   ne?: boolean | null,
   eq?: boolean | null,
-};
-
-export type ModelSubscriptionUserSpecificPromptFilterInput = {
-  id?: ModelSubscriptionIDInput | null,
-  userId?: ModelSubscriptionStringInput | null,
-  prompt?: ModelSubscriptionStringInput | null,
-  lastChatId?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionUserSpecificPromptFilterInput | null > | null,
-  or?: Array< ModelSubscriptionUserSpecificPromptFilterInput | null > | null,
-  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelSubscriptionUserProfileFilterInput = {
@@ -811,66 +739,6 @@ export type DeleteFeedbackMutation = {
     like?: boolean | null,
     comment?: string | null,
     owner?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
-};
-
-export type CreateUserSpecificPromptMutationVariables = {
-  input: CreateUserSpecificPromptInput,
-  condition?: ModelUserSpecificPromptConditionInput | null,
-};
-
-export type CreateUserSpecificPromptMutation = {
-  createUserSpecificPrompt?:  {
-    __typename: "UserSpecificPrompt",
-    id: string,
-    userId?: string | null,
-    prompt?: string | null,
-    lastChatId?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
-};
-
-export type UpdateUserSpecificPromptMutationVariables = {
-  input: UpdateUserSpecificPromptInput,
-  condition?: ModelUserSpecificPromptConditionInput | null,
-};
-
-export type UpdateUserSpecificPromptMutation = {
-  updateUserSpecificPrompt?:  {
-    __typename: "UserSpecificPrompt",
-    id: string,
-    userId?: string | null,
-    prompt?: string | null,
-    lastChatId?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
-};
-
-export type DeleteUserSpecificPromptMutationVariables = {
-  input: DeleteUserSpecificPromptInput,
-  condition?: ModelUserSpecificPromptConditionInput | null,
-};
-
-export type DeleteUserSpecificPromptMutation = {
-  deleteUserSpecificPrompt?:  {
-    __typename: "UserSpecificPrompt",
-    id: string,
-    userId?: string | null,
-    prompt?: string | null,
-    lastChatId?: string | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -1312,78 +1180,6 @@ export type SyncFeedbacksQuery = {
   } | null,
 };
 
-export type GetUserSpecificPromptQueryVariables = {
-  id: string,
-};
-
-export type GetUserSpecificPromptQuery = {
-  getUserSpecificPrompt?:  {
-    __typename: "UserSpecificPrompt",
-    id: string,
-    userId?: string | null,
-    prompt?: string | null,
-    lastChatId?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
-};
-
-export type ListUserSpecificPromptsQueryVariables = {
-  filter?: ModelUserSpecificPromptFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type ListUserSpecificPromptsQuery = {
-  listUserSpecificPrompts?:  {
-    __typename: "ModelUserSpecificPromptConnection",
-    items:  Array< {
-      __typename: "UserSpecificPrompt",
-      id: string,
-      userId?: string | null,
-      prompt?: string | null,
-      lastChatId?: string | null,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
-};
-
-export type SyncUserSpecificPromptsQueryVariables = {
-  filter?: ModelUserSpecificPromptFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  lastSync?: number | null,
-};
-
-export type SyncUserSpecificPromptsQuery = {
-  syncUserSpecificPrompts?:  {
-    __typename: "ModelUserSpecificPromptConnection",
-    items:  Array< {
-      __typename: "UserSpecificPrompt",
-      id: string,
-      userId?: string | null,
-      prompt?: string | null,
-      lastChatId?: string | null,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
-};
-
 export type GetUserProfileQueryVariables = {
   id: string,
 };
@@ -1745,63 +1541,6 @@ export type OnDeleteFeedbackSubscription = {
     like?: boolean | null,
     comment?: string | null,
     owner?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
-};
-
-export type OnCreateUserSpecificPromptSubscriptionVariables = {
-  filter?: ModelSubscriptionUserSpecificPromptFilterInput | null,
-};
-
-export type OnCreateUserSpecificPromptSubscription = {
-  onCreateUserSpecificPrompt?:  {
-    __typename: "UserSpecificPrompt",
-    id: string,
-    userId?: string | null,
-    prompt?: string | null,
-    lastChatId?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
-};
-
-export type OnUpdateUserSpecificPromptSubscriptionVariables = {
-  filter?: ModelSubscriptionUserSpecificPromptFilterInput | null,
-};
-
-export type OnUpdateUserSpecificPromptSubscription = {
-  onUpdateUserSpecificPrompt?:  {
-    __typename: "UserSpecificPrompt",
-    id: string,
-    userId?: string | null,
-    prompt?: string | null,
-    lastChatId?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
-};
-
-export type OnDeleteUserSpecificPromptSubscriptionVariables = {
-  filter?: ModelSubscriptionUserSpecificPromptFilterInput | null,
-};
-
-export type OnDeleteUserSpecificPromptSubscription = {
-  onDeleteUserSpecificPrompt?:  {
-    __typename: "UserSpecificPrompt",
-    id: string,
-    userId?: string | null,
-    prompt?: string | null,
-    lastChatId?: string | null,
     createdAt: string,
     updatedAt: string,
     _version: number,

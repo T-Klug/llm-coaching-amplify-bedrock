@@ -197,63 +197,6 @@ export const deleteFeedback = /* GraphQL */ `
     }
   }
 `;
-export const createUserSpecificPrompt = /* GraphQL */ `
-  mutation CreateUserSpecificPrompt(
-    $input: CreateUserSpecificPromptInput!
-    $condition: ModelUserSpecificPromptConditionInput
-  ) {
-    createUserSpecificPrompt(input: $input, condition: $condition) {
-      id
-      userId
-      prompt
-      lastChatId
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const updateUserSpecificPrompt = /* GraphQL */ `
-  mutation UpdateUserSpecificPrompt(
-    $input: UpdateUserSpecificPromptInput!
-    $condition: ModelUserSpecificPromptConditionInput
-  ) {
-    updateUserSpecificPrompt(input: $input, condition: $condition) {
-      id
-      userId
-      prompt
-      lastChatId
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const deleteUserSpecificPrompt = /* GraphQL */ `
-  mutation DeleteUserSpecificPrompt(
-    $input: DeleteUserSpecificPromptInput!
-    $condition: ModelUserSpecificPromptConditionInput
-  ) {
-    deleteUserSpecificPrompt(input: $input, condition: $condition) {
-      id
-      userId
-      prompt
-      lastChatId
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
 export const createUserProfile = /* GraphQL */ `
   mutation CreateUserProfile(
     $input: CreateUserProfileInput!

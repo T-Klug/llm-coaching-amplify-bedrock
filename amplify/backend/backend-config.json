@@ -153,21 +153,6 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "promptpersonlize": {
-      "build": true,
-      "dependsOn": [
-        {
-          "attributes": [
-            "GraphQLAPIIdOutput",
-            "GraphQLAPIEndpointOutput"
-          ],
-          "category": "api",
-          "resourceName": "amplifypoc"
-        }
-      ],
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
     "textResponseNew": {
       "build": true,
       "dependsOn": [
@@ -283,30 +268,6 @@
         }
       ]
     },
-    "AMPLIFY_function_promptpersonlize_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "promptpersonlize"
-        }
-      ]
-    },
-    "AMPLIFY_function_promptpersonlize_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "promptpersonlize"
-        }
-      ]
-    },
-    "AMPLIFY_function_promptpersonlize_secretsPathAmplifyAppId": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "promptpersonlize"
-        }
-      ]
-    },
     "AMPLIFY_function_textResponseNew_deploymentBucketName": {
       "usedBy": [
         {
@@ -360,6 +321,46 @@
         {
           "category": "notifications",
           "resourceName": "Pinpoint"
+        }
+      ]
+    },
+    "AMPLIFY_storage_adhocchatmemory_arn": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "adhocchatmemory"
+        }
+      ]
+    },
+    "AMPLIFY_storage_adhocchatmemory_partitionKeyName": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "adhocchatmemory"
+        }
+      ]
+    },
+    "AMPLIFY_storage_adhocchatmemory_partitionKeyType": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "adhocchatmemory"
+        }
+      ]
+    },
+    "AMPLIFY_storage_adhocchatmemory_region": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "adhocchatmemory"
+        }
+      ]
+    },
+    "AMPLIFY_storage_adhocchatmemory_tableName": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "adhocchatmemory"
         }
       ]
     },
@@ -446,6 +447,12 @@
   },
   "predictions": {},
   "storage": {
+    "adhocchatmemory": {
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB",
+      "serviceType": "imported"
+    },
     "icebreakerchat": {
       "dependsOn": [],
       "providerPlugin": "awscloudformation",

@@ -258,13 +258,13 @@ export const handler = async (event) => {
 
   const userProfile = await getUserProfile(event.identity.claims.username);
   const adminModelSettings = await getOpenAIModel();
-  console.log(userProfile);
+
   const chatPrompt = ChatPromptTemplate.fromPromptMessages([
     ["system", adminModelSettings.prompt],
     new MessagesPlaceholder("history"),
     [
       "human",
-      `Respond to the input conversationally, and with an icebreaker format the users name is ${userProfile.name} and you should refer to them as such. The input is: {input}`,
+      `Respond to the input conversationally. It is an icebreaker conversation. The users name is ${userProfile.name} and you should refer to them as such. The input is: {input}`,
     ],
   ]);
 

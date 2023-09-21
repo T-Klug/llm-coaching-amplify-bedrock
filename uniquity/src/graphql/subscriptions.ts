@@ -185,60 +185,6 @@ export const onDeleteFeedback = /* GraphQL */ `
     }
   }
 `;
-export const onCreateUserSpecificPrompt = /* GraphQL */ `
-  subscription OnCreateUserSpecificPrompt(
-    $filter: ModelSubscriptionUserSpecificPromptFilterInput
-  ) {
-    onCreateUserSpecificPrompt(filter: $filter) {
-      id
-      userId
-      prompt
-      lastChatId
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const onUpdateUserSpecificPrompt = /* GraphQL */ `
-  subscription OnUpdateUserSpecificPrompt(
-    $filter: ModelSubscriptionUserSpecificPromptFilterInput
-  ) {
-    onUpdateUserSpecificPrompt(filter: $filter) {
-      id
-      userId
-      prompt
-      lastChatId
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const onDeleteUserSpecificPrompt = /* GraphQL */ `
-  subscription OnDeleteUserSpecificPrompt(
-    $filter: ModelSubscriptionUserSpecificPromptFilterInput
-  ) {
-    onDeleteUserSpecificPrompt(filter: $filter) {
-      id
-      userId
-      prompt
-      lastChatId
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
 export const onCreateUserProfile = /* GraphQL */ `
   subscription OnCreateUserProfile(
     $filter: ModelSubscriptionUserProfileFilterInput
