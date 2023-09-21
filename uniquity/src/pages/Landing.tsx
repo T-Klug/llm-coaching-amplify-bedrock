@@ -37,27 +37,62 @@ import { generateUserSummaryCall } from '../helpers/ChatHelpers';
 const assessment = [
   {
     id: 1,
-    question: 'I enjoy exploring new ideas and concepts.',
+    question: 'Challenge',
     rating: 0,
   },
   {
     id: 2,
-    question: 'I am open to trying different approaches to problem-solving.',
+    question: 'Personal Growth',
     rating: 0,
   },
   {
     id: 3,
-    question: 'I find value in seeking out diverse perspectives.',
+    question: 'Purpose',
     rating: 0,
   },
   {
     id: 4,
-    question: 'I am organized and like to plan my tasks in advance.',
+    question: 'Autonomy',
     rating: 0,
   },
   {
     id: 5,
-    question: 'I pay attention to detail and accuracy in my work.',
+    question: 'Learning',
+    rating: 0,
+  },
+  {
+    id: 6,
+    question: 'Money',
+    rating: 0,
+  },
+  {
+    id: 7,
+    question: 'Promotion',
+    rating: 0,
+  },
+  {
+    id: 8,
+    question: 'Recognition',
+    rating: 0,
+  },
+  {
+    id: 9,
+    question: 'Job security',
+    rating: 0,
+  },
+  {
+    id: 10,
+    question: 'Benefits',
+    rating: 0,
+  },
+  {
+    id: 11,
+    question: 'Competition',
+    rating: 0,
+  },
+  {
+    id: 12,
+    question: 'Work-Life Balance',
     rating: 0,
   },
 ];
@@ -144,7 +179,7 @@ export default function Landing() {
       ),
     },
     {
-      label: 'Take a personality test',
+      label: 'Let us know what motivates you at work',
       component: assess.map((q, index) => (
         <div
           style={{
@@ -187,7 +222,7 @@ export default function Landing() {
     {
       label: 'Get to know your AI coach',
       description:
-        'Get to know your personalized coach a little with some fun icebreakers.',
+        'Get to know your personalized coach more with some fun icebreakers.',
     },
   ];
 
@@ -289,7 +324,7 @@ export default function Landing() {
               {activeStep === steps.length && (
                 <>
                   <Typography mb={3}>
-                    All steps completed! This is your AI generated Summary about
+                    All steps completed! This is the your peronal summary you're coach will start using. You can always change it in your profile.
                     you.
                   </Typography>
                   <TextField
@@ -331,12 +366,12 @@ export default function Landing() {
           />
           <CardContent>
             <div style={{ marginBottom: 10 }}>
-              <Typography variant="h5">
-                Work towards your goals with your AI coach
-              </Typography>
+              <Typography variant="h5">Goals</Typography>
               <Divider flexItem variant="middle" />
             </div>
-            <Typography>TBD</Typography>
+            <Typography>
+              Work with your AI coach to set and track goals
+            </Typography>
             <Button variant="contained" sx={{ marginTop: 3 }}>
               Set your First Goal
             </Button>
@@ -346,15 +381,23 @@ export default function Landing() {
           <CardMedia height={200} component="img" image={adhocImage} />
           <CardContent>
             <div style={{ marginBottom: 10 }}>
-              <Typography variant="h5">
-                Get impromptu help from your AI coach
-              </Typography>
+              <Typography variant="h5">Impromptu Help</Typography>
               <Divider flexItem variant="middle" />
             </div>
-            <Typography>TBD</Typography>
+            <Typography>
+              Talk to your coach about anything that's top of mind
+            </Typography>
+
+              <Button
+                variant="contained"
+                sx={{ margin: 3 }}
+                onClick={() => navigate('/chat')}
+              >
+                Start A New Conversation
+              </Button>
 
             <Typography sx={{ marginTop: 3 }} variant="h6">
-              Previous Chats
+              Previous Conversations
             </Typography>
 
             <List
@@ -397,13 +440,6 @@ export default function Landing() {
                   )}
             </List>
             <div>
-              <Button
-                variant="contained"
-                sx={{ margin: 3 }}
-                onClick={() => navigate('/chat')}
-              >
-                Start A New Chat
-              </Button>
               <Button
                 variant="contained"
                 sx={{ margin: 3 }}
