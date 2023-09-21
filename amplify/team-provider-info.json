@@ -40,14 +40,14 @@
         "textResponseNew": {
           "secretsPathAmplifyAppId": "d1wywebcdb6lm1",
           "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
-          "s3Key": "amplify-builds/textResponseNew-466375565568596d6a61-build.zip",
+          "s3Key": "amplify-builds/textResponseNew-474f51694b4542546737-build.zip",
           "pinpointApplicationId": "90797490ef5a47d79865eb44f745ff4c"
         },
         "textResponse": {},
         "icebreakerChat": {
           "secretsPathAmplifyAppId": "d1wywebcdb6lm1",
           "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
-          "s3Key": "amplify-builds/icebreakerChat-4a355163706f4c6e2f74-build.zip"
+          "s3Key": "amplify-builds/icebreakerChat-7171396f6e4177526f6b-build.zip"
         }
       },
       "analytics": {

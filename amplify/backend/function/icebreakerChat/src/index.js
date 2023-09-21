@@ -75,6 +75,23 @@ const listUserProfiles = /* GraphQL */ `
   }
 `;
 
+const listOpenAIModels = /* GraphQL */ `
+  query ListOpenAIModels {
+    listOpenAIModels {
+      items {
+        id
+        prompt
+        model
+        temperature
+        top_p
+        max_tokens
+        presence_penalty
+        frequency_penalty
+      }
+    }
+  }
+`;
+
 // Helper function to update the Model
 const updateChatModel = async (id, newContent) => {
   const endpoint = new URL(GRAPHQL_ENDPOINT);
@@ -169,6 +186,46 @@ const getUserProfile = async (userId) => {
   return body.data.listUserProfiles.items[0];
 };
 
+// Helper function to get Admin Settings
+const getOpenAIModel = async () => {
+  const endpoint = new URL(GRAPHQL_ENDPOINT);
+  const signer = new SignatureV4({
+    credentials: defaultProvider(),
+    region: AWS_REGION,
+    service: "appsync",
+    sha256: Sha256,
+  });
+  const requestToBeSigned = new HttpRequest({
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      host: endpoint.host,
+    },
+    hostname: endpoint.host,
+    body: JSON.stringify({ query: listOpenAIModels }),
+    path: endpoint.pathname,
+  });
+  const signed = await signer.sign(requestToBeSigned);
+  const request = new Request(endpoint, signed);
+  let response;
+  let body;
+
+  try {
+    console.log("Fetch Admin Settings");
+    response = await fetch(request);
+    body = await response.json();
+    if (body.errors)
+      console.log(
+        `ERROR Fetching Admin Settings: ${JSON.stringify(body.errors)}`
+      );
+  } catch (error) {
+    console.log(
+      `ERROR Fetching Admin Settings: ${JSON.stringify(error.message)}`
+    );
+  }
+  return body.data.listOpenAIModels.items[0];
+};
+
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
@@ -200,12 +257,10 @@ export const handler = async (event) => {
   });
 
   const userProfile = await getUserProfile(event.identity.claims.username);
+  const adminModelSettings = await getOpenAIModel();
   console.log(userProfile);
   const chatPrompt = ChatPromptTemplate.fromPromptMessages([
-    [
-      "system",
-      "You are AI developed for the purpose of career coaching. You only respond conversationally and compassionately. This conversation should be focused on icebreaker questions.",
-    ],
+    ["system", adminModelSettings.prompt],
     new MessagesPlaceholder("history"),
     [
       "human",
@@ -215,6 +270,12 @@ export const handler = async (event) => {
 
   const chat = new ChatOpenAI({
     openAIApiKey: Parameter.Value,
+    modelName: adminModelSettings.model,
+    temperature: parseFloat(adminModelSettings.temperature),
+    frequency_penalty: parseFloat(adminModelSettings.frequency_penalty),
+    presence_penalty: parseFloat(adminModelSettings.presence_penalty),
+    max_tokens: parseInt(adminModelSettings.max_tokens),
+    top_p: parseFloat(adminModelSettings.top_p),
   });
 
   const chain = new ConversationChain({
