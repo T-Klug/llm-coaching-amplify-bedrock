@@ -69,12 +69,10 @@ export default function IceBreakerChatPage() {
     }
   }
 
-  // TODO: Replace with a function to get an icebreaker
-  const chatIntro =
-    // If they are creating transcripts with the microphone set the chat input to it
-    useEffect(() => {
-      setChat(transcript);
-    }, [transcript]);
+  // If they are creating transcripts with the microphone set the chat input to it
+  useEffect(() => {
+    setChat(transcript);
+  }, [transcript]);
 
   useEffect(() => {
     const sub = DataStore.observeQuery(UserProfile).subscribe(({ items }) => {
@@ -211,7 +209,12 @@ export default function IceBreakerChatPage() {
             .find(x => x.id === selectedId)!
             .messages?.map((m, index, array) => {
               const isLastMessage = index === array.length - 1;
-              if (m?.content === chatIntro) return;
+              if (
+                m?.content?.includes(
+                  `I'm Uniquity AI, your personal development`,
+                )
+              )
+                return;
               if (m?.role === OpenAiRoleType.ASSISTANT)
                 return (
                   <div

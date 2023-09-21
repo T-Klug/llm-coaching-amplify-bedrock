@@ -166,7 +166,7 @@ const getUserProfile = async (userId) => {
     console.log(`ERROR GETTING USER PROFILE: ${JSON.stringify(error.message)}`);
   }
 
-  return body.data.listUserProfiles;
+  return body.data.listUserProfiles.items[0];
 };
 
 /**
