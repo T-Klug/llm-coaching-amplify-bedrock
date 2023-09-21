@@ -1,14 +1,6 @@
 import Typography from '@mui/material/Typography';
-import Rating, { IconContainerProps } from '@mui/material/Rating';
-import {
-  ArrowForwardIosOutlined,
-  Looks3Outlined,
-  Looks4Outlined,
-  Looks5Outlined,
-  LooksOneOutlined,
-  LooksTwoOutlined,
-} from '@mui/icons-material';
-import { styled } from '@mui/material/styles';
+import Rating from '@mui/material/Rating';
+import ArrowForwardIosOutlined from '@mui/icons-material/ArrowForwardIosOutlined';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -38,41 +30,8 @@ import CardMedia from '@mui/material/CardMedia';
 import getToKnowImage from '../assets/get-to-know.jpg';
 import goalImage from '../assets/goals.jpg';
 import adhocImage from '../assets/adhoc.jpg';
-import celebrateImage from '../assets/celebrate.jpg';
-
-const StyledRating = styled(Rating)({
-  '& .MuiRating-iconFilled': {
-    color: '#277A37',
-  },
-});
-
-const customIcons: {
-  [index: string]: {
-    icon: React.ReactElement;
-    label: string;
-  };
-} = {
-  1: {
-    icon: <LooksOneOutlined fontSize="inherit" />,
-    label: 'One',
-  },
-  2: {
-    icon: <LooksTwoOutlined fontSize="inherit" />,
-    label: 'Two',
-  },
-  3: {
-    icon: <Looks3Outlined fontSize="inherit" />,
-    label: 'Three',
-  },
-  4: {
-    icon: <Looks4Outlined fontSize="inherit" />,
-    label: 'Four',
-  },
-  5: {
-    icon: <Looks5Outlined fontSize="inherit" />,
-    label: 'Five',
-  },
-};
+import StreakCounter from '../components/landing/StreakCounter/StreakCounter';
+import Slide from '@mui/material/Slide';
 
 const assessment = [
   {
@@ -152,11 +111,6 @@ const assessment = [
     rating: 0,
   },
 ];
-
-function IconContainer(props: IconContainerProps) {
-  const { value, ...other } = props;
-  return <span {...other}>{customIcons[value].icon}</span>;
-}
 
 export default function Landing() {
   const [activeStep, setActiveStep] = useState(0);
@@ -321,30 +275,10 @@ export default function Landing() {
           alignContent: 'center',
         }}
       >
-        <Card raised sx={{ borderRadius: 6, width: '85%' }}>
-          <CardMedia
-            sx={{ objectPosition: '20% 80%' }}
-            height={200}
-            component="img"
-            image={celebrateImage}
-          />
-          <CardContent>
-            <div style={{ marginBottom: 10 }}>
-              <Typography variant="h5">Your coaching streak</Typography>
-              <Divider flexItem variant="middle" />
-            </div>
-            <Typography>
-              Talk to your AI coach every week to learn and grow.
-            </Typography>
-            <StyledRating
-              IconContainerComponent={IconContainer}
-              size="large"
-              readOnly
-              value={3}
-            />
-          </CardContent>
-        </Card>
-        <Card raised sx={{ borderRadius: 6, marginTop: 5, width: '85%' }}>
+        <Card
+          raised
+          sx={{ borderRadius: 6, marginTop: 5, width: '85%', marginBottom: 5 }}
+        >
           <CardMedia height={200} component="img" image={getToKnowImage} />
           <CardContent>
             <div style={{ marginBottom: 10 }}>
@@ -412,6 +346,16 @@ export default function Landing() {
             </Box>
           </CardContent>
         </Card>
+
+        <Slide
+          direction="left"
+          in={activeStep === steps.length}
+          mountOnEnter
+          unmountOnExit
+        >
+          <StreakCounter />
+        </Slide>
+
         <Card raised sx={{ borderRadius: 6, marginTop: 5, width: '85%' }}>
           <CardMedia
             sx={{ objectPosition: 'top' }}
