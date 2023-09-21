@@ -324,7 +324,9 @@ export default function Landing() {
               {activeStep === steps.length && (
                 <>
                   <Typography mb={3}>
-                    All steps completed! This is the your peronal summary you're coach will start using. You can always change it in your profile.
+                    All steps completed! This is the your peronal summary you're
+                    coach will start using. You can always change it in your
+                    profile.
                   </Typography>
                   <TextField
                     disabled
@@ -387,13 +389,13 @@ export default function Landing() {
               Talk to your coach about anything that's top of mind
             </Typography>
 
-              <Button
-                variant="contained"
-                sx={{ margin: 3 }}
-                onClick={() => navigate('/chat')}
-              >
-                Start A New Conversation
-              </Button>
+            <Button
+              variant="contained"
+              sx={{ margin: 3 }}
+              onClick={() => navigate('/chat')}
+            >
+              Start A New Conversation
+            </Button>
 
             <Typography sx={{ marginTop: 3 }} variant="h6">
               Previous Conversations

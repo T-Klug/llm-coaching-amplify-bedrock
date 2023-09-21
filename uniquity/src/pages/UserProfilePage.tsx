@@ -89,7 +89,7 @@ export default function UserProfilePage() {
             <TextField
               label="Name"
               fullWidth
-              value={userProfile ? userProfile.name : ''}
+              value={userProfile && userProfile.name ? userProfile.name : ''}
               onChange={event => {
                 setUserProfile(
                   UserProfile.copyOf(userProfile!, draft => {
@@ -104,7 +104,7 @@ export default function UserProfilePage() {
               label="Phone number"
               fullWidth
               helperText="1231231234"
-              value={userProfile ? userProfile.phone : ''}
+              value={userProfile && userProfile.phone ? userProfile.phone : ''}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -133,7 +133,11 @@ export default function UserProfilePage() {
               fullWidth
               multiline
               minRows={10}
-              value={userProfile ? userProfile.background : ''}
+              value={
+                userProfile && userProfile.background
+                  ? userProfile.background
+                  : ''
+              }
               onChange={event => {
                 setUserProfile(
                   UserProfile.copyOf(userProfile!, draft => {
@@ -149,7 +153,11 @@ export default function UserProfilePage() {
               fullWidth
               multiline
               minRows={10}
-              value={userProfile ? userProfile.userSummary : ''}
+              value={
+                userProfile && userProfile.userSummary
+                  ? userProfile.userSummary
+                  : ''
+              }
               onChange={event => {
                 setUserProfile(
                   UserProfile.copyOf(userProfile!, draft => {
