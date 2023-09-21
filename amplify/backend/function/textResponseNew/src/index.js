@@ -38,6 +38,8 @@ const listUserProfiles = /* GraphQL */ `
         background
         phone
         optInText
+        completedIcebreakers
+        userSummary
         owner
         createdAt
         updatedAt
@@ -205,6 +207,12 @@ export const handler = async (event) => {
 
   const chatPrompt = ChatPromptTemplate.fromPromptMessages([
     ["system", adminModelSettings.prompt],
+    [
+      "system",
+      `This is a summary for the user you are chatting with: ${
+        userProfile && userProfile.userSummary ? userProfile.userSummary : ""
+      }`,
+    ],
     new MessagesPlaceholder("history"),
     ["human", userPromptTemplate],
   ]);

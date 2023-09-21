@@ -76,6 +76,8 @@ const listUserProfiles = /* GraphQL */ `
         background
         phone
         optInText
+        completedIcebreakers
+        userSummary
         owner
         createdAt
         updatedAt
@@ -221,8 +223,12 @@ const getUserProfile = async (userId) => {
   } catch (error) {
     console.log(`ERROR GETTING USER PROFILE: ${JSON.stringify(error.message)}`);
   }
-
-  return body.data.listUserProfiles.items[0];
+  if (
+    body.data.listUserProfiles.items &&
+    body.data.listUserProfiles.items.length >= 1
+  )
+    return body.data.listUserProfiles.items[0];
+  return {};
 };
 
 /**
@@ -258,6 +264,10 @@ export const handler = async (event) => {
 
   const chatPrompt = ChatPromptTemplate.fromPromptMessages([
     ["system", adminModelSettings.prompt],
+    [
+      "system",
+      `This is a summary of the user for the user you are coaching: ${userProfile.userSummary}`,
+    ],
     new MessagesPlaceholder("history"),
     [
       "human",

@@ -25,7 +25,7 @@
         "createOpenAiChat": {
           "secretsPathAmplifyAppId": "d1wywebcdb6lm1",
           "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
-          "s3Key": "amplify-builds/createOpenAiChat-4a4c34396d6744542f77-build.zip"
+          "s3Key": "amplify-builds/createOpenAiChat-4b74492b304666464761-build.zip"
         },
         "createOpenAIChat": {},
         "AdminQueries9694e67c": {
@@ -35,7 +35,7 @@
         "textResponseNew": {
           "secretsPathAmplifyAppId": "d1wywebcdb6lm1",
           "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
-          "s3Key": "amplify-builds/textResponseNew-474f51694b4542546737-build.zip",
+          "s3Key": "amplify-builds/textResponseNew-6f696664486b74317365-build.zip",
           "pinpointApplicationId": "90797490ef5a47d79865eb44f745ff4c"
         },
         "textResponse": {},
