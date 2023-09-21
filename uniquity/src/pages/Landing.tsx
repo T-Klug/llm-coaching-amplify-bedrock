@@ -387,14 +387,6 @@ export default function Landing() {
             </div>
             <Typography>TBD</Typography>
 
-            <Button
-              variant="contained"
-              sx={{ margin: 3 }}
-              onClick={() => navigate('/chat')}
-            >
-              Start A New Chat
-            </Button>
-
             <Typography sx={{ marginTop: 3 }} variant="h6">
               Previous Chats
             </Typography>
@@ -442,9 +434,16 @@ export default function Landing() {
               <Button
                 variant="contained"
                 sx={{ margin: 3 }}
+                onClick={() => navigate('/chat')}
+              >
+                Start A New Chat
+              </Button>
+              <Button
+                variant="contained"
+                sx={{ margin: 3 }}
                 onClick={() => setOverlayVisible(true)}
               >
-                View More Chat History
+                More Chat History
               </Button>
             </div>
           </CardContent>
