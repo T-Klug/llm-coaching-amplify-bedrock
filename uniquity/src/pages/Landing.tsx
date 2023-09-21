@@ -444,7 +444,7 @@ export default function Landing() {
                 sx={{ margin: 3 }}
                 onClick={() => setOverlayVisible(true)}
               >
-                More Chat History
+                Older Conversations
               </Button>
             </div>
           </CardContent>
