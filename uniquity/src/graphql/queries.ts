@@ -253,6 +253,7 @@ export const getUserProfile = /* GraphQL */ `
       phone
       optInText
       completedIcebreakers
+      userSummary
       owner
       createdAt
       updatedAt
@@ -279,6 +280,7 @@ export const listUserProfiles = /* GraphQL */ `
         phone
         optInText
         completedIcebreakers
+        userSummary
         owner
         createdAt
         updatedAt
@@ -315,6 +317,7 @@ export const syncUserProfiles = /* GraphQL */ `
         phone
         optInText
         completedIcebreakers
+        userSummary
         owner
         createdAt
         updatedAt

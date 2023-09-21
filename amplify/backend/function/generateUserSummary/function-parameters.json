@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "api": {
+      "amplifypoc": [
+        "Query",
+        "Mutation"
+      ]
+    }
+  },
+  "lambdaLayers": [],
+  "secretNames": [
+    "openAIKey"
+  ]
+}

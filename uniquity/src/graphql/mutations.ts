@@ -211,6 +211,7 @@ export const createUserProfile = /* GraphQL */ `
       phone
       optInText
       completedIcebreakers
+      userSummary
       owner
       createdAt
       updatedAt
@@ -235,6 +236,7 @@ export const updateUserProfile = /* GraphQL */ `
       phone
       optInText
       completedIcebreakers
+      userSummary
       owner
       createdAt
       updatedAt
@@ -259,6 +261,7 @@ export const deleteUserProfile = /* GraphQL */ `
       phone
       optInText
       completedIcebreakers
+      userSummary
       owner
       createdAt
       updatedAt
@@ -376,5 +379,10 @@ export const chatIcebreakerFunc = /* GraphQL */ `
       _lastChangedAt
       __typename
     }
+  }
+`;
+export const generateUserSummaryFunc = /* GraphQL */ `
+  mutation GenerateUserSummaryFunc {
+    generateUserSummaryFunc
   }
 `;

@@ -13,9 +13,11 @@ import { useEffect, useState } from 'react';
 import { LazyUserProfile, UserProfile } from '../models';
 import { InfoOutlined } from '@mui/icons-material';
 import profileImage from '../assets/profile.jpg';
+import { generateUserSummaryCall } from '../helpers/ChatHelpers';
 
 export default function UserProfilePage() {
   const [userProfile, setUserProfile] = useState<LazyUserProfile>();
+  const [buttonDisabled, setButtonsDisabled] = useState<boolean>(false);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [assess, setAssess] = useState<any>();
   // Snack Bar
@@ -142,7 +144,24 @@ export default function UserProfilePage() {
             />
           </Grid>
           <Grid item xs={12}>
+            <TextField
+              label="AI Generated User Summary"
+              fullWidth
+              multiline
+              minRows={10}
+              value={userProfile ? userProfile.userSummary : ''}
+              onChange={event => {
+                setUserProfile(
+                  UserProfile.copyOf(userProfile!, draft => {
+                    draft.userSummary = event.target.value;
+                  }),
+                );
+              }}
+            />
+          </Grid>
+          <Grid item xs={12}>
             <Button
+              disabled={buttonDisabled}
               onClick={async () => {
                 await DataStore.save(userProfile!);
                 setSnackBarOpen(true);
@@ -151,6 +170,19 @@ export default function UserProfilePage() {
               variant="contained"
             >
               Save
+            </Button>
+            <Button
+              disabled={buttonDisabled}
+              onClick={async () => {
+                setButtonsDisabled(true);
+                const result = await generateUserSummaryCall();
+                setButtonsDisabled(false);
+                console.log(result);
+              }}
+              sx={{ mr: 3, float: 'right' }}
+              variant="contained"
+            >
+              Regenerate Summary
             </Button>
           </Grid>
           <Grid mb={5} item xs={12}>

@@ -331,6 +331,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "userSummary": {
+                    "name": "userSummary",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "owner": {
                     "name": "owner",
                     "isArray": false,
@@ -497,5 +504,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "7242293201e20555b787dfb84c35ec6b"
+    "version": "e6dcb1d6c96ffbe17f9dc9ba31cd6b43"
 };

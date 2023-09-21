@@ -138,6 +138,21 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "generateUserSummary": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ],
+          "category": "api",
+          "resourceName": "amplifypoc"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "icebreakerChat": {
       "build": true,
       "dependsOn": [
@@ -241,6 +256,30 @@
         {
           "category": "function",
           "resourceName": "createOpenAiChat"
+        }
+      ]
+    },
+    "AMPLIFY_function_generateUserSummary_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "generateUserSummary"
+        }
+      ]
+    },
+    "AMPLIFY_function_generateUserSummary_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "generateUserSummary"
+        }
+      ]
+    },
+    "AMPLIFY_function_generateUserSummary_secretsPathAmplifyAppId": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "generateUserSummary"
         }
       ]
     },

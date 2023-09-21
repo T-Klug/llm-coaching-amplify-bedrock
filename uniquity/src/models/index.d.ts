@@ -139,6 +139,7 @@ type EagerUserProfile = {
   readonly phone?: string | null;
   readonly optInText?: boolean | null;
   readonly completedIcebreakers?: boolean | null;
+  readonly userSummary?: string | null;
   readonly owner?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
@@ -157,6 +158,7 @@ type LazyUserProfile = {
   readonly phone?: string | null;
   readonly optInText?: boolean | null;
   readonly completedIcebreakers?: boolean | null;
+  readonly userSummary?: string | null;
   readonly owner?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;

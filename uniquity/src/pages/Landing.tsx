@@ -32,6 +32,7 @@ import goalImage from '../assets/goals.jpg';
 import adhocImage from '../assets/adhoc.jpg';
 import StreakCounter from '../components/landing/StreakCounter/StreakCounter';
 import Slide from '@mui/material/Slide';
+import { generateUserSummaryCall } from '../helpers/ChatHelpers';
 
 const assessment = [
   {
@@ -57,57 +58,6 @@ const assessment = [
   {
     id: 5,
     question: 'I pay attention to detail and accuracy in my work.',
-    rating: 0,
-  },
-  {
-    id: 6,
-    question:
-      'I set specific goals for myself and work towards achieving them.',
-    rating: 0,
-  },
-  {
-    id: 7,
-    question: 'I enjoy socializing and interacting with new people.',
-    rating: 0,
-  },
-  {
-    id: 8,
-    question: 'I feel energized by attending social events and gatherings.',
-    rating: 0,
-  },
-  {
-    id: 9,
-    question: 'I am comfortable expressing my opinions in group settings.',
-    rating: 0,
-  },
-  {
-    id: 10,
-    question: 'I find it important to maintain harmonious relationships.',
-    rating: 0,
-  },
-  {
-    id: 11,
-    question: 'I am approachable and willing to help others.',
-    rating: 0,
-  },
-  {
-    id: 12,
-    question: 'I enjoy collaborating and finding common ground with others.',
-    rating: 0,
-  },
-  {
-    id: 13,
-    question: 'I often experience worry and anxiety about future outcomes.',
-    rating: 0,
-  },
-  {
-    id: 14,
-    question: 'I tend to dwell on negative experiences and thoughts.',
-    rating: 0,
-  },
-  {
-    id: 15,
-    question: 'I am sensitive to criticism and feedback from others.',
     rating: 0,
   },
 ];
@@ -241,6 +191,11 @@ export default function Landing() {
     },
   ];
 
+  const handleIce = async () => {
+    generateUserSummaryCall();
+    navigate('/icebreaker');
+  };
+
   const handleNext = async () => {
     const saveData = UserProfile.copyOf(userProfile, d => {
       d.personalityTest = JSON.stringify(assess);
@@ -308,7 +263,7 @@ export default function Landing() {
                             variant="contained"
                             onClick={
                               index === steps.length - 1
-                                ? () => navigate('/icebreaker')
+                                ? handleIce
                                 : handleNext
                             }
                             sx={{ mt: 1, mr: 1 }}
@@ -333,7 +288,18 @@ export default function Landing() {
               </Stepper>
               {activeStep === steps.length && (
                 <>
-                  <Typography>All steps completed!</Typography>
+                  <Typography mb={3}>
+                    All steps completed! This is your AI generated Summary about
+                    you.
+                  </Typography>
+                  <TextField
+                    disabled
+                    value={userProfile.userSummary}
+                    multiline
+                    fullWidth
+                    minRows={5}
+                  />
+
                   <Button
                     variant="contained"
                     onClick={handleReset}

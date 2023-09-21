@@ -4,7 +4,11 @@ import {
   ChatIcebreakerFuncInput,
   CreateOpenAIChatFuncMutation,
 } from '../graphql/API';
-import { chatIcebreakerFunc, createOpenAIChatFunc } from '../graphql/mutations';
+import {
+  chatIcebreakerFunc,
+  createOpenAIChatFunc,
+  generateUserSummaryFunc,
+} from '../graphql/mutations';
 import { GraphQLQuery } from '@aws-amplify/api';
 
 export const individualContributorHelperPrompts = [
@@ -46,6 +50,12 @@ export const submitIceBreaker = async (response: IcebreakerChat) => {
   await API.graphql<GraphQLQuery<ChatIcebreakerFuncInput>>({
     query: chatIcebreakerFunc,
     variables: { input: functionInput },
+  });
+};
+
+export const generateUserSummaryCall = async () => {
+  return await API.graphql({
+    query: generateUserSummaryFunc,
   });
 };
 

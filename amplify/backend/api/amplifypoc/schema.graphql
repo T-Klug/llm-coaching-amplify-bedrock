@@ -45,6 +45,9 @@ type Mutation {
   chatIcebreakerFunc(input: ChatIcebreakerFuncInput): IcebreakerChat
     @function(name: "icebreakerChat-${env}")
     @auth(rules: [{ allow: private }])
+  generateUserSummaryFunc: String
+    @function(name: "generateUserSummary-${env}")
+    @auth(rules: [{ allow: private }])
 }
 
 type OpenAIModel
@@ -97,6 +100,7 @@ type UserProfile
   phone: String
   optInText: Boolean
   completedIcebreakers: Boolean
+  userSummary: String
   owner: String @auth(rules: [{ allow: owner, operations: [read, delete] }])
 }
 
