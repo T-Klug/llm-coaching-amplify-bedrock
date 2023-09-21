@@ -163,7 +163,7 @@ export default function Landing() {
 
   const steps = [
     {
-      label: 'What is your name?',
+      label: 'What is your name',
       component: (
         <TextField
           sx={{ width: '60%' }}
@@ -201,7 +201,7 @@ export default function Landing() {
       )),
     },
     {
-      label: 'Share your professional background',
+      label: 'What is your professional background',
       description: `Describe your background, copy in your resume, or copy in your linkedin profile contents`,
       component: (
         <TextField
