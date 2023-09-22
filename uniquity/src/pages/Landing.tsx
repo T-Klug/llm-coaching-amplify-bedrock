@@ -352,27 +352,6 @@ export default function Landing() {
         >
           <StreakCounter />
         </Slide>
-
-        <Card raised sx={{ borderRadius: 6, marginTop: 5, width: '85%' }}>
-          <CardMedia
-            sx={{ objectPosition: 'top' }}
-            height={200}
-            component="img"
-            image={goalImage}
-          />
-          <CardContent>
-            <div style={{ marginBottom: 10 }}>
-              <Typography variant="h5">Goals</Typography>
-              <Divider flexItem variant="middle" />
-            </div>
-            <Typography>
-              Work with your AI coach to set and track goals
-            </Typography>
-            <Button variant="contained" sx={{ marginTop: 3 }}>
-              Set your First Goal
-            </Button>
-          </CardContent>
-        </Card>
         <Card raised sx={{ borderRadius: 6, marginTop: 5, width: '85%' }}>
           <CardMedia height={200} component="img" image={adhocImage} />
           <CardContent>
@@ -444,6 +423,26 @@ export default function Landing() {
                 Older Conversations
               </Button>
             </div>
+          </CardContent>
+        </Card>
+        <Card raised sx={{ borderRadius: 6, marginTop: 5, width: '85%' }}>
+          <CardMedia
+            sx={{ objectPosition: 'top' }}
+            height={200}
+            component="img"
+            image={goalImage}
+          />
+          <CardContent>
+            <div style={{ marginBottom: 10 }}>
+              <Typography variant="h5">Goals</Typography>
+              <Divider flexItem variant="middle" />
+            </div>
+            <Typography>
+              Work with your AI coach to set and track goals
+            </Typography>
+            <Button variant="contained" sx={{ marginTop: 3 }}>
+              Set your First Goal
+            </Button>
           </CardContent>
         </Card>
       </div>
