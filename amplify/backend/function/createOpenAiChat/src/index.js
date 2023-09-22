@@ -266,12 +266,12 @@ export const handler = async (event) => {
     ["system", adminModelSettings.prompt],
     [
       "system",
-      `This is a summary of the user for the user you are coaching: ${userProfile.userSummary}`,
+      `This is a summary of the user you are coaching: ${userProfile.userSummary}`,
     ],
     new MessagesPlaceholder("history"),
     [
       "human",
-      `Respond to the input conversationally, the users name is ${userProfile.name} and you should refer to them as such. 
+      `Respond to the input conversationally, the users name is ${userProfile.name} and you should use their name to reference them. 
       You should try to ask questions to get more details and help the user think in different perspectives. The input is: {input}`,
     ],
   ]);

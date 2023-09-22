@@ -245,7 +245,7 @@ export const handler = async (event) => {
   const chatPrompt = ChatPromptTemplate.fromPromptMessages([
     [
       "system",
-      "You are a summary provider. You will recieve information about a user and take that information and create a concise prompt to represent the user for the purpose of coaching.",
+      "You are a summary provider. You will recieve information about a user and take that information and create a concise but complete prompt to represent the user for the purpose of coaching.",
     ],
     ["human", "{input}"],
   ]);
@@ -266,9 +266,9 @@ export const handler = async (event) => {
   });
 
   const result = await chain.call({
-    input: `I am providing you with information about me the user, you will summarize that information for the purpose of coaching in a concise prompt representation. You will only respond witht he prompt.
-      You will recieve the users name, an assessment as json string with questions and ratings of 1-5, and a professional background block of text. 
-      The following is the information
+    input: `I am providing you with information about me the user, you will summarize that information for the purpose of coaching in a concise but complete paragraph summary. You will only respond with the paragraph summary.
+      You will recieve the users name, an assessment as json with values and ratings of 1-5, and a professional background block of text. 
+      The following is the information:
       Name: ${userProfile.name}
       Assessment: ${userProfile.personalityTest}
       Background: ${userProfile.background}
