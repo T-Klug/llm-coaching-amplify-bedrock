@@ -42,57 +42,52 @@ const assessment = [
   },
   {
     id: 2,
-    question: 'Personal Growth',
-    rating: 0,
-  },
-  {
-    id: 3,
     question: 'Purpose',
     rating: 0,
   },
   {
-    id: 4,
+    id: 3,
     question: 'Autonomy',
     rating: 0,
   },
   {
-    id: 5,
+    id: 4,
     question: 'Learning',
     rating: 0,
   },
   {
-    id: 6,
+    id: 5,
     question: 'Money',
     rating: 0,
   },
   {
-    id: 7,
+    id: 6,
     question: 'Promotion',
     rating: 0,
   },
   {
-    id: 8,
+    id: 7,
     question: 'Recognition',
     rating: 0,
   },
   {
-    id: 9,
+    id: 8,
     question: 'Job security',
     rating: 0,
   },
   {
-    id: 10,
+    id: 9,
     question: 'Benefits',
     rating: 0,
   },
   {
-    id: 11,
+    id: 10,
     question: 'Competition',
     rating: 0,
   },
   {
-    id: 12,
-    question: 'Work-Life Balance',
+    id: 11,
+    question: 'Balance',
     rating: 0,
   },
 ];
