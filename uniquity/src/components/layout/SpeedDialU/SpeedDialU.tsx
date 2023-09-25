@@ -8,6 +8,7 @@ import {
   FlagOutlined,
   ChatBubbleOutline,
   FeedbackOutlined,
+  SourceOutlined,
 } from '@mui/icons-material';
 import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
@@ -64,6 +65,11 @@ export function SpeedDialU() {
           icon={<ChatBubbleOutline />}
           tooltipTitle="Impromptu Coaching"
           onClick={() => navigate('/chat')}
+        />
+        <SpeedDialAction
+          icon={<SourceOutlined />}
+          tooltipTitle="Context Documents"
+          onClick={() => navigate('/documents')}
         />
         <SpeedDialAction
           icon={<FeedbackOutlined />}

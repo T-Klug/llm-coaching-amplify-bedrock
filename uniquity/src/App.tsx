@@ -42,6 +42,7 @@ import Landing from './pages/Landing';
 import GoalChat from './pages/GoalChat';
 import UserProfile from './pages/UserProfilePage';
 import IceBreakerChatPage from './pages/IceBreakerChatPage';
+import DocumentContext from './pages/DocumentContext';
 
 //configure the amplify resources
 Amplify.configure(awsExports);
@@ -109,6 +110,10 @@ const router = createBrowserRouter([
       {
         path: 'icebreaker',
         element: <IceBreakerChatPage />,
+      },
+      {
+        path: 'documents',
+        element: <DocumentContext />,
       },
       {
         path: 'admin',

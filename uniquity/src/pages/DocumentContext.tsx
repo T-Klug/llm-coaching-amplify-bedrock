@@ -1,0 +1,64 @@
+import { S3ProviderListOutputItem } from '@aws-amplify/storage';
+import { StorageManager } from '@aws-amplify/ui-react-storage';
+import '@aws-amplify/ui-react-storage/styles.css';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import { Storage } from 'aws-amplify';
+import { useEffect, useState } from 'react';
+import { Avatar, ListItemButton, Typography } from '@mui/material';
+import { SourceOutlined } from '@mui/icons-material';
+
+export default function DocumentContext() {
+  const [files, setFiles] = useState<S3ProviderListOutputItem[]>();
+  useEffect(() => {
+    const fetchFiles = async () => {
+      const list = await Storage.list('', {
+        pageSize: 'ALL',
+        level: 'private',
+      });
+      setFiles(list.results);
+    };
+    fetchFiles();
+  }, []);
+
+  return (
+    <>
+      <Typography mb={3} variant="body1">
+        Upload documents to provide context to your coach:
+      </Typography>
+      <StorageManager
+        accessLevel="private"
+        maxFileCount={5}
+        acceptedFileTypes={['application/pdf', 'application/msword']}
+      />
+      <Typography variant="h5" textAlign="center" mt={10}>
+        Previously Uploaded Documents
+      </Typography>
+      <List sx={{ width: '100%' }}>
+        {files &&
+          files.map(f => (
+            <ListItem key={f.key}>
+              <ListItemButton
+                sx={{ cursor: 'pointer', border: 1, borderRadius: 8 }}
+                onClick={async () => {
+                  const file = await Storage.get(f.key!, {
+                    level: 'private',
+                  });
+                  window.open(file, '_blank');
+                }}
+              >
+                <ListItemAvatar>
+                  <Avatar>
+                    <SourceOutlined />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText primary={f.key} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+      </List>
+    </>
+  );
+}
