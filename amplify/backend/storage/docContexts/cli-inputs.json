@@ -1,0 +1,13 @@
+{
+  "resourceName": "docContexts",
+  "policyUUID": "a2fcb069",
+  "bucketName": "doc-context",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "S3Triggerfb25786b"
+}

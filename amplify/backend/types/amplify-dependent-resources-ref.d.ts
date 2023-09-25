@@ -41,6 +41,13 @@ export type AmplifyDependentResourcesAttributes = {
       "Name": "string",
       "Region": "string"
     },
+    "S3Triggerfb25786b": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "createOpenAiChat": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
@@ -67,6 +74,12 @@ export type AmplifyDependentResourcesAttributes = {
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",
       "Name": "string",
+      "Region": "string"
+    }
+  },
+  "storage": {
+    "docContexts": {
+      "BucketName": "string",
       "Region": "string"
     }
   }

@@ -123,6 +123,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "S3Triggerfb25786b": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "createOpenAiChat": {
       "build": true,
       "dependsOn": [
@@ -232,6 +237,22 @@
         {
           "category": "function",
           "resourceName": "AdminQueries9694e67c"
+        }
+      ]
+    },
+    "AMPLIFY_function_S3Triggerfb25786b_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "S3Triggerfb25786b"
+        }
+      ]
+    },
+    "AMPLIFY_function_S3Triggerfb25786b_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "S3Triggerfb25786b"
         }
       ]
     },
@@ -491,6 +512,21 @@
       "providerPlugin": "awscloudformation",
       "service": "DynamoDB",
       "serviceType": "imported"
+    },
+    "docContexts": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn",
+            "LambdaExecutionRole"
+          ],
+          "category": "function",
+          "resourceName": "S3Triggerfb25786b"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "S3"
     },
     "icebreakerchat": {
       "dependsOn": [],

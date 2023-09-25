@@ -49,6 +49,10 @@
           "secretsPathAmplifyAppId": "d1wywebcdb6lm1",
           "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
           "s3Key": "amplify-builds/generateUserSummary-64344f534f7051304155-build.zip"
+        },
+        "S3Triggerfb25786b": {
+          "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
+          "s3Key": "amplify-builds/S3Triggerfb25786b-625449683977696d5547-build.zip"
         }
       },
       "analytics": {
@@ -87,7 +91,8 @@
           "arn": "arn:aws:dynamodb:us-east-1:210396912496:table/adhoc-chat-memory",
           "partitionKeyName": "id",
           "partitionKeyType": "S"
-        }
+        },
+        "docContexts": {}
       }
     }
   }
