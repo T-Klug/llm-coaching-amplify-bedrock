@@ -10,6 +10,16 @@
     },
     "s3Key": {
       "Type": "String"
+    },
+    "openSearchUrl": {
+      "Type": "String"
+    },
+    "secretsPathAmplifyAppId": {
+      "Type": "String"
+    },
+    "storagedocContextsBucketName": {
+      "Type": "String",
+      "Default": "storagedocContextsBucketName"
     }
   },
   "Conditions": {
@@ -53,6 +63,37 @@
           "Variables": {
             "ENV": {
               "Ref": "env"
+            },
+            "OpenSearchUrl": {
+              "Ref": "openSearchUrl"
+            },
+            "OpenAIKey": {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Fn::Sub": [
+                      "/amplify/${appId}/${env}/AMPLIFY_${functionName}_",
+                      {
+                        "appId": {
+                          "Ref": "secretsPathAmplifyAppId"
+                        },
+                        "env": {
+                          "Ref": "env"
+                        },
+                        "functionName": "S3Triggerfb25786b"
+                      }
+                    ]
+                  },
+                  "OpenAIKey"
+                ]
+              ]
+            },
+            "REGION": {
+              "Ref": "AWS::Region"
+            },
+            "STORAGE_DOCCONTEXTS_BUCKETNAME": {
+              "Ref": "storagedocContextsBucketName"
             }
           }
         },
@@ -63,7 +104,8 @@
           ]
         },
         "Runtime": "nodejs18.x",
-        "Timeout": 25,
+        "MemorySize": 1024,
+        "Timeout": 60,
         "Code": {
           "S3Bucket": {
             "Ref": "deploymentBucketName"
@@ -151,6 +193,121 @@
                   }
                 ]
               }
+            }
+          ]
+        }
+      }
+    },
+    "AmplifyFunctionSecretsPolicy": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "amplify-function-secrets-policy",
+        "Roles": [
+          {
+            "Ref": "LambdaExecutionRole"
+          }
+        ],
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "ssm:GetParameter",
+                "ssm:GetParameters"
+              ],
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:ssm:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":parameter",
+                    {
+                      "Fn::Sub": [
+                        "/amplify/${appId}/${env}/AMPLIFY_${functionName}_",
+                        {
+                          "appId": {
+                            "Ref": "secretsPathAmplifyAppId"
+                          },
+                          "env": {
+                            "Ref": "env"
+                          },
+                          "functionName": "S3Triggerfb25786b"
+                        }
+                      ]
+                    },
+                    "*"
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "DependsOn": [
+        "LambdaExecutionRole"
+      ]
+    },
+    "AmplifyResourcesPolicy": {
+      "DependsOn": [
+        "LambdaExecutionRole"
+      ],
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "amplify-lambda-execution-policy",
+        "Roles": [
+          {
+            "Ref": "LambdaExecutionRole"
+          }
+        ],
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": "s3:ListBucket",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:s3:::",
+                      {
+                        "Ref": "storagedocContextsBucketName"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "s3:PutObject",
+                "s3:GetObject",
+                "s3:DeleteObject"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:s3:::",
+                      {
+                        "Ref": "storagedocContextsBucketName"
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
             }
           ]
         }

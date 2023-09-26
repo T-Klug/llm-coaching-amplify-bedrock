@@ -248,7 +248,23 @@
         }
       ]
     },
+    "AMPLIFY_function_S3Triggerfb25786b_openSearchUrl": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "S3Triggerfb25786b"
+        }
+      ]
+    },
     "AMPLIFY_function_S3Triggerfb25786b_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "S3Triggerfb25786b"
+        }
+      ]
+    },
+    "AMPLIFY_function_S3Triggerfb25786b_secretsPathAmplifyAppId": {
       "usedBy": [
         {
           "category": "function",

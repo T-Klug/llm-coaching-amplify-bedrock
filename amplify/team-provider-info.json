@@ -52,7 +52,9 @@
         },
         "S3Triggerfb25786b": {
           "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
-          "s3Key": "amplify-builds/S3Triggerfb25786b-625449683977696d5547-build.zip"
+          "s3Key": "amplify-builds/S3Triggerfb25786b-45324b713764432f4d42-build.zip",
+          "openSearchUrl": "https://search-uniquity-4qxk4pyedoxbwxacrrcfxavoiy.us-east-1.es.amazonaws.com",
+          "secretsPathAmplifyAppId": "d1wywebcdb6lm1"
         }
       },
       "analytics": {

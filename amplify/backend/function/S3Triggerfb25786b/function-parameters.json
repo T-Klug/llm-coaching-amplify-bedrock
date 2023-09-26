@@ -1,0 +1,11 @@
+{
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "openSearchUrl",
+      "environmentVariableName": "OpenSearchUrl"
+    }
+  ],
+  "secretNames": [
+    "OpenAIKey"
+  ]
+}

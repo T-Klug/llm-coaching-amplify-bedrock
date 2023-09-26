@@ -26,12 +26,16 @@ export default function DocumentContext() {
   return (
     <>
       <Typography mb={3} variant="body1">
-        Upload documents to provide context to your coach:
+        Upload documents to provide context to your coach (Currently only pdf
+        and docx supported):
       </Typography>
       <StorageManager
         accessLevel="private"
         maxFileCount={5}
-        acceptedFileTypes={['application/pdf', 'application/msword']}
+        acceptedFileTypes={[
+          'application/pdf',
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        ]}
       />
       <Typography variant="h5" textAlign="center" mt={10}>
         Previously Uploaded Documents
