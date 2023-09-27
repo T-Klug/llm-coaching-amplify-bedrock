@@ -16,12 +16,19 @@ import { defaultProvider } from "@aws-sdk/credential-provider-node";
 import { SignatureV4 } from "@aws-sdk/signature-v4";
 import { HttpRequest } from "@aws-sdk/protocol-http";
 import { default as fetch, Request } from "node-fetch";
+import { OpenAIEmbeddings } from "langchain/embeddings/openai";
+import { OpenSearchVectorStore } from "langchain/vectorstores/opensearch";
+import { LLMChainExtractor } from "langchain/retrievers/document_compressors/chain_extract";
+import { ContextualCompressionRetriever } from "langchain/retrievers/contextual_compression";
+import { AwsSigv4Signer } from "@opensearch-project/opensearch/aws";
+import { Client } from "@opensearch-project/opensearch";
 
 const SECRET_PATH = process.env.OpenAIKey;
 const AppId = process.env.PinpointApplicationId;
 const GRAPHQL_ENDPOINT = process.env.API_AMPLIFYPOC_GRAPHQLAPIENDPOINTOUTPUT;
 const AWS_REGION = process.env.AWS_REGION || "us-east-1";
 const { Sha256 } = crypto;
+const OPENSEARCH_URL = process.env.opensearchURL;
 
 const listUserProfiles = /* GraphQL */ `
   query ListUserProfiles(
@@ -186,13 +193,21 @@ export const handler = async (event) => {
   console.log(userProfile);
   let userPromptTemplate;
   if (userProfile && userProfile.name) {
-    userPromptTemplate = `Respond to the input conversationally, and with a format of a statement followed by a question to learn more. The users name is ${userProfile.name} and you should use thier name to reference them. The input is: {input}`;
+    userPromptTemplate = `Respond to the input conversationally, and with a format of a statement followed by a question to learn more. 
+    The users name is ${userProfile.name} and you should use thier name to reference them. 
+    You also have access to the following document context the user provided about themselves and their company: 
+    {context} 
+    The input is: {input}`;
   } else {
-    userPromptTemplate = `Respond to the input conversationally, and with a format of a statement followed by a question to learn more. The input is: {input}`;
+    userPromptTemplate = `Respond to the input conversationally, and with a format of a statement followed by a question to learn more. 
+    You also have access to the following document context the user provided about themselves and their company: 
+    {context}
+    The input is: {input}`;
   }
   const memory = new BufferWindowMemory({
     k: 5,
     returnMessages: true,
+    inputKey: "input",
     memoryKey: "history",
     chatHistory: new DynamoDBChatMessageHistory({
       tableName: "langchain",
@@ -232,10 +247,64 @@ export const handler = async (event) => {
     prompt: chatPrompt,
     memory: memory,
   });
+  let result;
+  if (userProfile) {
+    const clientOS = new Client({
+      ...AwsSigv4Signer({
+        region: "us-east-1",
+        service: "es", // 'aoss' for OpenSearch Serverless
+        // Must return a Promise that resolve to an AWS.Credentials object.
+        // This function is used to acquire the credentials when the client start and
+        // when the credentials are expired.
+        // The Client will refresh the Credentials only when they are expired.
+        // With AWS SDK V2, Credentials.refreshPromise is used when available to refresh the credentials.
 
-  const result = await chain.call({
-    input: response,
-  });
+        // Example with AWS SDK V3:
+        getCredentials: () => {
+          // Any other method to acquire a new Credentials object can be used.
+          const credentialsProvider = defaultProvider();
+          return credentialsProvider();
+        },
+      }),
+      node: OPENSEARCH_URL,
+    });
+    const vectorStore = new OpenSearchVectorStore(
+      new OpenAIEmbeddings({
+        openAIApiKey: Parameter.Value,
+      }),
+      {
+        client: clientOS,
+        indexName: userProfile.owner.split("::")[0],
+      }
+    );
+    if (await vectorStore.doesIndexExist()) {
+      console.log("DOING A CONTEXT RICH CHAIN");
+      const baseCompressor = LLMChainExtractor.fromLLM(chat);
+      const retriever = new ContextualCompressionRetriever({
+        baseCompressor,
+        baseRetriever: vectorStore.asRetriever(),
+      });
+      const docs = await retriever.getRelevantDocuments(response);
+      result = await chain.call({
+        input: response,
+        context:
+          docs && docs.length > 0
+            ? docs.map((d) => d.pageContent).join("\n")
+            : "",
+      });
+    } else {
+      result = await chain.call({
+        input: response,
+        context: "",
+      });
+    }
+  } else {
+    result = await chain.call({
+      input: response,
+      context: "",
+    });
+  }
+
   const inputSMS = {
     ApplicationId: AppId,
     MessageRequest: {

@@ -360,6 +360,14 @@
         }
       ]
     },
+    "AMPLIFY_function_textResponseNew_opensearchUrl": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "textResponseNew"
+        }
+      ]
+    },
     "AMPLIFY_function_textResponseNew_pinpointApplicationId": {
       "usedBy": [
         {

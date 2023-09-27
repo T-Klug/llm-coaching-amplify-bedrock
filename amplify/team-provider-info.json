@@ -36,8 +36,9 @@
         "textResponseNew": {
           "secretsPathAmplifyAppId": "d1wywebcdb6lm1",
           "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
-          "s3Key": "amplify-builds/textResponseNew-466158594573734f734d-build.zip",
-          "pinpointApplicationId": "90797490ef5a47d79865eb44f745ff4c"
+          "s3Key": "amplify-builds/textResponseNew-456c7348367a4961444b-build.zip",
+          "pinpointApplicationId": "90797490ef5a47d79865eb44f745ff4c",
+          "opensearchUrl": "https://search-uniquity-4qxk4pyedoxbwxacrrcfxavoiy.us-east-1.es.amazonaws.com"
         },
         "textResponse": {},
         "icebreakerChat": {
@@ -53,7 +54,7 @@
         },
         "S3Triggerfb25786b": {
           "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
-          "s3Key": "amplify-builds/S3Triggerfb25786b-3577324d562b3933466b-build.zip",
+          "s3Key": "amplify-builds/S3Triggerfb25786b-627a4d66415250706173-build.zip",
           "openSearchUrl": "https://search-uniquity-4qxk4pyedoxbwxacrrcfxavoiy.us-east-1.es.amazonaws.com",
           "secretsPathAmplifyAppId": "d1wywebcdb6lm1"
         }

@@ -11,6 +11,10 @@
     {
       "cloudFormationParameterName": "pinpointApplicationId",
       "environmentVariableName": "PinpointApplicationId"
+    },
+    {
+      "cloudFormationParameterName": "opensearchUrl",
+      "environmentVariableName": "opensearchURL"
     }
   ],
   "secretNames": [

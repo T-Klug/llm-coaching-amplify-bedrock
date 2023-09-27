@@ -12,6 +12,7 @@ import { Client } from "@opensearch-project/opensearch";
 import { OpenSearchVectorStore } from "langchain/vectorstores/opensearch";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { AwsSigv4Signer } from "@opensearch-project/opensearch/aws";
+import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 
 const SECRET_PATH = process.env.OpenAIKey;
 const OPEN_SEARCH_URL = process.env.OpenSearchUrl;
@@ -54,10 +55,18 @@ export const handler = async (event) => {
 
   const docs = await loader.parse(buffer, { name: key });
   console.log(docs);
-  docs.forEach((d) => {
+
+  const splitter = new RecursiveCharacterTextSplitter({
+    chunkSize: 1000,
+    chunkOverlap: 200,
+  });
+  const finalDocs = await splitter.splitDocuments(docs);
+  finalDocs.forEach((d) => {
     delete d.metadata.pdf;
     delete d.metadata.loc;
   });
+
+  console.log(finalDocs);
 
   // Get Open AI Key
   const ssmClient = new SSMClient();
@@ -91,7 +100,7 @@ export const handler = async (event) => {
 
   // Load the doc to the user's index
   await OpenSearchVectorStore.fromDocuments(
-    docs,
+    finalDocs,
     new OpenAIEmbeddings({
       openAIApiKey: Parameter.Value,
     }),
