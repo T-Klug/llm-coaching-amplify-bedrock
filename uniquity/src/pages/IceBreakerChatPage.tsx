@@ -1,7 +1,6 @@
 import { DataStore } from 'aws-amplify';
 import { useEffect, useRef, useState } from 'react';
 import {
-  Feedback,
   LazyIcebreakerChat,
   IcebreakerChat,
   OpenAiRoleType,
@@ -13,8 +12,6 @@ import {
   ArrowCircleUp,
   MicOffOutlined,
   MicOutlined,
-  ThumbDownRounded,
-  ThumbUpRounded,
 } from '@mui/icons-material';
 import SpeechRecognition, {
   useSpeechRecognition,
@@ -26,8 +23,6 @@ import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
 import TextField from '@mui/material/TextField';
 import './Chat.css';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
 import OverflowText from '../components/chat/OverflowText';
 import { useNavigate, useParams } from 'react-router-dom';
 import Button from '@mui/material/Button';
@@ -54,8 +49,6 @@ export default function IceBreakerChatPage() {
   // Speech recognition
   const { transcript, resetTranscript, browserSupportsSpeechRecognition } =
     useSpeechRecognition();
-  // Snack Bar
-  const [snackbarOpen, setSnackBarOpen] = useState<boolean>(false);
   const [userProfile, setUserProfile] = useState<LazyUserProfile>();
 
   async function handleChatDone() {
@@ -100,17 +93,6 @@ export default function IceBreakerChatPage() {
     );
     return () => sub.unsubscribe();
   }, []);
-
-  //Send Feedback
-  const sendFeedback = async (
-    like: boolean,
-    content: string | null | undefined,
-  ) => {
-    if (content) {
-      DataStore.save(new Feedback({ like, comment: content }));
-      setSnackBarOpen(true);
-    }
-  };
 
   // Send Chat Method
   const sendChat = async () => {
@@ -158,21 +140,6 @@ export default function IceBreakerChatPage() {
 
   return (
     <>
-      <Snackbar
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        open={snackbarOpen}
-        autoHideDuration={6000}
-        onClose={() => setSnackBarOpen(false)}
-      >
-        <Alert
-          onClose={() => setSnackBarOpen(false)}
-          severity="success"
-          sx={{ width: '100%' }}
-        >
-          Thanks for the feedback!
-        </Alert>
-      </Snackbar>
-
       <Box>
         <div>
           <Box
@@ -187,17 +154,6 @@ export default function IceBreakerChatPage() {
               whiteSpace: 'pre-wrap',
             }}
           >
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-              }}
-            >
-              <ThumbUpRounded sx={{ cursor: 'pointer' }} color="primary" />
-              <ThumbDownRounded sx={{ cursor: 'pointer' }} color="primary" />
-            </div>
-
             <OverflowText
               chatPosition="left"
               content={`Hi ${
@@ -237,24 +193,6 @@ export default function IceBreakerChatPage() {
                         whiteSpace: 'pre-wrap',
                       }}
                     >
-                      <div
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          justifyContent: 'flex-end',
-                        }}
-                      >
-                        <ThumbUpRounded
-                          sx={{ cursor: 'pointer' }}
-                          color="primary"
-                          onClick={() => sendFeedback(true, m.content)}
-                        />
-                        <ThumbDownRounded
-                          sx={{ cursor: 'pointer' }}
-                          color="primary"
-                          onClick={() => sendFeedback(false, m.content)}
-                        />
-                      </div>
                       <OverflowText chatPosition="left" content={m.content} />
                     </Box>
                   </div>

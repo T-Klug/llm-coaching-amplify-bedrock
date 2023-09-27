@@ -1,7 +1,6 @@
 import { DataStore } from 'aws-amplify';
 import { useEffect, useRef, useState } from 'react';
 import {
-  Feedback,
   LazyOpenAIChat,
   LazyUserProfile,
   OpenAIChat,
@@ -13,8 +12,6 @@ import {
   ArrowCircleUp,
   MicOffOutlined,
   MicOutlined,
-  ThumbDownRounded,
-  ThumbUpRounded,
 } from '@mui/icons-material';
 import SpeechRecognition, {
   useSpeechRecognition,
@@ -33,8 +30,6 @@ import Divider from '@mui/material/Divider';
 import { useDraggable } from 'react-use-draggable-scroll';
 import './Chat.css';
 import Button from '@mui/material/Button';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
 import OverflowText from '../components/chat/OverflowText';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { useParams } from 'react-router-dom';
@@ -63,8 +58,7 @@ export default function Chat() {
   // Speech recognition
   const { transcript, resetTranscript, browserSupportsSpeechRecognition } =
     useSpeechRecognition();
-  // Snack Bar
-  const [snackbarOpen, setSnackBarOpen] = useState<boolean>(false);
+
   const [userProfile, setUserProfile] = useState<LazyUserProfile>();
 
   // If they are creating transcripts with the microphone set the chat input to it
@@ -96,17 +90,6 @@ export default function Chat() {
     });
     return () => sub.unsubscribe();
   }, []);
-
-  //Send Feedback
-  const sendFeedback = async (
-    like: boolean,
-    content: string | null | undefined,
-  ) => {
-    if (content) {
-      DataStore.save(new Feedback({ like, comment: content }));
-      setSnackBarOpen(true);
-    }
-  };
 
   // Send Chat Method
   const sendChat = async (chatFromPrompt?: string | undefined) => {
@@ -168,21 +151,6 @@ export default function Chat() {
 
   return (
     <>
-      <Snackbar
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        open={snackbarOpen}
-        autoHideDuration={6000}
-        onClose={() => setSnackBarOpen(false)}
-      >
-        <Alert
-          onClose={() => setSnackBarOpen(false)}
-          severity="success"
-          sx={{ width: '100%' }}
-        >
-          Thanks for the feedback!
-        </Alert>
-      </Snackbar>
-
       <Box>
         <div
           style={{
@@ -232,17 +200,6 @@ export default function Chat() {
               whiteSpace: 'pre-wrap',
             }}
           >
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-              }}
-            >
-              <ThumbUpRounded sx={{ cursor: 'pointer' }} color="primary" />
-              <ThumbDownRounded sx={{ cursor: 'pointer' }} color="primary" />
-            </div>
-
             <OverflowText
               chatPosition="left"
               content={`Hi there ${
@@ -282,24 +239,6 @@ export default function Chat() {
                         whiteSpace: 'pre-wrap',
                       }}
                     >
-                      <div
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          justifyContent: 'flex-end',
-                        }}
-                      >
-                        <ThumbUpRounded
-                          sx={{ cursor: 'pointer' }}
-                          color="primary"
-                          onClick={() => sendFeedback(true, m.content)}
-                        />
-                        <ThumbDownRounded
-                          sx={{ cursor: 'pointer' }}
-                          color="primary"
-                          onClick={() => sendFeedback(false, m.content)}
-                        />
-                      </div>
                       <OverflowText chatPosition="left" content={m.content} />
                     </Box>
                   </div>
