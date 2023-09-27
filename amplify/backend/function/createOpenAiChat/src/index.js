@@ -5,6 +5,8 @@
 	REGION
 Amplify Params - DO NOT EDIT */
 import crypto from "@aws-crypto/sha256-js";
+import { Client } from "@opensearch-project/opensearch";
+import { AwsSigv4Signer } from "@opensearch-project/opensearch/aws";
 import { defaultProvider } from "@aws-sdk/credential-provider-node";
 import { SignatureV4 } from "@aws-sdk/signature-v4";
 import { HttpRequest } from "@aws-sdk/protocol-http";
@@ -15,11 +17,16 @@ import { ConversationChain } from "langchain/chains";
 import { ChatPromptTemplate, MessagesPlaceholder } from "langchain/prompts";
 import { BufferWindowMemory } from "langchain/memory";
 import { DynamoDBChatMessageHistory } from "langchain/stores/message/dynamodb";
+import { OpenAIEmbeddings } from "langchain/embeddings/openai";
+import { OpenSearchVectorStore } from "langchain/vectorstores/opensearch";
+import { LLMChainExtractor } from "langchain/retrievers/document_compressors/chain_extract";
+import { ContextualCompressionRetriever } from "langchain/retrievers/contextual_compression";
 
 const GRAPHQL_ENDPOINT = process.env.API_AMPLIFYPOC_GRAPHQLAPIENDPOINTOUTPUT;
 const AWS_REGION = process.env.AWS_REGION || "us-east-1";
 const { Sha256 } = crypto;
 const SECRET_PATH = process.env.openAIKey;
+const OPENSEARCH_URL = process.env.opensearchURL;
 
 const listOpenAIModels = /* GraphQL */ `
   query ListOpenAIModels {
@@ -248,6 +255,7 @@ export const handler = async (event) => {
   const memory = new BufferWindowMemory({
     k: 5,
     returnMessages: true,
+    inputKey: "input",
     memoryKey: "history",
     chatHistory: new DynamoDBChatMessageHistory({
       tableName: "adhoc-chat-memory",
@@ -271,8 +279,11 @@ export const handler = async (event) => {
     new MessagesPlaceholder("history"),
     [
       "human",
-      `Respond to the input conversationally, the users name is ${userProfile.name} and you should use their name to reference them. 
-      You should try to ask questions to get more details and help the user think in different perspectives. The input is: {input}`,
+      `Respond to the input conversationally. The user's name is ${userProfile.name}, and you should use their name to reference them. 
+      You should try to ask questions to get more details and help the user think from different perspectives. 
+      You also have access to the following document context the user provided about themselves and their company: 
+      {context} 
+      The input is: {input}`,
     ],
   ]);
 
@@ -286,17 +297,74 @@ export const handler = async (event) => {
     top_p: parseFloat(adminModelSettings.top_p),
   });
 
+  const clientOS = new Client({
+    ...AwsSigv4Signer({
+      region: "us-east-1",
+      service: "es", // 'aoss' for OpenSearch Serverless
+      // Must return a Promise that resolve to an AWS.Credentials object.
+      // This function is used to acquire the credentials when the client start and
+      // when the credentials are expired.
+      // The Client will refresh the Credentials only when they are expired.
+      // With AWS SDK V2, Credentials.refreshPromise is used when available to refresh the credentials.
+
+      // Example with AWS SDK V3:
+      getCredentials: () => {
+        // Any other method to acquire a new Credentials object can be used.
+        const credentialsProvider = defaultProvider();
+        return credentialsProvider();
+      },
+    }),
+    node: OPENSEARCH_URL,
+  });
+
+  const vectorStore = new OpenSearchVectorStore(
+    new OpenAIEmbeddings({
+      openAIApiKey: Parameter.Value,
+    }),
+    {
+      client: clientOS,
+      indexName: event.identity.claims.username,
+    }
+  );
+
   const chain = new ConversationChain({
     llm: chat,
     prompt: chatPrompt,
     memory: memory,
+    verbose: true,
   });
 
-  const result = await chain.call({
-    input:
+  let result;
+  if (await vectorStore.doesIndexExist()) {
+    console.log("DOING A CONTEXT RICH CHAIN");
+    const baseCompressor = LLMChainExtractor.fromLLM(chat);
+    const retriever = new ContextualCompressionRetriever({
+      baseCompressor,
+      baseRetriever: vectorStore.asRetriever(),
+    });
+    const docs = await retriever.getRelevantDocuments(
       event.arguments.input.messages[event.arguments.input.messages.length - 1]
-        .content,
-  });
+        .content
+    );
+
+    result = await chain.call({
+      input:
+        event.arguments.input.messages[
+          event.arguments.input.messages.length - 1
+        ].content,
+      context:
+        docs && docs.length > 0
+          ? docs.map((d) => d.pageContent).join("\n")
+          : "",
+    });
+  } else {
+    result = await chain.call({
+      input:
+        event.arguments.input.messages[
+          event.arguments.input.messages.length - 1
+        ].content,
+    });
+  }
 
   const chatModel = await updateChatModel(event.arguments?.input?.id, result);
 

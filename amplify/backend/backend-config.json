@@ -280,6 +280,14 @@
         }
       ]
     },
+    "AMPLIFY_function_createOpenAiChat_opensearchUrl": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createOpenAiChat"
+        }
+      ]
+    },
     "AMPLIFY_function_createOpenAiChat_s3Key": {
       "usedBy": [
         {

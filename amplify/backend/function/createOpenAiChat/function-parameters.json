@@ -10,5 +10,11 @@
   "lambdaLayers": [],
   "secretNames": [
     "openAIKey"
+  ],
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "opensearchUrl",
+      "environmentVariableName": "opensearchURL"
+    }
   ]
 }

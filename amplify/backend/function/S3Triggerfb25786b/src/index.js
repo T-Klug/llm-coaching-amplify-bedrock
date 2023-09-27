@@ -24,7 +24,7 @@ export const handler = async (event) => {
     event.Records[0].s3.object.key.replace(/\+/g, " ")
   );
   // Get User Id
-  const userId = key.split(":")[1].split("/")[0];
+  const userId = key.split("/")[2];
   console.log(`Bucket: ${bucket}`, `Key: ${key}`, `UserId: ${userId}`);
   // Get File
   const clientS3 = new S3Client();

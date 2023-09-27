@@ -9,8 +9,10 @@ import { Storage } from 'aws-amplify';
 import { useEffect, useState } from 'react';
 import { Avatar, ListItemButton, Typography } from '@mui/material';
 import { SourceOutlined } from '@mui/icons-material';
+import { useAuthenticator } from '@aws-amplify/ui-react';
 
 export default function DocumentContext() {
+  const { user } = useAuthenticator();
   const [files, setFiles] = useState<S3ProviderListOutputItem[]>();
   useEffect(() => {
     const fetchFiles = async () => {
@@ -32,6 +34,7 @@ export default function DocumentContext() {
       <StorageManager
         accessLevel="private"
         maxFileCount={5}
+        path={`${user.username}/`}
         acceptedFileTypes={[
           'application/pdf',
           'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
@@ -58,7 +61,7 @@ export default function DocumentContext() {
                     <SourceOutlined />
                   </Avatar>
                 </ListItemAvatar>
-                <ListItemText primary={f.key} />
+                <ListItemText primary={f.key?.split('/')[1]} />
               </ListItemButton>
             </ListItem>
           ))}

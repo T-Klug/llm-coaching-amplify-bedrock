@@ -26,6 +26,9 @@
     },
     "secretsPathAmplifyAppId": {
       "Type": "String"
+    },
+    "opensearchUrl": {
+      "Type": "String"
     }
   },
   "Conditions": {
@@ -108,6 +111,9 @@
                   "openAIKey"
                 ]
               ]
+            },
+            "opensearchURL": {
+              "Ref": "opensearchUrl"
             }
           }
         },

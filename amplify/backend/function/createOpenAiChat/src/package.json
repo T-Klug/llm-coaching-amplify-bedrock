@@ -11,8 +11,9 @@
     "@aws-sdk/credential-provider-node": "^3.414.0",
     "@aws-sdk/protocol-http": "^3.374.0",
     "@aws-sdk/signature-v4": "^3.374.0",
-    "node-fetch": "^3.3.2",
-    "langchain": "^0.0.152"
+    "@opensearch-project/opensearch": "^2.3.1",
+    "langchain": "^0.0.152",
+    "node-fetch": "^3.3.2"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.92"
