@@ -363,6 +363,7 @@ export const handler = async (event) => {
         event.arguments.input.messages[
           event.arguments.input.messages.length - 1
         ].content,
+      context: "",
     });
   }
 

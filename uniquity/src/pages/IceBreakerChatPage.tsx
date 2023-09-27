@@ -126,7 +126,9 @@ export default function IceBreakerChatPage() {
           messages: [
             {
               role: 'ASSISTANT',
-              content: `Hi ${userProfile?.name}! I'm Uniquity AI, your personal development coach. It is great to meet you! I would love to understand what is important to you when it comes to your career?`,
+              content: `Hi ${
+                userProfile?.name ?? ''
+              }! I'm Uniquity AI, your personal development coach. It is great to meet you! I would love to understand what is important to you when it comes to your career?`,
             },
             { role: 'USER', content: chat },
           ],
@@ -198,7 +200,9 @@ export default function IceBreakerChatPage() {
 
             <OverflowText
               chatPosition="left"
-              content={`Hi ${userProfile?.name}! I'm Uniquity AI, your personal development coach. It is great to meet you! I would love to understand what is important to you when it comes to your career?`}
+              content={`Hi ${
+                userProfile?.name ?? ''
+              }! I'm Uniquity AI, your personal development coach. It is great to meet you! I would love to understand what is important to you when it comes to your career?`}
             />
           </Box>
         </div>

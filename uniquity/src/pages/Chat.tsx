@@ -3,8 +3,10 @@ import { useEffect, useRef, useState } from 'react';
 import {
   Feedback,
   LazyOpenAIChat,
+  LazyUserProfile,
   OpenAIChat,
   OpenAiRoleType,
+  UserProfile,
 } from '../models';
 import DotsTyping from '../components/chat/typing/dotsTyping';
 import {
@@ -63,13 +65,21 @@ export default function Chat() {
     useSpeechRecognition();
   // Snack Bar
   const [snackbarOpen, setSnackBarOpen] = useState<boolean>(false);
+  const [userProfile, setUserProfile] = useState<LazyUserProfile>();
 
-  const chatIntro =
-    "Hi there! I'm Uniquity AI, your personal development coach. Whether it's prioritization, goal setting, or advice on work scenarios, I'm here to help. Let's chat! What's your first challenge for us to tackle today?";
   // If they are creating transcripts with the microphone set the chat input to it
   useEffect(() => {
     setChat(transcript);
   }, [transcript]);
+
+  useEffect(() => {
+    const sub = DataStore.observeQuery(UserProfile).subscribe(({ items }) => {
+      if (items && items.length > 0) {
+        setUserProfile(items[0]);
+      }
+    });
+    return () => sub.unsubscribe();
+  }, []);
 
   const lastMessageRef = useRef<HTMLDivElement | null>(null);
 
@@ -110,7 +120,12 @@ export default function Chat() {
       response = await DataStore.save(
         new OpenAIChat({
           messages: [
-            { role: 'ASSISTANT', content: chatIntro },
+            {
+              role: 'ASSISTANT',
+              content: `Hi there ${
+                userProfile?.name ?? ''
+              }! I'm Uniquity AI, your personal development coach. Whether it's prioritization, goal setting, or advice on work scenarios, I'm here to help. Let's chat! What's your first challenge for us to tackle today?`,
+            },
             { role: 'USER', content: chatFromPrompt ? chatFromPrompt : chat },
           ],
         }),
@@ -228,7 +243,12 @@ export default function Chat() {
               <ThumbDownRounded sx={{ cursor: 'pointer' }} color="primary" />
             </div>
 
-            <OverflowText chatPosition="left" content={chatIntro} />
+            <OverflowText
+              chatPosition="left"
+              content={`Hi there ${
+                userProfile?.name ?? ''
+              }! I'm Uniquity AI, your personal development coach. Whether it's prioritization, goal setting, or advice on work scenarios, I'm here to help. Let's chat! What's your first challenge for us to tackle today?`}
+            />
           </Box>
         </div>
         {data &&
@@ -238,7 +258,12 @@ export default function Chat() {
             .find(x => x.id === selectedId)!
             .messages?.map((m, index, array) => {
               const isLastMessage = index === array.length - 1;
-              if (m?.content === chatIntro) return;
+              if (
+                m?.content?.includes(
+                  `I'm Uniquity AI, your personal development`,
+                )
+              )
+                return;
               if (m?.role === OpenAiRoleType.ASSISTANT)
                 return (
                   <div
