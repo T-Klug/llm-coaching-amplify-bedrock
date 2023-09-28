@@ -279,8 +279,8 @@ export const handler = async (event) => {
     if (await vectorStore.doesIndexExist()) {
       console.log("DOING A CONTEXT RICH CHAIN");
       const retriever = ScoreThresholdRetriever.fromVectorStore(vectorStore, {
-        minSimilarityScore: 0.6,
-        maxK: 100,
+        minSimilarityScore: 0.66,
+        maxK: 20,
         kIncrement: 2,
       });
       const docs = await retriever.getRelevantDocuments(response);
