@@ -25,7 +25,7 @@
         "createOpenAiChat": {
           "secretsPathAmplifyAppId": "d1wywebcdb6lm1",
           "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
-          "s3Key": "amplify-builds/createOpenAiChat-416b6f79683033783374-build.zip",
+          "s3Key": "amplify-builds/createOpenAiChat-477a38454a4b52304968-build.zip",
           "opensearchUrl": "https://search-uniquity-4qxk4pyedoxbwxacrrcfxavoiy.us-east-1.es.amazonaws.com"
         },
         "createOpenAIChat": {},
@@ -36,7 +36,7 @@
         "textResponseNew": {
           "secretsPathAmplifyAppId": "d1wywebcdb6lm1",
           "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
-          "s3Key": "amplify-builds/textResponseNew-456c7348367a4961444b-build.zip",
+          "s3Key": "amplify-builds/textResponseNew-43443936374e53554c2f-build.zip",
           "pinpointApplicationId": "90797490ef5a47d79865eb44f745ff4c",
           "opensearchUrl": "https://search-uniquity-4qxk4pyedoxbwxacrrcfxavoiy.us-east-1.es.amazonaws.com"
         },

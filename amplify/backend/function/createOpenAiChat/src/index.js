@@ -19,8 +19,7 @@ import { BufferWindowMemory } from "langchain/memory";
 import { DynamoDBChatMessageHistory } from "langchain/stores/message/dynamodb";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { OpenSearchVectorStore } from "langchain/vectorstores/opensearch";
-import { LLMChainExtractor } from "langchain/retrievers/document_compressors/chain_extract";
-import { ContextualCompressionRetriever } from "langchain/retrievers/contextual_compression";
+import { ScoreThresholdRetriever } from "langchain/retrievers/score_threshold";
 
 const GRAPHQL_ENDPOINT = process.env.API_AMPLIFYPOC_GRAPHQLAPIENDPOINTOUTPUT;
 const AWS_REGION = process.env.AWS_REGION || "us-east-1";
@@ -281,8 +280,8 @@ export const handler = async (event) => {
       "human",
       `Respond to the input conversationally. The user's name is ${userProfile.name}, and you should use their name to reference them. 
       You should try to ask questions to get more details and help the user think from different perspectives. 
-      You also have access to the following document context the user provided about themselves and their company: 
-      {context} 
+      You also have access to the following chunked document context the user provided about themselves and their company. The document chunks are denoted with ---END OF DOCUMENT---
+      Context: {context}
       The input is: {input}`,
     ],
   ]);
@@ -337,11 +336,12 @@ export const handler = async (event) => {
   let result;
   if (await vectorStore.doesIndexExist()) {
     console.log("DOING A CONTEXT RICH CHAIN");
-    const baseCompressor = LLMChainExtractor.fromLLM(chat);
-    const retriever = new ContextualCompressionRetriever({
-      baseCompressor,
-      baseRetriever: vectorStore.asRetriever(),
+    const retriever = ScoreThresholdRetriever.fromVectorStore(vectorStore, {
+      minSimilarityScore: 0.6,
+      maxK: 100,
+      kIncrement: 2,
     });
+
     const docs = await retriever.getRelevantDocuments(
       event.arguments.input.messages[event.arguments.input.messages.length - 1]
         .content
@@ -354,7 +354,9 @@ export const handler = async (event) => {
         ].content,
       context:
         docs && docs.length > 0
-          ? docs.map((d) => d.pageContent).join("\n")
+          ? docs
+              .map((d) => d.pageContent)
+              .join("\n---END OF DOCUMENT---\n---START OF NEXT DOCUMENT---\n")
           : "",
     });
   } else {

@@ -18,10 +18,9 @@ import { HttpRequest } from "@aws-sdk/protocol-http";
 import { default as fetch, Request } from "node-fetch";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { OpenSearchVectorStore } from "langchain/vectorstores/opensearch";
-import { LLMChainExtractor } from "langchain/retrievers/document_compressors/chain_extract";
-import { ContextualCompressionRetriever } from "langchain/retrievers/contextual_compression";
 import { AwsSigv4Signer } from "@opensearch-project/opensearch/aws";
 import { Client } from "@opensearch-project/opensearch";
+import { ScoreThresholdRetriever } from "langchain/retrievers/score_threshold";
 
 const SECRET_PATH = process.env.OpenAIKey;
 const AppId = process.env.PinpointApplicationId;
@@ -195,13 +194,13 @@ export const handler = async (event) => {
   if (userProfile && userProfile.name) {
     userPromptTemplate = `Respond to the input conversationally, and with a format of a statement followed by a question to learn more. 
     The users name is ${userProfile.name} and you should use thier name to reference them. 
-    You also have access to the following document context the user provided about themselves and their company: 
-    {context} 
+    You also have access to the following chunked document context the user provided about themselves and their company. The document chunks are denoted with ---END OF DOCUMENT---
+    Context: {context}
     The input is: {input}`;
   } else {
     userPromptTemplate = `Respond to the input conversationally, and with a format of a statement followed by a question to learn more. 
-    You also have access to the following document context the user provided about themselves and their company: 
-    {context}
+    You also have access to the following chunked document context the user provided about themselves and their company. The document chunks are denoted with ---END OF DOCUMENT---
+    Context: {context}  
     The input is: {input}`;
   }
   const memory = new BufferWindowMemory({
@@ -279,17 +278,19 @@ export const handler = async (event) => {
     );
     if (await vectorStore.doesIndexExist()) {
       console.log("DOING A CONTEXT RICH CHAIN");
-      const baseCompressor = LLMChainExtractor.fromLLM(chat);
-      const retriever = new ContextualCompressionRetriever({
-        baseCompressor,
-        baseRetriever: vectorStore.asRetriever(),
+      const retriever = ScoreThresholdRetriever.fromVectorStore(vectorStore, {
+        minSimilarityScore: 0.6,
+        maxK: 100,
+        kIncrement: 2,
       });
       const docs = await retriever.getRelevantDocuments(response);
       result = await chain.call({
         input: response,
         context:
           docs && docs.length > 0
-            ? docs.map((d) => d.pageContent).join("\n")
+            ? docs
+                .map((d) => d.pageContent)
+                .join("\n---END OF DOCUMENT---\n---START OF NEXT DOCUMENT---\n")
             : "",
       });
     } else {
