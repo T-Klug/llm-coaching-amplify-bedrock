@@ -279,12 +279,12 @@ export const handler = async (event) => {
     new MessagesPlaceholder("history"),
     [
       "human",
-      `Respond to the input conversationally. The user's name is ${userProfile.name}, and you should use their name to reference them. 
-      You should try to ask questions to get more details and help the user think from different perspectives. 
+      `Respond to the input conversationally. The user's name is ${userProfile.name}, and you should use their name when you reference them. 
+      You should try to ask thought provoking questions to encourage the user think from different perspectives. 
       You also have access to the following chunked document context the user provided about themselves and their company. The document chunks are denoted with ---END OF DOCUMENT---
-      Try to incorporate their background and context where it makes sense to the conversation.
       Context: {context}
-      The input is: {input}`,
+      The input is: {input} 
+      Please include anything relevant in my background in your answer`,
     ],
   ]);
 

@@ -192,18 +192,17 @@ export const handler = async (event) => {
   console.log(userProfile);
   let userPromptTemplate;
   if (userProfile && userProfile.name) {
-    userPromptTemplate = `Respond to the input conversationally, and with a format of a statement followed by a question to learn more. 
-    The users name is ${userProfile.name} and you should use thier name to reference them. 
+    userPromptTemplate = `Respond to the input conversationally. Use the format of a statement followed by a thought provoking question. 
+    The users name is ${userProfile.name} and you should use thier name when referencing them. 
     You also have access to the following chunked document context the user provided about themselves and their company. The document chunks are denoted with ---END OF DOCUMENT---
-     Try to incorporate their background and context where it makes sense to the conversation.
     Context: {context}
     The input is: {input}`;
   } else {
-    userPromptTemplate = `Respond to the input conversationally, and with a format of a statement followed by a question to learn more. 
+    userPromptTemplate = `Respond to the input conversationally. Use the format of a statement followed by a thought provoking question.
     You also have access to the following chunked document context the user provided about themselves and their company. The document chunks are denoted with ---END OF DOCUMENT---
-    Try to incorporate their background and context where it makes sense to the conversation.
     Context: {context}  
-    The input is: {input}`;
+    The input is: {input}
+    Please include anything relevant in my background in your answer`;
   }
   const memory = new BufferWindowMemory({
     k: 5,
