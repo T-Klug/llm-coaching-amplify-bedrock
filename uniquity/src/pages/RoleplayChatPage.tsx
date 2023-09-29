@@ -85,6 +85,9 @@ export default function RoleplayChatPage() {
 
   // Send Chat Method
   const sendChat = async () => {
+    if (summaryLoading) {
+      return;
+    }
     if (listening) {
       await SpeechRecognition.stopListening();
       setListening(false);
@@ -211,6 +214,7 @@ export default function RoleplayChatPage() {
         }}
       >
         <TextField
+          disabled={summaryLoading}
           fullWidth
           multiline
           maxRows={5}
