@@ -157,7 +157,7 @@ export const handler = async (event) => {
     return "400 bad argument";
   }
 
-  const chatTranscript = getChat(event.arguments?.input?.roleplayId);
+  const chatTranscript = await getChat(event.arguments?.input?.roleplayId);
 
   const chatPrompt = ChatPromptTemplate.fromPromptMessages([
     ["human", "{input}"],
@@ -176,21 +176,21 @@ export const handler = async (event) => {
   });
 
   const result = await chain.call({
-    input: `You will act as an AI career coach named Uniquity AI. I am providing you with chat between the <chat> tag that the user had while roleplaying. 
-    I want you to provide feedback in the form of three things the user could improve on in regards to the roleplay scenario between the tag <scenario>. 
-      <chat>
+    input: `You will act as an AI career coach named Uniquity AI. I am providing you with chat between the <chat> tag that the user had while roleplaying. The roleplay scenario prompt is between the tag <scenario>.
+    I want you to provide feedback in the form of three things they could improve on based on what the user said in the chat. 
+    Do not give feedback about Bill's responses.  
+    <scenario>
+    You're catching up with Bill to see how his projects are coming along. Initiate the convo whenever you are ready! Don't forget to also ask how he's doing personally. Once you feel like you've covered everything, you can wrap it up
+    </scenario>
+    <chat>
       ${
         chatTranscript && chatTranscript.messages
           ? JSON.stringify(chatTranscript.messages)
           : ""
       }
-      </chat>
-      <scenario>
-      You're catching up with Bill to see how his projects are coming along. Initiate the convo whenever you are ready! Don't forget to also ask how he's doing personally. Once you feel like you've covered everything, you can wrap it up
-      </scenario>
-      You will respond with the feedback within the <response></response> tags.
-      Assistant: [Feedback] <response>
-      `,
+    </chat>
+    You will respond with the feedback within the <response></response> tags.
+    Assistant: [Feedback] <response>`,
   });
 
   const saved = await createSummary(event.identity.claims.username, result);
