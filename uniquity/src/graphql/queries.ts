@@ -2,7 +2,7 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-import * as APITypes from "../../uniquity/src/graphql/API";
+import * as APITypes from "./API";
 type GeneratedQuery<InputType, OutputType> = string & {
   __generatedQueryInput: InputType;
   __generatedQueryOutput: OutputType;
@@ -544,4 +544,85 @@ export const syncRoleplayChats = /* GraphQL */ `query SyncRoleplayChats(
 ` as GeneratedQuery<
   APITypes.SyncRoleplayChatsQueryVariables,
   APITypes.SyncRoleplayChatsQuery
+>;
+export const getRoleplaySummary = /* GraphQL */ `query GetRoleplaySummary($id: ID!) {
+  getRoleplaySummary(id: $id) {
+    id
+    summary
+    user
+    roleplayId
+    owner
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.GetRoleplaySummaryQueryVariables,
+  APITypes.GetRoleplaySummaryQuery
+>;
+export const listRoleplaySummaries = /* GraphQL */ `query ListRoleplaySummaries(
+  $filter: ModelRoleplaySummaryFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listRoleplaySummaries(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      summary
+      user
+      roleplayId
+      owner
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    nextToken
+    startedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ListRoleplaySummariesQueryVariables,
+  APITypes.ListRoleplaySummariesQuery
+>;
+export const syncRoleplaySummaries = /* GraphQL */ `query SyncRoleplaySummaries(
+  $filter: ModelRoleplaySummaryFilterInput
+  $limit: Int
+  $nextToken: String
+  $lastSync: AWSTimestamp
+) {
+  syncRoleplaySummaries(
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+    lastSync: $lastSync
+  ) {
+    items {
+      id
+      summary
+      user
+      roleplayId
+      owner
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    nextToken
+    startedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.SyncRoleplaySummariesQueryVariables,
+  APITypes.SyncRoleplaySummariesQuery
 >;

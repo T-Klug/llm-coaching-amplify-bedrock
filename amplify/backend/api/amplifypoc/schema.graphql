@@ -47,6 +47,10 @@ input RoleplayChatFuncInput {
   _version: Int
 }
 
+input GenerateRoleplaySummaryFuncInput {
+  roleplayId: ID
+}
+
 type Mutation {
   createOpenAIChatFunc(input: CreateOpenAIChatFuncInput): OpenAIChat
     @function(name: "createOpenAiChat-${env}")
@@ -59,6 +63,11 @@ type Mutation {
     @auth(rules: [{ allow: private }])
   chatRoleplayFunc(input: RoleplayChatFuncInput): RoleplayChat
     @function(name: "roleplayChat-${env}")
+    @auth(rules: [{ allow: private }])
+  generateRoleplaySummaryFunc(
+    input: GenerateRoleplaySummaryFuncInput
+  ): RoleplaySummary
+    @function(name: "generateRoleplaySummary-${env}")
     @auth(rules: [{ allow: private }])
 }
 
@@ -126,6 +135,14 @@ type IcebreakerChat @model @auth(rules: [{ allow: owner }]) {
 type RoleplayChat @model @auth(rules: [{ allow: owner }]) {
   id: ID!
   messages: [MessagesType]
+  user: ID
+  roleplayId: ID
+  owner: String @auth(rules: [{ allow: owner, operations: [read, delete] }])
+}
+
+type RoleplaySummary @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  summary: String
   user: ID
   roleplayId: ID
   owner: String @auth(rules: [{ allow: owner, operations: [read, delete] }])

@@ -143,6 +143,21 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "generateRoleplaySummary": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ],
+          "category": "api",
+          "resourceName": "amplifypoc"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "generateUserSummary": {
       "build": true,
       "dependsOn": [
@@ -316,6 +331,22 @@
         {
           "category": "function",
           "resourceName": "createOpenAiChat"
+        }
+      ]
+    },
+    "AMPLIFY_function_generateRoleplaySummary_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "generateRoleplaySummary"
+        }
+      ]
+    },
+    "AMPLIFY_function_generateRoleplaySummary_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "generateRoleplaySummary"
         }
       ]
     },

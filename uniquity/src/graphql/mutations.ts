@@ -2,7 +2,7 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-import * as APITypes from "../../uniquity/src/graphql/API";
+import * as APITypes from "./API";
 type GeneratedMutation<InputType, OutputType> = string & {
   __generatedMutationInput: InputType;
   __generatedMutationOutput: OutputType;
@@ -455,6 +455,72 @@ export const deleteRoleplayChat = /* GraphQL */ `mutation DeleteRoleplayChat(
   APITypes.DeleteRoleplayChatMutationVariables,
   APITypes.DeleteRoleplayChatMutation
 >;
+export const createRoleplaySummary = /* GraphQL */ `mutation CreateRoleplaySummary(
+  $input: CreateRoleplaySummaryInput!
+  $condition: ModelRoleplaySummaryConditionInput
+) {
+  createRoleplaySummary(input: $input, condition: $condition) {
+    id
+    summary
+    user
+    roleplayId
+    owner
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.CreateRoleplaySummaryMutationVariables,
+  APITypes.CreateRoleplaySummaryMutation
+>;
+export const updateRoleplaySummary = /* GraphQL */ `mutation UpdateRoleplaySummary(
+  $input: UpdateRoleplaySummaryInput!
+  $condition: ModelRoleplaySummaryConditionInput
+) {
+  updateRoleplaySummary(input: $input, condition: $condition) {
+    id
+    summary
+    user
+    roleplayId
+    owner
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.UpdateRoleplaySummaryMutationVariables,
+  APITypes.UpdateRoleplaySummaryMutation
+>;
+export const deleteRoleplaySummary = /* GraphQL */ `mutation DeleteRoleplaySummary(
+  $input: DeleteRoleplaySummaryInput!
+  $condition: ModelRoleplaySummaryConditionInput
+) {
+  deleteRoleplaySummary(input: $input, condition: $condition) {
+    id
+    summary
+    user
+    roleplayId
+    owner
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.DeleteRoleplaySummaryMutationVariables,
+  APITypes.DeleteRoleplaySummaryMutation
+>;
 export const createOpenAIChatFunc = /* GraphQL */ `mutation CreateOpenAIChatFunc($input: CreateOpenAIChatFuncInput) {
   createOpenAIChatFunc(input: $input) {
     id
@@ -528,4 +594,23 @@ export const chatRoleplayFunc = /* GraphQL */ `mutation ChatRoleplayFunc($input:
 ` as GeneratedMutation<
   APITypes.ChatRoleplayFuncMutationVariables,
   APITypes.ChatRoleplayFuncMutation
+>;
+export const generateRoleplaySummaryFunc = /* GraphQL */ `mutation GenerateRoleplaySummaryFunc($input: GenerateRoleplaySummaryFuncInput) {
+  generateRoleplaySummaryFunc(input: $input) {
+    id
+    summary
+    user
+    roleplayId
+    owner
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.GenerateRoleplaySummaryFuncMutationVariables,
+  APITypes.GenerateRoleplaySummaryFuncMutation
 >;

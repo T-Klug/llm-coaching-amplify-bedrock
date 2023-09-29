@@ -2,7 +2,7 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-import * as APITypes from "../../uniquity/src/graphql/API";
+import * as APITypes from "./API";
 type GeneratedSubscription<InputType, OutputType> = string & {
   __generatedSubscriptionInput: InputType;
   __generatedSubscriptionOutput: OutputType;
@@ -442,4 +442,70 @@ export const onDeleteRoleplayChat = /* GraphQL */ `subscription OnDeleteRoleplay
 ` as GeneratedSubscription<
   APITypes.OnDeleteRoleplayChatSubscriptionVariables,
   APITypes.OnDeleteRoleplayChatSubscription
+>;
+export const onCreateRoleplaySummary = /* GraphQL */ `subscription OnCreateRoleplaySummary(
+  $filter: ModelSubscriptionRoleplaySummaryFilterInput
+  $owner: String
+) {
+  onCreateRoleplaySummary(filter: $filter, owner: $owner) {
+    id
+    summary
+    user
+    roleplayId
+    owner
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnCreateRoleplaySummarySubscriptionVariables,
+  APITypes.OnCreateRoleplaySummarySubscription
+>;
+export const onUpdateRoleplaySummary = /* GraphQL */ `subscription OnUpdateRoleplaySummary(
+  $filter: ModelSubscriptionRoleplaySummaryFilterInput
+  $owner: String
+) {
+  onUpdateRoleplaySummary(filter: $filter, owner: $owner) {
+    id
+    summary
+    user
+    roleplayId
+    owner
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnUpdateRoleplaySummarySubscriptionVariables,
+  APITypes.OnUpdateRoleplaySummarySubscription
+>;
+export const onDeleteRoleplaySummary = /* GraphQL */ `subscription OnDeleteRoleplaySummary(
+  $filter: ModelSubscriptionRoleplaySummaryFilterInput
+  $owner: String
+) {
+  onDeleteRoleplaySummary(filter: $filter, owner: $owner) {
+    id
+    summary
+    user
+    roleplayId
+    owner
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnDeleteRoleplaySummarySubscriptionVariables,
+  APITypes.OnDeleteRoleplaySummarySubscription
 >;

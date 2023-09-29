@@ -235,3 +235,37 @@ export declare type RoleplayChat = LazyLoading extends LazyLoadingDisabled ? Eag
 export declare const RoleplayChat: (new (init: ModelInit<RoleplayChat>) => RoleplayChat) & {
   copyOf(source: RoleplayChat, mutator: (draft: MutableModel<RoleplayChat>) => MutableModel<RoleplayChat> | void): RoleplayChat;
 }
+
+type EagerRoleplaySummary = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<RoleplaySummary, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly summary?: string | null;
+  readonly user?: string | null;
+  readonly roleplayId?: string | null;
+  readonly owner?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyRoleplaySummary = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<RoleplaySummary, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly summary?: string | null;
+  readonly user?: string | null;
+  readonly roleplayId?: string | null;
+  readonly owner?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type RoleplaySummary = LazyLoading extends LazyLoadingDisabled ? EagerRoleplaySummary : LazyRoleplaySummary
+
+export declare const RoleplaySummary: (new (init: ModelInit<RoleplaySummary>) => RoleplaySummary) & {
+  copyOf(source: RoleplaySummary, mutator: (draft: MutableModel<RoleplaySummary>) => MutableModel<RoleplaySummary> | void): RoleplaySummary;
+}
