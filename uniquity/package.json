@@ -10,8 +10,8 @@
     "models": "amplify codegen models --output-dir uniquity/src/models"
   },
   "dependencies": {
-    "@aws-amplify/ui-react": "^5.2.0",
-    "@aws-amplify/ui-react-notifications": "^1.0.1",
+    "@aws-amplify/ui-react": "^5.3.1",
+    "@aws-amplify/ui-react-notifications": "^1.0.13",
     "@aws-amplify/ui-react-storage": "^2.3.1",
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",

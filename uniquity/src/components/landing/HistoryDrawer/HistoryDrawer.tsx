@@ -51,7 +51,7 @@ export function HistoryDrawer(props: HistoryDrawerPropsType) {
                 aiChat &&
                 aiChat?.messages &&
                 (aiChat.messages[0]?.content?.includes(
-                  "Hi there! I'm Uniquity AI, your personal development coach.",
+                  "I'm Uniquity AI, your personal development coach.",
                 )
                   ? aiChat.messages[1]?.content
                   : aiChat.messages[0]?.content)

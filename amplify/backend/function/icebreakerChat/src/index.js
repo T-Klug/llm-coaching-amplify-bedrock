@@ -1,5 +1,3 @@
-import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
-import { ChatOpenAI } from "langchain/chat_models/openai";
 import { ConversationChain } from "langchain/chains";
 import { ChatPromptTemplate, MessagesPlaceholder } from "langchain/prompts";
 import { BufferWindowMemory } from "langchain/memory";
@@ -9,6 +7,7 @@ import { defaultProvider } from "@aws-sdk/credential-provider-node";
 import { SignatureV4 } from "@aws-sdk/signature-v4";
 import { HttpRequest } from "@aws-sdk/protocol-http";
 import { default as fetch, Request } from "node-fetch";
+import { ChatBedrock } from "langchain/chat_models/bedrock";
 
 /* Amplify Params - DO NOT EDIT
 	API_AMPLIFYPOC_GRAPHQLAPIENDPOINTOUTPUT
@@ -16,7 +15,6 @@ import { default as fetch, Request } from "node-fetch";
 	ENV
 	REGION
 Amplify Params - DO NOT EDIT */
-const SECRET_PATH = process.env.OpenAIKey;
 const GRAPHQL_ENDPOINT = process.env.API_AMPLIFYPOC_GRAPHQLAPIENDPOINTOUTPUT;
 const AWS_REGION = process.env.AWS_REGION || "us-east-1";
 const { Sha256 } = crypto;
@@ -98,7 +96,9 @@ const updateChatModel = async (id, newContent) => {
   const messages = [
     {
       role: "ASSISTANT",
-      content: newContent.response,
+      content: newContent.response
+        .replace("<response>", "")
+        .replace("</response>", ""),
     },
   ];
   const variables = {
@@ -234,13 +234,6 @@ export const handler = async (event) => {
   if (!event.arguments?.input?.id) {
     return "400 bad argument";
   }
-  const client = new SSMClient();
-  const input = {
-    Name: SECRET_PATH,
-    WithDecryption: true,
-  };
-  const command = new GetParameterCommand(input);
-  const { Parameter } = await client.send(command);
 
   const memory = new BufferWindowMemory({
     k: 5,
@@ -260,22 +253,25 @@ export const handler = async (event) => {
   const adminModelSettings = await getOpenAIModel();
 
   const chatPrompt = ChatPromptTemplate.fromPromptMessages([
-    ["system", adminModelSettings.prompt],
     new MessagesPlaceholder("history"),
     [
       "human",
-      `Respond to the input conversationally. It is an icebreaker conversation. The users name is ${userProfile.name} and you should refer to them as such. The input is: {input}`,
+      `You will act as an AI career coach named Uniquity AI. Respond to the input within the <input> tags conversationally. The user's name is ${userProfile.name}, and you should use their name when you reference them.
+      Your rules are provided in the <rules> tags
+      <rules>${adminModelSettings.prompt}</rules>
+      You are doing a "getting to know you" icebreaker conversation. 
+      You should try to ask icebreaker questions throughout the conversation so that you can get to know the user more and so the user can get to know you more. 
+      Respond to the input within the <input> tags.  
+      <input>{input}</input>
+      Please respond to the user's input within the <response></response> tags
+      Assistant: [Uniquity AI] <response>`,
     ],
   ]);
 
-  const chat = new ChatOpenAI({
-    openAIApiKey: Parameter.Value,
-    modelName: adminModelSettings.model,
-    temperature: parseFloat(adminModelSettings.temperature),
-    frequency_penalty: parseFloat(adminModelSettings.frequency_penalty),
-    presence_penalty: parseFloat(adminModelSettings.presence_penalty),
-    max_tokens: parseInt(adminModelSettings.max_tokens),
-    top_p: parseFloat(adminModelSettings.top_p),
+  const chat = new ChatBedrock({
+    model: "anthropic.claude-instant-v1",
+    region: AWS_REGION,
+    maxTokens: 8191,
   });
 
   const chain = new ConversationChain({

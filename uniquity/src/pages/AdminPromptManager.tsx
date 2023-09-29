@@ -51,104 +51,20 @@ export default function AdminPromptManager() {
     <>
       <Paper sx={{ padding: 2 }}>
         <Typography variant="h4" textAlign="center" mb={2}>
-          Admin Settings for Open AI
+          Admin Settings for Prompting
         </Typography>
         <Box m={2}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
                 fullWidth
-                label="This is the Default System Prompt given to the OpenAI during calls"
+                label="This is the Default System Prompt given to the model during calls"
                 multiline
                 value={data ? data.prompt : ''}
                 onChange={event => {
                   setData(
                     OpenAIModel.copyOf(data!, draft => {
                       draft.prompt = event.target.value;
-                    }),
-                  );
-                }}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                label="Model Open AI should use (gpt-3.5-turbo-0301)"
-                fullWidth
-                value={data ? data.model : ''}
-                onChange={event => {
-                  setData(
-                    OpenAIModel.copyOf(data!, draft => {
-                      draft.model = event.target.value;
-                    }),
-                  );
-                }}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                fullWidth
-                label="Temperature Open AI should use between 0 & 2 (1)"
-                value={data ? data.temperature : ''}
-                onChange={event => {
-                  setData(
-                    OpenAIModel.copyOf(data!, draft => {
-                      draft.temperature = event.target.value;
-                    }),
-                  );
-                }}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                fullWidth
-                label="Top_P Open AI should use (1)"
-                value={data ? data.top_p : ''}
-                onChange={event => {
-                  setData(
-                    OpenAIModel.copyOf(data!, draft => {
-                      draft.top_p = event.target.value;
-                    }),
-                  );
-                }}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                fullWidth
-                label="Max Tokens Open AI should use (inf)"
-                value={data ? data.max_tokens : ''}
-                onChange={event => {
-                  setData(
-                    OpenAIModel.copyOf(data!, draft => {
-                      draft.max_tokens = event.target.value;
-                    }),
-                  );
-                }}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                fullWidth
-                label="Presence Penalty Open AI will use between -2 & 2 (0)"
-                value={data ? data.presence_penalty : ''}
-                onChange={event => {
-                  setData(
-                    OpenAIModel.copyOf(data!, draft => {
-                      draft.presence_penalty = event.target.value;
-                    }),
-                  );
-                }}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                fullWidth
-                label="Frequency Penalty Open AI will use between -2 & 2 (0)"
-                value={data ? data.frequency_penalty : ''}
-                onChange={event => {
-                  setData(
-                    OpenAIModel.copyOf(data!, draft => {
-                      draft.frequency_penalty = event.target.value;
                     }),
                   );
                 }}

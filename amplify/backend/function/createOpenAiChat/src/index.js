@@ -12,7 +12,6 @@ import { SignatureV4 } from "@aws-sdk/signature-v4";
 import { HttpRequest } from "@aws-sdk/protocol-http";
 import { default as fetch, Request } from "node-fetch";
 import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
-import { ChatOpenAI } from "langchain/chat_models/openai";
 import { ConversationChain } from "langchain/chains";
 import { ChatPromptTemplate, MessagesPlaceholder } from "langchain/prompts";
 import { BufferWindowMemory } from "langchain/memory";
@@ -20,7 +19,7 @@ import { DynamoDBChatMessageHistory } from "langchain/stores/message/dynamodb";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { OpenSearchVectorStore } from "langchain/vectorstores/opensearch";
 import { ScoreThresholdRetriever } from "langchain/retrievers/score_threshold";
-//import { Bedrock } from "langchain/llms/bedrock";
+import { ChatBedrock } from "langchain/chat_models/bedrock";
 
 const GRAPHQL_ENDPOINT = process.env.API_AMPLIFYPOC_GRAPHQLAPIENDPOINTOUTPUT;
 const AWS_REGION = process.env.AWS_REGION || "us-east-1";
@@ -146,7 +145,9 @@ const updateChatModel = async (id, newContent) => {
   const messages = [
     {
       role: "ASSISTANT",
-      content: newContent.response,
+      content: newContent.response
+        .replace("<response>", "")
+        .replace("</response>", ""),
     },
   ];
   const variables = {
@@ -271,37 +272,30 @@ export const handler = async (event) => {
   const adminModelSettings = await getOpenAIModel();
 
   const chatPrompt = ChatPromptTemplate.fromPromptMessages([
-    ["system", adminModelSettings.prompt],
-    [
-      "system",
-      `This is a summary of the user you are coaching: ${userProfile.userSummary}`,
-    ],
     new MessagesPlaceholder("history"),
     [
       "human",
-      `Respond to the input conversationally. The user's name is ${userProfile.name}, and you should use their name when you reference them. 
+      `You will act as an AI career coach named Uniquity AI. Respond to the input within the <input> tags conversationally. The user's name is ${userProfile.name}, and you should use their name when you reference them.
+      Your rules are provided in the <rules> tags
+      <rules>${adminModelSettings.prompt}</rules>
+      The summary of the users motivations and background is provided between the <summary> tags.
+      <summary>${userProfile.userSummary}</summary>
       You should try to ask thought provoking questions to encourage the user think from different perspectives. 
-      You also have access to the following chunked document context the user provided about themselves and their company. The document chunks are denoted with ---END OF DOCUMENT---
-      Context: {context}
-      The input is: {input} 
-      Please include anything relevant in my background in your answer`,
+      You also have access to the following chunked document context the user provided about themselves and their company. The document chunks are in the <document> tags.
+      <document>
+      {context}
+      <input>{input}</input> 
+      Please include anything relevant in my background in your answer.
+      Please respond to the user within <response></response> tags.
+      Assistant: [Uniquity AI] <response>`,
     ],
   ]);
 
-  const chat = new ChatOpenAI({
-    openAIApiKey: Parameter.Value,
-    modelName: adminModelSettings.model,
-    temperature: parseFloat(adminModelSettings.temperature),
-    frequency_penalty: parseFloat(adminModelSettings.frequency_penalty),
-    presence_penalty: parseFloat(adminModelSettings.presence_penalty),
-    max_tokens: parseInt(adminModelSettings.max_tokens),
-    top_p: parseFloat(adminModelSettings.top_p),
+  const chat = new ChatBedrock({
+    model: "anthropic.claude-instant-v1",
+    region: AWS_REGION,
+    maxTokens: 8191,
   });
-
-  // const chat = new Bedrock({
-  //   model: "anthropic.claude-instant-v1",
-  //   region: AWS_REGION,
-  // });
 
   const clientOS = new Client({
     ...AwsSigv4Signer({
@@ -361,10 +355,8 @@ export const handler = async (event) => {
         ].content,
       context:
         docs && docs.length > 0
-          ? docs
-              .map((d) => d.pageContent)
-              .join("\n---END OF DOCUMENT---\n---START OF NEXT DOCUMENT---\n")
-          : "",
+          ? docs.map((d) => d.pageContent).join("\n</document>\n<document>\n")
+          : "</document>",
     });
   } else {
     result = await chain.call({
@@ -372,7 +364,7 @@ export const handler = async (event) => {
         event.arguments.input.messages[
           event.arguments.input.messages.length - 1
         ].content,
-      context: "",
+      context: "</document>",
     });
   }
 

@@ -195,7 +195,7 @@ export default function UserProfilePage() {
           </Grid>
           <Grid mb={5} item xs={12}>
             <Typography mt={5} variant="h5">
-              Personality Test
+              What motivates you at work
             </Typography>
             {assess &&
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
