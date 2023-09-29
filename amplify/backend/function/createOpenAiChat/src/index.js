@@ -20,6 +20,7 @@ import { DynamoDBChatMessageHistory } from "langchain/stores/message/dynamodb";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { OpenSearchVectorStore } from "langchain/vectorstores/opensearch";
 import { ScoreThresholdRetriever } from "langchain/retrievers/score_threshold";
+//import { Bedrock } from "langchain/llms/bedrock";
 
 const GRAPHQL_ENDPOINT = process.env.API_AMPLIFYPOC_GRAPHQLAPIENDPOINTOUTPUT;
 const AWS_REGION = process.env.AWS_REGION || "us-east-1";
@@ -295,6 +296,11 @@ export const handler = async (event) => {
     max_tokens: parseInt(adminModelSettings.max_tokens),
     top_p: parseFloat(adminModelSettings.top_p),
   });
+
+  // const chat = new Bedrock({
+  //   model: "anthropic.claude-instant-v1",
+  //   region: AWS_REGION,
+  // });
 
   const clientOS = new Client({
     ...AwsSigv4Signer({

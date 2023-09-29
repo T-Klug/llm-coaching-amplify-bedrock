@@ -359,6 +359,15 @@
                 "arn:aws:dynamodb:us-east-1:210396912496:table/adhoc-chat-memory"
               ],
               "Effect": "Allow"
+            },
+            {
+              "Action": [
+                "bedrock:*"
+              ],
+              "Resource": [
+                "*"
+              ],
+              "Effect": "Allow"
             }
           ]
         },
