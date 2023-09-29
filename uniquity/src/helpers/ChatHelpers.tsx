@@ -1,14 +1,16 @@
 import { API } from 'aws-amplify';
 import { IcebreakerChat, OpenAIChat, RoleplayChat } from '../models';
 import {
-  ChatIcebreakerFuncInput,
+  ChatIcebreakerFuncMutation,
+  ChatRoleplayFuncMutation,
   CreateOpenAIChatFuncMutation,
-  RoleplayChatFuncInput,
+  GenerateRoleplaySummaryFuncMutation,
 } from '../graphql/API';
 import {
   chatIcebreakerFunc,
   chatRoleplayFunc,
   createOpenAIChatFunc,
+  generateRoleplaySummaryFunc,
   generateUserSummaryFunc,
 } from '../graphql/mutations';
 import { GraphQLQuery } from '@aws-amplify/api';
@@ -49,7 +51,7 @@ export const submitIceBreaker = async (response: IcebreakerChat) => {
     id: saveModel.id,
     messages: saveModel.messages,
   };
-  await API.graphql<GraphQLQuery<ChatIcebreakerFuncInput>>({
+  await API.graphql<GraphQLQuery<ChatIcebreakerFuncMutation>>({
     query: chatIcebreakerFunc,
     variables: { input: functionInput },
   });
@@ -61,7 +63,7 @@ export const submitRoleplayChat = async (response: RoleplayChat) => {
     id: saveModel.id,
     messages: saveModel.messages,
   };
-  await API.graphql<GraphQLQuery<RoleplayChatFuncInput>>({
+  await API.graphql<GraphQLQuery<ChatRoleplayFuncMutation>>({
     query: chatRoleplayFunc,
     variables: { input: functionInput },
   });
@@ -70,6 +72,16 @@ export const submitRoleplayChat = async (response: RoleplayChat) => {
 export const generateUserSummaryCall = async () => {
   return await API.graphql({
     query: generateUserSummaryFunc,
+  });
+};
+
+export const generateRoleplaySummary = async (roleplayId: string) => {
+  const functionInput = {
+    roleplayId: roleplayId,
+  };
+  return await API.graphql<GraphQLQuery<GenerateRoleplaySummaryFuncMutation>>({
+    query: generateRoleplaySummaryFunc,
+    variables: { input: functionInput },
   });
 };
 

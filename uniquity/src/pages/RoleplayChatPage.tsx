@@ -10,7 +10,10 @@ import {
 import SpeechRecognition, {
   useSpeechRecognition,
 } from 'react-speech-recognition';
-import { submitRoleplayChat } from '../helpers/ChatHelpers';
+import {
+  generateRoleplaySummary,
+  submitRoleplayChat,
+} from '../helpers/ChatHelpers';
 import { styled } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Box from '@mui/material/Box';
@@ -20,7 +23,8 @@ import './Chat.css';
 import OverflowText from '../components/chat/OverflowText';
 import { /*useNavigate,*/ useParams } from 'react-router-dom';
 import Button from '@mui/material/Button';
-import { Card, CardContent, Typography } from '@mui/material';
+import { Card, CardContent, CircularProgress, Typography } from '@mui/material';
+import SummaryModal from '../components/roleplay/SummaryModal';
 
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
@@ -42,16 +46,20 @@ export default function RoleplayChatPage() {
   // Speech recognition
   const { transcript, resetTranscript, browserSupportsSpeechRecognition } =
     useSpeechRecognition();
+  const [summaryId, setSummaryId] = useState<string>('');
+  const [summaryOpen, setSummaryOpen] = useState<boolean>(false);
+  const [summaryLoading, setSummaryLoading] = useState<boolean>(false);
 
   async function handleChatDone() {
-    // if (userProfile) {
-    //   await DataStore.save(
-    //     UserProfile.copyOf(userProfile, draft => {
-    //       draft.completedIcebreakers = true;
-    //     }),
-    //   );
-    //   navigate('/');
-    // }
+    if (selectedId) {
+      setSummaryLoading(true);
+      const result = await generateRoleplaySummary(selectedId);
+      if (result.data && result.data.generateRoleplaySummaryFunc) {
+        setSummaryId(result.data.generateRoleplaySummaryFunc.id);
+        setSummaryOpen(true);
+        setSummaryLoading(false);
+      }
+    }
   }
 
   // If they are creating transcripts with the microphone set the chat input to it
@@ -113,6 +121,11 @@ export default function RoleplayChatPage() {
 
   return (
     <>
+      <SummaryModal
+        open={summaryOpen}
+        setOpen={setSummaryOpen}
+        summaryId={summaryId}
+      />
       <Card sx={{ borderRadius: 6 }}>
         <CardContent>
           <Typography variant="h5" textAlign="center" sx={{ mb: 3 }}>
@@ -242,11 +255,12 @@ export default function RoleplayChatPage() {
           onChange={t => setChat(t.target.value)}
         />
         <Button
+          disabled={summaryLoading}
           onClick={handleChatDone}
           sx={{ borderRadius: 8 }}
           variant="contained"
         >
-          Done Role Playing
+          {summaryLoading ? <CircularProgress /> : 'Done Role Playing'}
         </Button>
       </AppBar>
     </>

@@ -64,7 +64,7 @@
         },
         "generateRoleplaySummary": {
           "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
-          "s3Key": "amplify-builds/generateRoleplaySummary-516939617049356a655a-build.zip"
+          "s3Key": "amplify-builds/generateRoleplaySummary-354f6f6938584f2b3879-build.zip"
         }
       },
       "analytics": {
