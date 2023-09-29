@@ -398,7 +398,7 @@ export default function Landing() {
                               }}
                               primary={
                                 d.messages[0]?.content?.includes(
-                                  "Hi there! I'm Uniquity AI, your personal development coach.",
+                                  "I'm Uniquity AI, your personal development coach.",
                                 )
                                   ? d.messages[1]?.content
                                   : d.messages[0]?.content
