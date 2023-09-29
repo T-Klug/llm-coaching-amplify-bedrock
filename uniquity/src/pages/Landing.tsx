@@ -28,7 +28,7 @@ import StepLabel from '@mui/material/StepLabel';
 import TextField from '@mui/material/TextField';
 import CardMedia from '@mui/material/CardMedia';
 import getToKnowImage from '../assets/get-to-know.jpg';
-import goalImage from '../assets/goals.jpg';
+import roleplayImage from '../assets/roleplay.jpg';
 import adhocImage from '../assets/adhoc.jpg';
 import StreakCounter from '../components/landing/StreakCounter/StreakCounter';
 import Slide from '@mui/material/Slide';
@@ -426,22 +426,21 @@ export default function Landing() {
           </CardContent>
         </Card>
         <Card raised sx={{ borderRadius: 6, marginTop: 5, width: '85%' }}>
-          <CardMedia
-            sx={{ objectPosition: 'top' }}
-            height={200}
-            component="img"
-            image={goalImage}
-          />
+          <CardMedia height={200} component="img" image={roleplayImage} />
           <CardContent>
             <div style={{ marginBottom: 10 }}>
-              <Typography variant="h5">Goals</Typography>
+              <Typography variant="h5">Role play</Typography>
               <Divider flexItem variant="middle" />
             </div>
             <Typography>
-              Work with your AI coach to set and track goals
+              Your AI coach will role play a scenario with you
             </Typography>
-            <Button variant="contained" sx={{ marginTop: 3 }}>
-              Set your First Goal
+            <Button
+              variant="contained"
+              onClick={() => navigate('/roleplay')}
+              sx={{ marginTop: 3 }}
+            >
+              Role Play
             </Button>
           </CardContent>
         </Card>

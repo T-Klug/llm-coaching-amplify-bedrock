@@ -5,10 +5,10 @@ import {
   LogoutOutlined,
   HomeOutlined,
   PersonOutlineOutlined,
-  FlagOutlined,
   ChatBubbleOutline,
   FeedbackOutlined,
   SourceOutlined,
+  TransferWithinAStationOutlined,
 } from '@mui/icons-material';
 import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
@@ -57,14 +57,14 @@ export function SpeedDialU() {
           onClick={() => navigate('/profile')}
         />
         <SpeedDialAction
-          icon={<FlagOutlined />}
-          tooltipTitle="Goal Coaching"
-          onClick={() => navigate('/goals')}
-        />
-        <SpeedDialAction
           icon={<ChatBubbleOutline />}
           tooltipTitle="Impromptu Coaching"
           onClick={() => navigate('/chat')}
+        />
+        <SpeedDialAction
+          icon={<TransferWithinAStationOutlined />}
+          tooltipTitle="Role Play"
+          onClick={() => navigate('/roleplay')}
         />
         <SpeedDialAction
           icon={<SourceOutlined />}

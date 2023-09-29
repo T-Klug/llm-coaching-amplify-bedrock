@@ -39,10 +39,10 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Chat from './pages/Chat';
 import AdminPromptManager from './pages/AdminPromptManager';
 import Landing from './pages/Landing';
-import GoalChat from './pages/GoalChat';
 import UserProfile from './pages/UserProfilePage';
 import IceBreakerChatPage from './pages/IceBreakerChatPage';
 import DocumentContext from './pages/DocumentContext';
+import RolePlayChat from './pages/RoleplayChatPage';
 
 //configure the amplify resources
 Amplify.configure(awsExports);
@@ -92,8 +92,12 @@ const router = createBrowserRouter([
         element: <UserProfile />,
       },
       {
-        path: 'goals',
-        element: <GoalChat />,
+        path: 'roleplay/:roleplayId',
+        element: <RolePlayChat />,
+      },
+      {
+        path: 'roleplay',
+        element: <RolePlayChat />,
       },
       {
         path: 'chat/:chatId',

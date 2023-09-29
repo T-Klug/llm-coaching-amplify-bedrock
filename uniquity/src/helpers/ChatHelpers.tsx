@@ -1,11 +1,13 @@
 import { API } from 'aws-amplify';
-import { IcebreakerChat, OpenAIChat } from '../models';
+import { IcebreakerChat, OpenAIChat, RoleplayChat } from '../models';
 import {
   ChatIcebreakerFuncInput,
   CreateOpenAIChatFuncMutation,
+  RoleplayChatFuncInput,
 } from '../graphql/API';
 import {
   chatIcebreakerFunc,
+  chatRoleplayFunc,
   createOpenAIChatFunc,
   generateUserSummaryFunc,
 } from '../graphql/mutations';
@@ -49,6 +51,18 @@ export const submitIceBreaker = async (response: IcebreakerChat) => {
   };
   await API.graphql<GraphQLQuery<ChatIcebreakerFuncInput>>({
     query: chatIcebreakerFunc,
+    variables: { input: functionInput },
+  });
+};
+
+export const submitRoleplayChat = async (response: RoleplayChat) => {
+  const saveModel = RoleplayChat.copyOf(response, draft => draft);
+  const functionInput = {
+    id: saveModel.id,
+    messages: saveModel.messages,
+  };
+  await API.graphql<GraphQLQuery<RoleplayChatFuncInput>>({
+    query: chatRoleplayFunc,
     variables: { input: functionInput },
   });
 };
