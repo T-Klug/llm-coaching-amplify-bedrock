@@ -457,6 +457,10 @@ export type ChatIcebreakerFuncInput = {
   _version?: number | null,
 };
 
+export type GenerateUserSummaryFuncInput = {
+  id?: string | null,
+};
+
 export type RoleplayChatFuncInput = {
   id?: string | null,
   messages?: Array< MessagesTypeFuncInput | null > | null,
@@ -1249,6 +1253,10 @@ export type ChatIcebreakerFuncMutation = {
     _deleted?: boolean | null,
     _lastChangedAt: number,
   } | null,
+};
+
+export type GenerateUserSummaryFuncMutationVariables = {
+  input?: GenerateUserSummaryFuncInput | null,
 };
 
 export type GenerateUserSummaryFuncMutation = {

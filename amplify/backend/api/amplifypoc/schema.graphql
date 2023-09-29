@@ -50,6 +50,9 @@ input RoleplayChatFuncInput {
 input GenerateRoleplaySummaryFuncInput {
   roleplayId: ID
 }
+input GenerateUserSummaryFuncInput {
+  id: ID
+}
 
 type Mutation {
   createOpenAIChatFunc(input: CreateOpenAIChatFuncInput): OpenAIChat
@@ -58,7 +61,7 @@ type Mutation {
   chatIcebreakerFunc(input: ChatIcebreakerFuncInput): IcebreakerChat
     @function(name: "icebreakerChat-${env}")
     @auth(rules: [{ allow: private }])
-  generateUserSummaryFunc: String
+  generateUserSummaryFunc(input: GenerateUserSummaryFuncInput): String
     @function(name: "generateUserSummary-${env}")
     @auth(rules: [{ allow: private }])
   chatRoleplayFunc(input: RoleplayChatFuncInput): RoleplayChat

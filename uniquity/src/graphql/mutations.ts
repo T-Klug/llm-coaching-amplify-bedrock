@@ -565,8 +565,8 @@ export const chatIcebreakerFunc = /* GraphQL */ `mutation ChatIcebreakerFunc($in
   APITypes.ChatIcebreakerFuncMutationVariables,
   APITypes.ChatIcebreakerFuncMutation
 >;
-export const generateUserSummaryFunc = /* GraphQL */ `mutation GenerateUserSummaryFunc {
-  generateUserSummaryFunc
+export const generateUserSummaryFunc = /* GraphQL */ `mutation GenerateUserSummaryFunc($input: GenerateUserSummaryFuncInput) {
+  generateUserSummaryFunc(input: $input)
 }
 ` as GeneratedMutation<
   APITypes.GenerateUserSummaryFuncMutationVariables,
