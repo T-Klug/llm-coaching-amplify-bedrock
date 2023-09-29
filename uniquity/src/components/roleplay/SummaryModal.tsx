@@ -59,7 +59,7 @@ export default function SummaryModal(props: SummaryModalProps) {
         onClose={() => console.log('use close button')}
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle>{'Feedback or Bug?'}</DialogTitle>
+        <DialogTitle>{'Roleplay Summary'}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
             Thanks for participating in the role play excersise. Here are some
