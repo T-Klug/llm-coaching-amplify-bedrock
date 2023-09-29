@@ -73,8 +73,12 @@ export default function AlertDialogSlide(props: AlertDialogSlideProps) {
           </DialogContent>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Close</Button>
-          <Button onClick={handleSave}>Submit</Button>
+          <Button variant="contained" onClick={handleClose}>
+            Close
+          </Button>
+          <Button sx={{ mr: 2 }} variant="contained" onClick={handleSave}>
+            Submit
+          </Button>
         </DialogActions>
       </Dialog>
       <Snackbar
