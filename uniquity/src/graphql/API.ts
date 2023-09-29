@@ -341,6 +341,53 @@ export type DeleteIcebreakerChatInput = {
   _version?: number | null,
 };
 
+export type CreateRoleplayChatInput = {
+  id?: string | null,
+  messages?: Array< MessagesTypeInput | null > | null,
+  user?: string | null,
+  roleplayId?: string | null,
+  owner?: string | null,
+  _version?: number | null,
+};
+
+export type ModelRoleplayChatConditionInput = {
+  user?: ModelIDInput | null,
+  roleplayId?: ModelIDInput | null,
+  owner?: ModelStringInput | null,
+  and?: Array< ModelRoleplayChatConditionInput | null > | null,
+  or?: Array< ModelRoleplayChatConditionInput | null > | null,
+  not?: ModelRoleplayChatConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type RoleplayChat = {
+  __typename: "RoleplayChat",
+  id: string,
+  messages?:  Array<MessagesType | null > | null,
+  user?: string | null,
+  roleplayId?: string | null,
+  owner?: string | null,
+  createdAt: string,
+  updatedAt: string,
+  _version: number,
+  _deleted?: boolean | null,
+  _lastChangedAt: number,
+};
+
+export type UpdateRoleplayChatInput = {
+  id: string,
+  messages?: Array< MessagesTypeInput | null > | null,
+  user?: string | null,
+  roleplayId?: string | null,
+  owner?: string | null,
+  _version?: number | null,
+};
+
+export type DeleteRoleplayChatInput = {
+  id: string,
+  _version?: number | null,
+};
+
 export type CreateOpenAIChatFuncInput = {
   id?: string | null,
   messages?: Array< MessagesTypeFuncInput | null > | null,
@@ -358,6 +405,15 @@ export type ChatIcebreakerFuncInput = {
   id?: string | null,
   messages?: Array< MessagesTypeFuncInput | null > | null,
   user?: string | null,
+  owner?: string | null,
+  _version?: number | null,
+};
+
+export type RoleplayChatFuncInput = {
+  id?: string | null,
+  messages?: Array< MessagesTypeFuncInput | null > | null,
+  user?: string | null,
+  roleplayId?: string | null,
   owner?: string | null,
   _version?: number | null,
 };
@@ -460,6 +516,24 @@ export type ModelIcebreakerChatConnection = {
   startedAt?: number | null,
 };
 
+export type ModelRoleplayChatFilterInput = {
+  id?: ModelIDInput | null,
+  user?: ModelIDInput | null,
+  roleplayId?: ModelIDInput | null,
+  owner?: ModelStringInput | null,
+  and?: Array< ModelRoleplayChatFilterInput | null > | null,
+  or?: Array< ModelRoleplayChatFilterInput | null > | null,
+  not?: ModelRoleplayChatFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type ModelRoleplayChatConnection = {
+  __typename: "ModelRoleplayChatConnection",
+  items:  Array<RoleplayChat | null >,
+  nextToken?: string | null,
+  startedAt?: number | null,
+};
+
 export type ModelSubscriptionOpenAIChatFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   user?: ModelSubscriptionIDInput | null,
@@ -546,6 +620,15 @@ export type ModelSubscriptionIcebreakerChatFilterInput = {
   user?: ModelSubscriptionIDInput | null,
   and?: Array< ModelSubscriptionIcebreakerChatFilterInput | null > | null,
   or?: Array< ModelSubscriptionIcebreakerChatFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type ModelSubscriptionRoleplayChatFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  user?: ModelSubscriptionIDInput | null,
+  roleplayId?: ModelSubscriptionIDInput | null,
+  and?: Array< ModelSubscriptionRoleplayChatFilterInput | null > | null,
+  or?: Array< ModelSubscriptionRoleplayChatFilterInput | null > | null,
   _deleted?: ModelBooleanInput | null,
 };
 
@@ -903,6 +986,81 @@ export type DeleteIcebreakerChatMutation = {
   } | null,
 };
 
+export type CreateRoleplayChatMutationVariables = {
+  input: CreateRoleplayChatInput,
+  condition?: ModelRoleplayChatConditionInput | null,
+};
+
+export type CreateRoleplayChatMutation = {
+  createRoleplayChat?:  {
+    __typename: "RoleplayChat",
+    id: string,
+    messages?:  Array< {
+      __typename: "MessagesType",
+      role?: OpenAIRoleType | null,
+      content?: string | null,
+    } | null > | null,
+    user?: string | null,
+    roleplayId?: string | null,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type UpdateRoleplayChatMutationVariables = {
+  input: UpdateRoleplayChatInput,
+  condition?: ModelRoleplayChatConditionInput | null,
+};
+
+export type UpdateRoleplayChatMutation = {
+  updateRoleplayChat?:  {
+    __typename: "RoleplayChat",
+    id: string,
+    messages?:  Array< {
+      __typename: "MessagesType",
+      role?: OpenAIRoleType | null,
+      content?: string | null,
+    } | null > | null,
+    user?: string | null,
+    roleplayId?: string | null,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type DeleteRoleplayChatMutationVariables = {
+  input: DeleteRoleplayChatInput,
+  condition?: ModelRoleplayChatConditionInput | null,
+};
+
+export type DeleteRoleplayChatMutation = {
+  deleteRoleplayChat?:  {
+    __typename: "RoleplayChat",
+    id: string,
+    messages?:  Array< {
+      __typename: "MessagesType",
+      role?: OpenAIRoleType | null,
+      content?: string | null,
+    } | null > | null,
+    user?: string | null,
+    roleplayId?: string | null,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
 export type CreateOpenAIChatFuncMutationVariables = {
   input?: CreateOpenAIChatFuncInput | null,
 };
@@ -951,6 +1109,30 @@ export type ChatIcebreakerFuncMutation = {
 
 export type GenerateUserSummaryFuncMutation = {
   generateUserSummaryFunc?: string | null,
+};
+
+export type ChatRoleplayFuncMutationVariables = {
+  input?: RoleplayChatFuncInput | null,
+};
+
+export type ChatRoleplayFuncMutation = {
+  chatRoleplayFunc?:  {
+    __typename: "RoleplayChat",
+    id: string,
+    messages?:  Array< {
+      __typename: "MessagesType",
+      role?: OpenAIRoleType | null,
+      content?: string | null,
+    } | null > | null,
+    user?: string | null,
+    roleplayId?: string | null,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
 };
 
 export type GetOpenAIChatQueryVariables = {
@@ -1367,6 +1549,93 @@ export type SyncIcebreakerChatsQuery = {
   } | null,
 };
 
+export type GetRoleplayChatQueryVariables = {
+  id: string,
+};
+
+export type GetRoleplayChatQuery = {
+  getRoleplayChat?:  {
+    __typename: "RoleplayChat",
+    id: string,
+    messages?:  Array< {
+      __typename: "MessagesType",
+      role?: OpenAIRoleType | null,
+      content?: string | null,
+    } | null > | null,
+    user?: string | null,
+    roleplayId?: string | null,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type ListRoleplayChatsQueryVariables = {
+  filter?: ModelRoleplayChatFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListRoleplayChatsQuery = {
+  listRoleplayChats?:  {
+    __typename: "ModelRoleplayChatConnection",
+    items:  Array< {
+      __typename: "RoleplayChat",
+      id: string,
+      messages?:  Array< {
+        __typename: "MessagesType",
+        role?: OpenAIRoleType | null,
+        content?: string | null,
+      } | null > | null,
+      user?: string | null,
+      roleplayId?: string | null,
+      owner?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type SyncRoleplayChatsQueryVariables = {
+  filter?: ModelRoleplayChatFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncRoleplayChatsQuery = {
+  syncRoleplayChats?:  {
+    __typename: "ModelRoleplayChatConnection",
+    items:  Array< {
+      __typename: "RoleplayChat",
+      id: string,
+      messages?:  Array< {
+        __typename: "MessagesType",
+        role?: OpenAIRoleType | null,
+        content?: string | null,
+      } | null > | null,
+      user?: string | null,
+      roleplayId?: string | null,
+      owner?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
 export type OnCreateOpenAIChatSubscriptionVariables = {
   filter?: ModelSubscriptionOpenAIChatFilterInput | null,
   owner?: string | null,
@@ -1706,6 +1975,81 @@ export type OnDeleteIcebreakerChatSubscription = {
       content?: string | null,
     } | null > | null,
     user?: string | null,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnCreateRoleplayChatSubscriptionVariables = {
+  filter?: ModelSubscriptionRoleplayChatFilterInput | null,
+  owner?: string | null,
+};
+
+export type OnCreateRoleplayChatSubscription = {
+  onCreateRoleplayChat?:  {
+    __typename: "RoleplayChat",
+    id: string,
+    messages?:  Array< {
+      __typename: "MessagesType",
+      role?: OpenAIRoleType | null,
+      content?: string | null,
+    } | null > | null,
+    user?: string | null,
+    roleplayId?: string | null,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnUpdateRoleplayChatSubscriptionVariables = {
+  filter?: ModelSubscriptionRoleplayChatFilterInput | null,
+  owner?: string | null,
+};
+
+export type OnUpdateRoleplayChatSubscription = {
+  onUpdateRoleplayChat?:  {
+    __typename: "RoleplayChat",
+    id: string,
+    messages?:  Array< {
+      __typename: "MessagesType",
+      role?: OpenAIRoleType | null,
+      content?: string | null,
+    } | null > | null,
+    user?: string | null,
+    roleplayId?: string | null,
+    owner?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnDeleteRoleplayChatSubscriptionVariables = {
+  filter?: ModelSubscriptionRoleplayChatFilterInput | null,
+  owner?: string | null,
+};
+
+export type OnDeleteRoleplayChatSubscription = {
+  onDeleteRoleplayChat?:  {
+    __typename: "RoleplayChat",
+    id: string,
+    messages?:  Array< {
+      __typename: "MessagesType",
+      role?: OpenAIRoleType | null,
+      content?: string | null,
+    } | null > | null,
+    user?: string | null,
+    roleplayId?: string | null,
     owner?: string | null,
     createdAt: string,
     updatedAt: string,

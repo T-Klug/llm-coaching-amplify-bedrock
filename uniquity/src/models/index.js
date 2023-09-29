@@ -8,7 +8,7 @@ const OpenAiRoleType = {
   "USER": "USER"
 };
 
-const { OpenAIChat, OpenAIModel, Feedback, UserProfile, IcebreakerChat, MessagesType } = initSchema(schema);
+const { OpenAIChat, OpenAIModel, Feedback, UserProfile, IcebreakerChat, RoleplayChat, MessagesType } = initSchema(schema);
 
 export {
   OpenAIChat,
@@ -16,6 +16,7 @@ export {
   Feedback,
   UserProfile,
   IcebreakerChat,
+  RoleplayChat,
   OpenAiRoleType,
   MessagesType
 };

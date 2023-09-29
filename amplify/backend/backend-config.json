@@ -173,6 +173,21 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "roleplayChat": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ],
+          "category": "api",
+          "resourceName": "amplifypoc"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "textResponseNew": {
       "build": true,
       "dependsOn": [
@@ -349,6 +364,22 @@
         {
           "category": "function",
           "resourceName": "icebreakerChat"
+        }
+      ]
+    },
+    "AMPLIFY_function_roleplayChat_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "roleplayChat"
+        }
+      ]
+    },
+    "AMPLIFY_function_roleplayChat_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "roleplayChat"
         }
       ]
     },
@@ -535,6 +566,46 @@
           "resourceName": "langchain"
         }
       ]
+    },
+    "AMPLIFY_storage_roleplaychat_arn": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "roleplaychat"
+        }
+      ]
+    },
+    "AMPLIFY_storage_roleplaychat_partitionKeyName": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "roleplaychat"
+        }
+      ]
+    },
+    "AMPLIFY_storage_roleplaychat_partitionKeyType": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "roleplaychat"
+        }
+      ]
+    },
+    "AMPLIFY_storage_roleplaychat_region": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "roleplaychat"
+        }
+      ]
+    },
+    "AMPLIFY_storage_roleplaychat_tableName": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "roleplaychat"
+        }
+      ]
     }
   },
   "predictions": {},
@@ -567,6 +638,12 @@
       "serviceType": "imported"
     },
     "langchain": {
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB",
+      "serviceType": "imported"
+    },
+    "roleplaychat": {
       "dependsOn": [],
       "providerPlugin": "awscloudformation",
       "service": "DynamoDB",

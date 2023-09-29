@@ -4,3 +4,7 @@ amplify-codegen-temp/models
 uniquity/models
 
 uniquity\models
+
+uniquity/models/models
+
+amplify-codegen-temp/models/models

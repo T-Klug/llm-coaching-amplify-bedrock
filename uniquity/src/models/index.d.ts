@@ -201,3 +201,37 @@ export declare type IcebreakerChat = LazyLoading extends LazyLoadingDisabled ? E
 export declare const IcebreakerChat: (new (init: ModelInit<IcebreakerChat>) => IcebreakerChat) & {
   copyOf(source: IcebreakerChat, mutator: (draft: MutableModel<IcebreakerChat>) => MutableModel<IcebreakerChat> | void): IcebreakerChat;
 }
+
+type EagerRoleplayChat = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<RoleplayChat, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly messages?: (MessagesType | null)[] | null;
+  readonly user?: string | null;
+  readonly roleplayId?: string | null;
+  readonly owner?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyRoleplayChat = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<RoleplayChat, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly messages?: (MessagesType | null)[] | null;
+  readonly user?: string | null;
+  readonly roleplayId?: string | null;
+  readonly owner?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type RoleplayChat = LazyLoading extends LazyLoadingDisabled ? EagerRoleplayChat : LazyRoleplayChat
+
+export declare const RoleplayChat: (new (init: ModelInit<RoleplayChat>) => RoleplayChat) & {
+  copyOf(source: RoleplayChat, mutator: (draft: MutableModel<RoleplayChat>) => MutableModel<RoleplayChat> | void): RoleplayChat;
+}

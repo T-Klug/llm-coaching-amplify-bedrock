@@ -57,6 +57,10 @@
           "s3Key": "amplify-builds/S3Triggerfb25786b-627a4d66415250706173-build.zip",
           "openSearchUrl": "https://search-uniquity-4qxk4pyedoxbwxacrrcfxavoiy.us-east-1.es.amazonaws.com",
           "secretsPathAmplifyAppId": "d1wywebcdb6lm1"
+        },
+        "roleplayChat": {
+          "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
+          "s3Key": "amplify-builds/roleplayChat-3553525a6c3546706764-build.zip"
         }
       },
       "analytics": {
@@ -96,7 +100,14 @@
           "partitionKeyName": "id",
           "partitionKeyType": "S"
         },
-        "docContexts": {}
+        "docContexts": {},
+        "roleplaychat": {
+          "tableName": "roleplay-chat",
+          "region": "us-east-1",
+          "arn": "arn:aws:dynamodb:us-east-1:210396912496:table/roleplay-chat",
+          "partitionKeyName": "id",
+          "partitionKeyType": "S"
+        }
       }
     }
   }
