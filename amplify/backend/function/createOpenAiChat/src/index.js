@@ -279,12 +279,12 @@ export const handler = async (event) => {
       Your rules are provided in the <rules> tag.
       <rules>${adminModelSettings.prompt}</rules>
       The summary of the users motivations and background is provided between the <summary> tag.
-      <summary>${userProfile.userSummary}</summary>
-      You should try to ask thought provoking questions to encourage the user think from different perspectives. 
+      <summary>${userProfile.userSummary}</summary> 
       You also have access to the following chunked document context the user provided about themselves and their company. The document chunks are in the <document> tags.
       <document>
       {context}
       Please include anything relevant in the user's background in your answer.
+      You should try to ask thought provoking questions to encourage the user think from different perspectives.
       Please respond to the user within <response></response> tag.
       You should always stop after your first response. Do not continue the conversation.
       <input>{input}</input> 
