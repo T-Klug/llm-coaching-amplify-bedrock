@@ -275,18 +275,19 @@ export const handler = async (event) => {
     new MessagesPlaceholder("history"),
     [
       "human",
-      `You will act as an AI career coach named Uniquity AI. Respond to the input within the <input> tags conversationally. The user's name is ${userProfile.name}, and you should use their name when you reference them.
-      Your rules are provided in the <rules> tags
+      `You will act as an AI career coach named Uniquity AI. Respond to the input within the <input> tag conversationally. The user's name is ${userProfile.name}, and you should use their name when you reference them.
+      Your rules are provided in the <rules> tag.
       <rules>${adminModelSettings.prompt}</rules>
-      The summary of the users motivations and background is provided between the <summary> tags.
+      The summary of the users motivations and background is provided between the <summary> tag.
       <summary>${userProfile.userSummary}</summary>
       You should try to ask thought provoking questions to encourage the user think from different perspectives. 
       You also have access to the following chunked document context the user provided about themselves and their company. The document chunks are in the <document> tags.
       <document>
       {context}
+      Please include anything relevant in the user's background in your answer.
+      Please respond to the user within <response></response> tag.
+      You should always stop after your first response. Do not continue the conversation.
       <input>{input}</input> 
-      Please include anything relevant in my background in your answer.
-      Please respond to the user within <response></response> tags.
       Assistant: [Uniquity AI] <response>`,
     ],
   ]);
