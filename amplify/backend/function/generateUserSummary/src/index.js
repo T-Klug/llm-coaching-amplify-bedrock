@@ -201,7 +201,7 @@ export const handler = async (event) => {
       Background: ${userProfile.background}
       </user>
       You will respond with the summary within the <response></response> tags.
-      Assistant: [Summary] <response>
+      Assistant: <response>
       `,
   });
 

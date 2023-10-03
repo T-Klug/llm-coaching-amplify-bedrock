@@ -291,7 +291,7 @@ export const handler = async (event) => {
       Ask clarifying questions that provoke thought as a coach would.
       You should always stop after your first response. Do not continue the conversation.
       <input>{input}</input> 
-      Assistant: [Uniquity AI] <response>`,
+      Assistant: <response>`,
     ],
   ]);
 

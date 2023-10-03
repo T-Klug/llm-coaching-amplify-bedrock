@@ -267,7 +267,7 @@ export const handler = async (event) => {
     </chat>
     
     You will respond with the feedback within the <response></response> tags.
-    Assistant: [Feedback] <response>`,
+    Assistant: <response>`,
     });
   } else {
     result = await chain.call({

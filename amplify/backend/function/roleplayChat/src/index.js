@@ -211,7 +211,7 @@ export const handler = async (event) => {
       Please respond to the user's input within the <response></response> tag 
       You should always stop after your first response. Do not continue the conversation.
       <input>{input}</input>
-      Assistant: [Bill] <response>`,
+      Assistant: <response>`,
     ],
   ]);
 
