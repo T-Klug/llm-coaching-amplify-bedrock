@@ -25,7 +25,7 @@
         "createOpenAiChat": {
           "secretsPathAmplifyAppId": "d1wywebcdb6lm1",
           "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
-          "s3Key": "amplify-builds/createOpenAiChat-56446c4158417a374243-build.zip",
+          "s3Key": "amplify-builds/createOpenAiChat-657a5465754848646d49-build.zip",
           "opensearchUrl": "https://search-uniquity-4qxk4pyedoxbwxacrrcfxavoiy.us-east-1.es.amazonaws.com"
         },
         "createOpenAIChat": {},
@@ -36,7 +36,7 @@
         "textResponseNew": {
           "secretsPathAmplifyAppId": "d1wywebcdb6lm1",
           "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
-          "s3Key": "amplify-builds/textResponseNew-47677742766267795a50-build.zip",
+          "s3Key": "amplify-builds/textResponseNew-666b6376536c70516f4a-build.zip",
           "pinpointApplicationId": "90797490ef5a47d79865eb44f745ff4c",
           "opensearchUrl": "https://search-uniquity-4qxk4pyedoxbwxacrrcfxavoiy.us-east-1.es.amazonaws.com"
         },
@@ -60,11 +60,11 @@
         },
         "roleplayChat": {
           "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
-          "s3Key": "amplify-builds/roleplayChat-7833394a4a744b595631-build.zip"
+          "s3Key": "amplify-builds/roleplayChat-3254765a456178372b55-build.zip"
         },
         "generateRoleplaySummary": {
           "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
-          "s3Key": "amplify-builds/generateRoleplaySummary-764c74622f4977656f6e-build.zip"
+          "s3Key": "amplify-builds/generateRoleplaySummary-352b63475352502f3172-build.zip"
         }
       },
       "analytics": {

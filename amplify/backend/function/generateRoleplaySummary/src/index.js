@@ -176,7 +176,7 @@ export const handler = async (event) => {
   });
 
   const result = await chain.call({
-    input: `You will act as an AI career coach named Uniquity AI. I am providing you with chat between the <chat> tag that the user had while roleplaying. The roleplay scenario prompt is between the tag <scenario>.
+    input: `You will act as an AI career coach named Uniquity AI. I am providing you with chat between the <chat> tag that the user had while roleplaying. The roleplay scenario prompt is between the <scenario> tag.
     I want you to provide feedback in the form of three things they could improve on based on what the user said in the chat. 
     Do not give feedback about Bill's responses.  
     <scenario>

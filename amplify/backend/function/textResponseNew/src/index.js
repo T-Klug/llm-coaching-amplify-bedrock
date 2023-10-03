@@ -193,35 +193,42 @@ export const handler = async (event) => {
 
   let userPromptTemplate;
   if (userProfile && userProfile.name) {
-    userPromptTemplate = `You will act as an AI career coach named Uniquity AI. Respond to the input within the <input> tags conversationally. The user's name is ${
+    userPromptTemplate = `You will act as an AI career coach named Uniquity AI. Respond to the input within the <input> tag conversationally. The user's name is ${
       userProfile.name
     }, and you should use their name when you reference them.
-    Your rules are provided in the <rules> tag.
-    <rules>${adminModelSettings.prompt}</rules>
-    The summary of the users motivations and background is provided between the <summary> tag.
-    <summary>${userProfile.userSummary ? userProfile.userSummary : ""}</summary>
-    You also have access to the following chunked document context the user provided about themselves and their company. The document chunks are in the <document> tags.
-    <document>
-    {context}
-    Please include anything relevant in the user's background in your answer.
-    You should try to ask thought provoking questions to encourage the user think from different perspectives.
-    Please respond to the user within <response></response> tag.
-    You should always stop after your first response. Do not continue the conversation.
-    <input>{input}</input> 
-    Assistant: [Uniquity AI] <response>`;
+      Your rules are provided in the <rules> tag.
+      The summary of the users motivations and background is provided between the <summary> tag.
+      You also have access to the following chunked document context the user provided about themselves and their company. The document chunks are in the <document> tags.
+      <rules>${adminModelSettings.prompt}</rules>
+      <summary>${
+        userProfile.userSummary ? userProfile.userSummary : ""
+      }</summary> 
+      <document>
+      {context}
+
+      Please respond to the user within <response></response> tag.
+      Keep responses limited to 100 tokens.
+      Please include anything relevant in the user's background in your answer.
+      Ask clarifying questions that provoke thought as a coach would.
+      You should always stop after your first response. Do not continue the conversation.
+      <input>{input}</input> 
+      Assistant: [Uniquity AI] <response>`;
   } else {
     userPromptTemplate = `You will act as an AI career coach named Uniquity AI. Respond to the input within the <input> tag conversationally.
-    Your rules are provided in the <rules> tag.
-    <rules>${adminModelSettings.prompt}</rules>
-    You also have access to the following chunked document context the user provided about themselves and their company. The document chunks are in the <document> tags.
-    <document>
-    {context}
-    Please include anything relevant in the user's background in your answer.
-    You should try to ask thought provoking questions to encourage the user think from different perspectives.
-    Please respond to the user within <response></response> tag.
-    You should always stop after your first response. Do not continue the conversation.
-    <input>{input}</input> 
-    Assistant: [Uniquity AI] <response>`;
+      Your rules are provided in the <rules> tag.
+      The summary of the users motivations and background is provided between the <summary> tag.
+      You also have access to the following chunked document context the user provided about themselves and their company. The document chunks are in the <document> tags.
+      <rules>${adminModelSettings.prompt}</rules>
+      <document>
+      {context}
+
+      Please respond to the user within <response></response> tag.
+      Keep responses limited to 100 tokens.
+      Please include anything relevant in the user's background in your answer.
+      Ask clarifying questions that provoke thought as a coach would.
+      You should always stop after your first response. Do not continue the conversation.
+      <input>{input}</input> 
+      Assistant: [Uniquity AI] <response>`;
   }
   const memory = new BufferWindowMemory({
     k: 5,
@@ -324,7 +331,8 @@ export const handler = async (event) => {
         SMSMessage: {
           Body: result.response
             .replace("<response>", "")
-            .replace("</response>", ""),
+            .replace("</response>", "")
+            .trimStart(),
           MessageType: "TRANSACTIONAL",
           OriginationNumber: chatbotPhoneNumber,
         },
