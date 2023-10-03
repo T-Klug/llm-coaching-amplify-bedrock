@@ -340,6 +340,7 @@ export default function Chat() {
           onChange={t => setChat(t.target.value)}
         />
         <HistoryOutlined
+          sx={{ cursor: 'pointer' }}
           onClick={() => setOverlayVisible(true)}
           fontSize="large"
         />
