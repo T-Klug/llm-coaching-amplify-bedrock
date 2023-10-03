@@ -222,18 +222,6 @@ export default function RoleplayChatPage() {
                     </Box>
 
 
-                    <Box sx={{ marginBottom: 3 }}>
-                    <Select
-                        value={selectedScenario}
-                        onChange={(event) => setSelectedScenario(event.target.value)}
-                        fullWidth
-                    >
-                        <MenuItem value={"Performance Reviews"}>Performance Reviews</MenuItem>
-                        <MenuItem value={"Conflict Resolution"}>Conflict Resolution</MenuItem>
-                        {/* You can add more scenarios here */}
-                    </Select>
-                </Box>
-
                   </div>
                 );
             })}
