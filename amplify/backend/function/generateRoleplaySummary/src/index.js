@@ -18,7 +18,6 @@ import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { OpenSearchVectorStore } from "langchain/vectorstores/opensearch";
 import { ScoreThresholdRetriever } from "langchain/retrievers/score_threshold";
-import { BufferMemory } from "langchain/memory";
 
 const GRAPHQL_ENDPOINT = process.env.API_AMPLIFYPOC_GRAPHQLAPIENDPOINTOUTPUT;
 const AWS_REGION = process.env.AWS_REGION || "us-east-1";
@@ -177,10 +176,6 @@ export const handler = async (event) => {
 
   const chatTranscript = await getChat(event.arguments?.input?.roleplayId);
 
-  const chatPrompt = ChatPromptTemplate.fromPromptMessages([
-    ["human", "{input}"],
-  ]);
-
   const chat = new ChatBedrock({
     model: "anthropic.claude-instant-v1",
     region: AWS_REGION,
@@ -217,13 +212,14 @@ export const handler = async (event) => {
     }
   );
 
-  const memory = new BufferMemory({ inputKey: "input" });
+  const chatPrompt = ChatPromptTemplate.fromPromptMessages([
+    ["human", "{input}"],
+  ]);
 
   const chain = new ConversationChain({
     llm: chat,
     prompt: chatPrompt,
     verbose: true,
-    memory: memory,
   });
 
   let result;
@@ -240,17 +236,28 @@ export const handler = async (event) => {
     );
 
     result = await chain.call({
-      input: `You will act as an AI career coach named Uniquity AI. I am providing you with chat between the <chat> tag that the user had while roleplaying. The roleplay scenario prompt is between the <scenario> tag.
-    I want you to provide feedback in the form of three things they could improve on based on what the user said in the chat. 
+      input: `You will act as an AI career coach named Uniquity AI. You are provided with chat between the <chat> tag that the user had while roleplaying with AI. The roleplay scenario prompt is between the <scenario> tag.
+    I want you to provide feedback in the form of three things they could improve on based on what the user said in the chat. Your rules are between the <rules> tag.
     You also have access to the following chunked document context the user provided about themselves and their company. The document chunks are in the <document> tags.
-    Do not give feedback about Bill's responses. 
-    Please include anything relevant in the user's document context in your answer. 
+    
+    <rules>
+    - Do not give feedback about Bill's responses who are the Assistant.
+    - Do not make up information about the user who is the Human.
+    - Only include information from the <document> tags that are relevant to the three things to improve on.
+    - If there is no relevant information in the document tags do not include any additional context. 
+    </rules>
+    
     <document>
-    {context}
+    ${
+      docs && docs.length > 0
+        ? docs.map((d) => d.pageContent).join("\n</document>\n<document>\n")
+        : "</document>"
+    }
 
     <scenario>
     You're catching up with Bill to see how his projects are coming along. Initiate the convo whenever you are ready! Don't forget to also ask how he's doing personally. Once you feel like you've covered everything, you can wrap it up
     </scenario>
+
     <chat>
       ${
         chatTranscript && chatTranscript.messages
@@ -259,13 +266,8 @@ export const handler = async (event) => {
       }
     </chat>
     
-    Do not make up information. 
     You will respond with the feedback within the <response></response> tags.
     Assistant: [Feedback] <response>`,
-      context:
-        docs && docs.length > 0
-          ? docs.map((d) => d.pageContent).join("\n</document>\n<document>\n")
-          : "</document>",
     });
   } else {
     result = await chain.call({
