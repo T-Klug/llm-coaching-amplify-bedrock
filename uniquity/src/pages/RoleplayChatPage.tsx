@@ -27,10 +27,18 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import SummaryModal from '../components/roleplay/SummaryModal';
 
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+
+
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
+
 
 export default function RoleplayChatPage() {
   const { roleplayId } = useParams();
+  // State for selected scenario
+  const [selectedScenario, setSelectedScenario] = useState<string>('Performance Reviews'); // default scenario
+
   //const navigate = useNavigate();
   // Chat data
   const [data, setData] = useState<LazyRoleplayChat[]>();
@@ -130,11 +138,27 @@ export default function RoleplayChatPage() {
         setOpen={setSummaryOpen}
         summaryId={summaryId}
       />
+
+      {/* Scenario Selection Dropdown */}
+      <Box sx={{ marginBottom: 3, marginTop: 3 }}>
+        <Select
+            value={selectedScenario}
+            onChange={(event) => setSelectedScenario(event.target.value)}
+            fullWidth
+        >
+            <MenuItem value={"Performance Reviews"}>Performance Reviews</MenuItem>
+            <MenuItem value={"Conflict Resolution"}>Conflict Resolution</MenuItem>
+            {/* You can add more scenarios here */}
+        </Select>
+      </Box>
+
       <Card sx={{ borderRadius: 6 }}>
         <CardContent>
           <Typography variant="h5" textAlign="center" sx={{ mb: 3 }}>
-            Welcome to role playing! Uniquity AI has assumed the role of your
-            employee, Bill.
+            {selectedScenario === 'Performance Reviews' 
+              ? "Welcome to the Performance Reviews scenario! You are the manager, and you're about to review your employee, Bill."
+              : "Welcome to role playing! Uniquity AI has assumed the role of your employee, Bill."
+            }
           </Typography>
           <Typography>
             You're catching up with Bill to see how his projects are coming
@@ -196,6 +220,20 @@ export default function RoleplayChatPage() {
                     >
                       <OverflowText chatPosition="right" content={m.content} />
                     </Box>
+
+
+                    <Box sx={{ marginBottom: 3 }}>
+                    <Select
+                        value={selectedScenario}
+                        onChange={(event) => setSelectedScenario(event.target.value)}
+                        fullWidth
+                    >
+                        <MenuItem value={"Performance Reviews"}>Performance Reviews</MenuItem>
+                        <MenuItem value={"Conflict Resolution"}>Conflict Resolution</MenuItem>
+                        {/* You can add more scenarios here */}
+                    </Select>
+                </Box>
+
                   </div>
                 );
             })}
