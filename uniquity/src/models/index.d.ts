@@ -211,6 +211,8 @@ type EagerRoleplayChat = {
   readonly messages?: (MessagesType | null)[] | null;
   readonly user?: string | null;
   readonly roleplayId?: string | null;
+  readonly scenario?: string | null;
+  readonly difficulty?: string | null;
   readonly owner?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
@@ -225,6 +227,8 @@ type LazyRoleplayChat = {
   readonly messages?: (MessagesType | null)[] | null;
   readonly user?: string | null;
   readonly roleplayId?: string | null;
+  readonly scenario?: string | null;
+  readonly difficulty?: string | null;
   readonly owner?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;

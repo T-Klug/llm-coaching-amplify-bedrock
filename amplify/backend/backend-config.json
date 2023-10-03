@@ -342,7 +342,23 @@
         }
       ]
     },
+    "AMPLIFY_function_generateRoleplaySummary_opensearchUrl": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "generateRoleplaySummary"
+        }
+      ]
+    },
     "AMPLIFY_function_generateRoleplaySummary_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "generateRoleplaySummary"
+        }
+      ]
+    },
+    "AMPLIFY_function_generateRoleplaySummary_secretsPathAmplifyAppId": {
       "usedBy": [
         {
           "category": "function",

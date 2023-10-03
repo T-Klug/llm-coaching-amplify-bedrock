@@ -12,10 +12,19 @@ import { default as fetch, Request } from "node-fetch";
 import { ConversationChain } from "langchain/chains";
 import { ChatPromptTemplate } from "langchain/prompts";
 import { ChatBedrock } from "langchain/chat_models/bedrock";
+import { Client } from "@opensearch-project/opensearch";
+import { AwsSigv4Signer } from "@opensearch-project/opensearch/aws";
+import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
+import { OpenAIEmbeddings } from "langchain/embeddings/openai";
+import { OpenSearchVectorStore } from "langchain/vectorstores/opensearch";
+import { ScoreThresholdRetriever } from "langchain/retrievers/score_threshold";
+import { BufferMemory } from "langchain/memory";
 
 const GRAPHQL_ENDPOINT = process.env.API_AMPLIFYPOC_GRAPHQLAPIENDPOINTOUTPUT;
 const AWS_REGION = process.env.AWS_REGION || "us-east-1";
 const { Sha256 } = crypto;
+const SECRET_PATH = process.env.OpenAIKey;
+const OPENSEARCH_URL = process.env.opensearchURL;
 
 const getRoleplayChat = /* GraphQL */ `
   query GetRoleplayChat($id: ID!) {
@@ -107,7 +116,8 @@ const createSummary = async (ownerId, newContent) => {
     input: {
       summary: newContent.response
         .replace("<response>", "")
-        .replace("</response>", ""),
+        .replace("</response>", "")
+        .trimStart(),
       owner: `${ownerId}::${ownerId}`,
     },
   };
@@ -157,6 +167,14 @@ export const handler = async (event) => {
     return "400 bad argument";
   }
 
+  const client = new SSMClient();
+  const input = {
+    Name: SECRET_PATH,
+    WithDecryption: true,
+  };
+  const command = new GetParameterCommand(input);
+  const { Parameter } = await client.send(command);
+
   const chatTranscript = await getChat(event.arguments?.input?.roleplayId);
 
   const chatPrompt = ChatPromptTemplate.fromPromptMessages([
@@ -169,14 +187,89 @@ export const handler = async (event) => {
     maxTokens: 8191,
   });
 
+  const clientOS = new Client({
+    ...AwsSigv4Signer({
+      region: "us-east-1",
+      service: "es", // 'aoss' for OpenSearch Serverless
+      // Must return a Promise that resolve to an AWS.Credentials object.
+      // This function is used to acquire the credentials when the client start and
+      // when the credentials are expired.
+      // The Client will refresh the Credentials only when they are expired.
+      // With AWS SDK V2, Credentials.refreshPromise is used when available to refresh the credentials.
+
+      // Example with AWS SDK V3:
+      getCredentials: () => {
+        // Any other method to acquire a new Credentials object can be used.
+        const credentialsProvider = defaultProvider();
+        return credentialsProvider();
+      },
+    }),
+    node: OPENSEARCH_URL,
+  });
+
+  const vectorStore = new OpenSearchVectorStore(
+    new OpenAIEmbeddings({
+      openAIApiKey: Parameter.Value,
+    }),
+    {
+      client: clientOS,
+      indexName: event.identity.claims.username,
+    }
+  );
+
+  const memory = new BufferMemory({ inputKey: "input" });
+
   const chain = new ConversationChain({
     llm: chat,
     prompt: chatPrompt,
     verbose: true,
+    memory: memory,
   });
 
-  const result = await chain.call({
-    input: `You will act as an AI career coach named Uniquity AI. I am providing you with chat between the <chat> tag that the user had while roleplaying. The roleplay scenario prompt is between the <scenario> tag.
+  let result;
+  if (await vectorStore.doesIndexExist()) {
+    console.log("CONTEXT RICH SUMMARY GENERATION");
+    const retriever = ScoreThresholdRetriever.fromVectorStore(vectorStore, {
+      minSimilarityScore: 0.66,
+      maxK: 20,
+      kIncrement: 2,
+    });
+
+    const docs = await retriever.getRelevantDocuments(
+      JSON.stringify(chatTranscript.messages)
+    );
+
+    result = await chain.call({
+      input: `You will act as an AI career coach named Uniquity AI. I am providing you with chat between the <chat> tag that the user had while roleplaying. The roleplay scenario prompt is between the <scenario> tag.
+    I want you to provide feedback in the form of three things they could improve on based on what the user said in the chat. 
+    You also have access to the following chunked document context the user provided about themselves and their company. The document chunks are in the <document> tags.
+    Do not give feedback about Bill's responses. 
+    Please include anything relevant in the user's document context in your answer. 
+    <document>
+    {context}
+
+    <scenario>
+    You're catching up with Bill to see how his projects are coming along. Initiate the convo whenever you are ready! Don't forget to also ask how he's doing personally. Once you feel like you've covered everything, you can wrap it up
+    </scenario>
+    <chat>
+      ${
+        chatTranscript && chatTranscript.messages
+          ? JSON.stringify(chatTranscript.messages)
+          : ""
+      }
+    </chat>
+    
+    Do not make up information. 
+    You will respond with the feedback within the <response></response> tags.
+    Assistant: [Feedback] <response>`,
+      context:
+        docs && docs.length > 0
+          ? docs.map((d) => d.pageContent).join("\n</document>\n<document>\n")
+          : "</document>",
+    });
+  } else {
+    result = await chain.call({
+      input: `You will act as an AI career coach named Uniquity AI. I am providing you with chat between the <chat> tag that the user had while roleplaying. The roleplay scenario prompt is between the <scenario> tag.
     I want you to provide feedback in the form of three things they could improve on based on what the user said in the chat. 
     Do not give feedback about Bill's responses.  
     <scenario>
@@ -191,7 +284,8 @@ export const handler = async (event) => {
     </chat>
     You will respond with the feedback within the <response></response> tags.
     Assistant: [Feedback] <response>`,
-  });
+    });
+  }
 
   const saved = await createSummary(event.identity.claims.username, result);
 

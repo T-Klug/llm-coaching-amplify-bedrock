@@ -7,5 +7,14 @@
       ]
     }
   },
-  "lambdaLayers": []
+  "lambdaLayers": [],
+  "secretNames": [
+    "OpenAIKey"
+  ],
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "opensearchUrl",
+      "environmentVariableName": "opensearchURL"
+    }
+  ]
 }

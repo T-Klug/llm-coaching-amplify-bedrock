@@ -140,6 +140,8 @@ type RoleplayChat @model @auth(rules: [{ allow: owner }]) {
   messages: [MessagesType]
   user: ID
   roleplayId: ID
+  scenario: String
+  difficulty: String
   owner: String @auth(rules: [{ allow: owner, operations: [read, delete] }])
 }
 
