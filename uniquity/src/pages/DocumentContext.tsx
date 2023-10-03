@@ -28,7 +28,7 @@ export default function DocumentContext() {
   return (
     <>
       <Typography mb={3} variant="body1">
-        Upload documents to provide context to your coach (Currently only pdf
+        Upload documents to provide context to your coach (currently only pdf
         and docx supported):
       </Typography>
       <StorageManager

@@ -292,9 +292,9 @@ export default function Landing() {
               {activeStep === steps.length && (
                 <>
                   <Typography mb={3}>
-                    All steps completed! This is the your peronal summary you're
-                    coach will start using. You can always change it in your
-                    profile.
+                    All steps completed! This is the your personal summary that
+                    your coach will start using. You can always change it in
+                    your profile.
                   </Typography>
                   <TextField
                     disabled
@@ -329,7 +329,7 @@ export default function Landing() {
           <CardMedia height={200} component="img" image={adhocImage} />
           <CardContent>
             <div style={{ marginBottom: 10 }}>
-              <Typography variant="h5">Impromptu Help</Typography>
+              <Typography variant="h5">Impromptu help</Typography>
               <Divider flexItem variant="middle" />
             </div>
             <Typography>

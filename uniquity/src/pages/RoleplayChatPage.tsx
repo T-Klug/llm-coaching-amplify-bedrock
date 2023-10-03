@@ -139,7 +139,7 @@ export default function RoleplayChatPage() {
             You're catching up with Bill to see how his projects are coming
             along. Initiate the convo whenever you are ready! Don't forget to
             also ask how he's doing personally. Once you feel like you've
-            covered everything, you can wrap it up and click Done.
+            covered everything, you can wrap it up and click done.
           </Typography>
         </CardContent>
       </Card>

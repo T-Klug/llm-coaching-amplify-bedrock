@@ -129,7 +129,7 @@ export default function UserProfilePage() {
 
           <Grid item xs={12}>
             <TextField
-              label="Professional Background"
+              label="Professional background"
               fullWidth
               multiline
               minRows={10}
@@ -149,7 +149,7 @@ export default function UserProfilePage() {
           </Grid>
           <Grid item xs={12}>
             <TextField
-              label="AI Generated User Summary"
+              label="AI generated user summary"
               fullWidth
               multiline
               minRows={10}
