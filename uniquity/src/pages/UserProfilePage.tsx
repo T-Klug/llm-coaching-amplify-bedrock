@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import { DataStore } from 'aws-amplify';
 import { useEffect, useState } from 'react';
 import { LazyUserProfile, UserProfile } from '../models';
-import { InfoOutlined } from '@mui/icons-material';
+import InfoOutlined from '@mui/icons-material/InfoOutlined';
 import profileImage from '../assets/profile.jpg';
 import { generateUserSummaryCall } from '../helpers/ChatHelpers';
 

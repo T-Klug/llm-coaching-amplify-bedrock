@@ -6,7 +6,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
 import ListSubheader from '@mui/material/ListSubheader';
-import { DeleteOutlineOutlined } from '@mui/icons-material';
+import DeleteOutlineOutlined from '@mui/icons-material/DeleteOutlineOutlined';
 import { DataStore } from 'aws-amplify';
 import ListItemButton from '@mui/material/ListItemButton';
 import { Link } from 'react-router-dom';

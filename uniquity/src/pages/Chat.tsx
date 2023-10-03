@@ -8,31 +8,21 @@ import {
   UserProfile,
 } from '../models';
 import DotsTyping from '../components/chat/typing/dotsTyping';
-import {
-  ArrowCircleUp,
-  HistoryOutlined,
-  MicOffOutlined,
-  MicOutlined,
-} from '@mui/icons-material';
+import ArrowCircleUp from '@mui/icons-material/ArrowCircleUp';
+import MicOffOutlined from '@mui/icons-material/MicOffOutlined';
+import MicOutlined from '@mui/icons-material/MicOutlined';
+import HistoryOutlined from '@mui/icons-material/HistoryOutlined';
 import SpeechRecognition, {
   useSpeechRecognition,
 } from 'react-speech-recognition';
-import {
-  individualContributorHelperPrompts,
-  managerHelperPrompts,
-  submitOpenAI,
-} from '../helpers/ChatHelpers';
+import { submitOpenAI } from '../helpers/ChatHelpers';
 import { styled } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
 import TextField from '@mui/material/TextField';
-import Divider from '@mui/material/Divider';
-import { useDraggable } from 'react-use-draggable-scroll';
 import './Chat.css';
-import Button from '@mui/material/Button';
 import OverflowText from '../components/chat/OverflowText';
-import { useAuthenticator } from '@aws-amplify/ui-react';
 import { useParams } from 'react-router-dom';
 import { HistoryDrawer } from '../components/chat/HistoryDrawer/HistoryDrawer';
 
@@ -40,11 +30,6 @@ const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
 export default function Chat() {
   const { chatId } = useParams();
-  const { user } = useAuthenticator();
-  const ref = useRef<HTMLDivElement>(null);
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  //@ts-ignore
-  const { events } = useDraggable(ref);
   // Chat data
   const [data, setData] = useState<LazyOpenAIChat[]>();
   // Selected Chat ID
@@ -142,20 +127,6 @@ export default function Chat() {
     setChatLoading(false);
   };
 
-  const getHelperPrompts = () => {
-    const groups = user.getSignInUserSession()?.getAccessToken().payload[
-      'cognito:groups'
-    ];
-
-    if (groups?.includes('Manager')) {
-      return managerHelperPrompts;
-    } else if (groups?.includes('individualContributor')) {
-      return individualContributorHelperPrompts;
-    } else {
-      return individualContributorHelperPrompts;
-    }
-  };
-
   return (
     <>
       <HistoryDrawer
@@ -164,41 +135,6 @@ export default function Chat() {
         setOverlayVisible={setOverlayVisible}
       />
       <Box>
-        <div
-          style={{
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'column',
-            textAlign: 'center',
-          }}
-        >
-          <div
-            ref={ref}
-            {...events}
-            className="keep-scrolling"
-            style={{
-              paddingTop: 20,
-              paddingBottom: 20,
-              overflow: 'auto',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            {getHelperPrompts().map(b => (
-              <Button
-                key={b}
-                onClick={async () => {
-                  sendChat(b);
-                }}
-                sx={{ mr: 2, borderRadius: 8 }}
-                variant="outlined"
-              >
-                {b}
-              </Button>
-            ))}
-          </div>
-        </div>
-        <Divider sx={{ mt: 2, mb: 2 }} />
         <div>
           <Box
             sx={{

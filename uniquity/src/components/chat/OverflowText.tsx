@@ -1,4 +1,4 @@
-import { ArrowRightOutlined } from '@mui/icons-material';
+import ArrowRightOutlined from '@mui/icons-material/ArrowRightOutlined';
 import Dialog from '@mui/material/Dialog';
 import IconButton from '@mui/material/IconButton';
 import Slide from '@mui/material/Slide';
@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import { TransitionProps } from '@mui/material/transitions';
 import { forwardRef, useEffect, useRef, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
-import { Container } from '@mui/material';
+import Container from '@mui/material/Container';
 
 type OverflowTextProps = {
   content: string | null | undefined;
@@ -16,7 +16,7 @@ const Transition = forwardRef(function Transition(
   props: TransitionProps & {
     children: React.ReactElement;
   },
-  ref: React.Ref<unknown>
+  ref: React.Ref<unknown>,
 ) {
   return <Slide direction="up" ref={ref} {...props} />;
 });

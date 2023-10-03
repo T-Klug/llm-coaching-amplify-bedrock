@@ -8,11 +8,9 @@ import {
   UserProfile,
 } from '../models';
 import DotsTyping from '../components/chat/typing/dotsTyping';
-import {
-  ArrowCircleUp,
-  MicOffOutlined,
-  MicOutlined,
-} from '@mui/icons-material';
+import ArrowCircleUp from '@mui/icons-material/ArrowCircleUp';
+import MicOffOutlined from '@mui/icons-material/MicOffOutlined';
+import MicOutlined from '@mui/icons-material/MicOutlined';
 import SpeechRecognition, {
   useSpeechRecognition,
 } from 'react-speech-recognition';

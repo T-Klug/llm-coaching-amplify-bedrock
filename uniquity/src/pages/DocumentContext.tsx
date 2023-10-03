@@ -7,8 +7,10 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import { Storage } from 'aws-amplify';
 import { useEffect, useState } from 'react';
-import { Avatar, ListItemButton, Typography } from '@mui/material';
-import { SourceOutlined } from '@mui/icons-material';
+import Avatar from '@mui/material/Avatar';
+import ListItemButton from '@mui/material/Avatar';
+import Typography from '@mui/material/Typography';
+import SourceOutlined from '@mui/icons-material/SourceOutlined';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 
 export default function DocumentContext() {

@@ -6,13 +6,12 @@ import Rating, { IconContainerProps } from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import celebrateImage from '../../../assets/celebrate.jpg';
-import {
-  LooksOneOutlined,
-  LooksTwoOutlined,
-  Looks3Outlined,
-  Looks4Outlined,
-  Looks5Outlined,
-} from '@mui/icons-material';
+import LooksOneOutlined from '@mui/icons-material/LooksOneOutlined';
+import LooksTwoOutlined from '@mui/icons-material/LooksTwoOutlined';
+import Looks3Outlined from '@mui/icons-material/Looks3Outlined';
+import Looks4Outlined from '@mui/icons-material/Looks4Outlined';
+import Looks5Outlined from '@mui/icons-material/Looks5Outlined';
+
 import { forwardRef } from 'react';
 
 const StyledRating = styled(Rating)({

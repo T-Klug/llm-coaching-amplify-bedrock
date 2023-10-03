@@ -2,11 +2,9 @@ import { DataStore } from 'aws-amplify';
 import { useEffect, useRef, useState } from 'react';
 import { OpenAiRoleType, LazyRoleplayChat, RoleplayChat } from '../models';
 import DotsTyping from '../components/chat/typing/dotsTyping';
-import {
-  ArrowCircleUp,
-  MicOffOutlined,
-  MicOutlined,
-} from '@mui/icons-material';
+import ArrowCircleUp from '@mui/icons-material/ArrowCircleUp';
+import MicOffOutlined from '@mui/icons-material/MicOffOutlined';
+import MicOutlined from '@mui/icons-material/MicOutlined';
 import SpeechRecognition, {
   useSpeechRecognition,
 } from 'react-speech-recognition';
@@ -23,7 +21,10 @@ import './Chat.css';
 import OverflowText from '../components/chat/OverflowText';
 import { /*useNavigate,*/ useParams } from 'react-router-dom';
 import Button from '@mui/material/Button';
-import { Card, CardContent, CircularProgress, Typography } from '@mui/material';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CircularProgress from '@mui/material/CircularProgress';
+import Typography from '@mui/material/Typography';
 import SummaryModal from '../components/roleplay/SummaryModal';
 
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);

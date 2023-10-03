@@ -15,20 +15,6 @@ import {
 } from '../graphql/mutations';
 import { GraphQLQuery } from '@aws-amplify/api';
 
-export const individualContributorHelperPrompts = [
-  'I need help setting development goals at work.',
-  'I need help building my confidence.',
-  'I felt really overwhelmed at work this week.',
-  'Help me write a status email to my manager.',
-  'My manager never gives me feedback.',
-];
-
-export const managerHelperPrompts = [
-  'I need help setting development goals at work.',
-  'I felt really overwhelmed at work this week.',
-  'My team told me they were burned out this week, and I am not sure what to do.',
-];
-
 export const iOS =
   typeof navigator !== 'undefined' &&
   /iPad|iPhone|iPod/.test(navigator.userAgent);
