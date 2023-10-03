@@ -10,6 +10,7 @@ import {
 import DotsTyping from '../components/chat/typing/dotsTyping';
 import {
   ArrowCircleUp,
+  HistoryOutlined,
   MicOffOutlined,
   MicOutlined,
 } from '@mui/icons-material';
@@ -33,6 +34,7 @@ import Button from '@mui/material/Button';
 import OverflowText from '../components/chat/OverflowText';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { useParams } from 'react-router-dom';
+import { HistoryDrawer } from '../components/chat/HistoryDrawer/HistoryDrawer';
 
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
@@ -60,6 +62,7 @@ export default function Chat() {
     useSpeechRecognition();
 
   const [userProfile, setUserProfile] = useState<LazyUserProfile>();
+  const [overlayVisible, setOverlayVisible] = useState<boolean>(false);
 
   // If they are creating transcripts with the microphone set the chat input to it
   useEffect(() => {
@@ -76,6 +79,10 @@ export default function Chat() {
   }, []);
 
   const lastMessageRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    setSelectedId(chatId);
+  }, [chatId]);
 
   useEffect(() => {
     if (lastMessageRef.current) {
@@ -151,6 +158,11 @@ export default function Chat() {
 
   return (
     <>
+      <HistoryDrawer
+        data={data}
+        overlayVisible={overlayVisible}
+        setOverlayVisible={setOverlayVisible}
+      />
       <Box>
         <div
           style={{
@@ -278,6 +290,8 @@ export default function Chat() {
           bottom: 0,
           alignContent: 'center',
           alignItems: 'center',
+          justifyContent: 'center',
+          flexDirection: 'row',
           backgroundColor: prefersDarkMode ? 'black' : 'white',
         }}
       >
@@ -324,6 +338,10 @@ export default function Chat() {
           sx={{ width: '80%', padding: 1 }}
           value={chat}
           onChange={t => setChat(t.target.value)}
+        />
+        <HistoryOutlined
+          onClick={() => setOverlayVisible(true)}
+          fontSize="large"
         />
       </AppBar>
     </>

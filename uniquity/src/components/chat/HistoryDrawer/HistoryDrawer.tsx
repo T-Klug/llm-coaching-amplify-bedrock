@@ -44,6 +44,7 @@ export function HistoryDrawer(props: HistoryDrawerPropsType) {
             onClick={() => setOverlayVisible(false)}
             component={Link}
             to={`/chat/${aiChat.id}`}
+            state={{ chatId: aiChat.id }}
           >
             <ListItemText
               primaryTypographyProps={{ noWrap: true, width: '85%' }}

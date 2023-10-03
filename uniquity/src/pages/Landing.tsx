@@ -1,26 +1,14 @@
 import Typography from '@mui/material/Typography';
 import Rating from '@mui/material/Rating';
-import ArrowForwardIosOutlined from '@mui/icons-material/ArrowForwardIosOutlined';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
 import Box from '@mui/material/Box';
 import CardContent from '@mui/material/CardContent';
 import Divider from '@mui/material/Divider';
 import Card from '@mui/material/Card';
 import Button from '@mui/material/Button';
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { DataStore } from 'aws-amplify';
-import {
-  LazyOpenAIChat,
-  LazyUserProfile,
-  OpenAIChat,
-  UserProfile,
-} from '../models';
-import { HistoryDrawer } from '../components/landing/HistoryDrawer/HistoryDrawer';
+import { LazyUserProfile, UserProfile } from '../models';
 import Step from '@mui/material/Step';
 import StepContent from '@mui/material/StepContent';
 import Stepper from '@mui/material/Stepper';
@@ -95,10 +83,7 @@ const assessment = [
 
 export default function Landing() {
   const [activeStep, setActiveStep] = useState(0);
-  const [overlayVisible, setOverlayVisible] = useState<boolean>(false);
   const navigate = useNavigate();
-  // Chat data
-  const [data, setData] = useState<LazyOpenAIChat[]>();
   const [userProfile, setUserProfile] = useState<LazyUserProfile>(
     new UserProfile({
       name: '',
@@ -133,14 +118,6 @@ export default function Landing() {
           setActiveStep(4);
         }
       }
-    });
-    return () => sub.unsubscribe();
-  }, []);
-
-  // Websocket for the chats
-  useEffect(() => {
-    const sub = DataStore.observeQuery(OpenAIChat).subscribe(({ items }) => {
-      setData(items);
     });
     return () => sub.unsubscribe();
   }, []);
@@ -245,11 +222,6 @@ export default function Landing() {
 
   return (
     <>
-      <HistoryDrawer
-        data={data}
-        overlayVisible={overlayVisible}
-        setOverlayVisible={setOverlayVisible}
-      />
       <div
         style={{
           width: '100%',
@@ -369,61 +341,8 @@ export default function Landing() {
               sx={{ margin: 3 }}
               onClick={() => navigate('/chat')}
             >
-              Start A New Conversation
+              Start A Conversation
             </Button>
-
-            <Typography sx={{ marginTop: 3 }} variant="h6">
-              Previous Conversations
-            </Typography>
-
-            <List
-              sx={{
-                display: 'inline-block',
-                borderRadius: 8,
-                width: '100%',
-              }}
-              dense
-            >
-              {data &&
-                data
-                  .slice(data.length - 3, data.length)
-                  .reverse()
-                  .map(
-                    d =>
-                      d.messages && (
-                        <ListItem key={d.id}>
-                          <ListItemButton component={Link} to={`/chat/${d.id}`}>
-                            <ListItemText
-                              primaryTypographyProps={{
-                                noWrap: true,
-                              }}
-                              primary={
-                                d.messages[0]?.content?.includes(
-                                  "I'm Uniquity AI, your personal development coach.",
-                                )
-                                  ? d.messages[1]?.content
-                                  : d.messages[0]?.content
-                              }
-                            />
-                            <ListItemIcon
-                              sx={{ fontSize: 20, minWidth: 'unset' }}
-                            >
-                              <ArrowForwardIosOutlined />
-                            </ListItemIcon>
-                          </ListItemButton>
-                        </ListItem>
-                      ),
-                  )}
-            </List>
-            <div>
-              <Button
-                variant="contained"
-                sx={{ margin: 3 }}
-                onClick={() => setOverlayVisible(true)}
-              >
-                Older Conversations
-              </Button>
-            </div>
           </CardContent>
         </Card>
         <Card raised sx={{ borderRadius: 6, marginTop: 5, width: '85%' }}>
