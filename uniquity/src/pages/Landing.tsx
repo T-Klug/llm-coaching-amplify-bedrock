@@ -357,7 +357,12 @@ export default function Landing() {
           </CardContent>
         </Card>
         <Card raised sx={{ borderRadius: 6, marginTop: 5, width: '85%' }}>
-          <CardMedia height={200} component="img" image={roleplayImage} />
+          <CardMedia
+            height={200}
+            alt="Role play Image"
+            component="img"
+            image={roleplayImage}
+          />
           <CardContent>
             <div style={{ marginBottom: 10 }}>
               <Typography variant="h5">Role play</Typography>
