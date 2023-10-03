@@ -329,7 +329,7 @@ export default function Landing() {
           <CardMedia height={200} component="img" image={adhocImage} />
           <CardContent>
             <div style={{ marginBottom: 10 }}>
-              <Typography variant="h5">Impromptu help</Typography>
+              <Typography variant="h5">Quick Coaching</Typography>
               <Divider flexItem variant="middle" />
             </div>
             <Typography>

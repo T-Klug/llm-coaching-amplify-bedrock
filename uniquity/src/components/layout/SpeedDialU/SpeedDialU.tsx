@@ -58,7 +58,7 @@ export function SpeedDialU() {
         />
         <SpeedDialAction
           icon={<ChatBubbleOutline />}
-          tooltipTitle="Impromptu Coaching"
+          tooltipTitle="Quick Coaching"
           onClick={() => navigate('/chat')}
         />
         <SpeedDialAction
