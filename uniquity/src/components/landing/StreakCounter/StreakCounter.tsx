@@ -62,6 +62,7 @@ const StreakCounter = forwardRef<HTMLDivElement | null>(
           height={200}
           component="img"
           image={celebrateImage}
+          alt="Celebrate Image"
         />
         <CardContent>
           <div style={{ marginBottom: 10 }}>

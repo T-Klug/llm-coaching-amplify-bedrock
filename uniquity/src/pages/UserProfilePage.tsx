@@ -81,6 +81,7 @@ export default function UserProfilePage() {
             width="100%"
             height={200}
             style={{ objectFit: 'cover' }}
+            alt="Profile Image"
             src={profileImage}
           />
         </Grid>

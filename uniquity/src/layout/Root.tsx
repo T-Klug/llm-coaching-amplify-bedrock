@@ -88,6 +88,7 @@ export default function Root() {
         }}
       >
         <img
+          alt="Logo"
           style={{ maxWidth: 300 }}
           src={prefersDarkMode ? LogoDark : LogoLight}
         />

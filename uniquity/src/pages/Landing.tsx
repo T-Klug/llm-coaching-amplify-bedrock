@@ -237,7 +237,12 @@ export default function Landing() {
           raised
           sx={{ borderRadius: 6, marginTop: 5, width: '85%', marginBottom: 5 }}
         >
-          <CardMedia height={200} component="img" image={getToKnowImage} />
+          <CardMedia
+            height={200}
+            component="img"
+            alt="Get to Know Your Coach Image"
+            image={getToKnowImage}
+          />
           <CardContent>
             <div style={{ marginBottom: 10 }}>
               <Typography variant="h5">Personalize your AI coach</Typography>
@@ -297,6 +302,7 @@ export default function Landing() {
                     your profile.
                   </Typography>
                   <TextField
+                    inputProps={{ 'aria-label': 'AI Generated Summary' }}
                     disabled
                     value={userProfile.userSummary}
                     multiline
@@ -326,7 +332,12 @@ export default function Landing() {
           <StreakCounter />
         </Slide>
         <Card raised sx={{ borderRadius: 6, marginTop: 5, width: '85%' }}>
-          <CardMedia height={200} component="img" image={adhocImage} />
+          <CardMedia
+            height={200}
+            component="img"
+            alt="Quick Coaching Image"
+            image={adhocImage}
+          />
           <CardContent>
             <div style={{ marginBottom: 10 }}>
               <Typography variant="h5">Quick Coaching</Typography>
@@ -372,6 +383,7 @@ export default function Landing() {
             sx={{ objectPosition: 'top' }}
             height={200}
             component="img"
+            alt="Goal Image"
             image={goalImage}
           />
           <CardContent>
