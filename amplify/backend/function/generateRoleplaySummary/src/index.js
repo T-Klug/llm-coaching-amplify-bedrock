@@ -186,9 +186,22 @@ export const handler = async (event) => {
 
   // Define the mapping object
   const roleMapping = {
-    "Performance Reviews": "employee named Uniquity AI",
-    "team meeting": "coworker named Uniquity AI",
-    "promotion discussion": "boss named Uniquity AI",
+    "Performance Reviews": "employee",
+    "Career Development": "employee",
+    "Career Change": "employee",
+    "Career Advancement": "employee",
+    "Career Transition": "employee",
+    "team building": "coworker",
+    "team conflict": "coworker",
+    "promotion discussion": "boss",
+    "layoff discussion": "boss",
+    "firing discussion": "boss",
+    "salary negotiation": "boss",
+    "firing discussion": "boss",
+    "hiring discussion": "boss",
+    "workplace conflict": "coworker",
+    "work life balance": "employee",
+    "workplace belonging": "coworker",
     // ... add more as needed
   };
 
