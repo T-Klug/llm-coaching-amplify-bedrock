@@ -150,5 +150,7 @@ type RoleplaySummary @model @auth(rules: [{ allow: owner }]) {
   summary: String
   user: ID
   roleplayId: ID
+  scenario: String
+  difficulty: String
   owner: String @auth(rules: [{ allow: owner, operations: [read, delete] }])
 }
