@@ -299,6 +299,7 @@ export const handler = async (event) => {
         kIncrement: 2,
       });
       const docs = await retriever.getRelevantDocuments(response);
+      console.log("Got documents");
       result = await chain.call({
         input: response,
         context:
@@ -306,6 +307,7 @@ export const handler = async (event) => {
             ? docs.map((d) => d.pageContent).join("\n</document>\n<document>\n")
             : "</document>",
       });
+      console.log("completed chain");
     } else {
       result = await chain.call({
         input: response,
@@ -318,7 +320,7 @@ export const handler = async (event) => {
       context: "</document>",
     });
   }
-
+  console.log("sending sms");
   const inputSMS = {
     ApplicationId: AppId,
     MessageRequest: {
