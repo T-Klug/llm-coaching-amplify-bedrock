@@ -35,6 +35,8 @@ const getRoleplayChat = /* GraphQL */ `
       }
       user
       roleplayId
+      scenario
+      difficulty
       owner
       createdAt
       updatedAt
@@ -109,7 +111,12 @@ const getChat = async (id) => {
   return body.data.getRoleplayChat;
 };
 
-const createSummary = async (ownerId, newContent) => {
+const createSummary = async (
+  ownerId,
+  newContent,
+  chatScenario,
+  chatDifficulty
+) => {
   const endpoint = new URL(GRAPHQL_ENDPOINT);
   const variables = {
     input: {
@@ -117,10 +124,11 @@ const createSummary = async (ownerId, newContent) => {
         .replace("<response>", "")
         .replace("</response>", "")
         .trimStart(),
+      scenario: chatScenario,
+      difficulty: chatDifficulty,
       owner: `${ownerId}::${ownerId}`,
     },
   };
-
   const signer = new SignatureV4({
     credentials: defaultProvider(),
     region: AWS_REGION,
@@ -175,6 +183,58 @@ export const handler = async (event) => {
   const { Parameter } = await client.send(command);
 
   const chatTranscript = await getChat(event.arguments?.input?.roleplayId);
+
+  // Define the mapping object
+  const roleMapping = {
+    "Performance Reviews": "employee",
+    "Career Development": "employee",
+    "Career Change": "employee",
+    "Career Advancement": "employee",
+    "Career Transition": "employee",
+    "team building": "coworker",
+    "team conflict": "coworker",
+    "promotion discussion": "boss",
+    "layoff discussion": "boss",
+    "firing discussion": "boss",
+    "salary negotiation": "boss",
+    "firing discussion": "boss",
+    "hiring discussion": "boss",
+    "workplace conflict": "coworker",
+    "work life balance": "employee",
+    "workplace belonging": "coworker",
+    // ... add more as needed
+  };
+
+  // Determine the AI role based on the scenario
+  let aiRole = "AI career coach"; // Default role
+  console.log(`Scenario from chatTranscript: ${chatTranscript.scenario}`);
+
+  for (const keyword in roleMapping) {
+    if (chatTranscript.scenario.includes(keyword)) {
+      aiRole = roleMapping[keyword];
+      console.log(`Determined AI Role: ${aiRole}`);
+      break;
+    }
+  }
+
+  // Determine behavior based on the difficulty.
+  let difficultyInstructions = "";
+  switch (chatTranscript.difficulty) {
+    case "beginner":
+      difficultyInstructions =
+        "Your behavior during this roleplay should be polite and receptive to feedback.";
+      break;
+    case "intermediate":
+      difficultyInstructions =
+        "Your behavior during this roleplay should be neutral, occasionally challenging the user's points.";
+      break;
+    case "advanced":
+      difficultyInstructions =
+        "Your behavior during this roleplay should be more challenging, occasionally pushing back on the user's feedback.";
+      break;
+    default:
+      break;
+  }
 
   const chat = new ChatBedrock({
     model: "anthropic.claude-instant-v1",
@@ -236,15 +296,17 @@ export const handler = async (event) => {
     );
 
     result = await chain.call({
-      input: `You will act as an AI career coach named Uniquity AI. You are provided with chat between the <chat> tag that the user had while roleplaying with AI. The roleplay scenario prompt is between the <scenario> tag.
-    I want you to provide feedback in the form of three things they could improve on based on what the user said in the chat. Your rules are between the <rules> tag.
+      input: `You will act as a career coach named Uniquity AI. You are provided with chat between the <chat> tag that the user had while roleplaying with AI. The roleplay scenario prompt is between the <scenario> tag.
+    I want you to provide feedback in the form of three things they could improve on in regards to engaginge in chat. Your rules are between the <rules> tag.
     You also have access to the following chunked document context the user provided about themselves and their company. The document chunks are in the <document> tags.
+    The assistant was instructed to act as ${aiRole} and have the following tone ${difficultyInstructions}
     
     <rules>
-    - Do not give feedback about Bill's responses who are the Assistant.
+    - Do not give feedback about assistants responses.
     - Do not make up information about the user who is the Human.
     - Only include information from the <document> tags that are relevant to the three things to improve on.
     - If there is no relevant information in the document tags do not include any additional context. 
+    - You are reviewing the chat context and providing career coaching advice on how they could engage better with the chat. 
     </rules>
     
     <document>
@@ -255,7 +317,7 @@ export const handler = async (event) => {
     }
 
     <scenario>
-    You're catching up with Bill to see how his projects are coming along. Initiate the convo whenever you are ready! Don't forget to also ask how he's doing personally. Once you feel like you've covered everything, you can wrap it up
+    The user was instructed to do ${chatTranscript.scenario} with the assistant.
     </scenario>
 
     <chat>
@@ -271,12 +333,19 @@ export const handler = async (event) => {
     });
   } else {
     result = await chain.call({
-      input: `You will act as an AI career coach named Uniquity AI. I am providing you with chat between the <chat> tag that the user had while roleplaying. The roleplay scenario prompt is between the <scenario> tag.
-    I want you to provide feedback in the form of three things they could improve on based on what the user said in the chat. 
-    Do not give feedback about Bill's responses.  
+      input: `You will act as a career coach named Uniquity AI. You are provided with chat between the <chat> tag that the user had while roleplaying with AI. The roleplay scenario prompt is between the <scenario> tag.
+    I want you to provide feedback in the form of three things they could improve on based on what the user said in the chat. Your rules are between the <rules> tag.
+    The assistant was instructed to act as ${aiRole} and have the following tone ${difficultyInstructions}
+    
+    <rules>
+    - Do not give feedback about Bill's responses who are the Assistant.
+    - Do not make up information about the user who is the Human.
+    </rules>
+
     <scenario>
-    You're catching up with Bill to see how his projects are coming along. Initiate the convo whenever you are ready! Don't forget to also ask how he's doing personally. Once you feel like you've covered everything, you can wrap it up
+    ${chatTranscript.scenario}
     </scenario>
+
     <chat>
       ${
         chatTranscript && chatTranscript.messages
@@ -284,12 +353,18 @@ export const handler = async (event) => {
           : ""
       }
     </chat>
+    
     You will respond with the feedback within the <response></response> tags.
-    Assistant: [Feedback] <response>`,
+    Assistant: <response>`,
     });
   }
 
-  const saved = await createSummary(event.identity.claims.username, result);
+  const saved = await createSummary(
+    event.identity.claims.username,
+    result,
+    chatTranscript.scenario,
+    chatTranscript.difficulty
+  );
 
   return saved;
 };

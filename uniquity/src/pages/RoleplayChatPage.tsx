@@ -26,12 +26,63 @@ import CardContent from '@mui/material/CardContent';
 import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import SummaryModal from '../components/roleplay/SummaryModal';
+import Modal from '@mui/material/Modal';
+import Slider from '@mui/material/Slider';
+import CardMedia from '@mui/material/CardMedia';
 
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
 export default function RoleplayChatPage() {
   const { roleplayId } = useParams();
-  //const navigate = useNavigate();
+
+  const [welcomeMessage, setWelcomeMessage] = useState<string>();
+
+  const updateWelcomeMessage = () => {
+    let message = 'Welcome to role playing!';
+    if (selectedScenario === 'Performance Reviews') {
+      message += " You're about to conduct a performance review.";
+    }
+    // Add other scenarios here as needed
+
+    message += ` This session is set at ${getDifficultyLabel(
+      difficultyLevel,
+    )} level.`;
+    message +=
+      " Uniquity AI has assumed the role of your employee, Bill. Initiate the convo whenever you are ready! Don't forget to also ask how he's doing personally. Once you feel like you've covered everything, you can wrap it up and click done.";
+
+    setWelcomeMessage(message);
+  };
+
+  // State for selected scenario
+  const [selectedScenario, setSelectedScenario] = useState<string>(
+    'Performance Reviews',
+  ); // default scenario
+  const [openModal, setOpenModal] = useState(true);
+  const [difficultyLevel, setDifficultyLevel] = useState<number>(1); // 1 for Beginner, 2 for Intermediate, 3 for Advanced
+
+  // This function updates the prompt message based on the user's selections.
+  const handleProceedClick = () => {
+    // Update the prompt or any other action based on user's selection here.
+    // For example, if you're setting a prompt message, you can do:
+
+    // Update the welcome message based on the user's selection
+    updateWelcomeMessage();
+
+    if (selectedScenario === 'Performance Reviews') {
+      // Update the prompt message based on the difficulty level.
+      // This is just an example. You can set any messages you like.
+      if (difficultyLevel === 1) {
+        // Set beginner level prompt for Performance Reviews.
+      } else if (difficultyLevel === 2) {
+        // Set intermediate level prompt for Performance Reviews.
+      } else if (difficultyLevel === 3) {
+        // Set advanced level prompt for Performance Reviews.
+      }
+    }
+    // Close the modal.
+    setOpenModal(false);
+  };
+
   // Chat data
   const [data, setData] = useState<LazyRoleplayChat[]>();
   // Selected Chat ID
@@ -50,6 +101,12 @@ export default function RoleplayChatPage() {
   const [summaryId, setSummaryId] = useState<string>('');
   const [summaryOpen, setSummaryOpen] = useState<boolean>(false);
   const [summaryLoading, setSummaryLoading] = useState<boolean>(false);
+
+  const difficultyLabels = ['Beginner', 'Intermediate', 'Advanced'];
+
+  const getDifficultyLabel = (value: number) => {
+    return difficultyLabels[value - 1];
+  };
 
   async function handleChatDone() {
     if (selectedId) {
@@ -99,6 +156,8 @@ export default function RoleplayChatPage() {
       response = await DataStore.save(
         new RoleplayChat({
           messages: [{ role: 'USER', content: chat }],
+          scenario: selectedScenario, // Set the scenario
+          difficulty: getDifficultyLabel(difficultyLevel), // Set the difficulty
         }),
       );
       setChat('');
@@ -110,6 +169,8 @@ export default function RoleplayChatPage() {
           role: 'USER',
           content: chat,
         });
+        draft.scenario = selectedScenario; // Set the scenario
+        draft.difficulty = getDifficultyLabel(difficultyLevel); // Set the difficulty
       });
       response = await DataStore.save(saveModel);
       setChat('');
@@ -130,20 +191,77 @@ export default function RoleplayChatPage() {
         setOpen={setSummaryOpen}
         summaryId={summaryId}
       />
+
+      {/* Welcome Message Card */}
       <Card sx={{ borderRadius: 6 }}>
         <CardContent>
           <Typography variant="h5" textAlign="center" sx={{ mb: 3 }}>
-            Welcome to role playing! Uniquity AI has assumed the role of your
-            employee, Bill.
+            {welcomeMessage}
           </Typography>
-          <Typography>
-            You're catching up with Bill to see how his projects are coming
-            along. Initiate the convo whenever you are ready! Don't forget to
-            also ask how he's doing personally. Once you feel like you've
-            covered everything, you can wrap it up and click done.
-          </Typography>
+          {/* ... rest of the content */}
         </CardContent>
       </Card>
+
+      {/* Scenario & Difficulty Selection Modal */}
+      <Modal open={openModal} onClose={() => console.log('No close')}>
+        <Box
+          sx={{
+            width: 300,
+            padding: 4,
+            backgroundColor: 'white',
+            margin: 'auto',
+            marginTop: '15vh',
+          }}
+        >
+          <Typography gutterBottom>Select a scenario:</Typography>
+          <Card
+            onClick={() => setSelectedScenario('Performance Reviews')}
+            sx={{ mb: 2 }}
+          >
+            <CardMedia
+              component="img"
+              height="140"
+              image="https://images.pexels.com/photos/3184333/pexels-photo-3184333.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
+              alt="Performance Reviews"
+            />
+            <CardContent>
+              <Typography variant="h5" component="div">
+                Performance Reviews
+              </Typography>
+            </CardContent>
+          </Card>
+          {/* Add more scenario cards as needed */}
+
+          <Typography gutterBottom mt={3}>
+            Select difficulty:
+          </Typography>
+          <Slider
+            value={difficultyLevel}
+            step={1}
+            marks
+            min={1}
+            max={3}
+            // TODO: Uncomment and use 'event' later when needed
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            onChange={(_: any, newValue: number | number[]) =>
+              setDifficultyLevel(newValue as number)
+            }
+            valueLabelDisplay="auto"
+            valueLabelFormat={getDifficultyLabel}
+          />
+
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            sx={{ mt: 3 }}
+            onClick={handleProceedClick} // ensure this handler is set
+          >
+            Proceed
+          </Button>
+        </Box>
+      </Modal>
+
       <Box>
         {data &&
           data?.length > 0 &&
