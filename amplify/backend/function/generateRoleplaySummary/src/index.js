@@ -111,7 +111,12 @@ const getChat = async (id) => {
   return body.data.getRoleplayChat;
 };
 
-const createSummary = async (ownerId, newContent) => {
+const createSummary = async (
+  ownerId,
+  newContent,
+  chatScenario,
+  chatDifficulty
+) => {
   const endpoint = new URL(GRAPHQL_ENDPOINT);
   const variables = {
     input: {
@@ -181,17 +186,20 @@ export const handler = async (event) => {
 
   // Define the mapping object
   const roleMapping = {
-    "performance review": "employee named Uniquity AI",
+    "Performance Reviews": "employee named Uniquity AI",
     "team meeting": "coworker named Uniquity AI",
     "promotion discussion": "boss named Uniquity AI",
     // ... add more as needed
   };
 
   // Determine the AI role based on the scenario
-  let aiRole = "AI career coach named Uniquity AI"; // Default role
+  let aiRole = "AI career coach"; // Default role
+  console.log(`Scenario from chatTranscript: ${chatTranscript.scenario}`);
+
   for (const keyword in roleMapping) {
     if (chatTranscript.scenario.includes(keyword)) {
       aiRole = roleMapping[keyword];
+      console.log(`Determined AI Role: ${aiRole}`);
       break;
     }
   }
@@ -335,7 +343,12 @@ export const handler = async (event) => {
     });
   }
 
-  const saved = await createSummary(event.identity.claims.username, result, chatTranscript.scenario, chatTranscript.difficulty);
+  const saved = await createSummary(
+    event.identity.claims.username,
+    result,
+    chatTranscript.scenario,
+    chatTranscript.difficulty
+  );
 
   return saved;
 };
