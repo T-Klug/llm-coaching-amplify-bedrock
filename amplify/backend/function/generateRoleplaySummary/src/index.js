@@ -119,10 +119,11 @@ const createSummary = async (ownerId, newContent) => {
         .replace("<response>", "")
         .replace("</response>", "")
         .trimStart(),
+      scenario: chatScenario,
+      difficulty: chatDifficulty,
       owner: `${ownerId}::${ownerId}`,
     },
   };
-
   const signer = new SignatureV4({
     credentials: defaultProvider(),
     region: AWS_REGION,
@@ -334,7 +335,7 @@ export const handler = async (event) => {
     });
   }
 
-  const saved = await createSummary(event.identity.claims.username, result);
+  const saved = await createSummary(event.identity.claims.username, result, chatTranscript.scenario, chatTranscript.difficulty);
 
   return saved;
 };
