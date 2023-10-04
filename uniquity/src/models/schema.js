@@ -600,6 +600,20 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "scenario": {
+                    "name": "scenario",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "difficulty": {
+                    "name": "difficulty",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "owner": {
                     "name": "owner",
                     "isArray": false,
@@ -687,5 +701,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "8ea5b3894fd1b5ed2d49c3107982ad2e"
+    "version": "5055115fd9139d683fe650ad4ad1f0cd"
 };

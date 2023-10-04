@@ -26,41 +26,39 @@ import CardContent from '@mui/material/CardContent';
 import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import SummaryModal from '../components/roleplay/SummaryModal';
-
-
 import Modal from '@mui/material/Modal';
 import Slider from '@mui/material/Slider';
 import CardMedia from '@mui/material/CardMedia';
 
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
-
 export default function RoleplayChatPage() {
   const { roleplayId } = useParams();
 
-  const [welcomeMessage, setWelcomeMessage] = useState<string>(
-    "Welcome to role playing! Uniquity AI has assumed the role of your employee, Bill. You're catching up with Bill to see how his projects are coming along. Initiate the convo whenever you are ready! Don't forget to also ask how he's doing personally. Once you feel like you've covered everything, you can wrap it up and click done."
-  );
+  const [welcomeMessage, setWelcomeMessage] = useState<string>();
 
   const updateWelcomeMessage = () => {
-    let message = "Welcome to role playing!";
-    if (selectedScenario === "Performance Reviews") {
+    let message = 'Welcome to role playing!';
+    if (selectedScenario === 'Performance Reviews') {
       message += " You're about to conduct a performance review.";
     }
     // Add other scenarios here as needed
-    
-    message += ` This session is set at ${getDifficultyLabel(difficultyLevel)} level.`;
-    message += " Uniquity AI has assumed the role of your employee, Bill. Initiate the convo whenever you are ready! Don't forget to also ask how he's doing personally. Once you feel like you've covered everything, you can wrap it up and click done.";
+
+    message += ` This session is set at ${getDifficultyLabel(
+      difficultyLevel,
+    )} level.`;
+    message +=
+      " Uniquity AI has assumed the role of your employee, Bill. Initiate the convo whenever you are ready! Don't forget to also ask how he's doing personally. Once you feel like you've covered everything, you can wrap it up and click done.";
 
     setWelcomeMessage(message);
   };
 
   // State for selected scenario
-  const [selectedScenario, setSelectedScenario] = useState<string>('Performance Reviews'); // default scenario
-  // const [difficultyLevel, setDifficultyLevel] = useState<string>('Beginner');
-  const [openModal, setOpenModal] = useState(false);
+  const [selectedScenario, setSelectedScenario] = useState<string>(
+    'Performance Reviews',
+  ); // default scenario
+  const [openModal, setOpenModal] = useState(true);
   const [difficultyLevel, setDifficultyLevel] = useState<number>(1); // 1 for Beginner, 2 for Intermediate, 3 for Advanced
-
 
   // This function updates the prompt message based on the user's selections.
   const handleProceedClick = () => {
@@ -81,12 +79,10 @@ export default function RoleplayChatPage() {
         // Set advanced level prompt for Performance Reviews.
       }
     }
-
     // Close the modal.
     setOpenModal(false);
   };
 
-  //const navigate = useNavigate();
   // Chat data
   const [data, setData] = useState<LazyRoleplayChat[]>();
   // Selected Chat ID
@@ -106,12 +102,11 @@ export default function RoleplayChatPage() {
   const [summaryOpen, setSummaryOpen] = useState<boolean>(false);
   const [summaryLoading, setSummaryLoading] = useState<boolean>(false);
 
- const difficultyLabels = ["Beginner", "Intermediate", "Advanced"];
+  const difficultyLabels = ['Beginner', 'Intermediate', 'Advanced'];
 
- const getDifficultyLabel = (value: number) => {
-      return difficultyLabels[value - 1];
-    };
-
+  const getDifficultyLabel = (value: number) => {
+    return difficultyLabels[value - 1];
+  };
 
   async function handleChatDone() {
     if (selectedId) {
@@ -145,162 +140,127 @@ export default function RoleplayChatPage() {
     });
     return () => sub.unsubscribe();
   }, []);
-  
 
   // Send Chat Method
-  // const sendChat = async () => {
-  //   if (summaryLoading) {
-  //     return;
-  //   }
-  //   if (listening) {
-  //     await SpeechRecognition.stopListening();
-  //     setListening(false);
-  //   }
+  const sendChat = async () => {
+    if (summaryLoading) {
+      return;
+    }
+    if (listening) {
+      await SpeechRecognition.stopListening();
+      setListening(false);
+    }
 
-  //   let response;
-  //   if (chat && !selectedId) {
-  //     response = await DataStore.save(
-  //       new RoleplayChat({
-  //         messages: [{ role: 'USER', content: chat }],
-  //       }),
-  //     );
-  //     setChat('');
-  //     resetTranscript();
-  //   } else if (chat && selectedId) {
-  //     const model = data?.find(d => d.id === selectedId);
-  //     const saveModel = RoleplayChat.copyOf(model!, draft => {
-  //       draft.messages?.push({
-  //         role: 'USER',
-  //         content: chat,
-  //       });
-  //     });
-  //     response = await DataStore.save(saveModel);
-  //     setChat('');
-  //     resetTranscript();
-  //   } else {
-  //     return;
-  //   }
-  //   if (!selectedId) setSelectedId(response.id);
-  //   setChatLoading(true);
-  //   await submitRoleplayChat(response);
-  //   setChatLoading(false);
-  // };
-
-  // Send Chat Method
-const sendChat = async () => {
-  if (summaryLoading) {
-    return;
-  }
-  if (listening) {
-    await SpeechRecognition.stopListening();
-    setListening(false);
-  }
-
-  let response;
-  if (chat && !selectedId) {
-    response = await DataStore.save(
-      new RoleplayChat({
-        messages: [{ role: 'USER', content: chat }],
-        scenario: selectedScenario,  // Set the scenario
-        difficulty: getDifficultyLabel(difficultyLevel)  // Set the difficulty
-      }),
-    );
-    setChat('');
-    resetTranscript();
-  } else if (chat && selectedId) {
-    const model = data?.find(d => d.id === selectedId);
-    const saveModel = RoleplayChat.copyOf(model!, draft => {
-      draft.messages?.push({
-        role: 'USER',
-        content: chat,
+    let response;
+    if (chat && !selectedId) {
+      response = await DataStore.save(
+        new RoleplayChat({
+          messages: [{ role: 'USER', content: chat }],
+          scenario: selectedScenario, // Set the scenario
+          difficulty: getDifficultyLabel(difficultyLevel), // Set the difficulty
+        }),
+      );
+      setChat('');
+      resetTranscript();
+    } else if (chat && selectedId) {
+      const model = data?.find(d => d.id === selectedId);
+      const saveModel = RoleplayChat.copyOf(model!, draft => {
+        draft.messages?.push({
+          role: 'USER',
+          content: chat,
+        });
+        draft.scenario = selectedScenario; // Set the scenario
+        draft.difficulty = getDifficultyLabel(difficultyLevel); // Set the difficulty
       });
-      draft.scenario = selectedScenario;  // Set the scenario
-      draft.difficulty = getDifficultyLabel(difficultyLevel);  // Set the difficulty
-    });
-    response = await DataStore.save(saveModel);
-    setChat('');
-    resetTranscript();
-  } else {
-    return;
-  }
-  if (!selectedId) setSelectedId(response.id);
-  setChatLoading(true);
-  await submitRoleplayChat(response);
-  setChatLoading(false);
-};
+      response = await DataStore.save(saveModel);
+      setChat('');
+      resetTranscript();
+    } else {
+      return;
+    }
+    if (!selectedId) setSelectedId(response.id);
+    setChatLoading(true);
+    await submitRoleplayChat(response);
+    setChatLoading(false);
+  };
 
-
-return (
+  return (
     <>
-        <SummaryModal
-            open={summaryOpen}
-            setOpen={setSummaryOpen}
-            summaryId={summaryId}
-        />
-
-      {/* Open Modal Button */}
-      <Button variant="contained" color="primary" onClick={() => setOpenModal(true)}>
-        Choose Scenario & Difficulty
-      </Button>
+      <SummaryModal
+        open={summaryOpen}
+        setOpen={setSummaryOpen}
+        summaryId={summaryId}
+      />
 
       {/* Welcome Message Card */}
       <Card sx={{ borderRadius: 6 }}>
-          <CardContent>
-              <Typography variant="h5" textAlign="center" sx={{ mb: 3 }}>
-                    {welcomeMessage}
-              </Typography>
-              {/* ... rest of the content */}
-          </CardContent>
+        <CardContent>
+          <Typography variant="h5" textAlign="center" sx={{ mb: 3 }}>
+            {welcomeMessage}
+          </Typography>
+          {/* ... rest of the content */}
+        </CardContent>
       </Card>
 
       {/* Scenario & Difficulty Selection Modal */}
-    <Modal open={openModal} onClose={() => setOpenModal(false)}>
-        <Box sx={{ width: 300, padding: 4, backgroundColor: 'white', margin: 'auto', marginTop: '15vh' }}>
-            <Typography gutterBottom>
-                Select a scenario:
-            </Typography>
-            <Card onClick={() => setSelectedScenario('Performance Reviews')} sx={{ mb: 2 }}>
-                <CardMedia
-                    component="img"
-                    height="140"
-                    image="https://images.pexels.com/photos/3184333/pexels-photo-3184333.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
-                    alt="Performance Reviews"
-                />
-                <CardContent>
-                    <Typography variant="h5" component="div">
-                        Performance Reviews
-                    </Typography>
-                </CardContent>
-            </Card>
-            {/* Add more scenario cards as needed */}
-            
-            <Typography gutterBottom mt={3}>
-                Select difficulty:
-            </Typography>
-            <Slider
-                value={difficultyLevel}
-                step={1}
-                marks
-                min={1}
-                max={3}
-
-                // TODO: Uncomment and use 'event' later when needed
-                onChange={(_: any, newValue: number | number[]) => setDifficultyLevel(newValue as number)}
-                valueLabelDisplay="auto"
-                valueLabelFormat={getDifficultyLabel}
+      <Modal open={openModal} onClose={() => console.log('No close')}>
+        <Box
+          sx={{
+            width: 300,
+            padding: 4,
+            backgroundColor: 'white',
+            margin: 'auto',
+            marginTop: '15vh',
+          }}
+        >
+          <Typography gutterBottom>Select a scenario:</Typography>
+          <Card
+            onClick={() => setSelectedScenario('Performance Reviews')}
+            sx={{ mb: 2 }}
+          >
+            <CardMedia
+              component="img"
+              height="140"
+              image="https://images.pexels.com/photos/3184333/pexels-photo-3184333.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
+              alt="Performance Reviews"
             />
-            
-            <Button
-                    variant="contained"
-                    color="primary"
-                    fullWidth
-                    sx={{ mt: 3 }}
-                    onClick={handleProceedClick}  // ensure this handler is set
-                >
-                    Proceed
-                </Button>
-            </Box>
-        </Modal>
+            <CardContent>
+              <Typography variant="h5" component="div">
+                Performance Reviews
+              </Typography>
+            </CardContent>
+          </Card>
+          {/* Add more scenario cards as needed */}
+
+          <Typography gutterBottom mt={3}>
+            Select difficulty:
+          </Typography>
+          <Slider
+            value={difficultyLevel}
+            step={1}
+            marks
+            min={1}
+            max={3}
+            // TODO: Uncomment and use 'event' later when needed
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            onChange={(_: any, newValue: number | number[]) =>
+              setDifficultyLevel(newValue as number)
+            }
+            valueLabelDisplay="auto"
+            valueLabelFormat={getDifficultyLabel}
+          />
+
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            sx={{ mt: 3 }}
+            onClick={handleProceedClick} // ensure this handler is set
+          >
+            Proceed
+          </Button>
+        </Box>
+      </Modal>
 
       <Box>
         {data &&
@@ -428,5 +388,4 @@ return (
       </AppBar>
     </>
   );
-
 }

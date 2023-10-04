@@ -44,6 +44,8 @@ input RoleplayChatFuncInput {
   user: ID
   roleplayId: ID
   owner: String
+  scenario: String
+  difficulty: String
   _version: Int
 }
 

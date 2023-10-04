@@ -2,7 +2,7 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-import * as APITypes from "./API";
+import * as APITypes from "../../uniquity/src/graphql/API";
 type GeneratedSubscription<InputType, OutputType> = string & {
   __generatedSubscriptionInput: InputType;
   __generatedSubscriptionOutput: OutputType;
@@ -458,6 +458,8 @@ export const onCreateRoleplaySummary = /* GraphQL */ `subscription OnCreateRolep
     summary
     user
     roleplayId
+    scenario
+    difficulty
     owner
     createdAt
     updatedAt
@@ -480,6 +482,8 @@ export const onUpdateRoleplaySummary = /* GraphQL */ `subscription OnUpdateRolep
     summary
     user
     roleplayId
+    scenario
+    difficulty
     owner
     createdAt
     updatedAt
@@ -502,6 +506,8 @@ export const onDeleteRoleplaySummary = /* GraphQL */ `subscription OnDeleteRolep
     summary
     user
     roleplayId
+    scenario
+    difficulty
     owner
     createdAt
     updatedAt

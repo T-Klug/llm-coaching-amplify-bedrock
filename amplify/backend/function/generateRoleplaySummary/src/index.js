@@ -296,15 +296,17 @@ export const handler = async (event) => {
     );
 
     result = await chain.call({
-      input: `You will act as an You will act as ${aiRole} named Uniquity AI. ${difficultyInstructions} You are provided with chat between the <chat> tag that the user had while roleplaying with AI. The roleplay scenario prompt is between the <scenario> tag.
-    I want you to provide feedback in the form of three things they could improve on based on what the user said in the chat. Your rules are between the <rules> tag.
+      input: `You will act as a career coach named Uniquity AI. You are provided with chat between the <chat> tag that the user had while roleplaying with AI. The roleplay scenario prompt is between the <scenario> tag.
+    I want you to provide feedback in the form of three things they could improve on in regards to engaginge in chat. Your rules are between the <rules> tag.
     You also have access to the following chunked document context the user provided about themselves and their company. The document chunks are in the <document> tags.
+    The assistant was instructed to act as ${aiRole} and have the following tone ${difficultyInstructions}
     
     <rules>
-    - Do not give feedback about Bill's responses who are the Assistant.
+    - Do not give feedback about assistants responses.
     - Do not make up information about the user who is the Human.
     - Only include information from the <document> tags that are relevant to the three things to improve on.
     - If there is no relevant information in the document tags do not include any additional context. 
+    - You are reviewing the chat context and providing career coaching advice on how they could engage better with the chat. 
     </rules>
     
     <document>
@@ -315,7 +317,7 @@ export const handler = async (event) => {
     }
 
     <scenario>
-    ${chatTranscript.scenario}
+    The user was instructed to do ${chatTranscript.scenario} with the assistant.
     </scenario>
 
     <chat>
@@ -331,8 +333,9 @@ export const handler = async (event) => {
     });
   } else {
     result = await chain.call({
-      input: `You will act as ${aiRole} named Uniquity AI. ${difficultyInstructions} You are provided with chat between the <chat> tag that the user had while roleplaying with AI. The roleplay scenario prompt is between the <scenario> tag.
+      input: `You will act as a career coach named Uniquity AI. You are provided with chat between the <chat> tag that the user had while roleplaying with AI. The roleplay scenario prompt is between the <scenario> tag.
     I want you to provide feedback in the form of three things they could improve on based on what the user said in the chat. Your rules are between the <rules> tag.
+    The assistant was instructed to act as ${aiRole} and have the following tone ${difficultyInstructions}
     
     <rules>
     - Do not give feedback about Bill's responses who are the Assistant.

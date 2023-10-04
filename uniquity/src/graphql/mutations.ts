@@ -2,7 +2,7 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-import * as APITypes from "./API";
+import * as APITypes from "../../uniquity/src/graphql/API";
 type GeneratedMutation<InputType, OutputType> = string & {
   __generatedMutationInput: InputType;
   __generatedMutationOutput: OutputType;
@@ -470,6 +470,8 @@ export const createRoleplaySummary = /* GraphQL */ `mutation CreateRoleplaySumma
     summary
     user
     roleplayId
+    scenario
+    difficulty
     owner
     createdAt
     updatedAt
@@ -492,6 +494,8 @@ export const updateRoleplaySummary = /* GraphQL */ `mutation UpdateRoleplaySumma
     summary
     user
     roleplayId
+    scenario
+    difficulty
     owner
     createdAt
     updatedAt
@@ -514,6 +518,8 @@ export const deleteRoleplaySummary = /* GraphQL */ `mutation DeleteRoleplaySumma
     summary
     user
     roleplayId
+    scenario
+    difficulty
     owner
     createdAt
     updatedAt
@@ -609,6 +615,8 @@ export const generateRoleplaySummaryFunc = /* GraphQL */ `mutation GenerateRolep
     summary
     user
     roleplayId
+    scenario
+    difficulty
     owner
     createdAt
     updatedAt

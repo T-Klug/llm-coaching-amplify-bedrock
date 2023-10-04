@@ -193,6 +193,56 @@ export const handler = async (event) => {
       },
     }),
   });
+  // Define the mapping object
+  const roleMapping = {
+    "Performance Reviews": "employee",
+    "Career Development": "employee",
+    "Career Change": "employee",
+    "Career Advancement": "employee",
+    "Career Transition": "employee",
+    "team building": "coworker",
+    "team conflict": "coworker",
+    "promotion discussion": "boss",
+    "layoff discussion": "boss",
+    "firing discussion": "boss",
+    "salary negotiation": "boss",
+    "firing discussion": "boss",
+    "hiring discussion": "boss",
+    "workplace conflict": "coworker",
+    "work life balance": "employee",
+    "workplace belonging": "coworker",
+    // ... add more as needed
+  };
+
+  // Determine the AI role based on the scenario
+  let aiRole = "AI career coach"; // Default role
+
+  for (const keyword in roleMapping) {
+    if (event.arguments?.input?.scenario.includes(keyword)) {
+      aiRole = roleMapping[keyword];
+      console.log(`Determined AI Role: ${aiRole}`);
+      break;
+    }
+  }
+
+  // Determine behavior based on the difficulty.
+  let difficultyInstructions = "";
+  switch (event.arguments?.input?.difficulty) {
+    case "beginner":
+      difficultyInstructions =
+        "Your behavior during this roleplay should be polite and receptive to feedback.";
+      break;
+    case "intermediate":
+      difficultyInstructions =
+        "Your behavior during this roleplay should be neutral, occasionally challenging the user's points.";
+      break;
+    case "advanced":
+      difficultyInstructions =
+        "Your behavior during this roleplay should be more challenging, occasionally pushing back on the user's feedback.";
+      break;
+    default:
+      break;
+  }
 
   const userProfile = await getUserProfile(event.identity.claims.username);
 
@@ -200,14 +250,14 @@ export const handler = async (event) => {
     new MessagesPlaceholder("history"),
     [
       "human",
-      `You will act as an employee named Bill. You report to the user. The user is your manager. Respond to the input within the <input> tag conversationally. The user's name is ${userProfile.name}, and you should use their name when you reference them.
+      `You will act as an ${aiRole} named Bill. Respond to the input within the <input> tag conversationally. The user's name is ${userProfile.name}, and you should use their name when you reference them.
       Your rules are provided in the <rules> tag
       <rules>
-      - You will act respectful and professional to the user.
+      - ${difficultyInstructions}
       - The point of the chat is for the manager to work on getting a status update and check in on your well being. 
       - You are allowed to make up answers to their questions.
       </rules>
-      The user who is your manager will be asking you for a status update and checking in on your well being. 
+      The user will be conversing with you about ${event.arguments?.input?.scenario}
       Please respond to the user's input within the <response></response> tag 
       You should always stop after your first response. Do not continue the conversation.
       <input>{input}</input>
