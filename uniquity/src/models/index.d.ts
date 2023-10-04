@@ -213,6 +213,7 @@ type EagerRoleplayChat = {
   readonly roleplayId?: string | null;
   readonly scenario?: string | null;
   readonly difficulty?: string | null;
+  readonly scenarioPrompt?: string | null;
   readonly owner?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
@@ -229,6 +230,7 @@ type LazyRoleplayChat = {
   readonly roleplayId?: string | null;
   readonly scenario?: string | null;
   readonly difficulty?: string | null;
+  readonly scenarioPrompt?: string | null;
   readonly owner?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
@@ -251,6 +253,7 @@ type EagerRoleplaySummary = {
   readonly roleplayId?: string | null;
   readonly scenario?: string | null;
   readonly difficulty?: string | null;
+  readonly scenarioPrompt?: string | null;
   readonly owner?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
@@ -267,6 +270,7 @@ type LazyRoleplaySummary = {
   readonly roleplayId?: string | null;
   readonly scenario?: string | null;
   readonly difficulty?: string | null;
+  readonly scenarioPrompt?: string | null;
   readonly owner?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;

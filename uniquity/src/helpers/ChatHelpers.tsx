@@ -50,6 +50,7 @@ export const submitRoleplayChat = async (response: RoleplayChat) => {
     messages: saveModel.messages,
     scenario: saveModel.scenario,
     difficulty: saveModel.difficulty,
+    scenarioPrompt: saveModel.scenarioPrompt,
   };
   await API.graphql<GraphQLQuery<ChatRoleplayFuncMutation>>({
     query: chatRoleplayFunc,

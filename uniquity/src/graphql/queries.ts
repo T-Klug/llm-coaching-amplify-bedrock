@@ -2,7 +2,7 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-import * as APITypes from "./API";
+import * as APITypes from './API';
 type GeneratedQuery<InputType, OutputType> = string & {
   __generatedQueryInput: InputType;
   __generatedQueryOutput: OutputType;
@@ -362,7 +362,8 @@ export const syncUserProfiles = /* GraphQL */ `query SyncUserProfiles(
   APITypes.SyncUserProfilesQueryVariables,
   APITypes.SyncUserProfilesQuery
 >;
-export const getIcebreakerChat = /* GraphQL */ `query GetIcebreakerChat($id: ID!) {
+export const getIcebreakerChat =
+  /* GraphQL */ `query GetIcebreakerChat($id: ID!) {
   getIcebreakerChat(id: $id) {
     id
     messages {
@@ -381,9 +382,9 @@ export const getIcebreakerChat = /* GraphQL */ `query GetIcebreakerChat($id: ID!
   }
 }
 ` as GeneratedQuery<
-  APITypes.GetIcebreakerChatQueryVariables,
-  APITypes.GetIcebreakerChatQuery
->;
+    APITypes.GetIcebreakerChatQueryVariables,
+    APITypes.GetIcebreakerChatQuery
+  >;
 export const listIcebreakerChats = /* GraphQL */ `query ListIcebreakerChats(
   $filter: ModelIcebreakerChatFilterInput
   $limit: Int
@@ -464,6 +465,7 @@ export const getRoleplayChat = /* GraphQL */ `query GetRoleplayChat($id: ID!) {
     roleplayId
     scenario
     difficulty
+    scenarioPrompt
     owner
     createdAt
     updatedAt
@@ -494,6 +496,7 @@ export const listRoleplayChats = /* GraphQL */ `query ListRoleplayChats(
       roleplayId
       scenario
       difficulty
+      scenarioPrompt
       owner
       createdAt
       updatedAt
@@ -534,6 +537,7 @@ export const syncRoleplayChats = /* GraphQL */ `query SyncRoleplayChats(
       roleplayId
       scenario
       difficulty
+      scenarioPrompt
       owner
       createdAt
       updatedAt
@@ -551,7 +555,8 @@ export const syncRoleplayChats = /* GraphQL */ `query SyncRoleplayChats(
   APITypes.SyncRoleplayChatsQueryVariables,
   APITypes.SyncRoleplayChatsQuery
 >;
-export const getRoleplaySummary = /* GraphQL */ `query GetRoleplaySummary($id: ID!) {
+export const getRoleplaySummary =
+  /* GraphQL */ `query GetRoleplaySummary($id: ID!) {
   getRoleplaySummary(id: $id) {
     id
     summary
@@ -559,6 +564,7 @@ export const getRoleplaySummary = /* GraphQL */ `query GetRoleplaySummary($id: I
     roleplayId
     scenario
     difficulty
+    scenarioPrompt
     owner
     createdAt
     updatedAt
@@ -569,9 +575,9 @@ export const getRoleplaySummary = /* GraphQL */ `query GetRoleplaySummary($id: I
   }
 }
 ` as GeneratedQuery<
-  APITypes.GetRoleplaySummaryQueryVariables,
-  APITypes.GetRoleplaySummaryQuery
->;
+    APITypes.GetRoleplaySummaryQueryVariables,
+    APITypes.GetRoleplaySummaryQuery
+  >;
 export const listRoleplaySummaries = /* GraphQL */ `query ListRoleplaySummaries(
   $filter: ModelRoleplaySummaryFilterInput
   $limit: Int
@@ -585,6 +591,7 @@ export const listRoleplaySummaries = /* GraphQL */ `query ListRoleplaySummaries(
       roleplayId
       scenario
       difficulty
+      scenarioPrompt
       owner
       createdAt
       updatedAt
@@ -621,6 +628,7 @@ export const syncRoleplaySummaries = /* GraphQL */ `query SyncRoleplaySummaries(
       roleplayId
       scenario
       difficulty
+      scenarioPrompt
       owner
       createdAt
       updatedAt

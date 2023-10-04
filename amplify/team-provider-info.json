@@ -60,11 +60,11 @@
         },
         "roleplayChat": {
           "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
-          "s3Key": "amplify-builds/roleplayChat-33754c554f74314d436f-build.zip"
+          "s3Key": "amplify-builds/roleplayChat-353048526879786b756b-build.zip"
         },
         "generateRoleplaySummary": {
           "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
-          "s3Key": "amplify-builds/generateRoleplaySummary-71757a51477972314f68-build.zip",
+          "s3Key": "amplify-builds/generateRoleplaySummary-306a68794b626d357356-build.zip",
           "secretsPathAmplifyAppId": "d1wywebcdb6lm1",
           "opensearchUrl": "https://search-uniquity-4qxk4pyedoxbwxacrrcfxavoiy.us-east-1.es.amazonaws.com"
         }

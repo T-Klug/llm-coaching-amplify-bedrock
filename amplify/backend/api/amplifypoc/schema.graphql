@@ -1,4 +1,4 @@
-# Force updated 2
+# Force updated 3
 enum OpenAIRoleType {
   SYSTEM
   ASSISTANT
@@ -46,6 +46,7 @@ input RoleplayChatFuncInput {
   owner: String
   scenario: String
   difficulty: String
+  scenarioPrompt: String
   _version: Int
 }
 
@@ -144,6 +145,7 @@ type RoleplayChat @model @auth(rules: [{ allow: owner }]) {
   roleplayId: ID
   scenario: String
   difficulty: String
+  scenarioPrompt: String
   owner: String @auth(rules: [{ allow: owner, operations: [read, delete] }])
 }
 
@@ -154,5 +156,6 @@ type RoleplaySummary @model @auth(rules: [{ allow: owner }]) {
   roleplayId: ID
   scenario: String
   difficulty: String
+  scenarioPrompt: String
   owner: String @auth(rules: [{ allow: owner, operations: [read, delete] }])
 }

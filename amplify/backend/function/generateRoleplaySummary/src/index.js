@@ -37,6 +37,7 @@ const getRoleplayChat = /* GraphQL */ `
       roleplayId
       scenario
       difficulty
+      scenarioPrompt
       owner
       createdAt
       updatedAt
@@ -115,7 +116,8 @@ const createSummary = async (
   ownerId,
   newContent,
   chatScenario,
-  chatDifficulty
+  chatDifficulty,
+  scenarioPrompt
 ) => {
   const endpoint = new URL(GRAPHQL_ENDPOINT);
   const variables = {
@@ -126,6 +128,7 @@ const createSummary = async (
         .trimStart(),
       scenario: chatScenario,
       difficulty: chatDifficulty,
+      scenarioPrompt: scenarioPrompt,
       owner: `${ownerId}::${ownerId}`,
     },
   };
@@ -183,58 +186,6 @@ export const handler = async (event) => {
   const { Parameter } = await client.send(command);
 
   const chatTranscript = await getChat(event.arguments?.input?.roleplayId);
-
-  // Define the mapping object
-  const roleMapping = {
-    "Performance Reviews": "employee",
-    "Career Development": "employee",
-    "Career Change": "employee",
-    "Career Advancement": "employee",
-    "Career Transition": "employee",
-    "team building": "coworker",
-    "team conflict": "coworker",
-    "promotion discussion": "boss",
-    "layoff discussion": "boss",
-    "firing discussion": "boss",
-    "salary negotiation": "boss",
-    "firing discussion": "boss",
-    "hiring discussion": "boss",
-    "workplace conflict": "coworker",
-    "work life balance": "employee",
-    "workplace belonging": "coworker",
-    // ... add more as needed
-  };
-
-  // Determine the AI role based on the scenario
-  let aiRole = "AI career coach"; // Default role
-  console.log(`Scenario from chatTranscript: ${chatTranscript.scenario}`);
-
-  for (const keyword in roleMapping) {
-    if (chatTranscript.scenario.includes(keyword)) {
-      aiRole = roleMapping[keyword];
-      console.log(`Determined AI Role: ${aiRole}`);
-      break;
-    }
-  }
-
-  // Determine behavior based on the difficulty.
-  let difficultyInstructions = "";
-  switch (chatTranscript.difficulty) {
-    case "beginner":
-      difficultyInstructions =
-        "Your behavior during this roleplay should be polite and receptive to feedback.";
-      break;
-    case "intermediate":
-      difficultyInstructions =
-        "Your behavior during this roleplay should be neutral, occasionally challenging the user's points.";
-      break;
-    case "advanced":
-      difficultyInstructions =
-        "Your behavior during this roleplay should be more challenging, occasionally pushing back on the user's feedback.";
-      break;
-    default:
-      break;
-  }
 
   const chat = new ChatBedrock({
     model: "anthropic.claude-instant-v1",
@@ -299,7 +250,9 @@ export const handler = async (event) => {
       input: `You will act as a career coach named Uniquity AI. You are provided with chat between the <chat> tag that the user had while roleplaying with AI. The roleplay scenario prompt is between the <scenario> tag.
     I want you to provide feedback in the form of three things they could improve on in regards to engaginge in chat. Your rules are between the <rules> tag.
     You also have access to the following chunked document context the user provided about themselves and their company. The document chunks are in the <document> tags.
-    The BOT was instructed to act as ${aiRole} and have the following tone ${difficultyInstructions}
+    The BOT was instructed to have the following tone ${
+      chatTranscript.difficulty
+    }
     
     <rules>
     - Do not give feedback about BOT responses.
@@ -318,7 +271,9 @@ export const handler = async (event) => {
     }
 
     <scenario>
-    The user was instructed to do ${chatTranscript.scenario} with BOT.
+    The USER was instructed to have the following conversation: "${
+      chatTranscript.scenario
+    }" with the BOT.
     </scenario>
 
     <chat>
@@ -337,7 +292,9 @@ export const handler = async (event) => {
     result = await chain.call({
       input: `You will act as a career coach named Uniquity AI. You are provided with chat between the <chat> tag that the user had while roleplaying with AI. The roleplay scenario prompt is between the <scenario> tag.
     I want you to provide feedback in the form of three things they could improve on based on what the user said in the chat. Your rules are between the <rules> tag.
-    The BOT was instructed to act as ${aiRole} and have the following tone ${difficultyInstructions}
+    The BOT was instructed to have the following tone ${
+      chatTranscript.difficulty
+    }
     
     <rules>
     - Do not give feedback about BOT responses.
@@ -347,7 +304,7 @@ export const handler = async (event) => {
     </rules>
 
     <scenario>
-    The USER was instructed to do ${chatTranscript.scenario} with BOT.
+    The USER was instructed: "${chatTranscript.scenario}" with the BOT.
     </scenario>
 
     <chat>
@@ -368,7 +325,8 @@ export const handler = async (event) => {
     event.identity.claims.username,
     result,
     chatTranscript.scenario,
-    chatTranscript.difficulty
+    chatTranscript.difficulty,
+    chatTranscript.scenarioPrompt
   );
 
   return saved;

@@ -517,6 +517,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "scenarioPrompt": {
+                    "name": "scenarioPrompt",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "owner": {
                     "name": "owner",
                     "isArray": false,
@@ -614,6 +621,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "scenarioPrompt": {
+                    "name": "scenarioPrompt",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "owner": {
                     "name": "owner",
                     "isArray": false,
@@ -701,5 +715,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "5055115fd9139d683fe650ad4ad1f0cd"
+    "version": "98daac65ac572029c28bfb61c2705c20"
 };
