@@ -30,8 +30,9 @@ export default function DocumentContext() {
   return (
     <>
       <Typography mb={3} variant="body1">
-        Upload documents to provide context to your coach (currently only pdf
-        and docx supported):
+        Upload documents to help personalize your AI coach (e.g. resume,
+        performance review, engagement report, leadership training materials).
+        Note only pdf and docx formats are currently supported.
       </Typography>
       <StorageManager
         accessLevel="private"
@@ -43,7 +44,7 @@ export default function DocumentContext() {
         ]}
       />
       <Typography variant="h5" textAlign="center" mt={10}>
-        Previously Uploaded Documents
+        Previously uploaded documents
       </Typography>
       <List sx={{ width: '100%' }}>
         {files &&

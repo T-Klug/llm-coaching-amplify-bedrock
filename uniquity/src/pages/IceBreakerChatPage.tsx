@@ -108,7 +108,7 @@ export default function IceBreakerChatPage() {
               role: 'ASSISTANT',
               content: `Hi ${
                 userProfile?.name ?? ''
-              }! I'm Uniquity AI, your personal development coach. It is great to meet you! I would love to understand what is important to you when it comes to your career?`,
+              }! I'm Uniquity, your AI coach for work. It's great to meet you! I'd love to learn more about you and what you like to do outside of work.`,
             },
             { role: 'USER', content: chat },
           ],
@@ -156,7 +156,7 @@ export default function IceBreakerChatPage() {
               chatPosition="left"
               content={`Hi ${
                 userProfile?.name ?? ''
-              }! I'm Uniquity AI, your personal development coach. It is great to meet you! I would love to understand what is important to you when it comes to your career?`}
+              }! I'm Uniquity, your AI coach for work. It's great to meet you! I'd love to learn more about you and what you like to do outside of work.`}
             />
           </Box>
         </div>
@@ -167,11 +167,7 @@ export default function IceBreakerChatPage() {
             .find(x => x.id === selectedId)!
             .messages?.map((m, index, array) => {
               const isLastMessage = index === array.length - 1;
-              if (
-                m?.content?.includes(
-                  `I'm Uniquity AI, your personal development`,
-                )
-              )
+              if (m?.content?.includes(`I'm Uniquity, your AI coach for work`))
                 return;
               if (m?.role === OpenAiRoleType.ASSISTANT)
                 return (

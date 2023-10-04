@@ -56,17 +56,17 @@ export function SpeedDialU() {
         />
         <SpeedDialAction
           icon={<ChatBubbleOutline />}
-          tooltipTitle="Quick Coaching"
+          tooltipTitle="Quick coaching"
           onClick={() => navigate('/chat')}
         />
         <SpeedDialAction
           icon={<TransferWithinAStationOutlined />}
-          tooltipTitle="Role Play"
+          tooltipTitle="Role play"
           onClick={() => navigate('/roleplay')}
         />
         <SpeedDialAction
           icon={<SourceOutlined />}
-          tooltipTitle="Context Documents"
+          tooltipTitle="Context documents"
           onClick={() => navigate('/documents')}
         />
         <SpeedDialAction
@@ -87,7 +87,7 @@ export function SpeedDialU() {
         )}
         <SpeedDialAction
           icon={<LogoutOutlined />}
-          tooltipTitle="Sign Out"
+          tooltipTitle="Sign out"
           onClick={async () => {
             signOut();
             await DataStore.clear();

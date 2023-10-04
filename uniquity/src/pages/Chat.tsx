@@ -99,7 +99,7 @@ export default function Chat() {
               role: 'ASSISTANT',
               content: `Hi there ${
                 userProfile?.name ?? ''
-              }! I'm Uniquity AI, your personal development coach. Whether it's prioritization, goal setting, or advice on work scenarios, I'm here to help. Let's chat! What's your first challenge for us to tackle today?`,
+              }! What's top of mind for you today?`,
             },
             { role: 'USER', content: chatFromPrompt ? chatFromPrompt : chat },
           ],
@@ -152,7 +152,7 @@ export default function Chat() {
               chatPosition="left"
               content={`Hi there ${
                 userProfile?.name ?? ''
-              }! I'm Uniquity AI, your personal development coach. Whether it's prioritization, goal setting, or advice on work scenarios, I'm here to help. Let's chat! What's your first challenge for us to tackle today?`}
+              }! What's top of mind for you today?`}
             />
           </Box>
         </div>
@@ -163,11 +163,7 @@ export default function Chat() {
             .find(x => x.id === selectedId)!
             .messages?.map((m, index, array) => {
               const isLastMessage = index === array.length - 1;
-              if (
-                m?.content?.includes(
-                  `I'm Uniquity AI, your personal development`,
-                )
-              )
+              if (m?.content?.includes(`What's top of mind for you today?`))
                 return;
               if (m?.role === OpenAiRoleType.ASSISTANT)
                 return (

@@ -98,7 +98,8 @@ const updateChatModel = async (id, newContent) => {
       role: "ASSISTANT",
       content: newContent.response
         .replace("<response>", "")
-        .replace("</response>", ""),
+        .replace("</response>", "")
+        .trimStart(),
     },
   ];
   const variables = {

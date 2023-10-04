@@ -48,15 +48,7 @@ export function HistoryDrawer(props: HistoryDrawerPropsType) {
           >
             <ListItemText
               primaryTypographyProps={{ noWrap: true, width: '85%' }}
-              primary={
-                aiChat &&
-                aiChat?.messages &&
-                (aiChat.messages[0]?.content?.includes(
-                  "I'm Uniquity AI, your personal development coach.",
-                )
-                  ? aiChat.messages[1]?.content
-                  : aiChat.messages[0]?.content)
-              }
+              primary={aiChat.messages ? aiChat.messages[1]?.content : ''}
             />
           </ListItemButton>
         </ListItem>

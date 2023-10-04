@@ -150,7 +150,7 @@ export default function UserProfilePage() {
           </Grid>
           <Grid item xs={12}>
             <TextField
-              label="AI generated user summary"
+              label="AI-generated, personal summary to tailor your AI coach"
               fullWidth
               multiline
               minRows={10}

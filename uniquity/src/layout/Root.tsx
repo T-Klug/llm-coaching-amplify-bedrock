@@ -8,7 +8,6 @@ import { useAuthenticator } from '@aws-amplify/ui-react';
 import LogoLight from '../assets/logo-black-no-back.svg';
 import LogoDark from '../assets/logo-no-back.svg';
 import { SpeedDialU } from '../components/layout/SpeedDialU/SpeedDialU';
-import Typography from '@mui/material/Typography';
 
 export default function Root() {
   const { user } = useAuthenticator();
@@ -92,9 +91,6 @@ export default function Root() {
           style={{ maxWidth: 300 }}
           src={prefersDarkMode ? LogoDark : LogoLight}
         />
-        <Typography variant="h6">
-          Unlock your full potential at work with our AI coach
-        </Typography>
       </div>
       <Divider sx={{ mt: 2, mb: 2 }} />
       <Outlet />

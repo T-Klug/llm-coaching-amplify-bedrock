@@ -340,7 +340,7 @@ export default function Landing() {
           />
           <CardContent>
             <div style={{ marginBottom: 10 }}>
-              <Typography variant="h5">Quick Coaching</Typography>
+              <Typography variant="h5">Quick coaching</Typography>
               <Divider flexItem variant="middle" />
             </div>
             <Typography>
@@ -369,7 +369,8 @@ export default function Landing() {
               <Divider flexItem variant="middle" />
             </div>
             <Typography>
-              Your AI coach will role play a scenario with you
+              Role play a scenario you're wrestling with at work with your AI
+              coach and get its feedback
             </Typography>
             <Button
               variant="contained"
