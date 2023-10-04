@@ -35,8 +35,8 @@ const getRoleplayChat = /* GraphQL */ `
       }
       user
       roleplayId
-      scenario  // Add this line
-      difficulty  // Add this line
+      scenario
+      difficulty
       owner
       createdAt
       updatedAt
@@ -178,6 +178,23 @@ export const handler = async (event) => {
 
   const chatTranscript = await getChat(event.arguments?.input?.roleplayId);
 
+  // Define the mapping object
+  const roleMapping = {
+    "performance review": "employee named Uniquity AI",
+    "team meeting": "coworker named Uniquity AI",
+    "promotion discussion": "boss named Uniquity AI",
+    // ... add more as needed
+  };
+
+  // Determine the AI role based on the scenario
+  let aiRole = "AI career coach named Uniquity AI"; // Default role
+  for (const keyword in roleMapping) {
+    if (chatTranscript.scenario.includes(keyword)) {
+      aiRole = roleMapping[keyword];
+      break;
+    }
+  }
+
   // Determine behavior based on the difficulty.
   let difficultyInstructions = "";
   switch (chatTranscript.difficulty) {
@@ -257,7 +274,7 @@ export const handler = async (event) => {
     );
 
     result = await chain.call({
-      input: `You will act as an AI career coach named Uniquity AI. ${difficultyInstructions} You are provided with chat between the <chat> tag that the user had while roleplaying with AI. The roleplay scenario prompt is between the <scenario> tag.
+      input: `You will act as an You will act as ${aiRole} named Uniquity AI. ${difficultyInstructions} You are provided with chat between the <chat> tag that the user had while roleplaying with AI. The roleplay scenario prompt is between the <scenario> tag.
     I want you to provide feedback in the form of three things they could improve on based on what the user said in the chat. Your rules are between the <rules> tag.
     You also have access to the following chunked document context the user provided about themselves and their company. The document chunks are in the <document> tags.
     
@@ -292,7 +309,7 @@ export const handler = async (event) => {
     });
   } else {
     result = await chain.call({
-      input: `You will act as an AI career coach named Uniquity AI. ${difficultyInstructions} You are provided with chat between the <chat> tag that the user had while roleplaying with AI. The roleplay scenario prompt is between the <scenario> tag.
+      input: `You will act as ${aiRole} named Uniquity AI. ${difficultyInstructions} You are provided with chat between the <chat> tag that the user had while roleplaying with AI. The roleplay scenario prompt is between the <scenario> tag.
     I want you to provide feedback in the form of three things they could improve on based on what the user said in the chat. Your rules are between the <rules> tag.
     
     <rules>
