@@ -27,14 +27,12 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import SummaryModal from '../components/roleplay/SummaryModal';
 
-// import Select from '@mui/material/Select';
-// import MenuItem from '@mui/material/MenuItem';
+
 import Modal from '@mui/material/Modal';
 import Slider from '@mui/material/Slider';
 import CardMedia from '@mui/material/CardMedia';
 
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
-
 
 
 export default function RoleplayChatPage() {
@@ -147,45 +145,90 @@ export default function RoleplayChatPage() {
     });
     return () => sub.unsubscribe();
   }, []);
+  
 
   // Send Chat Method
-  const sendChat = async () => {
-    if (summaryLoading) {
-      return;
-    }
-    if (listening) {
-      await SpeechRecognition.stopListening();
-      setListening(false);
-    }
+  // const sendChat = async () => {
+  //   if (summaryLoading) {
+  //     return;
+  //   }
+  //   if (listening) {
+  //     await SpeechRecognition.stopListening();
+  //     setListening(false);
+  //   }
 
-    let response;
-    if (chat && !selectedId) {
-      response = await DataStore.save(
-        new RoleplayChat({
-          messages: [{ role: 'USER', content: chat }],
-        }),
-      );
-      setChat('');
-      resetTranscript();
-    } else if (chat && selectedId) {
-      const model = data?.find(d => d.id === selectedId);
-      const saveModel = RoleplayChat.copyOf(model!, draft => {
-        draft.messages?.push({
-          role: 'USER',
-          content: chat,
-        });
+  //   let response;
+  //   if (chat && !selectedId) {
+  //     response = await DataStore.save(
+  //       new RoleplayChat({
+  //         messages: [{ role: 'USER', content: chat }],
+  //       }),
+  //     );
+  //     setChat('');
+  //     resetTranscript();
+  //   } else if (chat && selectedId) {
+  //     const model = data?.find(d => d.id === selectedId);
+  //     const saveModel = RoleplayChat.copyOf(model!, draft => {
+  //       draft.messages?.push({
+  //         role: 'USER',
+  //         content: chat,
+  //       });
+  //     });
+  //     response = await DataStore.save(saveModel);
+  //     setChat('');
+  //     resetTranscript();
+  //   } else {
+  //     return;
+  //   }
+  //   if (!selectedId) setSelectedId(response.id);
+  //   setChatLoading(true);
+  //   await submitRoleplayChat(response);
+  //   setChatLoading(false);
+  // };
+
+  // Send Chat Method
+const sendChat = async () => {
+  if (summaryLoading) {
+    return;
+  }
+  if (listening) {
+    await SpeechRecognition.stopListening();
+    setListening(false);
+  }
+
+  let response;
+  if (chat && !selectedId) {
+    response = await DataStore.save(
+      new RoleplayChat({
+        messages: [{ role: 'USER', content: chat }],
+        scenario: selectedScenario,  // Set the scenario
+        difficulty: getDifficultyLabel(difficultyLevel)  // Set the difficulty
+      }),
+    );
+    setChat('');
+    resetTranscript();
+  } else if (chat && selectedId) {
+    const model = data?.find(d => d.id === selectedId);
+    const saveModel = RoleplayChat.copyOf(model!, draft => {
+      draft.messages?.push({
+        role: 'USER',
+        content: chat,
       });
-      response = await DataStore.save(saveModel);
-      setChat('');
-      resetTranscript();
-    } else {
-      return;
-    }
-    if (!selectedId) setSelectedId(response.id);
-    setChatLoading(true);
-    await submitRoleplayChat(response);
-    setChatLoading(false);
-  };
+      draft.scenario = selectedScenario;  // Set the scenario
+      draft.difficulty = getDifficultyLabel(difficultyLevel);  // Set the difficulty
+    });
+    response = await DataStore.save(saveModel);
+    setChat('');
+    resetTranscript();
+  } else {
+    return;
+  }
+  if (!selectedId) setSelectedId(response.id);
+  setChatLoading(true);
+  await submitRoleplayChat(response);
+  setChatLoading(false);
+};
+
 
 return (
     <>

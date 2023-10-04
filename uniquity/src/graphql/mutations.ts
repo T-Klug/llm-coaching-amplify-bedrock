@@ -390,6 +390,8 @@ export const createRoleplayChat = /* GraphQL */ `mutation CreateRoleplayChat(
     }
     user
     roleplayId
+    scenario
+    difficulty
     owner
     createdAt
     updatedAt
@@ -416,6 +418,8 @@ export const updateRoleplayChat = /* GraphQL */ `mutation UpdateRoleplayChat(
     }
     user
     roleplayId
+    scenario
+    difficulty
     owner
     createdAt
     updatedAt
@@ -442,6 +446,8 @@ export const deleteRoleplayChat = /* GraphQL */ `mutation DeleteRoleplayChat(
     }
     user
     roleplayId
+    scenario
+    difficulty
     owner
     createdAt
     updatedAt
@@ -582,6 +588,8 @@ export const chatRoleplayFunc = /* GraphQL */ `mutation ChatRoleplayFunc($input:
     }
     user
     roleplayId
+    scenario
+    difficulty
     owner
     createdAt
     updatedAt

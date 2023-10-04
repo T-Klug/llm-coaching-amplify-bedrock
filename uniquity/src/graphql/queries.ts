@@ -462,6 +462,8 @@ export const getRoleplayChat = /* GraphQL */ `query GetRoleplayChat($id: ID!) {
     }
     user
     roleplayId
+    scenario
+    difficulty
     owner
     createdAt
     updatedAt
@@ -490,6 +492,8 @@ export const listRoleplayChats = /* GraphQL */ `query ListRoleplayChats(
       }
       user
       roleplayId
+      scenario
+      difficulty
       owner
       createdAt
       updatedAt
@@ -528,6 +532,8 @@ export const syncRoleplayChats = /* GraphQL */ `query SyncRoleplayChats(
       }
       user
       roleplayId
+      scenario
+      difficulty
       owner
       createdAt
       updatedAt

@@ -378,6 +378,8 @@ export const onCreateRoleplayChat = /* GraphQL */ `subscription OnCreateRoleplay
     }
     user
     roleplayId
+    scenario
+    difficulty
     owner
     createdAt
     updatedAt
@@ -404,6 +406,8 @@ export const onUpdateRoleplayChat = /* GraphQL */ `subscription OnUpdateRoleplay
     }
     user
     roleplayId
+    scenario
+    difficulty
     owner
     createdAt
     updatedAt
@@ -430,6 +434,8 @@ export const onDeleteRoleplayChat = /* GraphQL */ `subscription OnDeleteRoleplay
     }
     user
     roleplayId
+    scenario
+    difficulty
     owner
     createdAt
     updatedAt
