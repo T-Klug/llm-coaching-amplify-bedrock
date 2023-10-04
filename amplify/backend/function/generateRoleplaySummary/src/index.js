@@ -299,14 +299,15 @@ export const handler = async (event) => {
       input: `You will act as a career coach named Uniquity AI. You are provided with chat between the <chat> tag that the user had while roleplaying with AI. The roleplay scenario prompt is between the <scenario> tag.
     I want you to provide feedback in the form of three things they could improve on in regards to engaginge in chat. Your rules are between the <rules> tag.
     You also have access to the following chunked document context the user provided about themselves and their company. The document chunks are in the <document> tags.
-    The assistant was instructed to act as ${aiRole} and have the following tone ${difficultyInstructions}
+    The BOT was instructed to act as ${aiRole} and have the following tone ${difficultyInstructions}
     
     <rules>
-    - Do not give feedback about assistants responses.
-    - Do not make up information about the user who is the Human.
+    - Do not give feedback about BOT responses.
+    - Do not make up information about the user who is the USER.
     - Only include information from the <document> tags that are relevant to the three things to improve on.
     - If there is no relevant information in the document tags do not include any additional context. 
-    - You are reviewing the chat context and providing career coaching advice on how they could engage better with the chat. 
+    - You are reviewing the chat context and providing career coaching advice on how they could engage better with the chat.
+    - You should always stop after your first response. Do not continue the conversation. 
     </rules>
     
     <document>
@@ -317,44 +318,48 @@ export const handler = async (event) => {
     }
 
     <scenario>
-    The user was instructed to do ${chatTranscript.scenario} with the assistant.
+    The user was instructed to do ${chatTranscript.scenario} with BOT.
     </scenario>
 
     <chat>
       ${
         chatTranscript && chatTranscript.messages
-          ? JSON.stringify(chatTranscript.messages)
+          ? JSON.stringify(chatTranscript.messages).replace("ASSISTANT", "BOT")
           : ""
       }
     </chat>
     
     You will respond with the feedback within the <response></response> tags.
+    You should always stop after your first response. Do not continue the conversation.
     Assistant: <response>`,
     });
   } else {
     result = await chain.call({
       input: `You will act as a career coach named Uniquity AI. You are provided with chat between the <chat> tag that the user had while roleplaying with AI. The roleplay scenario prompt is between the <scenario> tag.
     I want you to provide feedback in the form of three things they could improve on based on what the user said in the chat. Your rules are between the <rules> tag.
-    The assistant was instructed to act as ${aiRole} and have the following tone ${difficultyInstructions}
+    The BOT was instructed to act as ${aiRole} and have the following tone ${difficultyInstructions}
     
     <rules>
-    - Do not give feedback about Bill's responses who are the Assistant.
-    - Do not make up information about the user who is the Human.
+    - Do not give feedback about BOT responses.
+    - Do not make up information about the user who is the USER.
+    - You are reviewing the chat context and providing career coaching advice on how they could engage better with the chat.
+    - You should always stop after your first response. Do not continue the conversation.
     </rules>
 
     <scenario>
-    ${chatTranscript.scenario}
+    The USER was instructed to do ${chatTranscript.scenario} with BOT.
     </scenario>
 
     <chat>
       ${
         chatTranscript && chatTranscript.messages
-          ? JSON.stringify(chatTranscript.messages)
+          ? JSON.stringify(chatTranscript.messages).replace("ASSISTANT", "BOT")
           : ""
       }
     </chat>
     
     You will respond with the feedback within the <response></response> tags.
+    You should always stop after your first response. Do not continue the conversation.
     Assistant: <response>`,
     });
   }
