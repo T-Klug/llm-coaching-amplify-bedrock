@@ -37,6 +37,7 @@ export default function SummaryModal(props: SummaryModalProps) {
   useEffect(() => {
     const sub = DataStore.observe(RoleplaySummary, summaryId).subscribe(
       item => {
+        console.log(item);
         setData(item.element);
       },
     );
