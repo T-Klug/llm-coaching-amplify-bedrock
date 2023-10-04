@@ -8,7 +8,7 @@ import ListItem from '@mui/material/ListItem';
 import { Storage } from 'aws-amplify';
 import { useEffect, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
-import ListItemButton from '@mui/material/Avatar';
+import ListItemButton from '@mui/material/ListItemButton';
 import Typography from '@mui/material/Typography';
 import SourceOutlined from '@mui/icons-material/SourceOutlined';
 import { useAuthenticator } from '@aws-amplify/ui-react';
@@ -50,7 +50,12 @@ export default function DocumentContext() {
           files.map(f => (
             <ListItem key={f.key}>
               <ListItemButton
-                sx={{ cursor: 'pointer', border: 1, borderRadius: 8 }}
+                sx={{
+                  cursor: 'pointer',
+                  border: 1,
+                  borderRadius: 8,
+                  width: '100%',
+                }}
                 onClick={async () => {
                   const file = await Storage.get(f.key!, {
                     level: 'private',
