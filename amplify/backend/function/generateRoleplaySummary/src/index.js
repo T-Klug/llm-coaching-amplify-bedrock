@@ -35,6 +35,8 @@ const getRoleplayChat = /* GraphQL */ `
       }
       user
       roleplayId
+      scenario  // Add this line
+      difficulty  // Add this line
       owner
       createdAt
       updatedAt
@@ -176,6 +178,25 @@ export const handler = async (event) => {
 
   const chatTranscript = await getChat(event.arguments?.input?.roleplayId);
 
+  // Determine behavior based on the difficulty.
+  let difficultyInstructions = "";
+  switch (chatTranscript.difficulty) {
+    case "beginner":
+      difficultyInstructions =
+        "Your behavior during this roleplay should be polite and receptive to feedback.";
+      break;
+    case "intermediate":
+      difficultyInstructions =
+        "Your behavior during this roleplay should be neutral, occasionally challenging the user's points.";
+      break;
+    case "advanced":
+      difficultyInstructions =
+        "Your behavior during this roleplay should be more challenging, occasionally pushing back on the user's feedback.";
+      break;
+    default:
+      break;
+  }
+
   const chat = new ChatBedrock({
     model: "anthropic.claude-instant-v1",
     region: AWS_REGION,
@@ -236,7 +257,7 @@ export const handler = async (event) => {
     );
 
     result = await chain.call({
-      input: `You will act as an AI career coach named Uniquity AI. You are provided with chat between the <chat> tag that the user had while roleplaying with AI. The roleplay scenario prompt is between the <scenario> tag.
+      input: `You will act as an AI career coach named Uniquity AI. ${difficultyInstructions} You are provided with chat between the <chat> tag that the user had while roleplaying with AI. The roleplay scenario prompt is between the <scenario> tag.
     I want you to provide feedback in the form of three things they could improve on based on what the user said in the chat. Your rules are between the <rules> tag.
     You also have access to the following chunked document context the user provided about themselves and their company. The document chunks are in the <document> tags.
     
@@ -255,7 +276,7 @@ export const handler = async (event) => {
     }
 
     <scenario>
-    You're catching up with Bill to see how his projects are coming along. Initiate the convo whenever you are ready! Don't forget to also ask how he's doing personally. Once you feel like you've covered everything, you can wrap it up
+    ${chatTranscript.scenario}
     </scenario>
 
     <chat>
@@ -271,12 +292,18 @@ export const handler = async (event) => {
     });
   } else {
     result = await chain.call({
-      input: `You will act as an AI career coach named Uniquity AI. I am providing you with chat between the <chat> tag that the user had while roleplaying. The roleplay scenario prompt is between the <scenario> tag.
-    I want you to provide feedback in the form of three things they could improve on based on what the user said in the chat. 
-    Do not give feedback about Bill's responses.  
+      input: `You will act as an AI career coach named Uniquity AI. ${difficultyInstructions} You are provided with chat between the <chat> tag that the user had while roleplaying with AI. The roleplay scenario prompt is between the <scenario> tag.
+    I want you to provide feedback in the form of three things they could improve on based on what the user said in the chat. Your rules are between the <rules> tag.
+    
+    <rules>
+    - Do not give feedback about Bill's responses who are the Assistant.
+    - Do not make up information about the user who is the Human.
+    </rules>
+
     <scenario>
-    You're catching up with Bill to see how his projects are coming along. Initiate the convo whenever you are ready! Don't forget to also ask how he's doing personally. Once you feel like you've covered everything, you can wrap it up
+    ${chatTranscript.scenario}
     </scenario>
+
     <chat>
       ${
         chatTranscript && chatTranscript.messages
@@ -284,8 +311,9 @@ export const handler = async (event) => {
           : ""
       }
     </chat>
+    
     You will respond with the feedback within the <response></response> tags.
-    Assistant: [Feedback] <response>`,
+    Assistant: <response>`,
     });
   }
 
