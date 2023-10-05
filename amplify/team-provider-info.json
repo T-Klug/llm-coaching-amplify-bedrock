@@ -44,7 +44,7 @@
         "icebreakerChat": {
           "secretsPathAmplifyAppId": "d1wywebcdb6lm1",
           "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
-          "s3Key": "amplify-builds/icebreakerChat-52733044686e64644577-build.zip"
+          "s3Key": "amplify-builds/icebreakerChat-316f452f614c6a6a6d2b-build.zip"
         },
         "promptpersonlize": {},
         "generateUserSummary": {
