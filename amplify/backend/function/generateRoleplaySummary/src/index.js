@@ -236,13 +236,28 @@ export const handler = async (event) => {
   let result;
   if (await vectorStore.doesIndexExist()) {
     console.log("CONTEXT RICH SUMMARY GENERATION");
+
+    const retriever = ScoreThresholdRetriever.fromVectorStore(vectorStore, {
+      minSimilarityScore: 0.66,
+      maxK: 20,
+      kIncrement: 2,
+    });
+
+    const docs = await retriever.getRelevantDocuments(
+      event.arguments.input.messages[event.arguments.input.messages.length - 1]
+        .content
+    );
     result = await chain.call({
       input: `
       Before diving in, remember: The USER in the chat is the MANAGER, and the BOT is an employee. 
-      The BOT was instructed to have the following tone: ${chatTranscript.difficulty}.
+      The BOT was instructed to have the following tone: ${
+        chatTranscript.difficulty
+      }.
 
       You are Uniquity AI, a professional coaching assistant. Your objective is to analyze the interaction, 
-      focusing particularly on the MANAGER's (USER's) communication and leadership skills in the context of a "${chatTranscript.scenario}".
+      focusing particularly on the MANAGER's (USER's) communication and leadership skills in the context of a "${
+        chatTranscript.scenario
+      }".
 
       Consider the following managerial qualities:
       - Clear communication.
@@ -290,16 +305,19 @@ export const handler = async (event) => {
       `,
     });
 
-    result.response = result.response.replace(/\bBOT\b/g, 'employee');
-    
+    result.response = result.response.replace(/\bBOT\b/g, "employee");
   } else {
     result = await chain.call({
       input: `
       Before diving in, remember: The USER in the chat is the MANAGER, and the BOT is an employee. 
-      The BOT was instructed to have the following tone: ${chatTranscript.difficulty}.
+      The BOT was instructed to have the following tone: ${
+        chatTranscript.difficulty
+      }.
 
       You are Uniquity AI, a professional coaching assistant. Your objective is to analyze the interaction, 
-      focusing particularly on the MANAGER's (USER's) communication and leadership skills in the context of a "${chatTranscript.scenario}".
+      focusing particularly on the MANAGER's (USER's) communication and leadership skills in the context of a "${
+        chatTranscript.scenario
+      }".
 
       Consider the following managerial qualities:
       - Clear communication.
@@ -339,7 +357,7 @@ export const handler = async (event) => {
       `,
     });
 
-    result.response = result.response.replace(/\bBOT\b/g, 'employee');
+    result.response = result.response.replace(/\bBOT\b/g, "employee");
   }
 
   const saved = await createSummary(
