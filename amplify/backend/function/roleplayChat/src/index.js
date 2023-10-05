@@ -213,11 +213,12 @@ export const handler = async (event) => {
   //   ],
   // ]);
 
-const chatPrompt = ChatPromptTemplate.fromPromptMessages([
+  const chatPrompt = ChatPromptTemplate.fromPromptMessages([
     new MessagesPlaceholder("history"),
     [
       "human",
-      `You are the assistant in a roleplay scenario titled "${event.arguments?.input?.scenario}". The specific prompt for this scenario is "${event.arguments?.input?.scenarioPrompt}". 
+      `You are the assistant in a roleplay scenario titled "${event.arguments?.input?.scenario}". 
+      The specific prompt for this scenario is "${event.arguments?.input?.scenarioPrompt}". 
       In this context, the user ${userProfile.name} is the manager and you are the employee. 
       Your behavior should align with these rules: 
       <rules>
@@ -229,12 +230,11 @@ const chatPrompt = ChatPromptTemplate.fromPromptMessages([
     ],
 ]);
 
-
-
   const chat = new ChatBedrock({
     model: "anthropic.claude-instant-v1",
     region: AWS_REGION,
     maxTokens: 8191,
+    temperature: 0.2,
   });
 
   const chain = new ConversationChain({
