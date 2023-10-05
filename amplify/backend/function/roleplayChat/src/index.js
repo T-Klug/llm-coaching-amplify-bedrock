@@ -19,6 +19,19 @@ const GRAPHQL_ENDPOINT = process.env.API_AMPLIFYPOC_GRAPHQLAPIENDPOINTOUTPUT;
 const AWS_REGION = process.env.AWS_REGION || "us-east-1";
 const { Sha256 } = crypto;
 
+
+const handleErrors = async (action, actionName) => {
+  try {
+    console.log(`Starting: ${actionName}`);
+    const result = await action();
+    console.log(`Completed: ${actionName}`);
+    return result;
+  } catch (error) {
+    console.error(`Error during ${actionName}: ${JSON.stringify(error.message)}`);
+    throw new Error(`Error during ${actionName}`);
+  }
+};
+
 const updateRoleplayChat = /* GraphQL */ `
   mutation UpdateRoleplayChat(
     $input: UpdateRoleplayChatInput!
@@ -180,7 +193,8 @@ export const handler = async (event) => {
     return "400 bad argument";
   }
 
-  const memory = new BufferWindowMemory({
+  // Wrap all your asynchronous function calls with handleErrors for better error logging
+  const memory = await handleErrors(() => new BufferWindowMemory({
     k: 5,
     returnMessages: true,
     memoryKey: "history",
@@ -192,26 +206,9 @@ export const handler = async (event) => {
         region: "us-east-1",
       },
     }),
-  });
+  }), "BufferWindowMemory Initialization");
 
-  const userProfile = await getUserProfile(event.identity.claims.username);
-
-  // const chatPrompt = ChatPromptTemplate.fromPromptMessages([
-  //   new MessagesPlaceholder("history"),
-  //   [
-  //     "human",
-  //     `${event.arguments?.input?.scenarioPrompt} Respond to the input within the <input> tag conversationally. The user's name is ${userProfile.name}, and you should use their name when you reference them.
-  //     Your rules are provided in the <rules> tag. The scenario given to the user was "${event.arguments?.input?.scenario}"
-  //     <rules>
-  //     - ${event.arguments?.input?.difficulty}
-  //     - You are allowed to make up answers to their questions.
-  //     </rules>
-  //     Please respond to the user's input within the <response></response> tag 
-  //     You should always stop after your first response. Do not continue the conversation.
-  //     <input>{input}</input>
-  //     Assistant: <response>`,
-  //   ],
-  // ]);
+  const userProfile = await handleErrors(() => getUserProfile(event.identity.claims.username), "Fetching User Profile");
 
   const chatPrompt = ChatPromptTemplate.fromPromptMessages([
     new MessagesPlaceholder("history"),
@@ -230,26 +227,24 @@ export const handler = async (event) => {
     ],
 ]);
 
-  const chat = new ChatBedrock({
+  const chat = await handleErrors(() => new ChatBedrock({
     model: "anthropic.claude-instant-v1",
     region: AWS_REGION,
     maxTokens: 8191,
     temperature: 0.2,
-  });
+  }), "ChatBedrock Initialization");
 
-  const chain = new ConversationChain({
+  const chain = await handleErrors(() => new ConversationChain({
     llm: chat,
     prompt: chatPrompt,
     memory: memory,
-  });
+  }), "ConversationChain Initialization");
 
-  const result = await chain.call({
-    input:
-      event.arguments.input.messages[event.arguments.input.messages.length - 1]
-        .content,
-  });
+  const result = await handleErrors(() => chain.call({
+    input: event.arguments.input.messages[event.arguments.input.messages.length - 1].content,
+  }), "Calling Conversation Chain");
 
-  const chatModel = await updateChatModel(event.arguments?.input?.id, result);
+  const chatModel = await handleErrors(() => updateChatModel(event.arguments?.input?.id, result), "Updating Chat Model");
 
   return chatModel;
 };
