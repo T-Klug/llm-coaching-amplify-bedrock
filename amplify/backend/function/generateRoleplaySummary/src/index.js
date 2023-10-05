@@ -238,15 +238,15 @@ export const handler = async (event) => {
     console.log("CONTEXT RICH SUMMARY GENERATION");
 
     const retriever = ScoreThresholdRetriever.fromVectorStore(vectorStore, {
-      minSimilarityScore: 0.66,
+      minSimilarityScore: 0.69,
       maxK: 20,
       kIncrement: 2,
     });
 
     const docs = await retriever.getRelevantDocuments(
-      event.arguments.input.messages[event.arguments.input.messages.length - 1]
-        .content
+      JSON.stringify(chatTranscript.messages)
     );
+
     result = await chain.call({
       input: `
       Before diving in, remember: The USER in the chat is the MANAGER, and the BOT is an employee. 
