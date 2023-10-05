@@ -19,7 +19,7 @@ import AppBar from '@mui/material/AppBar';
 import TextField from '@mui/material/TextField';
 import './Chat.css';
 import OverflowText from '../components/chat/OverflowText';
-import { /*useNavigate,*/ useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -30,8 +30,9 @@ import Slider from '@mui/material/Slider';
 import CardMedia from '@mui/material/CardMedia';
 import { difficulty, scenarios } from '../helpers/ScenarioHelpers';
 import Grid from '@mui/material/Grid';
-import { CardHeader, Dialog, Tooltip } from '@mui/material';
+import { Avatar, CardHeader, Dialog, Tooltip } from '@mui/material';
 import { InfoOutlined } from '@mui/icons-material';
+import HomeOutlined from '@mui/icons-material/HomeOutlined';
 
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
@@ -63,6 +64,7 @@ export default function RoleplayChatPage() {
   const [summaryId, setSummaryId] = useState<string>('');
   const [summaryOpen, setSummaryOpen] = useState<boolean>(false);
   const [summaryLoading, setSummaryLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   async function handleChatDone() {
     if (selectedId) {
@@ -164,6 +166,12 @@ export default function RoleplayChatPage() {
         onClose={() => console.log('No close')}
       >
         <div style={{ margin: 40 }}>
+          <Avatar
+            onClick={() => navigate('/')}
+            sx={{ float: 'right', cursor: 'pointer' }}
+          >
+            <HomeOutlined />
+          </Avatar>
           <Typography textAlign={'center'} variant="h5" mb={4}>
             Welcome to role play scnearios
           </Typography>
