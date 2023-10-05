@@ -196,22 +196,40 @@ export const handler = async (event) => {
 
   const userProfile = await getUserProfile(event.identity.claims.username);
 
-  const chatPrompt = ChatPromptTemplate.fromPromptMessages([
+  // const chatPrompt = ChatPromptTemplate.fromPromptMessages([
+  //   new MessagesPlaceholder("history"),
+  //   [
+  //     "human",
+  //     `${event.arguments?.input?.scenarioPrompt} Respond to the input within the <input> tag conversationally. The user's name is ${userProfile.name}, and you should use their name when you reference them.
+  //     Your rules are provided in the <rules> tag. The scenario given to the user was "${event.arguments?.input?.scenario}"
+  //     <rules>
+  //     - ${event.arguments?.input?.difficulty}
+  //     - You are allowed to make up answers to their questions.
+  //     </rules>
+  //     Please respond to the user's input within the <response></response> tag 
+  //     You should always stop after your first response. Do not continue the conversation.
+  //     <input>{input}</input>
+  //     Assistant: <response>`,
+  //   ],
+  // ]);
+
+const chatPrompt = ChatPromptTemplate.fromPromptMessages([
     new MessagesPlaceholder("history"),
     [
       "human",
-      `${event.arguments?.input?.scenarioPrompt} Respond to the input within the <input> tag conversationally. The user's name is ${userProfile.name}, and you should use their name when you reference them.
-      Your rules are provided in the <rules> tag. The scenario given to the user was "${event.arguments?.input?.scenario}"
+      `You are the assistant in a roleplay scenario titled "${event.arguments?.input?.scenario}". The specific prompt for this scenario is "${event.arguments?.input?.scenarioPrompt}". 
+      In this context, the user ${userProfile.name} is the manager and you are the employee. 
+      Your behavior should align with these rules: 
       <rules>
       - ${event.arguments?.input?.difficulty}
-      - You are allowed to make up answers to their questions.
+      - You are allowed to make up answers to their questions but remain in your role as the employee.
       </rules>
-      Please respond to the user's input within the <response></response> tag 
-      You should always stop after your first response. Do not continue the conversation.
-      <input>{input}</input>
-      Assistant: <response>`,
+      Address the user as ${userProfile.name} and respond to the following input: <input>{input}</input>. 
+      Please encapsulate your response within the <response></response> tags and stay within the context of the roleplay scenario.`,
     ],
-  ]);
+]);
+
+
 
   const chat = new ChatBedrock({
     model: "anthropic.claude-instant-v1",
