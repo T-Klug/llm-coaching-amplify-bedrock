@@ -236,89 +236,110 @@ export const handler = async (event) => {
   let result;
   if (await vectorStore.doesIndexExist()) {
     console.log("CONTEXT RICH SUMMARY GENERATION");
-    const retriever = ScoreThresholdRetriever.fromVectorStore(vectorStore, {
-      minSimilarityScore: 0.66,
-      maxK: 20,
-      kIncrement: 2,
-    });
-
-    const docs = await retriever.getRelevantDocuments(
-      JSON.stringify(chatTranscript.messages)
-    );
-
     result = await chain.call({
-      input: `You will act as a professional coach named Uniquity AI. You are provided with chat between the <chat> tag that the user had while roleplaying with AI. The roleplay scenario prompt is between the <scenario> tag.
-    I want you to provide feedback in the form of three things they could improve on in regards to engaginge in chat. Your rules are between the <rules> tag.
-    You also have access to the following chunked document context the user provided about themselves and their company. The document chunks are in the <document> tags.
-    The BOT was instructed to have the following tone ${
-      chatTranscript.difficulty
-    }
-    
-    <rules>
-    - Do not give feedback about BOT responses.
-    - Do not make up information about the user who is the USER.
-    - Only include information from the <document> tags that are relevant to the three things to improve on.
-    - If there is no relevant information in the document tags do not include any additional context. 
-    - You are reviewing the chat context and providing professional coaching advice on how they could engage better with the chat.
-    - You should always stop after your first response. Do not continue the conversation. 
-    </rules>
-    
-    <document>
-    ${
-      docs && docs.length > 0
-        ? docs.map((d) => d.pageContent).join("\n</document>\n<document>\n")
-        : "</document>"
-    }
+      input: `
+      Before diving in, remember: The USER in the chat is the MANAGER, and the BOT is an employee. 
+      The BOT was instructed to have the following tone: ${chatTranscript.difficulty}.
 
-    <scenario>
-    The USER was instructed to have the following conversation: "${
-      chatTranscript.scenario
-    }" with the BOT.
-    </scenario>
+      You are Uniquity AI, a professional coaching assistant. Your objective is to analyze the interaction, 
+      focusing particularly on the MANAGER's (USER's) communication and leadership skills in the context of a "${chatTranscript.scenario}".
 
-    <chat>
+      Consider the following managerial qualities:
+      - Clear communication.
+      - Demonstrated empathy and understanding.
+      - Decisive decision making.
+      - Effective leadership.
+      - Active listening.
+
+      <rules>
+      - STRICTLY evaluate the MANAGER's skills.
+      - Do NOT consider the BOT's responses for evaluation.
+      - For each feedback point, provide:
+        1. A brief explanation.
+        2. An actionable recommendation.
+      - Organize feedback under these categories:
+        1. Communication
+        2. Decision Making
+        3. Empathy
+        4. Leadership
+      - Highlight both strengths and areas of improvement.
+      - Rate the manager's performance in each category on a scale of 1-5.
+      - Avoid repetitive feedback.
+      - Your feedback should be constructive and actionable.
+      - Conclude after giving feedback. No further conversation.
+      </rules>
+      
+      <document>
+      ${
+        docs && docs.length > 0
+          ? docs.map((d) => d.pageContent).join("\n</document>\n<document>\n")
+          : "</document>"
+      }
+      </document>
+
+      <chat>
       ${
         chatTranscript && chatTranscript.messages
           ? JSON.stringify(chatTranscript.messages).replace("ASSISTANT", "BOT")
           : ""
       }
-    </chat>
-    
-    You will respond with the feedback within the <response></response> tags.
-    You should always stop after your first response. Do not continue the conversation.
-    Assistant: <response>`,
+      </chat>
+
+      Structure your feedback with ratings, observations, and recommendations within the <response></response> tags.
+      Assistant: <response>
+      `,
     });
+
+    result.response = result.response.replace(/\bBOT\b/g, 'employee');
+    
   } else {
     result = await chain.call({
-      input: `You will act as a professional coach named Uniquity AI. You are provided with chat between the <chat> tag that the user had while roleplaying with AI. The roleplay scenario prompt is between the <scenario> tag.
-    I want you to provide feedback in the form of three things they could improve on based on what the user said in the chat. Your rules are between the <rules> tag.
-    The BOT was instructed to have the following tone ${
-      chatTranscript.difficulty
-    }
-    
-    <rules>
-    - Do not give feedback about BOT responses.
-    - Do not make up information about the user who is the USER.
-    - You are reviewing the chat context and providing professional coaching advice on how they could engage better with the chat.
-    - You should always stop after your first response. Do not continue the conversation.
-    </rules>
+      input: `
+      Before diving in, remember: The USER in the chat is the MANAGER, and the BOT is an employee. 
+      The BOT was instructed to have the following tone: ${chatTranscript.difficulty}.
 
-    <scenario>
-    The USER was instructed: "${chatTranscript.scenario}" with the BOT.
-    </scenario>
+      You are Uniquity AI, a professional coaching assistant. Your objective is to analyze the interaction, 
+      focusing particularly on the MANAGER's (USER's) communication and leadership skills in the context of a "${chatTranscript.scenario}".
 
-    <chat>
+      Consider the following managerial qualities:
+      - Clear communication.
+      - Demonstrated empathy and understanding.
+      - Decisive decision making.
+      - Effective leadership.
+      - Active listening.
+
+      <rules>
+      - STRICTLY evaluate the MANAGER's skills.
+      - Do NOT consider the BOT's responses for evaluation.
+      - For each feedback point, provide:
+        1. A brief explanation.
+        2. An actionable recommendation.
+      - Organize feedback under these categories:
+        1. Communication
+        2. Decision Making
+        3. Empathy
+        4. Leadership
+      - Highlight both strengths and areas of improvement.
+      - Rate the manager's performance in each category on a scale of 1-5.
+      - Avoid repetitive feedback.
+      - Your feedback should be constructive and actionable
+      - Conclude after giving feedback. No further conversation.
+      </rules>
+
+      <chat>
       ${
         chatTranscript && chatTranscript.messages
           ? JSON.stringify(chatTranscript.messages).replace("ASSISTANT", "BOT")
           : ""
       }
-    </chat>
-    
-    You will respond with the feedback within the <response></response> tags.
-    You should always stop after your first response. Do not continue the conversation.
-    Assistant: <response>`,
+      </chat>
+
+      Structure your feedback with ratings, observations, and recommendations within the <response></response> tags.
+      Assistant: <response>
+      `,
     });
+
+    result.response = result.response.replace(/\bBOT\b/g, 'employee');
   }
 
   const saved = await createSummary(
