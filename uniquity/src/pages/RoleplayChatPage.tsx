@@ -117,7 +117,8 @@ export default function RoleplayChatPage() {
       response = await DataStore.save(
         new RoleplayChat({
           messages: [{ role: 'USER', content: chat }],
-          scenario: selectedScenario // Directly saving the scenario object
+          scenario: selectedScenario.id
+
         }),
       );
       setChat('');
