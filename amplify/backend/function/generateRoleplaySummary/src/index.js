@@ -247,7 +247,7 @@ export const handler = async (event) => {
     );
 
     result = await chain.call({
-      input: `You will act as a career coach named Uniquity AI. You are provided with chat between the <chat> tag that the user had while roleplaying with AI. The roleplay scenario prompt is between the <scenario> tag.
+      input: `You will act as a professional coach named Uniquity AI. You are provided with chat between the <chat> tag that the user had while roleplaying with AI. The roleplay scenario prompt is between the <scenario> tag.
     I want you to provide feedback in the form of three things they could improve on in regards to engaginge in chat. Your rules are between the <rules> tag.
     You also have access to the following chunked document context the user provided about themselves and their company. The document chunks are in the <document> tags.
     The BOT was instructed to have the following tone ${
@@ -259,7 +259,7 @@ export const handler = async (event) => {
     - Do not make up information about the user who is the USER.
     - Only include information from the <document> tags that are relevant to the three things to improve on.
     - If there is no relevant information in the document tags do not include any additional context. 
-    - You are reviewing the chat context and providing career coaching advice on how they could engage better with the chat.
+    - You are reviewing the chat context and providing professional coaching advice on how they could engage better with the chat.
     - You should always stop after your first response. Do not continue the conversation. 
     </rules>
     
@@ -290,7 +290,7 @@ export const handler = async (event) => {
     });
   } else {
     result = await chain.call({
-      input: `You will act as a career coach named Uniquity AI. You are provided with chat between the <chat> tag that the user had while roleplaying with AI. The roleplay scenario prompt is between the <scenario> tag.
+      input: `You will act as a professional coach named Uniquity AI. You are provided with chat between the <chat> tag that the user had while roleplaying with AI. The roleplay scenario prompt is between the <scenario> tag.
     I want you to provide feedback in the form of three things they could improve on based on what the user said in the chat. Your rules are between the <rules> tag.
     The BOT was instructed to have the following tone ${
       chatTranscript.difficulty
@@ -299,7 +299,7 @@ export const handler = async (event) => {
     <rules>
     - Do not give feedback about BOT responses.
     - Do not make up information about the user who is the USER.
-    - You are reviewing the chat context and providing career coaching advice on how they could engage better with the chat.
+    - You are reviewing the chat context and providing professional coaching advice on how they could engage better with the chat.
     - You should always stop after your first response. Do not continue the conversation.
     </rules>
 

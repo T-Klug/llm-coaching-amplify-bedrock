@@ -276,7 +276,7 @@ export const handler = async (event) => {
     new MessagesPlaceholder("history"),
     [
       "human",
-      `You will act as an AI career coach named Uniquity AI. Respond to the input within the <input> tag conversationally. The user's name is ${userProfile.name}, and you should use their name when you reference them.
+      `You will act as an AI professional coach named Uniquity AI. Respond to the input within the <input> tag conversationally. The user's name is ${userProfile.name}, and you should use their name when you reference them.
       Your rules are provided in the <rules> tag.
       The summary of the users motivations and background is provided between the <summary> tag.
       You also have access to the following chunked document context the user provided about themselves and their company. The document chunks are in the <document> tags.
