@@ -38,6 +38,10 @@ input ChatIcebreakerFuncInput {
   _version: Int
 }
 
+input GenerateUserSummaryFuncInput {
+  id: ID
+}
+
 input RoleplayChatFuncInput {
   id: ID
   messages: [MessagesTypeFuncInput]
@@ -53,9 +57,6 @@ input RoleplayChatFuncInput {
 input GenerateRoleplaySummaryFuncInput {
   roleplayId: ID
 }
-input GenerateUserSummaryFuncInput {
-  id: ID
-}
 
 type Mutation {
   createOpenAIChatFunc(input: CreateOpenAIChatFuncInput): OpenAIChat
@@ -67,12 +68,12 @@ type Mutation {
   generateUserSummaryFunc(input: GenerateUserSummaryFuncInput): String
     @function(name: "generateUserSummary-${env}")
     @auth(rules: [{ allow: private }])
-  chatRoleplayFunc(input: RoleplayChatFuncInput): RoleplayChat
+  chatRoleplayFunc(input: RoleplayChatFuncInput): RoleChat
     @function(name: "roleplayChat-${env}")
     @auth(rules: [{ allow: private }])
   generateRoleplaySummaryFunc(
     input: GenerateRoleplaySummaryFuncInput
-  ): RoleplaySummary
+  ): RoleSummaary
     @function(name: "generateRoleplaySummary-${env}")
     @auth(rules: [{ allow: private }])
 }
@@ -138,58 +139,24 @@ type IcebreakerChat @model @auth(rules: [{ allow: owner }]) {
   owner: String @auth(rules: [{ allow: owner, operations: [read, delete] }])
 }
 
-type RoleplayChat 
-  @model 
-  @auth(rules: [{ allow: owner }]) {
+type RoleChat @model @auth(rules: [{ allow: owner }]) {
   id: ID!
   messages: [MessagesType]
   user: ID
-  scenario: Scenario @hasOne(fields: ["scenarioID"])
-  scenarioID: ID
+  roleplayId: ID
+  scenario: String
   difficulty: String
+  scenarioPrompt: String
   owner: String @auth(rules: [{ allow: owner, operations: [read, delete] }])
 }
 
-type RoleplaySummary 
-  @model 
-  @auth(rules: [{ allow: owner }]) {
+type RoleSummaary @model @auth(rules: [{ allow: owner }]) {
   id: ID!
   summary: String
   user: ID
-  roleplay: RoleplayChat @hasOne(fields: ["roleplayID"])
-  roleplayID: ID
+  roleplayId: ID
+  scenario: String
+  difficulty: String
+  scenarioPrompt: String
   owner: String @auth(rules: [{ allow: owner, operations: [read, delete] }])
-}
-
-type Scenario 
-  @model 
-  @auth(rules: [{ allow: owner }]) {
-  id: ID!
-  title: String
-  message: String
-  image: String
-  goals: [String]
-}
-
-type EvaluationMetrics 
-  @model 
-  @auth(rules: [{ allow: owner }]) {
-  id: ID!
-  roleplay: RoleplayChat @hasOne(fields: ["roleplayID"])
-  roleplayID: ID
-  user: ID
-  metrics: [Metric]
-}
-
-type Metric {
-  name: MetricType
-  value: Float
-}
-
-enum MetricType {
-  COMMUNICATION
-  DECISION_MAKING
-  LEADERSHIP
-  PROBLEM_SOLVING
-  TEAMWORK
 }

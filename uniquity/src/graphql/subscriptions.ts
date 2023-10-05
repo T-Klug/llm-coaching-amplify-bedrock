@@ -380,12 +380,11 @@ export const onDeleteIcebreakerChat =
     APITypes.OnDeleteIcebreakerChatSubscriptionVariables,
     APITypes.OnDeleteIcebreakerChatSubscription
   >;
-export const onCreateRoleplayChat =
-  /* GraphQL */ `subscription OnCreateRoleplayChat(
-  $filter: ModelSubscriptionRoleplayChatFilterInput
+export const onCreateRoleChat = /* GraphQL */ `subscription OnCreateRoleChat(
+  $filter: ModelSubscriptionRoleChatFilterInput
   $owner: String
 ) {
-  onCreateRoleplayChat(filter: $filter, owner: $owner) {
+  onCreateRoleChat(filter: $filter, owner: $owner) {
     id
     messages {
       role
@@ -407,15 +406,14 @@ export const onCreateRoleplayChat =
   }
 }
 ` as GeneratedSubscription<
-    APITypes.OnCreateRoleplayChatSubscriptionVariables,
-    APITypes.OnCreateRoleplayChatSubscription
-  >;
-export const onUpdateRoleplayChat =
-  /* GraphQL */ `subscription OnUpdateRoleplayChat(
-  $filter: ModelSubscriptionRoleplayChatFilterInput
+  APITypes.OnCreateRoleChatSubscriptionVariables,
+  APITypes.OnCreateRoleChatSubscription
+>;
+export const onUpdateRoleChat = /* GraphQL */ `subscription OnUpdateRoleChat(
+  $filter: ModelSubscriptionRoleChatFilterInput
   $owner: String
 ) {
-  onUpdateRoleplayChat(filter: $filter, owner: $owner) {
+  onUpdateRoleChat(filter: $filter, owner: $owner) {
     id
     messages {
       role
@@ -437,15 +435,14 @@ export const onUpdateRoleplayChat =
   }
 }
 ` as GeneratedSubscription<
-    APITypes.OnUpdateRoleplayChatSubscriptionVariables,
-    APITypes.OnUpdateRoleplayChatSubscription
-  >;
-export const onDeleteRoleplayChat =
-  /* GraphQL */ `subscription OnDeleteRoleplayChat(
-  $filter: ModelSubscriptionRoleplayChatFilterInput
+  APITypes.OnUpdateRoleChatSubscriptionVariables,
+  APITypes.OnUpdateRoleChatSubscription
+>;
+export const onDeleteRoleChat = /* GraphQL */ `subscription OnDeleteRoleChat(
+  $filter: ModelSubscriptionRoleChatFilterInput
   $owner: String
 ) {
-  onDeleteRoleplayChat(filter: $filter, owner: $owner) {
+  onDeleteRoleChat(filter: $filter, owner: $owner) {
     id
     messages {
       role
@@ -467,15 +464,15 @@ export const onDeleteRoleplayChat =
   }
 }
 ` as GeneratedSubscription<
-    APITypes.OnDeleteRoleplayChatSubscriptionVariables,
-    APITypes.OnDeleteRoleplayChatSubscription
-  >;
-export const onCreateRoleplaySummary =
-  /* GraphQL */ `subscription OnCreateRoleplaySummary(
-  $filter: ModelSubscriptionRoleplaySummaryFilterInput
+  APITypes.OnDeleteRoleChatSubscriptionVariables,
+  APITypes.OnDeleteRoleChatSubscription
+>;
+export const onCreateRoleSummaary =
+  /* GraphQL */ `subscription OnCreateRoleSummaary(
+  $filter: ModelSubscriptionRoleSummaaryFilterInput
   $owner: String
 ) {
-  onCreateRoleplaySummary(filter: $filter, owner: $owner) {
+  onCreateRoleSummaary(filter: $filter, owner: $owner) {
     id
     summary
     user
@@ -493,15 +490,15 @@ export const onCreateRoleplaySummary =
   }
 }
 ` as GeneratedSubscription<
-    APITypes.OnCreateRoleplaySummarySubscriptionVariables,
-    APITypes.OnCreateRoleplaySummarySubscription
+    APITypes.OnCreateRoleSummaarySubscriptionVariables,
+    APITypes.OnCreateRoleSummaarySubscription
   >;
-export const onUpdateRoleplaySummary =
-  /* GraphQL */ `subscription OnUpdateRoleplaySummary(
-  $filter: ModelSubscriptionRoleplaySummaryFilterInput
+export const onUpdateRoleSummaary =
+  /* GraphQL */ `subscription OnUpdateRoleSummaary(
+  $filter: ModelSubscriptionRoleSummaaryFilterInput
   $owner: String
 ) {
-  onUpdateRoleplaySummary(filter: $filter, owner: $owner) {
+  onUpdateRoleSummaary(filter: $filter, owner: $owner) {
     id
     summary
     user
@@ -519,15 +516,15 @@ export const onUpdateRoleplaySummary =
   }
 }
 ` as GeneratedSubscription<
-    APITypes.OnUpdateRoleplaySummarySubscriptionVariables,
-    APITypes.OnUpdateRoleplaySummarySubscription
+    APITypes.OnUpdateRoleSummaarySubscriptionVariables,
+    APITypes.OnUpdateRoleSummaarySubscription
   >;
-export const onDeleteRoleplaySummary =
-  /* GraphQL */ `subscription OnDeleteRoleplaySummary(
-  $filter: ModelSubscriptionRoleplaySummaryFilterInput
+export const onDeleteRoleSummaary =
+  /* GraphQL */ `subscription OnDeleteRoleSummaary(
+  $filter: ModelSubscriptionRoleSummaaryFilterInput
   $owner: String
 ) {
-  onDeleteRoleplaySummary(filter: $filter, owner: $owner) {
+  onDeleteRoleSummaary(filter: $filter, owner: $owner) {
     id
     summary
     user
@@ -545,6 +542,6 @@ export const onDeleteRoleplaySummary =
   }
 }
 ` as GeneratedSubscription<
-    APITypes.OnDeleteRoleplaySummarySubscriptionVariables,
-    APITypes.OnDeleteRoleplaySummarySubscription
+    APITypes.OnDeleteRoleSummaarySubscriptionVariables,
+    APITypes.OnDeleteRoleSummaarySubscription
   >;

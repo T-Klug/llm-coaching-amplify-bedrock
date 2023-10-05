@@ -19,25 +19,12 @@ const GRAPHQL_ENDPOINT = process.env.API_AMPLIFYPOC_GRAPHQLAPIENDPOINTOUTPUT;
 const AWS_REGION = process.env.AWS_REGION || "us-east-1";
 const { Sha256 } = crypto;
 
-
-const handleErrors = async (action, actionName) => {
-  try {
-    console.log(`Starting: ${actionName}`);
-    const result = await action();
-    console.log(`Completed: ${actionName}`);
-    return result;
-  } catch (error) {
-    console.error(`Error during ${actionName}: ${JSON.stringify(error.message)}`);
-    throw new Error(`Error during ${actionName}`);
-  }
-};
-
-const updateRoleplayChat = /* GraphQL */ `
-  mutation UpdateRoleplayChat(
-    $input: UpdateRoleplayChatInput!
-    $condition: ModelRoleplayChatConditionInput
+const updateRoleChat = /* GraphQL */ `
+  mutation UpdateRoleChat(
+    $input: UpdateRoleChatInput!
+    $condition: ModelRoleChatConditionInput
   ) {
-    updateRoleplayChat(input: $input, condition: $condition) {
+    updateRoleChat(input: $input, condition: $condition) {
       id
       messages {
         role
@@ -46,6 +33,9 @@ const updateRoleplayChat = /* GraphQL */ `
       }
       user
       roleplayId
+      scenario
+      difficulty
+      scenarioPrompt
       owner
       createdAt
       updatedAt
@@ -120,7 +110,7 @@ const updateChatModel = async (id, newContent) => {
       host: endpoint.host,
     },
     hostname: endpoint.host,
-    body: JSON.stringify({ query: updateRoleplayChat, variables }),
+    body: JSON.stringify({ query: updateRoleChat, variables }),
     path: endpoint.pathname,
   });
 
@@ -137,7 +127,7 @@ const updateChatModel = async (id, newContent) => {
   } catch (error) {
     console.log(`ERROR UPDATING CHAT CATCH: ${JSON.stringify(error.message)}`);
   }
-  return body.data.updateRoleplayChat;
+  return body.data.updateRoleChat;
 };
 
 // Helper to get UserProfile
@@ -193,8 +183,7 @@ export const handler = async (event) => {
     return "400 bad argument";
   }
 
-  // Wrap all your asynchronous function calls with handleErrors for better error logging
-  const memory = await handleErrors(() => new BufferWindowMemory({
+  const memory = new BufferWindowMemory({
     k: 5,
     returnMessages: true,
     memoryKey: "history",
@@ -206,45 +195,47 @@ export const handler = async (event) => {
         region: "us-east-1",
       },
     }),
-  }), "BufferWindowMemory Initialization");
+  });
 
-  const userProfile = await handleErrors(() => getUserProfile(event.identity.claims.username), "Fetching User Profile");
+  const userProfile = await getUserProfile(event.identity.claims.username);
 
   const chatPrompt = ChatPromptTemplate.fromPromptMessages([
     new MessagesPlaceholder("history"),
     [
       "human",
       `You are the assistant in a roleplay scenario titled "${event.arguments?.input?.scenario}". 
-      The specific prompt for this scenario is "${event.arguments?.input?.scenarioPrompt}". 
-      In this context, the user ${userProfile.name} is the manager and you are the employee  named "Alex". 
+      ${event.arguments?.input?.scenarioPrompt}. 
+      In this context, the user ${userProfile.name} is the manager and you are the employee. 
       Your behavior should align with these rules: 
       <rules>
       - ${event.arguments?.input?.difficulty}
-      - You are allowed to make up answers to their questions but remain in your role as the employee "Alex".
+      - You are allowed to make up answers to their questions but remain in your role as the employee.
       </rules>
       Address the user as ${userProfile.name} and respond to the following input: <input>{input}</input>. 
       Please encapsulate your response within the <response></response> tags and stay within the context of the roleplay scenario.`,
     ],
-]);
+  ]);
 
-  const chat = await handleErrors(() => new ChatBedrock({
+  const chat = new ChatBedrock({
     model: "anthropic.claude-instant-v1",
     region: AWS_REGION,
     maxTokens: 8191,
     temperature: 0.2,
-  }), "ChatBedrock Initialization");
+  });
 
-  const chain = await handleErrors(() => new ConversationChain({
+  const chain = new ConversationChain({
     llm: chat,
     prompt: chatPrompt,
     memory: memory,
-  }), "ConversationChain Initialization");
+  });
 
-  const result = await handleErrors(() => chain.call({
-    input: event.arguments.input.messages[event.arguments.input.messages.length - 1].content,
-  }), "Calling Conversation Chain");
+  const result = await chain.call({
+    input:
+      event.arguments.input.messages[event.arguments.input.messages.length - 1]
+        .content,
+  });
 
-  const chatModel = await handleErrors(() => updateChatModel(event.arguments?.input?.id, result), "Updating Chat Model");
+  const chatModel = await updateChatModel(event.arguments?.input?.id, result);
 
   return chatModel;
 };

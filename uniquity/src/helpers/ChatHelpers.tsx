@@ -1,5 +1,5 @@
 import { API } from 'aws-amplify';
-import { IcebreakerChat, OpenAIChat, RoleplayChat } from '../models';
+import { IcebreakerChat, OpenAIChat, RoleChat } from '../models';
 import {
   ChatIcebreakerFuncMutation,
   ChatRoleplayFuncMutation,
@@ -43,8 +43,8 @@ export const submitIceBreaker = async (response: IcebreakerChat) => {
   });
 };
 
-export const submitRoleplayChat = async (response: RoleplayChat) => {
-  const saveModel = RoleplayChat.copyOf(response, draft => draft);
+export const submitRoleplayChat = async (response: RoleChat) => {
+  const saveModel = RoleChat.copyOf(response, draft => draft);
   const functionInput = {
     id: saveModel.id,
     messages: saveModel.messages,

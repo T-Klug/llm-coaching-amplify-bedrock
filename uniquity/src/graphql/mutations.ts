@@ -380,11 +380,11 @@ export const deleteIcebreakerChat =
     APITypes.DeleteIcebreakerChatMutationVariables,
     APITypes.DeleteIcebreakerChatMutation
   >;
-export const createRoleplayChat = /* GraphQL */ `mutation CreateRoleplayChat(
-  $input: CreateRoleplayChatInput!
-  $condition: ModelRoleplayChatConditionInput
+export const createRoleChat = /* GraphQL */ `mutation CreateRoleChat(
+  $input: CreateRoleChatInput!
+  $condition: ModelRoleChatConditionInput
 ) {
-  createRoleplayChat(input: $input, condition: $condition) {
+  createRoleChat(input: $input, condition: $condition) {
     id
     messages {
       role
@@ -406,14 +406,14 @@ export const createRoleplayChat = /* GraphQL */ `mutation CreateRoleplayChat(
   }
 }
 ` as GeneratedMutation<
-  APITypes.CreateRoleplayChatMutationVariables,
-  APITypes.CreateRoleplayChatMutation
+  APITypes.CreateRoleChatMutationVariables,
+  APITypes.CreateRoleChatMutation
 >;
-export const updateRoleplayChat = /* GraphQL */ `mutation UpdateRoleplayChat(
-  $input: UpdateRoleplayChatInput!
-  $condition: ModelRoleplayChatConditionInput
+export const updateRoleChat = /* GraphQL */ `mutation UpdateRoleChat(
+  $input: UpdateRoleChatInput!
+  $condition: ModelRoleChatConditionInput
 ) {
-  updateRoleplayChat(input: $input, condition: $condition) {
+  updateRoleChat(input: $input, condition: $condition) {
     id
     messages {
       role
@@ -435,14 +435,14 @@ export const updateRoleplayChat = /* GraphQL */ `mutation UpdateRoleplayChat(
   }
 }
 ` as GeneratedMutation<
-  APITypes.UpdateRoleplayChatMutationVariables,
-  APITypes.UpdateRoleplayChatMutation
+  APITypes.UpdateRoleChatMutationVariables,
+  APITypes.UpdateRoleChatMutation
 >;
-export const deleteRoleplayChat = /* GraphQL */ `mutation DeleteRoleplayChat(
-  $input: DeleteRoleplayChatInput!
-  $condition: ModelRoleplayChatConditionInput
+export const deleteRoleChat = /* GraphQL */ `mutation DeleteRoleChat(
+  $input: DeleteRoleChatInput!
+  $condition: ModelRoleChatConditionInput
 ) {
-  deleteRoleplayChat(input: $input, condition: $condition) {
+  deleteRoleChat(input: $input, condition: $condition) {
     id
     messages {
       role
@@ -464,15 +464,14 @@ export const deleteRoleplayChat = /* GraphQL */ `mutation DeleteRoleplayChat(
   }
 }
 ` as GeneratedMutation<
-  APITypes.DeleteRoleplayChatMutationVariables,
-  APITypes.DeleteRoleplayChatMutation
+  APITypes.DeleteRoleChatMutationVariables,
+  APITypes.DeleteRoleChatMutation
 >;
-export const createRoleplaySummary =
-  /* GraphQL */ `mutation CreateRoleplaySummary(
-  $input: CreateRoleplaySummaryInput!
-  $condition: ModelRoleplaySummaryConditionInput
+export const createRoleSummaary = /* GraphQL */ `mutation CreateRoleSummaary(
+  $input: CreateRoleSummaaryInput!
+  $condition: ModelRoleSummaaryConditionInput
 ) {
-  createRoleplaySummary(input: $input, condition: $condition) {
+  createRoleSummaary(input: $input, condition: $condition) {
     id
     summary
     user
@@ -490,15 +489,14 @@ export const createRoleplaySummary =
   }
 }
 ` as GeneratedMutation<
-    APITypes.CreateRoleplaySummaryMutationVariables,
-    APITypes.CreateRoleplaySummaryMutation
-  >;
-export const updateRoleplaySummary =
-  /* GraphQL */ `mutation UpdateRoleplaySummary(
-  $input: UpdateRoleplaySummaryInput!
-  $condition: ModelRoleplaySummaryConditionInput
+  APITypes.CreateRoleSummaaryMutationVariables,
+  APITypes.CreateRoleSummaaryMutation
+>;
+export const updateRoleSummaary = /* GraphQL */ `mutation UpdateRoleSummaary(
+  $input: UpdateRoleSummaaryInput!
+  $condition: ModelRoleSummaaryConditionInput
 ) {
-  updateRoleplaySummary(input: $input, condition: $condition) {
+  updateRoleSummaary(input: $input, condition: $condition) {
     id
     summary
     user
@@ -516,15 +514,14 @@ export const updateRoleplaySummary =
   }
 }
 ` as GeneratedMutation<
-    APITypes.UpdateRoleplaySummaryMutationVariables,
-    APITypes.UpdateRoleplaySummaryMutation
-  >;
-export const deleteRoleplaySummary =
-  /* GraphQL */ `mutation DeleteRoleplaySummary(
-  $input: DeleteRoleplaySummaryInput!
-  $condition: ModelRoleplaySummaryConditionInput
+  APITypes.UpdateRoleSummaaryMutationVariables,
+  APITypes.UpdateRoleSummaaryMutation
+>;
+export const deleteRoleSummaary = /* GraphQL */ `mutation DeleteRoleSummaary(
+  $input: DeleteRoleSummaaryInput!
+  $condition: ModelRoleSummaaryConditionInput
 ) {
-  deleteRoleplaySummary(input: $input, condition: $condition) {
+  deleteRoleSummaary(input: $input, condition: $condition) {
     id
     summary
     user
@@ -542,9 +539,9 @@ export const deleteRoleplaySummary =
   }
 }
 ` as GeneratedMutation<
-    APITypes.DeleteRoleplaySummaryMutationVariables,
-    APITypes.DeleteRoleplaySummaryMutation
-  >;
+  APITypes.DeleteRoleSummaaryMutationVariables,
+  APITypes.DeleteRoleSummaaryMutation
+>;
 export const createOpenAIChatFunc =
   /* GraphQL */ `mutation CreateOpenAIChatFunc($input: CreateOpenAIChatFuncInput) {
   createOpenAIChatFunc(input: $input) {

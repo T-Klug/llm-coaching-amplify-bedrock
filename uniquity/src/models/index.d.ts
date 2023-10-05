@@ -202,9 +202,9 @@ export declare const IcebreakerChat: (new (init: ModelInit<IcebreakerChat>) => I
   copyOf(source: IcebreakerChat, mutator: (draft: MutableModel<IcebreakerChat>) => MutableModel<IcebreakerChat> | void): IcebreakerChat;
 }
 
-type EagerRoleplayChat = {
+type EagerRoleChat = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<RoleplayChat, 'id'>;
+    identifier: ManagedIdentifier<RoleChat, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
@@ -219,9 +219,9 @@ type EagerRoleplayChat = {
   readonly updatedAt?: string | null;
 }
 
-type LazyRoleplayChat = {
+type LazyRoleChat = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<RoleplayChat, 'id'>;
+    identifier: ManagedIdentifier<RoleChat, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
@@ -236,15 +236,15 @@ type LazyRoleplayChat = {
   readonly updatedAt?: string | null;
 }
 
-export declare type RoleplayChat = LazyLoading extends LazyLoadingDisabled ? EagerRoleplayChat : LazyRoleplayChat
+export declare type RoleChat = LazyLoading extends LazyLoadingDisabled ? EagerRoleChat : LazyRoleChat
 
-export declare const RoleplayChat: (new (init: ModelInit<RoleplayChat>) => RoleplayChat) & {
-  copyOf(source: RoleplayChat, mutator: (draft: MutableModel<RoleplayChat>) => MutableModel<RoleplayChat> | void): RoleplayChat;
+export declare const RoleChat: (new (init: ModelInit<RoleChat>) => RoleChat) & {
+  copyOf(source: RoleChat, mutator: (draft: MutableModel<RoleChat>) => MutableModel<RoleChat> | void): RoleChat;
 }
 
-type EagerRoleplaySummary = {
+type EagerRoleSummaary = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<RoleplaySummary, 'id'>;
+    identifier: ManagedIdentifier<RoleSummaary, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
@@ -259,9 +259,9 @@ type EagerRoleplaySummary = {
   readonly updatedAt?: string | null;
 }
 
-type LazyRoleplaySummary = {
+type LazyRoleSummaary = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<RoleplaySummary, 'id'>;
+    identifier: ManagedIdentifier<RoleSummaary, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
@@ -276,8 +276,8 @@ type LazyRoleplaySummary = {
   readonly updatedAt?: string | null;
 }
 
-export declare type RoleplaySummary = LazyLoading extends LazyLoadingDisabled ? EagerRoleplaySummary : LazyRoleplaySummary
+export declare type RoleSummaary = LazyLoading extends LazyLoadingDisabled ? EagerRoleSummaary : LazyRoleSummaary
 
-export declare const RoleplaySummary: (new (init: ModelInit<RoleplaySummary>) => RoleplaySummary) & {
-  copyOf(source: RoleplaySummary, mutator: (draft: MutableModel<RoleplaySummary>) => MutableModel<RoleplaySummary> | void): RoleplaySummary;
+export declare const RoleSummaary: (new (init: ModelInit<RoleSummaary>) => RoleSummaary) & {
+  copyOf(source: RoleSummaary, mutator: (draft: MutableModel<RoleSummaary>) => MutableModel<RoleSummaary> | void): RoleSummaary;
 }

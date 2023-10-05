@@ -469,8 +469,8 @@ export const schema = {
                 }
             ]
         },
-        "RoleplayChat": {
-            "name": "RoleplayChat",
+        "RoleChat": {
+            "name": "RoleChat",
             "fields": {
                 "id": {
                     "name": "id",
@@ -549,7 +549,7 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "RoleplayChats",
+            "pluralName": "RoleChats",
             "attributes": [
                 {
                     "type": "model",
@@ -576,8 +576,8 @@ export const schema = {
                 }
             ]
         },
-        "RoleplaySummary": {
-            "name": "RoleplaySummary",
+        "RoleSummaary": {
+            "name": "RoleSummaary",
             "fields": {
                 "id": {
                     "name": "id",
@@ -653,7 +653,7 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "RoleplaySummaries",
+            "pluralName": "RoleSummaaries",
             "attributes": [
                 {
                     "type": "model",
@@ -715,5 +715,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "98daac65ac572029c28bfb61c2705c20"
+    "version": "c0ca62426e7af54a19e28f32e00e13a1"
 };

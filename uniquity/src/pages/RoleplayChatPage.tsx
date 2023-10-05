@@ -1,6 +1,6 @@
 import { DataStore } from 'aws-amplify';
 import { useEffect, useRef, useState } from 'react';
-import { OpenAiRoleType, LazyRoleplayChat, RoleplayChat } from '../models';
+import { OpenAiRoleType, LazyRoleChat, RoleChat } from '../models';
 import DotsTyping from '../components/chat/typing/dotsTyping';
 import ArrowCircleUp from '@mui/icons-material/ArrowCircleUp';
 import MicOffOutlined from '@mui/icons-material/MicOffOutlined';
@@ -47,7 +47,7 @@ export default function RoleplayChatPage() {
   const [openModal, setOpenModal] = useState(true);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [difficultyLevel, setDifficultyLevel] = useState<any>(difficulty[0]);
-  const [data, setData] = useState<LazyRoleplayChat[]>();
+  const [data, setData] = useState<LazyRoleChat[]>();
   // Selected Chat ID
   const [selectedId, setSelectedId] = useState<string | undefined>(roleplayId);
   // Controlled input for chat
@@ -78,7 +78,6 @@ export default function RoleplayChatPage() {
     }
   }
 
-
   // If they are creating transcripts with the microphone set the chat input to it
   useEffect(() => {
     setChat(transcript);
@@ -94,7 +93,7 @@ export default function RoleplayChatPage() {
 
   // Websocket for the chats
   useEffect(() => {
-    const sub = DataStore.observeQuery(RoleplayChat).subscribe(({ items }) => {
+    const sub = DataStore.observeQuery(RoleChat).subscribe(({ items }) => {
       setData(items);
     });
     return () => sub.unsubscribe();
@@ -102,8 +101,6 @@ export default function RoleplayChatPage() {
 
   // Send Chat Method
   const sendChat = async () => {
-    console.log("sendChat function called");
-
     if (summaryLoading) {
       return;
     }
@@ -115,17 +112,18 @@ export default function RoleplayChatPage() {
     let response;
     if (chat && !selectedId) {
       response = await DataStore.save(
-        new RoleplayChat({
+        new RoleChat({
           messages: [{ role: 'USER', content: chat }],
-          scenario: selectedScenario.id
-
+          scenario: selectedScenario.message,
+          difficulty: difficultyLevel.prompt,
+          scenarioPrompt: selectedScenario.scenario,
         }),
       );
       setChat('');
       resetTranscript();
     } else if (chat && selectedId) {
       const model = data?.find(d => d.id === selectedId);
-      const saveModel = RoleplayChat.copyOf(model!, draft => {
+      const saveModel = RoleChat.copyOf(model!, draft => {
         draft.messages?.push({
           role: 'USER',
           content: chat,
@@ -151,46 +149,28 @@ export default function RoleplayChatPage() {
         summaryId={summaryId}
       />
 
-    {/* Welcome Message Card */}
-    <Card sx={{ borderRadius: 6 }}>
+      {/* Welcome Message Card */}
+      <Card sx={{ borderRadius: 6 }}>
         <CardContent>
-            <Typography variant="h5" textAlign="center" sx={{ mb: 3 }}>
-                {welcomeMessage}
-            </Typography>
+          <Typography variant="h5" textAlign="center" sx={{ mb: 3 }}>
+            {welcomeMessage}
+          </Typography>
         </CardContent>
-    </Card>
+      </Card>
 
-    {/* Goals for the selected Scenario */}
-    {selectedScenario && (
-        <Card sx={{ borderRadius: 6, marginTop: 2 }}>
-            <CardContent>
-                <Typography variant="h6" textAlign="center" sx={{ mb: 3 }}>
-                    Goals for this Scenario:
-                </Typography>
-                <ul>
-                    {selectedScenario.goals.map((goal: string, index: number) => (
-                        <li key={index}>
-                            <Typography>{goal}</Typography>
-                        </li>
-                    ))}
-                </ul>
-            </CardContent>
-        </Card>
-    )}
-
-    {/* Scenario & Difficulty Selection Modal */}
-    <Dialog
+      {/* Scenario & Difficulty Selection Modal */}
+      <Dialog
         fullScreen
         open={openModal}
         onClose={() => console.log('No close')}
-    >
+      >
         <div style={{ margin: 40 }}>
-            <Avatar
-                onClick={() => navigate('/')}
-                sx={{ float: 'right', cursor: 'pointer' }}
-            >
-                <HomeOutlined />
-            </Avatar>
+          <Avatar
+            onClick={() => navigate('/')}
+            sx={{ float: 'right', cursor: 'pointer' }}
+          >
+            <HomeOutlined />
+          </Avatar>
 
           <Typography textAlign={'center'} variant="h5" mb={4}>
             Welcome to role play scnearios
@@ -222,10 +202,9 @@ export default function RoleplayChatPage() {
             Click one of the scenarios:
           </Typography>
           <Grid container spacing={2}>
-          {
-            scenarios.map(s => {
+            {scenarios.map(s => {
               return (
-                  <Grid item key={s.id}>
+                <Grid item key={s.scenario}>
                   <Card
                     raised
                     sx={{
@@ -249,20 +228,11 @@ export default function RoleplayChatPage() {
                     <CardHeader title={s.title} />
                     <CardContent>
                       <Typography>{s.message}</Typography>
-                      <Typography variant="subtitle2" mt={2}>
-                        Goals:
-                      </Typography>
-                      <ul>
-                        {s.goals.map(goal => (
-                          <li key={goal}><Typography>{goal}</Typography></li>
-                        ))}
-                      </ul>
                     </CardContent>
                   </Card>
                 </Grid>
               );
-            })
-          }
+            })}
           </Grid>
         </div>
       </Dialog>

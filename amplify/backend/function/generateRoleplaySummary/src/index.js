@@ -25,13 +25,14 @@ const { Sha256 } = crypto;
 const SECRET_PATH = process.env.OpenAIKey;
 const OPENSEARCH_URL = process.env.opensearchURL;
 
-const getRoleplayChat = /* GraphQL */ `
-  query GetRoleplayChat($id: ID!) {
-    getRoleplayChat(id: $id) {
+const getRoleChat = /* GraphQL */ `
+  query GetRoleChat($id: ID!) {
+    getRoleChat(id: $id) {
       id
       messages {
         role
         content
+        __typename
       }
       user
       roleplayId
@@ -49,16 +50,19 @@ const getRoleplayChat = /* GraphQL */ `
   }
 `;
 
-const createRoleplaySummary = /* GraphQL */ `
-  mutation CreateRoleplaySummary(
-    $input: CreateRoleplaySummaryInput!
-    $condition: ModelRoleplaySummaryConditionInput
+const createRoleSummaary = /* GraphQL */ `
+  mutation CreateRoleSummaary(
+    $input: CreateRoleSummaaryInput!
+    $condition: ModelRoleSummaaryConditionInput
   ) {
-    createRoleplaySummary(input: $input, condition: $condition) {
+    createRoleSummaary(input: $input, condition: $condition) {
       id
       summary
       user
       roleplayId
+      scenario
+      difficulty
+      scenarioPrompt
       owner
       createdAt
       updatedAt
@@ -91,7 +95,7 @@ const getChat = async (id) => {
       host: endpoint.host,
     },
     hostname: endpoint.host,
-    body: JSON.stringify({ query: getRoleplayChat, variables }),
+    body: JSON.stringify({ query: getRoleChat, variables }),
     path: endpoint.pathname,
   });
 
@@ -109,7 +113,7 @@ const getChat = async (id) => {
     console.log(`ERROR GETTING Chat: ${JSON.stringify(error.message)}`);
   }
 
-  return body.data.getRoleplayChat;
+  return body.data.getRoleChat;
 };
 
 const createSummary = async (
@@ -146,7 +150,7 @@ const createSummary = async (
       host: endpoint.host,
     },
     hostname: endpoint.host,
-    body: JSON.stringify({ query: createRoleplaySummary, variables }),
+    body: JSON.stringify({ query: createRoleSummaary, variables }),
     path: endpoint.pathname,
   });
 
@@ -165,7 +169,7 @@ const createSummary = async (
       `ERROR UPDATING SUMMARY CATCH: ${JSON.stringify(error.message)}`
     );
   }
-  return body.data.createRoleplaySummary;
+  return body.data.createRoleSummaary;
 };
 
 /**

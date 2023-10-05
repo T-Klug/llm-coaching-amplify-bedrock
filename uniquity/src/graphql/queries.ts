@@ -453,8 +453,8 @@ export const syncIcebreakerChats = /* GraphQL */ `query SyncIcebreakerChats(
   APITypes.SyncIcebreakerChatsQueryVariables,
   APITypes.SyncIcebreakerChatsQuery
 >;
-export const getRoleplayChat = /* GraphQL */ `query GetRoleplayChat($id: ID!) {
-  getRoleplayChat(id: $id) {
+export const getRoleChat = /* GraphQL */ `query GetRoleChat($id: ID!) {
+  getRoleChat(id: $id) {
     id
     messages {
       role
@@ -476,15 +476,15 @@ export const getRoleplayChat = /* GraphQL */ `query GetRoleplayChat($id: ID!) {
   }
 }
 ` as GeneratedQuery<
-  APITypes.GetRoleplayChatQueryVariables,
-  APITypes.GetRoleplayChatQuery
+  APITypes.GetRoleChatQueryVariables,
+  APITypes.GetRoleChatQuery
 >;
-export const listRoleplayChats = /* GraphQL */ `query ListRoleplayChats(
-  $filter: ModelRoleplayChatFilterInput
+export const listRoleChats = /* GraphQL */ `query ListRoleChats(
+  $filter: ModelRoleChatFilterInput
   $limit: Int
   $nextToken: String
 ) {
-  listRoleplayChats(filter: $filter, limit: $limit, nextToken: $nextToken) {
+  listRoleChats(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
       messages {
@@ -511,16 +511,16 @@ export const listRoleplayChats = /* GraphQL */ `query ListRoleplayChats(
   }
 }
 ` as GeneratedQuery<
-  APITypes.ListRoleplayChatsQueryVariables,
-  APITypes.ListRoleplayChatsQuery
+  APITypes.ListRoleChatsQueryVariables,
+  APITypes.ListRoleChatsQuery
 >;
-export const syncRoleplayChats = /* GraphQL */ `query SyncRoleplayChats(
-  $filter: ModelRoleplayChatFilterInput
+export const syncRoleChats = /* GraphQL */ `query SyncRoleChats(
+  $filter: ModelRoleChatFilterInput
   $limit: Int
   $nextToken: String
   $lastSync: AWSTimestamp
 ) {
-  syncRoleplayChats(
+  syncRoleChats(
     filter: $filter
     limit: $limit
     nextToken: $nextToken
@@ -552,12 +552,11 @@ export const syncRoleplayChats = /* GraphQL */ `query SyncRoleplayChats(
   }
 }
 ` as GeneratedQuery<
-  APITypes.SyncRoleplayChatsQueryVariables,
-  APITypes.SyncRoleplayChatsQuery
+  APITypes.SyncRoleChatsQueryVariables,
+  APITypes.SyncRoleChatsQuery
 >;
-export const getRoleplaySummary =
-  /* GraphQL */ `query GetRoleplaySummary($id: ID!) {
-  getRoleplaySummary(id: $id) {
+export const getRoleSummaary = /* GraphQL */ `query GetRoleSummaary($id: ID!) {
+  getRoleSummaary(id: $id) {
     id
     summary
     user
@@ -575,15 +574,15 @@ export const getRoleplaySummary =
   }
 }
 ` as GeneratedQuery<
-    APITypes.GetRoleplaySummaryQueryVariables,
-    APITypes.GetRoleplaySummaryQuery
-  >;
-export const listRoleplaySummaries = /* GraphQL */ `query ListRoleplaySummaries(
-  $filter: ModelRoleplaySummaryFilterInput
+  APITypes.GetRoleSummaaryQueryVariables,
+  APITypes.GetRoleSummaaryQuery
+>;
+export const listRoleSummaaries = /* GraphQL */ `query ListRoleSummaaries(
+  $filter: ModelRoleSummaaryFilterInput
   $limit: Int
   $nextToken: String
 ) {
-  listRoleplaySummaries(filter: $filter, limit: $limit, nextToken: $nextToken) {
+  listRoleSummaaries(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
       summary
@@ -606,16 +605,16 @@ export const listRoleplaySummaries = /* GraphQL */ `query ListRoleplaySummaries(
   }
 }
 ` as GeneratedQuery<
-  APITypes.ListRoleplaySummariesQueryVariables,
-  APITypes.ListRoleplaySummariesQuery
+  APITypes.ListRoleSummaariesQueryVariables,
+  APITypes.ListRoleSummaariesQuery
 >;
-export const syncRoleplaySummaries = /* GraphQL */ `query SyncRoleplaySummaries(
-  $filter: ModelRoleplaySummaryFilterInput
+export const syncRoleSummaaries = /* GraphQL */ `query SyncRoleSummaaries(
+  $filter: ModelRoleSummaaryFilterInput
   $limit: Int
   $nextToken: String
   $lastSync: AWSTimestamp
 ) {
-  syncRoleplaySummaries(
+  syncRoleSummaaries(
     filter: $filter
     limit: $limit
     nextToken: $nextToken
@@ -643,6 +642,6 @@ export const syncRoleplaySummaries = /* GraphQL */ `query SyncRoleplaySummaries(
   }
 }
 ` as GeneratedQuery<
-  APITypes.SyncRoleplaySummariesQueryVariables,
-  APITypes.SyncRoleplaySummariesQuery
+  APITypes.SyncRoleSummaariesQueryVariables,
+  APITypes.SyncRoleSummaariesQuery
 >;

@@ -9,7 +9,7 @@ import { TransitionProps } from '@mui/material/transitions';
 import { forwardRef, useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import { DataStore } from 'aws-amplify';
-import { LazyRoleplaySummary, RoleplaySummary } from '../../models';
+import { LazyRoleSummaary, RoleSummaary } from '../../models';
 import { useNavigate } from 'react-router-dom';
 
 const Transition = forwardRef(function Transition(
@@ -30,17 +30,15 @@ type SummaryModalProps = {
 
 export default function SummaryModal(props: SummaryModalProps) {
   const { open, setOpen, summaryId } = props;
-  const [data, setData] = useState<LazyRoleplaySummary | undefined>();
+  const [data, setData] = useState<LazyRoleSummaary | undefined>();
   const navigate = useNavigate();
 
   // Websocket for the chats
   useEffect(() => {
-    const sub = DataStore.observe(RoleplaySummary, summaryId).subscribe(
-      item => {
-        console.log(item);
-        setData(item.element);
-      },
-    );
+    const sub = DataStore.observe(RoleSummaary, summaryId).subscribe(item => {
+      console.log(item);
+      setData(item.element);
+    });
     return () => sub.unsubscribe();
   }, [summaryId]);
 
