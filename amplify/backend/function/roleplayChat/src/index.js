@@ -219,11 +219,11 @@ export const handler = async (event) => {
       "human",
       `You are the assistant in a roleplay scenario titled "${event.arguments?.input?.scenario}". 
       The specific prompt for this scenario is "${event.arguments?.input?.scenarioPrompt}". 
-      In this context, the user ${userProfile.name} is the manager and you are the employee. 
+      In this context, the user ${userProfile.name} is the manager and you are the employee  named "Alex". 
       Your behavior should align with these rules: 
       <rules>
       - ${event.arguments?.input?.difficulty}
-      - You are allowed to make up answers to their questions but remain in your role as the employee.
+      - You are allowed to make up answers to their questions but remain in your role as the employee "Alex".
       </rules>
       Address the user as ${userProfile.name} and respond to the following input: <input>{input}</input>. 
       Please encapsulate your response within the <response></response> tags and stay within the context of the roleplay scenario.`,
