@@ -102,6 +102,8 @@ export default function RoleplayChatPage() {
 
   // Send Chat Method
   const sendChat = async () => {
+    console.log("sendChat function called");
+
     if (summaryLoading) {
       return;
     }
@@ -148,29 +150,47 @@ export default function RoleplayChatPage() {
         summaryId={summaryId}
       />
 
-      {/* Welcome Message Card */}
-      <Card sx={{ borderRadius: 6 }}>
+    {/* Welcome Message Card */}
+    <Card sx={{ borderRadius: 6 }}>
         <CardContent>
-          <Typography variant="h5" textAlign="center" sx={{ mb: 3 }}>
-            {welcomeMessage}
-          </Typography>
-          {/* ... rest of the content */}
+            <Typography variant="h5" textAlign="center" sx={{ mb: 3 }}>
+                {welcomeMessage}
+            </Typography>
         </CardContent>
-      </Card>
+    </Card>
 
-      {/* Scenario & Difficulty Selection Modal */}
-      <Dialog
+    {/* Goals for the selected Scenario */}
+    {selectedScenario && (
+        <Card sx={{ borderRadius: 6, marginTop: 2 }}>
+            <CardContent>
+                <Typography variant="h6" textAlign="center" sx={{ mb: 3 }}>
+                    Goals for this Scenario:
+                </Typography>
+                <ul>
+                    {selectedScenario.goals.map((goal: string, index: number) => (
+                        <li key={index}>
+                            <Typography>{goal}</Typography>
+                        </li>
+                    ))}
+                </ul>
+            </CardContent>
+        </Card>
+    )}
+
+    {/* Scenario & Difficulty Selection Modal */}
+    <Dialog
         fullScreen
         open={openModal}
         onClose={() => console.log('No close')}
-      >
+    >
         <div style={{ margin: 40 }}>
-          <Avatar
-            onClick={() => navigate('/')}
-            sx={{ float: 'right', cursor: 'pointer' }}
-          >
-            <HomeOutlined />
-          </Avatar>
+            <Avatar
+                onClick={() => navigate('/')}
+                sx={{ float: 'right', cursor: 'pointer' }}
+            >
+                <HomeOutlined />
+            </Avatar>
+
           <Typography textAlign={'center'} variant="h5" mb={4}>
             Welcome to role play scnearios
           </Typography>
@@ -201,9 +221,10 @@ export default function RoleplayChatPage() {
             Click one of the scenarios:
           </Typography>
           <Grid container spacing={2}>
-            {scenarios.map(s => {
+          {
+            scenarios.map(s => {
               return (
-                <Grid item key={s.scenario}>
+                  <Grid item key={s.id}>
                   <Card
                     raised
                     sx={{
@@ -227,11 +248,20 @@ export default function RoleplayChatPage() {
                     <CardHeader title={s.title} />
                     <CardContent>
                       <Typography>{s.message}</Typography>
+                      <Typography variant="subtitle2" mt={2}>
+                        Goals:
+                      </Typography>
+                      <ul>
+                        {s.goals.map(goal => (
+                          <li key={goal}><Typography>{goal}</Typography></li>
+                        ))}
+                      </ul>
                     </CardContent>
                   </Card>
                 </Grid>
               );
-            })}
+            })
+          }
           </Grid>
         </div>
       </Dialog>

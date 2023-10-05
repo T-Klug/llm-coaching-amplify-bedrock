@@ -138,24 +138,32 @@ type IcebreakerChat @model @auth(rules: [{ allow: owner }]) {
   owner: String @auth(rules: [{ allow: owner, operations: [read, delete] }])
 }
 
-type RoleplayChat @model @auth(rules: [{ allow: owner }]) {
+type RoleplayChat 
+  @model 
+  @auth(rules: [{ allow: owner }]) {
   id: ID!
   messages: [MessagesType]
   user: ID
-  scenario: Scenario @connection
+  scenario: Scenario @hasOne(fields: ["scenarioID"])
+  scenarioID: ID
   difficulty: String
   owner: String @auth(rules: [{ allow: owner, operations: [read, delete] }])
 }
 
-type RoleplaySummary @model @auth(rules: [{ allow: owner }]) {
+type RoleplaySummary 
+  @model 
+  @auth(rules: [{ allow: owner }]) {
   id: ID!
   summary: String
   user: ID
-  roleplay: RoleplayChat @connection
+  roleplay: RoleplayChat @hasOne(fields: ["roleplayID"])
+  roleplayID: ID
   owner: String @auth(rules: [{ allow: owner, operations: [read, delete] }])
 }
 
-type Scenario @model {
+type Scenario 
+  @model 
+  @auth(rules: [{ allow: owner }]) {
   id: ID!
   title: String
   message: String
@@ -163,9 +171,12 @@ type Scenario @model {
   goals: [String]
 }
 
-type EvaluationMetrics @model {
+type EvaluationMetrics 
+  @model 
+  @auth(rules: [{ allow: owner }]) {
   id: ID!
-  roleplay: RoleplayChat @connection
+  roleplay: RoleplayChat @hasOne(fields: ["roleplayID"])
+  roleplayID: ID
   user: ID
   metrics: [Metric]
 }
