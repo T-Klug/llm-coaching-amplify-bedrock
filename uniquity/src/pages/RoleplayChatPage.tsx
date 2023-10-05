@@ -78,6 +78,7 @@ export default function RoleplayChatPage() {
     }
   }
 
+
   // If they are creating transcripts with the microphone set the chat input to it
   useEffect(() => {
     setChat(transcript);
@@ -114,9 +115,7 @@ export default function RoleplayChatPage() {
       response = await DataStore.save(
         new RoleplayChat({
           messages: [{ role: 'USER', content: chat }],
-          scenario: selectedScenario.message,
-          difficulty: difficultyLevel.prompt,
-          scenarioPrompt: selectedScenario.scenario,
+          scenario: selectedScenario // Directly saving the scenario object
         }),
       );
       setChat('');

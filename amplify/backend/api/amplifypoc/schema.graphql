@@ -142,10 +142,8 @@ type RoleplayChat @model @auth(rules: [{ allow: owner }]) {
   id: ID!
   messages: [MessagesType]
   user: ID
-  roleplayId: ID
-  scenario: String
+  scenario: Scenario @connection
   difficulty: String
-  scenarioPrompt: String
   owner: String @auth(rules: [{ allow: owner, operations: [read, delete] }])
 }
 
@@ -153,9 +151,34 @@ type RoleplaySummary @model @auth(rules: [{ allow: owner }]) {
   id: ID!
   summary: String
   user: ID
-  roleplayId: ID
-  scenario: String
-  difficulty: String
-  scenarioPrompt: String
+  roleplay: RoleplayChat @connection
   owner: String @auth(rules: [{ allow: owner, operations: [read, delete] }])
+}
+
+type Scenario @model {
+  id: ID!
+  title: String
+  message: String
+  image: String
+  goals: [String]
+}
+
+type EvaluationMetrics @model {
+  id: ID!
+  roleplay: RoleplayChat @connection
+  user: ID
+  metrics: [Metric]
+}
+
+type Metric {
+  name: MetricType
+  value: Float
+}
+
+enum MetricType {
+  COMMUNICATION
+  DECISION_MAKING
+  LEADERSHIP
+  PROBLEM_SOLVING
+  TEAMWORK
 }

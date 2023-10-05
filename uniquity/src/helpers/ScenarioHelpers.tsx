@@ -5,31 +5,34 @@ import disputeImage from '../assets/dispute.jpg';
 
 export const scenarios = [
   {
+    id: "one_on_one",
     image: performanceImage,
     title: 'One on one',
-    scenario: 'You will act as an employee in a one on one chat',
     message: 'You are tasked with having a one on one with one of your employees',
+    goals: ["Establish communication", "Understand employee needs"]
   },
   {
+    id: "pip",
     image: pipImage,
     title: 'Personal improvement plan',
-    scenario: 'You will act as an employee receiving a performance improvement plan',
     message: 'You are tasked with giving your employee a performance improvement plan. Work through giving the news.',
+    goals: ["Highlight areas of improvement", "Set clear expectations"]
   },
-  {
+ {
+    id: "termination",
     image: firingImage,
     title: 'Termination',
-    scenario: 'You will act as an employee being informed about termination',
     message: 'You need to inform your employee about the difficult decision to let them go. Handle the conversation with sensitivity and professionalism.',
+    goals: ["Handle with care", "Communicate the decision clearly", "Provide reasonings"]
   },
-  {
+   {
+    id: "dispute",
     image: disputeImage,
     title: 'Dispute',
-    scenario: 'You will act as an employee in a dispute with a coworker',
-    message: 'You need to resolve a dispute between two employees. Work through the conflict and find a solution.',
-  },
+    message: 'You need to address a concern with an employee named Alex. Discuss the issue and find a solution.',
+    goals: ["Understand the employee's perspective", "Communicate your concerns", "Find a common ground or solution"]
+  }
 ];
-
 
 export const difficulty = [
   {
