@@ -206,7 +206,13 @@ export default function RoleplayChatPage() {
               return (
                 <Grid item key={s.scenario}>
                   <Card
-                    sx={{ cursor: 'pointer', maxHeight: 500, maxWidth: 400 }}
+                    raised
+                    sx={{
+                      cursor: 'pointer',
+                      maxHeight: 500,
+                      maxWidth: 400,
+                      borderRadius: 8,
+                    }}
                     onClick={() => {
                       setSelectedScenario(s);
                       setWelcomeMessage(s.message);
