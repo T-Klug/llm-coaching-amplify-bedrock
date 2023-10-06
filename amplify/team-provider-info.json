@@ -60,7 +60,7 @@
         },
         "roleplayChat": {
           "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
-          "s3Key": "amplify-builds/roleplayChat-724f56706a7a73713155-build.zip"
+          "s3Key": "amplify-builds/roleplayChat-6d2f5564726e325a4475-build.zip"
         },
         "generateRoleplaySummary": {
           "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
