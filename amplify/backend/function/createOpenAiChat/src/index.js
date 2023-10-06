@@ -250,7 +250,6 @@ const buildPrompt = (userProfile, docs) => {
       <rules>
         - You should ask clarifying QUESTIONS; don't make ASSUMPTIONS.
         - Your responses should be thought provoking and on topic.
-        - You should consider anything relevant from the user's document context they provided.
         - Keep your responses to about 100 words.
         - Your responses should be conversational, not just suggestions or solutions. 
         - You should be empathetic to the user.

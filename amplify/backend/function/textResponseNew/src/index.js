@@ -61,23 +61,6 @@ const listUserProfiles = /* GraphQL */ `
   }
 `;
 
-const listOpenAIModels = /* GraphQL */ `
-  query ListOpenAIModels {
-    listOpenAIModels {
-      items {
-        id
-        prompt
-        model
-        temperature
-        top_p
-        max_tokens
-        presence_penalty
-        frequency_penalty
-      }
-    }
-  }
-`;
-
 // Helper to get UserProfile
 const getUserProfile = async (phonenumber) => {
   const phone = phonenumber.substring(2);
@@ -131,43 +114,125 @@ const getUserProfile = async (phonenumber) => {
   return undefined;
 };
 
-const getOpenAIModel = async () => {
-  const endpoint = new URL(GRAPHQL_ENDPOINT);
-  const signer = new SignatureV4({
-    credentials: defaultProvider(),
-    region: AWS_REGION,
-    service: "appsync",
-    sha256: Sha256,
-  });
-  const requestToBeSigned = new HttpRequest({
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      host: endpoint.host,
-    },
-    hostname: endpoint.host,
-    body: JSON.stringify({ query: listOpenAIModels }),
-    path: endpoint.pathname,
-  });
-  const signed = await signer.sign(requestToBeSigned);
-  const request = new Request(endpoint, signed);
-  let response;
-  let body;
+// Prompt builder (Probably should do checks on username and summary)
+const buildPrompt = (userProfile, docs) => {
+  if (!userProfile) {
+    return ChatPromptTemplate.fromMessages([
+      new MessagesPlaceholder("history"),
+      [
+        "human",
+        `You are Uniquity AI, a professional coaching assistant.
+      You are conversing with someone seeking professional coaching.
+      You should follow the rules in the <rules> tag.
+      
+      <rules>
+        - You should ask clarifying QUESTIONS; don't make ASSUMPTIONS.
+        - Your responses should be thought provoking and on topic.
+        - Keep your responses to about 100 words.
+        - Your responses should be conversational, not just suggestions or solutions. 
+        - You should be empathetic to the user.
+        - You should conclude after giving a response. No further conversation.
+        - You should keep your answers short.
+        - ONLY provide ONE response, if there is more than one remove them.
+      </rules>
 
-  try {
-    console.log("Fetch Admin Settings");
-    response = await fetch(request);
-    body = await response.json();
-    if (body.errors)
-      console.log(
-        `ERROR Fetching Admin Settings: ${JSON.stringify(body.errors)}`
-      );
-  } catch (error) {
-    console.log(
-      `ERROR Fetching Admin Settings: ${JSON.stringify(error.message)}`
-    );
+      Respond to the user within <response></response> tag.
+
+      <input>
+      {input}
+      </input>
+
+      Assistant: <response>`,
+      ],
+    ]);
   }
-  return body.data.listOpenAIModels.items[0];
+  // User Profile Present
+  if (docs && docs.length > 0) {
+    return ChatPromptTemplate.fromMessages([
+      new MessagesPlaceholder("history"),
+      [
+        "human",
+        `You are Uniquity AI, a professional coaching assistant.
+      You are conversing with someone seeking professional coaching.
+      The name of the user you are conversing with is ${userProfile.name}.
+      The summary of the users motivations and background is provided between the <summary> tag.
+      You also have access to the following chunked document context the user provided about themselves or their company. 
+      The document chunks are in the <document> tags.
+      You should follow the rules in the <rules> tag.
+      
+      <rules>
+        - You should ask clarifying QUESTIONS; don't make ASSUMPTIONS.
+        - Your responses should be thought provoking and on topic.
+        - You should consider anything relevant from the user's document context they provided.
+        - Keep your responses to about 100 words.
+        - Your responses should be conversational, not just suggestions or solutions. 
+        - You should be empathetic to the user.
+        - Conclude after giving a response. No further conversation.
+        - You should keep your answers short.
+        - ONLY provide ONE response, if there is more than one remove them.
+      </rules>
+
+      <summary>
+      ${userProfile.userSummary}
+      </summary>
+      
+      ${docs.map((d) => {
+        if (d.length > 0)
+          return `<document>
+        ${d
+          .replace(/[^a-zA-Z0-9 \n\r]+/g, "")
+          .trimStart()
+          .trimEnd()}
+        </document>
+        `;
+        return;
+      })}
+      
+      Respond to the user within <response></response> tag.
+
+      <input>
+      {input}
+      </input>
+
+      Assistant: <response>`,
+      ],
+    ]);
+  } else {
+    return ChatPromptTemplate.fromMessages([
+      new MessagesPlaceholder("history"),
+      [
+        "human",
+        `You are Uniquity AI, a professional coaching assistant.
+      You are conversing with someone seeking professional coaching.
+      The name of the user you are conversing with is ${userProfile.name}.
+      The summary of the users motivations and background is provided between the <summary> tag.
+      You should follow the rules in the <rules> tag.
+      
+      <rules>
+        - You should ask clarifying QUESTIONS; don't make ASSUMPTIONS.
+        - Your responses should be thought provoking and on topic.
+        - Keep your responses to about 100 words.
+        - Your responses should be conversational, not just suggestions or solutions. 
+        - You should be empathetic to the user.
+        - You should conclude after giving a response. No further conversation.
+        - You should keep your answers short.
+        - ONLY provide ONE response, if there is more than one remove them.
+      </rules>
+
+      <summary>
+      ${userProfile.userSummary}
+      </summary>
+      
+      Respond to the user within <response></response> tag.
+
+      <input>
+      {input}
+      </input>
+
+      Assistant: <response>`,
+      ],
+    ]);
+  }
 };
 
 /**
@@ -189,50 +254,7 @@ export const handler = async (event) => {
   const { Parameter } = await client.send(command);
 
   const userProfile = await getUserProfile(customerPhoneNumber);
-  const adminModelSettings = await getOpenAIModel();
 
-  let userPromptTemplate;
-  if (userProfile && userProfile.name) {
-    userPromptTemplate = `You are Uniquity AI, a professional coaching assistant.
-      You are conversing with someone seeking professional coaching.
-      The name of the user you are conversing with is ${userProfile.name}.
-      The summary of the users motivations and background is provided between the <summary> tag.
-      You also have access to the following chunked document context the user provided about themselves and their company. 
-      The document chunks are in the <document> tags.
-      <rules>
-      - You should ask clarifying QUESTIONS; don't make ASSUMPTIONS.
-      - Your responses should be thought provoking and on topic.
-      - Your responses should include anything relevant from the user's company documents or background.
-      - Keep your responses to about 100 words.
-      - Your responses should be conversational, not just suggestions or solutions. 
-      - You should be empathetic to the user.
-      - Conclude after giving a response. No further conversation.
-      ${adminModelSettings.prompt}
-      </rules>
-      <summary>${userProfile.userSummary}</summary> 
-      <document>
-      {context}
-      
-      Respond to the user within <response></response> tag.
-      <input>{input}</input> 
-      Assistant: <response>`;
-  } else {
-    userPromptTemplate = `You are Uniquity AI, a professional coaching assistant.
-    You are conversing with someone seeking professional coaching.
-      <rules>
-      - Ask clarifying QUESTIONS; don't make ASSUMPTIONS.
-      - Your responses should be thought provoking.
-      - Keep your responses to about 100 words.
-      - Your responses should be conversational, not just suggestions or solutions. 
-      - You should be empathetic to the user.
-      - Conclude after giving a response. No further conversation.
-      ${adminModelSettings.prompt}
-      </rules>
-      
-      Respond to the user within <response></response> tag.
-      <input>{input}</input> 
-      Assistant: <response>`;
-  }
   const memory = new BufferWindowMemory({
     k: 5,
     returnMessages: true,
@@ -248,23 +270,13 @@ export const handler = async (event) => {
     }),
   });
 
-  const chatPrompt = ChatPromptTemplate.fromPromptMessages([
-    new MessagesPlaceholder("history"),
-    ["human", userPromptTemplate],
-  ]);
-
   const chat = new ChatBedrock({
     model: "anthropic.claude-instant-v1",
     region: AWS_REGION,
     maxTokens: 8191,
   });
 
-  const chain = new ConversationChain({
-    llm: chat,
-    prompt: chatPrompt,
-    memory: memory,
-  });
-  let result;
+  let chatPrompt;
   if (userProfile) {
     const clientOS = new Client({
       ...AwsSigv4Signer({
@@ -302,27 +314,27 @@ export const handler = async (event) => {
         kIncrement: 2,
       });
       const docs = await retriever.getRelevantDocuments(response);
-      console.log("Got documents");
-      result = await chain.call({
-        input: response,
-        context:
-          docs && docs.length > 0
-            ? docs.map((d) => d.pageContent).join("\n</document>\n<document>\n")
-            : "</document>",
-      });
-      console.log("completed chain");
+      // Profile and Docs
+      chatPrompt = buildPrompt(userProfile, docs);
     } else {
-      result = await chain.call({
-        input: response,
-        context: "</document>",
-      });
+      // Profile no Docs
+      chatPrompt = buildPrompt(userProfile, undefined);
     }
   } else {
-    result = await chain.call({
-      input: response,
-      context: "</document>",
-    });
+    // No Profile, No Docs
+    chatPrompt = buildPrompt(undefined, undefined);
   }
+
+  const chain = new ConversationChain({
+    llm: chat,
+    prompt: chatPrompt,
+    memory: memory,
+  });
+
+  result = await chain.call({
+    input: response,
+  });
+
   console.log("sending sms");
   const inputSMS = {
     ApplicationId: AppId,
@@ -337,7 +349,8 @@ export const handler = async (event) => {
           Body: result.response
             .replace("<response>", "")
             .replace("</response>", "")
-            .trimStart(),
+            .trimStart()
+            .trimEnd(),
           MessageType: "TRANSACTIONAL",
           OriginationNumber: chatbotPhoneNumber,
         },
