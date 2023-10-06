@@ -262,6 +262,7 @@ export const handler = async (event) => {
              return `
         ${d.pageContent
           .replace(/[^a-zA-Z0-9 \n\r]+/g, "")
+          .replace("\n", " ")
           .trimStart()
           .trimEnd()}
         `;
