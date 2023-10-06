@@ -187,6 +187,7 @@ const getUserProfile = async (userId) => {
 // Prompt builder (Probably should do checks on username and summary)
 const buildPrompt = (userProfile, docs) => {
   if (docs && docs.length > 0) {
+    console.log(docs);
     return ChatPromptTemplate.fromMessages([
       new MessagesPlaceholder("history"),
       [
@@ -215,17 +216,19 @@ const buildPrompt = (userProfile, docs) => {
       ${userProfile.userSummary}
       </summary>
       
-      ${docs.map((d) => {
-        if (d.length > 0)
-          return `<document>
+      ${docs
+        .map((d) => {
+          if (d.length > 0)
+            return `<document>
         ${d
           .replace(/[^a-zA-Z0-9 \n\r]+/g, "")
           .trimStart()
           .trimEnd()}
         </document>
         `;
-        return;
-      })}
+          return;
+        })
+        .join("\n")}
       
       Respond to the user within <response></response> tag.
 
