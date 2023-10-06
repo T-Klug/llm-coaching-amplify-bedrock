@@ -145,8 +145,7 @@ const buildPrompt = (userProfile, docs) => {
         {input}
         </input>
 
-        Respond to the user within <response></response> tag.
-        Assistant: <response>`,
+        Assistant:`,
       ],
     ]);
   }
@@ -208,8 +207,8 @@ const buildPrompt = (userProfile, docs) => {
         {input}
         </input>
 
-        Respond to the user within <response></response> tag.
-        Assistant: <response>`,
+        Assistant:
+        `,
       ],
     ]);
   } else {
@@ -250,8 +249,8 @@ const buildPrompt = (userProfile, docs) => {
         {input}
         </input>
 
-        Respond to the user within <response></response> tag.
-        Assistant: <response>`,
+        Assistant:
+        `,
       ],
     ]);
   }

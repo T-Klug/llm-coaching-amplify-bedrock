@@ -200,8 +200,8 @@ export const handler = async (event) => {
       Assessment: ${userProfile.personalityTest}
       Background: ${userProfile.background}
       </user>
-      You will respond with the summary within the <response></response> tags.
-      Assistant: <response>
+      
+      Assistant:
       `,
   });
 

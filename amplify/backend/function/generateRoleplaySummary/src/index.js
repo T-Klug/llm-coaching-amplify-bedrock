@@ -317,8 +317,8 @@ export const handler = async (event) => {
       }
       </chat>
 
-      Structure your feedback with ratings, observations, and recommendations within the <response></response> tags.
-      Assistant: <response>
+      Structure your feedback with ratings, observations, and recommendations.
+      Assistant:
       `,
     });
 
@@ -369,8 +369,8 @@ export const handler = async (event) => {
       }
       </chat>
 
-      Structure your feedback with ratings, observations, and recommendations within the <response></response> tags.
-      Assistant: <response>
+      Structure your feedback with ratings, observations, and recommendations.
+      Assistant:
       `,
     });
 
