@@ -17,7 +17,7 @@
     "@smithy/protocol-http": "^3.0.6",
     "@smithy/signature-v4": "^2.0.10",
     "@smithy/util-utf8": "^2.0.0",
-    "langchain": "^0.0.156",
+    "langchain": "^0.0.161",
     "node-fetch": "^3.3.2"
   },
   "devDependencies": {
