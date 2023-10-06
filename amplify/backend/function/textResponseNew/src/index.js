@@ -176,17 +176,19 @@ const buildPrompt = (userProfile, docs) => {
       ${userProfile.userSummary}
       </summary>
       
-      ${docs.map((d) => {
-        if (d.length > 0)
-          return `<document>
-        ${d
+      ${docs
+        .map((d) => {
+          if (d.pageContent.length > 0)
+            return `<document>
+        ${d.pageContent
           .replace(/[^a-zA-Z0-9 \n\r]+/g, "")
           .trimStart()
           .trimEnd()}
         </document>
         `;
-        return;
-      })}
+          return;
+        })
+        .join("\n")}
       
       Respond to the user within <response></response> tag.
 

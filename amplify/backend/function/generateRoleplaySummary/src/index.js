@@ -288,13 +288,19 @@ export const handler = async (event) => {
       - Conclude after giving feedback. No further conversation.
       </rules>
       
-      <document>
-      ${
-        docs && docs.length > 0
-          ? docs.map((d) => d.pageContent).join("\n</document>\n<document>\n")
-          : "</document>"
-      }
-      </document>
+      ${docs
+        .map((d) => {
+          if (d.pageContent.length > 0)
+            return `<document>
+        ${d.pageContent
+          .replace(/[^a-zA-Z0-9 \n\r]+/g, "")
+          .trimStart()
+          .trimEnd()}
+        </document>
+        `;
+          return;
+        })
+        .join("\n")}
 
       <chat>
       ${
