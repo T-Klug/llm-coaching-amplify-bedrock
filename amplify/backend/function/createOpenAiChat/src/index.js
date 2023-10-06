@@ -91,7 +91,8 @@ const updateChatModel = async (id, newContent) => {
       content: newContent.response
         .replace("<response>", "")
         .replace("</response>", "")
-        .trimStart(),
+        .trimStart()
+        .trimEnd(),
     },
   ];
   const variables = {
