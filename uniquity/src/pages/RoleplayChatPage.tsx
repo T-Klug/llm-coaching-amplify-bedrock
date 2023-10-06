@@ -173,7 +173,7 @@ export default function RoleplayChatPage() {
           </Avatar>
 
           <Typography textAlign={'center'} variant="h5" mb={4}>
-            Welcome to role play scnearios
+            Welcome to role play scenarios
           </Typography>
           <Typography>
             Select difficulty of the AI roleplayer

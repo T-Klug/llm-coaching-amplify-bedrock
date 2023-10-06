@@ -252,7 +252,10 @@ export const handler = async (event) => {
     );
 
     result = await chain.call({
-      input: `<document>
+      input: `I'm going to give you a document chunks about the user you are conversing with. I'd like you to use this document context to enrich the conversation. The chunks are split by NEXT DOCUMENT. 
+        Here is the document context:
+        
+        <document>
        ${docs
          .map((d) => {
            if (d.pageContent.length > 0)
@@ -266,6 +269,7 @@ export const handler = async (event) => {
          })
          .join("NEXT DOCUMENT")}
       </document>
+      
       Before diving in, remember: The USER in the chat is the MANAGER, and the BOT is an employee. 
       The BOT was instructed to have the following tone: ${
         chatTranscript.difficulty
