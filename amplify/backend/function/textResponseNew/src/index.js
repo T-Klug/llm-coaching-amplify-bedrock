@@ -331,7 +331,7 @@ export const handler = async (event) => {
     memory: memory,
   });
 
-  result = await chain.call({
+  const result = await chain.call({
     input: response,
   });
 
