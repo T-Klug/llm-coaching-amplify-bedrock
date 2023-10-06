@@ -73,23 +73,6 @@ const listUserProfiles = /* GraphQL */ `
   }
 `;
 
-const listOpenAIModels = /* GraphQL */ `
-  query ListOpenAIModels {
-    listOpenAIModels {
-      items {
-        id
-        prompt
-        model
-        temperature
-        top_p
-        max_tokens
-        presence_penalty
-        frequency_penalty
-      }
-    }
-  }
-`;
-
 // Helper function to update the Model
 const updateChatModel = async (id, newContent) => {
   const endpoint = new URL(GRAPHQL_ENDPOINT);
@@ -99,7 +82,8 @@ const updateChatModel = async (id, newContent) => {
       content: newContent.response
         .replace("<response>", "")
         .replace("</response>", "")
-        .trimStart(),
+        .trimStart()
+        .trimEnd(),
     },
   ];
   const variables = {
@@ -187,46 +171,6 @@ const getUserProfile = async (userId) => {
   return body.data.listUserProfiles.items[0];
 };
 
-// Helper function to get Admin Settings
-const getOpenAIModel = async () => {
-  const endpoint = new URL(GRAPHQL_ENDPOINT);
-  const signer = new SignatureV4({
-    credentials: defaultProvider(),
-    region: AWS_REGION,
-    service: "appsync",
-    sha256: Sha256,
-  });
-  const requestToBeSigned = new HttpRequest({
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      host: endpoint.host,
-    },
-    hostname: endpoint.host,
-    body: JSON.stringify({ query: listOpenAIModels }),
-    path: endpoint.pathname,
-  });
-  const signed = await signer.sign(requestToBeSigned);
-  const request = new Request(endpoint, signed);
-  let response;
-  let body;
-
-  try {
-    console.log("Fetch Admin Settings");
-    response = await fetch(request);
-    body = await response.json();
-    if (body.errors)
-      console.log(
-        `ERROR Fetching Admin Settings: ${JSON.stringify(body.errors)}`
-      );
-  } catch (error) {
-    console.log(
-      `ERROR Fetching Admin Settings: ${JSON.stringify(error.message)}`
-    );
-  }
-  return body.data.listOpenAIModels.items[0];
-};
-
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
@@ -251,9 +195,8 @@ export const handler = async (event) => {
   });
 
   const userProfile = await getUserProfile(event.identity.claims.username);
-  const adminModelSettings = await getOpenAIModel();
 
-  const chatPrompt = ChatPromptTemplate.fromPromptMessages([
+  const chatPrompt = ChatPromptTemplate.fromMessages([
     new MessagesPlaceholder("history"),
     [
       "human",
@@ -262,17 +205,22 @@ export const handler = async (event) => {
       You are conversing with someone having an icebreaker conversation with you.
       
       <rules>
-      - Your responses should be in line with an icebreaker conversation. 
-      - You should respond to the user's input and ask fun icebreaker questions to get to know the user.
-      - You should not try to steer the conversation.
-      - Your responses should be conversational, not just suggestions or solutions. 
-      - Conclude after giving a response. No further conversation.
-      - Keep your responses to about 100 words.
-      ${adminModelSettings.prompt}
+        - Your responses should be in line with an icebreaker conversation. 
+        - You should respond to the user's input and ask fun icebreaker questions to get to know the user.
+        - You should not try to steer the conversation.
+        - Your responses should be conversational, not just suggestions or solutions. 
+        - Conclude after giving a response. No further conversation.
+        - Keep your responses to about 100 words.
+        - You should keep your answers short.
+        - ONLY provide ONE response, if there is more than one remove them.
       </rules>
     
       Respond to the user's input within the <response></response> tag
-      <input>{input}</input>
+      
+      <input>
+      {input}
+      </input>
+
       Assistant: <response>`,
     ],
   ]);
