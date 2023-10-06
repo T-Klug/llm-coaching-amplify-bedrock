@@ -218,9 +218,9 @@ const buildPrompt = (userProfile, docs) => {
       
       ${docs
         .map((d) => {
-          if (d.length > 0)
+          if (d.pageContent.length > 0)
             return `<document>
-        ${d
+        ${d.pageContent
           .replace(/[^a-zA-Z0-9 \n\r]+/g, "")
           .trimStart()
           .trimEnd()}
