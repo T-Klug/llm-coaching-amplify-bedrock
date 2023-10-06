@@ -25,7 +25,7 @@
         "createOpenAiChat": {
           "secretsPathAmplifyAppId": "d1wywebcdb6lm1",
           "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
-          "s3Key": "amplify-builds/createOpenAiChat-5a6c5870385263394757-build.zip",
+          "s3Key": "amplify-builds/createOpenAiChat-3956766f494f6b647672-build.zip",
           "opensearchUrl": "https://search-uniquity-4qxk4pyedoxbwxacrrcfxavoiy.us-east-1.es.amazonaws.com"
         },
         "createOpenAIChat": {},
@@ -36,7 +36,7 @@
         "textResponseNew": {
           "secretsPathAmplifyAppId": "d1wywebcdb6lm1",
           "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
-          "s3Key": "amplify-builds/textResponseNew-307358472f4b31315257-build.zip",
+          "s3Key": "amplify-builds/textResponseNew-365351333447444d4b79-build.zip",
           "pinpointApplicationId": "90797490ef5a47d79865eb44f745ff4c",
           "opensearchUrl": "https://search-uniquity-4qxk4pyedoxbwxacrrcfxavoiy.us-east-1.es.amazonaws.com"
         },
@@ -44,7 +44,7 @@
         "icebreakerChat": {
           "secretsPathAmplifyAppId": "d1wywebcdb6lm1",
           "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
-          "s3Key": "amplify-builds/icebreakerChat-41624b317a4c6d415665-build.zip"
+          "s3Key": "amplify-builds/icebreakerChat-65393262506432735941-build.zip"
         },
         "promptpersonlize": {},
         "generateUserSummary": {

@@ -37,7 +37,6 @@ import LightLogo from './assets/logo-black-no-back.svg';
 import DarkLogo from './assets/logo-no-back.svg';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Chat from './pages/Chat';
-import AdminPromptManager from './pages/AdminPromptManager';
 import Landing from './pages/Landing';
 import UserProfile from './pages/UserProfilePage';
 import IceBreakerChatPage from './pages/IceBreakerChatPage';
@@ -118,10 +117,6 @@ const router = createBrowserRouter([
       {
         path: 'documents',
         element: <DocumentContext />,
-      },
-      {
-        path: 'admin',
-        element: <AdminPromptManager />,
       },
     ],
   },

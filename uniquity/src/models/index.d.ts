@@ -54,46 +54,6 @@ export declare const OpenAIChat: (new (init: ModelInit<OpenAIChat>) => OpenAICha
   copyOf(source: OpenAIChat, mutator: (draft: MutableModel<OpenAIChat>) => MutableModel<OpenAIChat> | void): OpenAIChat;
 }
 
-type EagerOpenAIModel = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<OpenAIModel, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly prompt: string;
-  readonly model: string;
-  readonly temperature: string;
-  readonly top_p: string;
-  readonly max_tokens: string;
-  readonly presence_penalty: string;
-  readonly frequency_penalty: string;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-}
-
-type LazyOpenAIModel = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<OpenAIModel, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly prompt: string;
-  readonly model: string;
-  readonly temperature: string;
-  readonly top_p: string;
-  readonly max_tokens: string;
-  readonly presence_penalty: string;
-  readonly frequency_penalty: string;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-}
-
-export declare type OpenAIModel = LazyLoading extends LazyLoadingDisabled ? EagerOpenAIModel : LazyOpenAIModel
-
-export declare const OpenAIModel: (new (init: ModelInit<OpenAIModel>) => OpenAIModel) & {
-  copyOf(source: OpenAIModel, mutator: (draft: MutableModel<OpenAIModel>) => MutableModel<OpenAIModel> | void): OpenAIModel;
-}
-
 type EagerFeedback = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<Feedback, 'id'>;

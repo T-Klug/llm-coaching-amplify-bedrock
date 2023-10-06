@@ -2,14 +2,13 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-import * as APITypes from './API';
+import * as APITypes from "./API";
 type GeneratedSubscription<InputType, OutputType> = string & {
   __generatedSubscriptionInput: InputType;
   __generatedSubscriptionOutput: OutputType;
 };
 
-export const onCreateOpenAIChat =
-  /* GraphQL */ `subscription OnCreateOpenAIChat(
+export const onCreateOpenAIChat = /* GraphQL */ `subscription OnCreateOpenAIChat(
   $filter: ModelSubscriptionOpenAIChatFilterInput
   $owner: String
 ) {
@@ -31,11 +30,10 @@ export const onCreateOpenAIChat =
   }
 }
 ` as GeneratedSubscription<
-    APITypes.OnCreateOpenAIChatSubscriptionVariables,
-    APITypes.OnCreateOpenAIChatSubscription
-  >;
-export const onUpdateOpenAIChat =
-  /* GraphQL */ `subscription OnUpdateOpenAIChat(
+  APITypes.OnCreateOpenAIChatSubscriptionVariables,
+  APITypes.OnCreateOpenAIChatSubscription
+>;
+export const onUpdateOpenAIChat = /* GraphQL */ `subscription OnUpdateOpenAIChat(
   $filter: ModelSubscriptionOpenAIChatFilterInput
   $owner: String
 ) {
@@ -57,11 +55,10 @@ export const onUpdateOpenAIChat =
   }
 }
 ` as GeneratedSubscription<
-    APITypes.OnUpdateOpenAIChatSubscriptionVariables,
-    APITypes.OnUpdateOpenAIChatSubscription
-  >;
-export const onDeleteOpenAIChat =
-  /* GraphQL */ `subscription OnDeleteOpenAIChat(
+  APITypes.OnUpdateOpenAIChatSubscriptionVariables,
+  APITypes.OnUpdateOpenAIChatSubscription
+>;
+export const onDeleteOpenAIChat = /* GraphQL */ `subscription OnDeleteOpenAIChat(
   $filter: ModelSubscriptionOpenAIChatFilterInput
   $owner: String
 ) {
@@ -83,86 +80,10 @@ export const onDeleteOpenAIChat =
   }
 }
 ` as GeneratedSubscription<
-    APITypes.OnDeleteOpenAIChatSubscriptionVariables,
-    APITypes.OnDeleteOpenAIChatSubscription
-  >;
-export const onCreateOpenAIModel =
-  /* GraphQL */ `subscription OnCreateOpenAIModel(
-  $filter: ModelSubscriptionOpenAIModelFilterInput
-) {
-  onCreateOpenAIModel(filter: $filter) {
-    id
-    prompt
-    model
-    temperature
-    top_p
-    max_tokens
-    presence_penalty
-    frequency_penalty
-    createdAt
-    updatedAt
-    _version
-    _deleted
-    _lastChangedAt
-    __typename
-  }
-}
-` as GeneratedSubscription<
-    APITypes.OnCreateOpenAIModelSubscriptionVariables,
-    APITypes.OnCreateOpenAIModelSubscription
-  >;
-export const onUpdateOpenAIModel =
-  /* GraphQL */ `subscription OnUpdateOpenAIModel(
-  $filter: ModelSubscriptionOpenAIModelFilterInput
-) {
-  onUpdateOpenAIModel(filter: $filter) {
-    id
-    prompt
-    model
-    temperature
-    top_p
-    max_tokens
-    presence_penalty
-    frequency_penalty
-    createdAt
-    updatedAt
-    _version
-    _deleted
-    _lastChangedAt
-    __typename
-  }
-}
-` as GeneratedSubscription<
-    APITypes.OnUpdateOpenAIModelSubscriptionVariables,
-    APITypes.OnUpdateOpenAIModelSubscription
-  >;
-export const onDeleteOpenAIModel =
-  /* GraphQL */ `subscription OnDeleteOpenAIModel(
-  $filter: ModelSubscriptionOpenAIModelFilterInput
-) {
-  onDeleteOpenAIModel(filter: $filter) {
-    id
-    prompt
-    model
-    temperature
-    top_p
-    max_tokens
-    presence_penalty
-    frequency_penalty
-    createdAt
-    updatedAt
-    _version
-    _deleted
-    _lastChangedAt
-    __typename
-  }
-}
-` as GeneratedSubscription<
-    APITypes.OnDeleteOpenAIModelSubscriptionVariables,
-    APITypes.OnDeleteOpenAIModelSubscription
-  >;
-export const onCreateFeedback =
-  /* GraphQL */ `subscription OnCreateFeedback($filter: ModelSubscriptionFeedbackFilterInput) {
+  APITypes.OnDeleteOpenAIChatSubscriptionVariables,
+  APITypes.OnDeleteOpenAIChatSubscription
+>;
+export const onCreateFeedback = /* GraphQL */ `subscription OnCreateFeedback($filter: ModelSubscriptionFeedbackFilterInput) {
   onCreateFeedback(filter: $filter) {
     id
     like
@@ -177,11 +98,10 @@ export const onCreateFeedback =
   }
 }
 ` as GeneratedSubscription<
-    APITypes.OnCreateFeedbackSubscriptionVariables,
-    APITypes.OnCreateFeedbackSubscription
-  >;
-export const onUpdateFeedback =
-  /* GraphQL */ `subscription OnUpdateFeedback($filter: ModelSubscriptionFeedbackFilterInput) {
+  APITypes.OnCreateFeedbackSubscriptionVariables,
+  APITypes.OnCreateFeedbackSubscription
+>;
+export const onUpdateFeedback = /* GraphQL */ `subscription OnUpdateFeedback($filter: ModelSubscriptionFeedbackFilterInput) {
   onUpdateFeedback(filter: $filter) {
     id
     like
@@ -196,11 +116,10 @@ export const onUpdateFeedback =
   }
 }
 ` as GeneratedSubscription<
-    APITypes.OnUpdateFeedbackSubscriptionVariables,
-    APITypes.OnUpdateFeedbackSubscription
-  >;
-export const onDeleteFeedback =
-  /* GraphQL */ `subscription OnDeleteFeedback($filter: ModelSubscriptionFeedbackFilterInput) {
+  APITypes.OnUpdateFeedbackSubscriptionVariables,
+  APITypes.OnUpdateFeedbackSubscription
+>;
+export const onDeleteFeedback = /* GraphQL */ `subscription OnDeleteFeedback($filter: ModelSubscriptionFeedbackFilterInput) {
   onDeleteFeedback(filter: $filter) {
     id
     like
@@ -215,11 +134,10 @@ export const onDeleteFeedback =
   }
 }
 ` as GeneratedSubscription<
-    APITypes.OnDeleteFeedbackSubscriptionVariables,
-    APITypes.OnDeleteFeedbackSubscription
-  >;
-export const onCreateUserProfile =
-  /* GraphQL */ `subscription OnCreateUserProfile(
+  APITypes.OnDeleteFeedbackSubscriptionVariables,
+  APITypes.OnDeleteFeedbackSubscription
+>;
+export const onCreateUserProfile = /* GraphQL */ `subscription OnCreateUserProfile(
   $filter: ModelSubscriptionUserProfileFilterInput
   $owner: String
 ) {
@@ -243,11 +161,10 @@ export const onCreateUserProfile =
   }
 }
 ` as GeneratedSubscription<
-    APITypes.OnCreateUserProfileSubscriptionVariables,
-    APITypes.OnCreateUserProfileSubscription
-  >;
-export const onUpdateUserProfile =
-  /* GraphQL */ `subscription OnUpdateUserProfile(
+  APITypes.OnCreateUserProfileSubscriptionVariables,
+  APITypes.OnCreateUserProfileSubscription
+>;
+export const onUpdateUserProfile = /* GraphQL */ `subscription OnUpdateUserProfile(
   $filter: ModelSubscriptionUserProfileFilterInput
   $owner: String
 ) {
@@ -271,11 +188,10 @@ export const onUpdateUserProfile =
   }
 }
 ` as GeneratedSubscription<
-    APITypes.OnUpdateUserProfileSubscriptionVariables,
-    APITypes.OnUpdateUserProfileSubscription
-  >;
-export const onDeleteUserProfile =
-  /* GraphQL */ `subscription OnDeleteUserProfile(
+  APITypes.OnUpdateUserProfileSubscriptionVariables,
+  APITypes.OnUpdateUserProfileSubscription
+>;
+export const onDeleteUserProfile = /* GraphQL */ `subscription OnDeleteUserProfile(
   $filter: ModelSubscriptionUserProfileFilterInput
   $owner: String
 ) {
@@ -299,11 +215,10 @@ export const onDeleteUserProfile =
   }
 }
 ` as GeneratedSubscription<
-    APITypes.OnDeleteUserProfileSubscriptionVariables,
-    APITypes.OnDeleteUserProfileSubscription
-  >;
-export const onCreateIcebreakerChat =
-  /* GraphQL */ `subscription OnCreateIcebreakerChat(
+  APITypes.OnDeleteUserProfileSubscriptionVariables,
+  APITypes.OnDeleteUserProfileSubscription
+>;
+export const onCreateIcebreakerChat = /* GraphQL */ `subscription OnCreateIcebreakerChat(
   $filter: ModelSubscriptionIcebreakerChatFilterInput
   $owner: String
 ) {
@@ -325,11 +240,10 @@ export const onCreateIcebreakerChat =
   }
 }
 ` as GeneratedSubscription<
-    APITypes.OnCreateIcebreakerChatSubscriptionVariables,
-    APITypes.OnCreateIcebreakerChatSubscription
-  >;
-export const onUpdateIcebreakerChat =
-  /* GraphQL */ `subscription OnUpdateIcebreakerChat(
+  APITypes.OnCreateIcebreakerChatSubscriptionVariables,
+  APITypes.OnCreateIcebreakerChatSubscription
+>;
+export const onUpdateIcebreakerChat = /* GraphQL */ `subscription OnUpdateIcebreakerChat(
   $filter: ModelSubscriptionIcebreakerChatFilterInput
   $owner: String
 ) {
@@ -351,11 +265,10 @@ export const onUpdateIcebreakerChat =
   }
 }
 ` as GeneratedSubscription<
-    APITypes.OnUpdateIcebreakerChatSubscriptionVariables,
-    APITypes.OnUpdateIcebreakerChatSubscription
-  >;
-export const onDeleteIcebreakerChat =
-  /* GraphQL */ `subscription OnDeleteIcebreakerChat(
+  APITypes.OnUpdateIcebreakerChatSubscriptionVariables,
+  APITypes.OnUpdateIcebreakerChatSubscription
+>;
+export const onDeleteIcebreakerChat = /* GraphQL */ `subscription OnDeleteIcebreakerChat(
   $filter: ModelSubscriptionIcebreakerChatFilterInput
   $owner: String
 ) {
@@ -377,9 +290,9 @@ export const onDeleteIcebreakerChat =
   }
 }
 ` as GeneratedSubscription<
-    APITypes.OnDeleteIcebreakerChatSubscriptionVariables,
-    APITypes.OnDeleteIcebreakerChatSubscription
-  >;
+  APITypes.OnDeleteIcebreakerChatSubscriptionVariables,
+  APITypes.OnDeleteIcebreakerChatSubscription
+>;
 export const onCreateRoleChat = /* GraphQL */ `subscription OnCreateRoleChat(
   $filter: ModelSubscriptionRoleChatFilterInput
   $owner: String
@@ -467,8 +380,7 @@ export const onDeleteRoleChat = /* GraphQL */ `subscription OnDeleteRoleChat(
   APITypes.OnDeleteRoleChatSubscriptionVariables,
   APITypes.OnDeleteRoleChatSubscription
 >;
-export const onCreateRoleSummaary =
-  /* GraphQL */ `subscription OnCreateRoleSummaary(
+export const onCreateRoleSummaary = /* GraphQL */ `subscription OnCreateRoleSummaary(
   $filter: ModelSubscriptionRoleSummaaryFilterInput
   $owner: String
 ) {
@@ -490,11 +402,10 @@ export const onCreateRoleSummaary =
   }
 }
 ` as GeneratedSubscription<
-    APITypes.OnCreateRoleSummaarySubscriptionVariables,
-    APITypes.OnCreateRoleSummaarySubscription
-  >;
-export const onUpdateRoleSummaary =
-  /* GraphQL */ `subscription OnUpdateRoleSummaary(
+  APITypes.OnCreateRoleSummaarySubscriptionVariables,
+  APITypes.OnCreateRoleSummaarySubscription
+>;
+export const onUpdateRoleSummaary = /* GraphQL */ `subscription OnUpdateRoleSummaary(
   $filter: ModelSubscriptionRoleSummaaryFilterInput
   $owner: String
 ) {
@@ -516,11 +427,10 @@ export const onUpdateRoleSummaary =
   }
 }
 ` as GeneratedSubscription<
-    APITypes.OnUpdateRoleSummaarySubscriptionVariables,
-    APITypes.OnUpdateRoleSummaarySubscription
-  >;
-export const onDeleteRoleSummaary =
-  /* GraphQL */ `subscription OnDeleteRoleSummaary(
+  APITypes.OnUpdateRoleSummaarySubscriptionVariables,
+  APITypes.OnUpdateRoleSummaarySubscription
+>;
+export const onDeleteRoleSummaary = /* GraphQL */ `subscription OnDeleteRoleSummaary(
   $filter: ModelSubscriptionRoleSummaaryFilterInput
   $owner: String
 ) {
@@ -542,6 +452,6 @@ export const onDeleteRoleSummaary =
   }
 }
 ` as GeneratedSubscription<
-    APITypes.OnDeleteRoleSummaarySubscriptionVariables,
-    APITypes.OnDeleteRoleSummaarySubscription
-  >;
+  APITypes.OnDeleteRoleSummaarySubscriptionVariables,
+  APITypes.OnDeleteRoleSummaarySubscription
+>;

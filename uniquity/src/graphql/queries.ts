@@ -2,7 +2,7 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-import * as APITypes from './API';
+import * as APITypes from "./API";
 type GeneratedQuery<InputType, OutputType> = string & {
   __generatedQueryInput: InputType;
   __generatedQueryOutput: OutputType;
@@ -97,96 +97,6 @@ export const syncOpenAIChats = /* GraphQL */ `query SyncOpenAIChats(
 ` as GeneratedQuery<
   APITypes.SyncOpenAIChatsQueryVariables,
   APITypes.SyncOpenAIChatsQuery
->;
-export const getOpenAIModel = /* GraphQL */ `query GetOpenAIModel($id: ID!) {
-  getOpenAIModel(id: $id) {
-    id
-    prompt
-    model
-    temperature
-    top_p
-    max_tokens
-    presence_penalty
-    frequency_penalty
-    createdAt
-    updatedAt
-    _version
-    _deleted
-    _lastChangedAt
-    __typename
-  }
-}
-` as GeneratedQuery<
-  APITypes.GetOpenAIModelQueryVariables,
-  APITypes.GetOpenAIModelQuery
->;
-export const listOpenAIModels = /* GraphQL */ `query ListOpenAIModels(
-  $filter: ModelOpenAIModelFilterInput
-  $limit: Int
-  $nextToken: String
-) {
-  listOpenAIModels(filter: $filter, limit: $limit, nextToken: $nextToken) {
-    items {
-      id
-      prompt
-      model
-      temperature
-      top_p
-      max_tokens
-      presence_penalty
-      frequency_penalty
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-    nextToken
-    startedAt
-    __typename
-  }
-}
-` as GeneratedQuery<
-  APITypes.ListOpenAIModelsQueryVariables,
-  APITypes.ListOpenAIModelsQuery
->;
-export const syncOpenAIModels = /* GraphQL */ `query SyncOpenAIModels(
-  $filter: ModelOpenAIModelFilterInput
-  $limit: Int
-  $nextToken: String
-  $lastSync: AWSTimestamp
-) {
-  syncOpenAIModels(
-    filter: $filter
-    limit: $limit
-    nextToken: $nextToken
-    lastSync: $lastSync
-  ) {
-    items {
-      id
-      prompt
-      model
-      temperature
-      top_p
-      max_tokens
-      presence_penalty
-      frequency_penalty
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-    nextToken
-    startedAt
-    __typename
-  }
-}
-` as GeneratedQuery<
-  APITypes.SyncOpenAIModelsQueryVariables,
-  APITypes.SyncOpenAIModelsQuery
 >;
 export const getFeedback = /* GraphQL */ `query GetFeedback($id: ID!) {
   getFeedback(id: $id) {
@@ -362,8 +272,7 @@ export const syncUserProfiles = /* GraphQL */ `query SyncUserProfiles(
   APITypes.SyncUserProfilesQueryVariables,
   APITypes.SyncUserProfilesQuery
 >;
-export const getIcebreakerChat =
-  /* GraphQL */ `query GetIcebreakerChat($id: ID!) {
+export const getIcebreakerChat = /* GraphQL */ `query GetIcebreakerChat($id: ID!) {
   getIcebreakerChat(id: $id) {
     id
     messages {
@@ -382,9 +291,9 @@ export const getIcebreakerChat =
   }
 }
 ` as GeneratedQuery<
-    APITypes.GetIcebreakerChatQueryVariables,
-    APITypes.GetIcebreakerChatQuery
-  >;
+  APITypes.GetIcebreakerChatQueryVariables,
+  APITypes.GetIcebreakerChatQuery
+>;
 export const listIcebreakerChats = /* GraphQL */ `query ListIcebreakerChats(
   $filter: ModelIcebreakerChatFilterInput
   $limit: Int

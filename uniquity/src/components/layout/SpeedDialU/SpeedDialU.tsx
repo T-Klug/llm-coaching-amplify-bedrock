@@ -1,6 +1,5 @@
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import Menu from '@mui/icons-material/Menu';
-import AdminPanelSettingsOutlined from '@mui/icons-material/AdminPanelSettingsOutlined';
 import LogoutOutlined from '@mui/icons-material/LogoutOutlined';
 import HomeOutlined from '@mui/icons-material/HomeOutlined';
 import PersonOutlineOutlined from '@mui/icons-material/PersonOutlineOutlined';
@@ -17,7 +16,7 @@ import { DataStore } from 'aws-amplify';
 
 export function SpeedDialU() {
   // Auth Context
-  const { user, signOut } = useAuthenticator();
+  const { signOut } = useAuthenticator();
   // Navigation Context
   const navigate = useNavigate();
   // Feedback form dialog
@@ -74,17 +73,6 @@ export function SpeedDialU() {
           tooltipTitle="Feedback"
           onClick={() => setFeedbackOpen(true)}
         />
-
-        {user
-          .getSignInUserSession()
-          ?.getAccessToken()
-          .payload['cognito:groups']?.includes('Admin') && (
-          <SpeedDialAction
-            icon={<AdminPanelSettingsOutlined />}
-            tooltipTitle="Admin"
-            onClick={() => navigate('/admin')}
-          />
-        )}
         <SpeedDialAction
           icon={<LogoutOutlined />}
           tooltipTitle="Sign out"

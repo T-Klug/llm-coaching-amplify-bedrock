@@ -78,27 +78,6 @@ type Mutation {
     @auth(rules: [{ allow: private }])
 }
 
-type OpenAIModel
-  @model
-  @auth(
-    rules: [
-      {
-        allow: groups
-        groups: ["Admin"]
-        operations: [read, create, update, delete]
-      }
-    ]
-  ) {
-  id: ID!
-  prompt: String!
-  model: String!
-  temperature: String!
-  top_p: String!
-  max_tokens: String!
-  presence_penalty: String!
-  frequency_penalty: String!
-}
-
 type Feedback
   @model
   @auth(

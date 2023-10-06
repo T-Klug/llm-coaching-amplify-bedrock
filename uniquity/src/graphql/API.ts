@@ -126,66 +126,6 @@ export type DeleteOpenAIChatInput = {
   _version?: number | null,
 };
 
-export type CreateOpenAIModelInput = {
-  id?: string | null,
-  prompt: string,
-  model: string,
-  temperature: string,
-  top_p: string,
-  max_tokens: string,
-  presence_penalty: string,
-  frequency_penalty: string,
-  _version?: number | null,
-};
-
-export type ModelOpenAIModelConditionInput = {
-  prompt?: ModelStringInput | null,
-  model?: ModelStringInput | null,
-  temperature?: ModelStringInput | null,
-  top_p?: ModelStringInput | null,
-  max_tokens?: ModelStringInput | null,
-  presence_penalty?: ModelStringInput | null,
-  frequency_penalty?: ModelStringInput | null,
-  and?: Array< ModelOpenAIModelConditionInput | null > | null,
-  or?: Array< ModelOpenAIModelConditionInput | null > | null,
-  not?: ModelOpenAIModelConditionInput | null,
-  _deleted?: ModelBooleanInput | null,
-};
-
-export type OpenAIModel = {
-  __typename: "OpenAIModel",
-  id: string,
-  prompt: string,
-  model: string,
-  temperature: string,
-  top_p: string,
-  max_tokens: string,
-  presence_penalty: string,
-  frequency_penalty: string,
-  createdAt: string,
-  updatedAt: string,
-  _version: number,
-  _deleted?: boolean | null,
-  _lastChangedAt: number,
-};
-
-export type UpdateOpenAIModelInput = {
-  id: string,
-  prompt?: string | null,
-  model?: string | null,
-  temperature?: string | null,
-  top_p?: string | null,
-  max_tokens?: string | null,
-  presence_penalty?: string | null,
-  frequency_penalty?: string | null,
-  _version?: number | null,
-};
-
-export type DeleteOpenAIModelInput = {
-  id: string,
-  _version?: number | null,
-};
-
 export type CreateFeedbackInput = {
   id?: string | null,
   like?: boolean | null,
@@ -518,28 +458,6 @@ export type ModelOpenAIChatConnection = {
   startedAt?: number | null,
 };
 
-export type ModelOpenAIModelFilterInput = {
-  id?: ModelIDInput | null,
-  prompt?: ModelStringInput | null,
-  model?: ModelStringInput | null,
-  temperature?: ModelStringInput | null,
-  top_p?: ModelStringInput | null,
-  max_tokens?: ModelStringInput | null,
-  presence_penalty?: ModelStringInput | null,
-  frequency_penalty?: ModelStringInput | null,
-  and?: Array< ModelOpenAIModelFilterInput | null > | null,
-  or?: Array< ModelOpenAIModelFilterInput | null > | null,
-  not?: ModelOpenAIModelFilterInput | null,
-  _deleted?: ModelBooleanInput | null,
-};
-
-export type ModelOpenAIModelConnection = {
-  __typename: "ModelOpenAIModelConnection",
-  items:  Array<OpenAIModel | null >,
-  nextToken?: string | null,
-  startedAt?: number | null,
-};
-
 export type ModelFeedbackFilterInput = {
   id?: ModelIDInput | null,
   like?: ModelBooleanInput | null,
@@ -665,18 +583,18 @@ export type ModelSubscriptionIDInput = {
   notIn?: Array< string | null > | null,
 };
 
-export type ModelSubscriptionOpenAIModelFilterInput = {
+export type ModelSubscriptionFeedbackFilterInput = {
   id?: ModelSubscriptionIDInput | null,
-  prompt?: ModelSubscriptionStringInput | null,
-  model?: ModelSubscriptionStringInput | null,
-  temperature?: ModelSubscriptionStringInput | null,
-  top_p?: ModelSubscriptionStringInput | null,
-  max_tokens?: ModelSubscriptionStringInput | null,
-  presence_penalty?: ModelSubscriptionStringInput | null,
-  frequency_penalty?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionOpenAIModelFilterInput | null > | null,
-  or?: Array< ModelSubscriptionOpenAIModelFilterInput | null > | null,
+  like?: ModelSubscriptionBooleanInput | null,
+  comment?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionFeedbackFilterInput | null > | null,
+  or?: Array< ModelSubscriptionFeedbackFilterInput | null > | null,
   _deleted?: ModelBooleanInput | null,
+};
+
+export type ModelSubscriptionBooleanInput = {
+  ne?: boolean | null,
+  eq?: boolean | null,
 };
 
 export type ModelSubscriptionStringInput = {
@@ -692,20 +610,6 @@ export type ModelSubscriptionStringInput = {
   beginsWith?: string | null,
   in?: Array< string | null > | null,
   notIn?: Array< string | null > | null,
-};
-
-export type ModelSubscriptionFeedbackFilterInput = {
-  id?: ModelSubscriptionIDInput | null,
-  like?: ModelSubscriptionBooleanInput | null,
-  comment?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionFeedbackFilterInput | null > | null,
-  or?: Array< ModelSubscriptionFeedbackFilterInput | null > | null,
-  _deleted?: ModelBooleanInput | null,
-};
-
-export type ModelSubscriptionBooleanInput = {
-  ne?: boolean | null,
-  eq?: boolean | null,
 };
 
 export type ModelSubscriptionUserProfileFilterInput = {
@@ -820,78 +724,6 @@ export type DeleteOpenAIChatMutation = {
     } | null > | null,
     user?: string | null,
     owner?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
-};
-
-export type CreateOpenAIModelMutationVariables = {
-  input: CreateOpenAIModelInput,
-  condition?: ModelOpenAIModelConditionInput | null,
-};
-
-export type CreateOpenAIModelMutation = {
-  createOpenAIModel?:  {
-    __typename: "OpenAIModel",
-    id: string,
-    prompt: string,
-    model: string,
-    temperature: string,
-    top_p: string,
-    max_tokens: string,
-    presence_penalty: string,
-    frequency_penalty: string,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
-};
-
-export type UpdateOpenAIModelMutationVariables = {
-  input: UpdateOpenAIModelInput,
-  condition?: ModelOpenAIModelConditionInput | null,
-};
-
-export type UpdateOpenAIModelMutation = {
-  updateOpenAIModel?:  {
-    __typename: "OpenAIModel",
-    id: string,
-    prompt: string,
-    model: string,
-    temperature: string,
-    top_p: string,
-    max_tokens: string,
-    presence_penalty: string,
-    frequency_penalty: string,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
-};
-
-export type DeleteOpenAIModelMutationVariables = {
-  input: DeleteOpenAIModelInput,
-  condition?: ModelOpenAIModelConditionInput | null,
-};
-
-export type DeleteOpenAIModelMutation = {
-  deleteOpenAIModel?:  {
-    __typename: "OpenAIModel",
-    id: string,
-    prompt: string,
-    model: string,
-    temperature: string,
-    top_p: string,
-    max_tokens: string,
-    presence_penalty: string,
-    frequency_penalty: string,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -1454,90 +1286,6 @@ export type SyncOpenAIChatsQuery = {
   } | null,
 };
 
-export type GetOpenAIModelQueryVariables = {
-  id: string,
-};
-
-export type GetOpenAIModelQuery = {
-  getOpenAIModel?:  {
-    __typename: "OpenAIModel",
-    id: string,
-    prompt: string,
-    model: string,
-    temperature: string,
-    top_p: string,
-    max_tokens: string,
-    presence_penalty: string,
-    frequency_penalty: string,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
-};
-
-export type ListOpenAIModelsQueryVariables = {
-  filter?: ModelOpenAIModelFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type ListOpenAIModelsQuery = {
-  listOpenAIModels?:  {
-    __typename: "ModelOpenAIModelConnection",
-    items:  Array< {
-      __typename: "OpenAIModel",
-      id: string,
-      prompt: string,
-      model: string,
-      temperature: string,
-      top_p: string,
-      max_tokens: string,
-      presence_penalty: string,
-      frequency_penalty: string,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
-};
-
-export type SyncOpenAIModelsQueryVariables = {
-  filter?: ModelOpenAIModelFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  lastSync?: number | null,
-};
-
-export type SyncOpenAIModelsQuery = {
-  syncOpenAIModels?:  {
-    __typename: "ModelOpenAIModelConnection",
-    items:  Array< {
-      __typename: "OpenAIModel",
-      id: string,
-      prompt: string,
-      model: string,
-      temperature: string,
-      top_p: string,
-      max_tokens: string,
-      presence_penalty: string,
-      frequency_penalty: string,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
-};
-
 export type GetFeedbackQueryVariables = {
   id: string,
 };
@@ -2028,75 +1776,6 @@ export type OnDeleteOpenAIChatSubscription = {
     } | null > | null,
     user?: string | null,
     owner?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
-};
-
-export type OnCreateOpenAIModelSubscriptionVariables = {
-  filter?: ModelSubscriptionOpenAIModelFilterInput | null,
-};
-
-export type OnCreateOpenAIModelSubscription = {
-  onCreateOpenAIModel?:  {
-    __typename: "OpenAIModel",
-    id: string,
-    prompt: string,
-    model: string,
-    temperature: string,
-    top_p: string,
-    max_tokens: string,
-    presence_penalty: string,
-    frequency_penalty: string,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
-};
-
-export type OnUpdateOpenAIModelSubscriptionVariables = {
-  filter?: ModelSubscriptionOpenAIModelFilterInput | null,
-};
-
-export type OnUpdateOpenAIModelSubscription = {
-  onUpdateOpenAIModel?:  {
-    __typename: "OpenAIModel",
-    id: string,
-    prompt: string,
-    model: string,
-    temperature: string,
-    top_p: string,
-    max_tokens: string,
-    presence_penalty: string,
-    frequency_penalty: string,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
-};
-
-export type OnDeleteOpenAIModelSubscriptionVariables = {
-  filter?: ModelSubscriptionOpenAIModelFilterInput | null,
-};
-
-export type OnDeleteOpenAIModelSubscription = {
-  onDeleteOpenAIModel?:  {
-    __typename: "OpenAIModel",
-    id: string,
-    prompt: string,
-    model: string,
-    temperature: string,
-    top_p: string,
-    max_tokens: string,
-    presence_penalty: string,
-    frequency_penalty: string,
     createdAt: string,
     updatedAt: string,
     _version: number,

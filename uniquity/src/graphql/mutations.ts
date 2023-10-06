@@ -2,7 +2,7 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-import * as APITypes from './API';
+import * as APITypes from "./API";
 type GeneratedMutation<InputType, OutputType> = string & {
   __generatedMutationInput: InputType;
   __generatedMutationOutput: OutputType;
@@ -82,81 +82,6 @@ export const deleteOpenAIChat = /* GraphQL */ `mutation DeleteOpenAIChat(
 ` as GeneratedMutation<
   APITypes.DeleteOpenAIChatMutationVariables,
   APITypes.DeleteOpenAIChatMutation
->;
-export const createOpenAIModel = /* GraphQL */ `mutation CreateOpenAIModel(
-  $input: CreateOpenAIModelInput!
-  $condition: ModelOpenAIModelConditionInput
-) {
-  createOpenAIModel(input: $input, condition: $condition) {
-    id
-    prompt
-    model
-    temperature
-    top_p
-    max_tokens
-    presence_penalty
-    frequency_penalty
-    createdAt
-    updatedAt
-    _version
-    _deleted
-    _lastChangedAt
-    __typename
-  }
-}
-` as GeneratedMutation<
-  APITypes.CreateOpenAIModelMutationVariables,
-  APITypes.CreateOpenAIModelMutation
->;
-export const updateOpenAIModel = /* GraphQL */ `mutation UpdateOpenAIModel(
-  $input: UpdateOpenAIModelInput!
-  $condition: ModelOpenAIModelConditionInput
-) {
-  updateOpenAIModel(input: $input, condition: $condition) {
-    id
-    prompt
-    model
-    temperature
-    top_p
-    max_tokens
-    presence_penalty
-    frequency_penalty
-    createdAt
-    updatedAt
-    _version
-    _deleted
-    _lastChangedAt
-    __typename
-  }
-}
-` as GeneratedMutation<
-  APITypes.UpdateOpenAIModelMutationVariables,
-  APITypes.UpdateOpenAIModelMutation
->;
-export const deleteOpenAIModel = /* GraphQL */ `mutation DeleteOpenAIModel(
-  $input: DeleteOpenAIModelInput!
-  $condition: ModelOpenAIModelConditionInput
-) {
-  deleteOpenAIModel(input: $input, condition: $condition) {
-    id
-    prompt
-    model
-    temperature
-    top_p
-    max_tokens
-    presence_penalty
-    frequency_penalty
-    createdAt
-    updatedAt
-    _version
-    _deleted
-    _lastChangedAt
-    __typename
-  }
-}
-` as GeneratedMutation<
-  APITypes.DeleteOpenAIModelMutationVariables,
-  APITypes.DeleteOpenAIModelMutation
 >;
 export const createFeedback = /* GraphQL */ `mutation CreateFeedback(
   $input: CreateFeedbackInput!
@@ -302,8 +227,7 @@ export const deleteUserProfile = /* GraphQL */ `mutation DeleteUserProfile(
   APITypes.DeleteUserProfileMutationVariables,
   APITypes.DeleteUserProfileMutation
 >;
-export const createIcebreakerChat =
-  /* GraphQL */ `mutation CreateIcebreakerChat(
+export const createIcebreakerChat = /* GraphQL */ `mutation CreateIcebreakerChat(
   $input: CreateIcebreakerChatInput!
   $condition: ModelIcebreakerChatConditionInput
 ) {
@@ -325,11 +249,10 @@ export const createIcebreakerChat =
   }
 }
 ` as GeneratedMutation<
-    APITypes.CreateIcebreakerChatMutationVariables,
-    APITypes.CreateIcebreakerChatMutation
-  >;
-export const updateIcebreakerChat =
-  /* GraphQL */ `mutation UpdateIcebreakerChat(
+  APITypes.CreateIcebreakerChatMutationVariables,
+  APITypes.CreateIcebreakerChatMutation
+>;
+export const updateIcebreakerChat = /* GraphQL */ `mutation UpdateIcebreakerChat(
   $input: UpdateIcebreakerChatInput!
   $condition: ModelIcebreakerChatConditionInput
 ) {
@@ -351,11 +274,10 @@ export const updateIcebreakerChat =
   }
 }
 ` as GeneratedMutation<
-    APITypes.UpdateIcebreakerChatMutationVariables,
-    APITypes.UpdateIcebreakerChatMutation
-  >;
-export const deleteIcebreakerChat =
-  /* GraphQL */ `mutation DeleteIcebreakerChat(
+  APITypes.UpdateIcebreakerChatMutationVariables,
+  APITypes.UpdateIcebreakerChatMutation
+>;
+export const deleteIcebreakerChat = /* GraphQL */ `mutation DeleteIcebreakerChat(
   $input: DeleteIcebreakerChatInput!
   $condition: ModelIcebreakerChatConditionInput
 ) {
@@ -377,9 +299,9 @@ export const deleteIcebreakerChat =
   }
 }
 ` as GeneratedMutation<
-    APITypes.DeleteIcebreakerChatMutationVariables,
-    APITypes.DeleteIcebreakerChatMutation
-  >;
+  APITypes.DeleteIcebreakerChatMutationVariables,
+  APITypes.DeleteIcebreakerChatMutation
+>;
 export const createRoleChat = /* GraphQL */ `mutation CreateRoleChat(
   $input: CreateRoleChatInput!
   $condition: ModelRoleChatConditionInput
@@ -542,8 +464,7 @@ export const deleteRoleSummaary = /* GraphQL */ `mutation DeleteRoleSummaary(
   APITypes.DeleteRoleSummaaryMutationVariables,
   APITypes.DeleteRoleSummaaryMutation
 >;
-export const createOpenAIChatFunc =
-  /* GraphQL */ `mutation CreateOpenAIChatFunc($input: CreateOpenAIChatFuncInput) {
+export const createOpenAIChatFunc = /* GraphQL */ `mutation CreateOpenAIChatFunc($input: CreateOpenAIChatFuncInput) {
   createOpenAIChatFunc(input: $input) {
     id
     messages {
@@ -562,11 +483,10 @@ export const createOpenAIChatFunc =
   }
 }
 ` as GeneratedMutation<
-    APITypes.CreateOpenAIChatFuncMutationVariables,
-    APITypes.CreateOpenAIChatFuncMutation
-  >;
-export const chatIcebreakerFunc =
-  /* GraphQL */ `mutation ChatIcebreakerFunc($input: ChatIcebreakerFuncInput) {
+  APITypes.CreateOpenAIChatFuncMutationVariables,
+  APITypes.CreateOpenAIChatFuncMutation
+>;
+export const chatIcebreakerFunc = /* GraphQL */ `mutation ChatIcebreakerFunc($input: ChatIcebreakerFuncInput) {
   chatIcebreakerFunc(input: $input) {
     id
     messages {
@@ -585,19 +505,17 @@ export const chatIcebreakerFunc =
   }
 }
 ` as GeneratedMutation<
-    APITypes.ChatIcebreakerFuncMutationVariables,
-    APITypes.ChatIcebreakerFuncMutation
-  >;
-export const generateUserSummaryFunc =
-  /* GraphQL */ `mutation GenerateUserSummaryFunc($input: GenerateUserSummaryFuncInput) {
+  APITypes.ChatIcebreakerFuncMutationVariables,
+  APITypes.ChatIcebreakerFuncMutation
+>;
+export const generateUserSummaryFunc = /* GraphQL */ `mutation GenerateUserSummaryFunc($input: GenerateUserSummaryFuncInput) {
   generateUserSummaryFunc(input: $input)
 }
 ` as GeneratedMutation<
-    APITypes.GenerateUserSummaryFuncMutationVariables,
-    APITypes.GenerateUserSummaryFuncMutation
-  >;
-export const chatRoleplayFunc =
-  /* GraphQL */ `mutation ChatRoleplayFunc($input: RoleplayChatFuncInput) {
+  APITypes.GenerateUserSummaryFuncMutationVariables,
+  APITypes.GenerateUserSummaryFuncMutation
+>;
+export const chatRoleplayFunc = /* GraphQL */ `mutation ChatRoleplayFunc($input: RoleplayChatFuncInput) {
   chatRoleplayFunc(input: $input) {
     id
     messages {
@@ -620,11 +538,10 @@ export const chatRoleplayFunc =
   }
 }
 ` as GeneratedMutation<
-    APITypes.ChatRoleplayFuncMutationVariables,
-    APITypes.ChatRoleplayFuncMutation
-  >;
-export const generateRoleplaySummaryFunc =
-  /* GraphQL */ `mutation GenerateRoleplaySummaryFunc($input: GenerateRoleplaySummaryFuncInput) {
+  APITypes.ChatRoleplayFuncMutationVariables,
+  APITypes.ChatRoleplayFuncMutation
+>;
+export const generateRoleplaySummaryFunc = /* GraphQL */ `mutation GenerateRoleplaySummaryFunc($input: GenerateRoleplaySummaryFuncInput) {
   generateRoleplaySummaryFunc(input: $input) {
     id
     summary
@@ -643,6 +560,6 @@ export const generateRoleplaySummaryFunc =
   }
 }
 ` as GeneratedMutation<
-    APITypes.GenerateRoleplaySummaryFuncMutationVariables,
-    APITypes.GenerateRoleplaySummaryFuncMutation
-  >;
+  APITypes.GenerateRoleplaySummaryFuncMutationVariables,
+  APITypes.GenerateRoleplaySummaryFuncMutation
+>;
