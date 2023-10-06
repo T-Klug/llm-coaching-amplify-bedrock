@@ -36,7 +36,7 @@
         "textResponseNew": {
           "secretsPathAmplifyAppId": "d1wywebcdb6lm1",
           "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
-          "s3Key": "amplify-builds/textResponseNew-365351333447444d4b79-build.zip",
+          "s3Key": "amplify-builds/textResponseNew-336f5266425167535372-build.zip",
           "pinpointApplicationId": "90797490ef5a47d79865eb44f745ff4c",
           "opensearchUrl": "https://search-uniquity-4qxk4pyedoxbwxacrrcfxavoiy.us-east-1.es.amazonaws.com"
         },

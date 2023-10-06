@@ -86,7 +86,8 @@ const updateChatModel = async (id, newContent) => {
       content: newContent.response
         .replace("<response>", "")
         .replace("</response>", "")
-        .trimStart(),
+        .trimStart()
+        .trimEnd(),
     },
   ];
   const variables = {
@@ -199,7 +200,7 @@ export const handler = async (event) => {
 
   const userProfile = await getUserProfile(event.identity.claims.username);
 
-  const chatPrompt = ChatPromptTemplate.fromPromptMessages([
+  const chatPrompt = ChatPromptTemplate.fromMessages([
     new MessagesPlaceholder("history"),
     [
       "human",
