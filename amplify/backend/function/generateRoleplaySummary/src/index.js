@@ -252,7 +252,20 @@ export const handler = async (event) => {
     );
 
     result = await chain.call({
-      input: `
+      input: `<document>
+       ${docs
+         .map((d) => {
+           if (d.pageContent.length > 0)
+             return `
+        ${d.pageContent
+          .replace(/[^a-zA-Z0-9 \n\r]+/g, "")
+          .trimStart()
+          .trimEnd()}
+        `;
+           return;
+         })
+         .join("NEXT DOCUMENT")}
+      </document>
       Before diving in, remember: The USER in the chat is the MANAGER, and the BOT is an employee. 
       The BOT was instructed to have the following tone: ${
         chatTranscript.difficulty
@@ -286,21 +299,10 @@ export const handler = async (event) => {
       - Avoid repetitive feedback.
       - Your feedback should be constructive and actionable.
       - Conclude after giving feedback. No further conversation.
+      - Relate anything relevant from the context in the <document></document> tags.
       </rules>
       
-      ${docs
-        .map((d) => {
-          if (d.pageContent.length > 0)
-            return `<document>
-        ${d.pageContent
-          .replace(/[^a-zA-Z0-9 \n\r]+/g, "")
-          .trimStart()
-          .trimEnd()}
-        </document>
-        `;
-          return;
-        })
-        .join("\n")}
+     
 
       <chat>
       ${

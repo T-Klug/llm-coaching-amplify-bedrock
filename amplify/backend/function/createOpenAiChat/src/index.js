@@ -192,14 +192,33 @@ const buildPrompt = (userProfile, docs) => {
       new MessagesPlaceholder("history"),
       [
         "human",
-        `You are Uniquity AI, a professional coaching assistant.
+        `<document>
+      ${docs
+        .map((d) => {
+          if (d.pageContent.length > 0)
+            return `
+        ${d.pageContent
+          .replace(/[^a-zA-Z0-9 \n\r]+/g, "")
+          .trimStart()
+          .trimEnd()}
+        `;
+          return;
+        })
+        .join("NEXT DOCUMENT")}
+      </document>
+
+      You are Uniquity AI, a professional coaching assistant.
       You are conversing with someone seeking professional coaching.
       The name of the user you are conversing with is ${userProfile.name}.
       The summary of the users motivations and background is provided between the <summary> tag.
-      You also have access to the following chunked document context the user provided about themselves or their company. 
-      The document chunks are in the <document> tags.
+      You also have access to the following chunked document context in the <document></document> tags that the user provided about themselves or their company. 
+      The document chunks are in the <document></document> tag split by NEXT DOCUMENT
       You should follow the rules in the <rules> tag.
-      
+
+      <summary>
+      ${userProfile.userSummary}
+      </summary>
+
       <rules>
         - You should ask clarifying QUESTIONS; don't make ASSUMPTIONS.
         - Your responses should be thought provoking and on topic.
@@ -211,24 +230,6 @@ const buildPrompt = (userProfile, docs) => {
         - You should keep your answers short.
         - ONLY provide ONE response, if there is more than one remove them.
       </rules>
-
-      <summary>
-      ${userProfile.userSummary}
-      </summary>
-      
-      ${docs
-        .map((d) => {
-          if (d.pageContent.length > 0)
-            return `<document>
-        ${d.pageContent
-          .replace(/[^a-zA-Z0-9 \n\r]+/g, "")
-          .trimStart()
-          .trimEnd()}
-        </document>
-        `;
-          return;
-        })
-        .join("\n")}
       
       Respond to the user within <response></response> tag.
 
