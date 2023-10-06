@@ -164,12 +164,12 @@ const buildPrompt = (userProfile, docs) => {
         - You should ask clarifying QUESTIONS; don't make ASSUMPTIONS.
         - Your responses should be thought provoking and on topic.
         - You should consider anything relevant from the user's document context they provided.
-        - Keep your responses to about 100 words.
         - Your responses should be conversational, not just suggestions or solutions. 
         - You should be empathetic to the user.
         - Conclude after giving a response. No further conversation.
         - You should keep your answers short.
         - ONLY provide ONE response, if there is more than one remove them.
+        - Keep your responses to about 100 words.
       </rules>
 
       <summary>
@@ -213,12 +213,12 @@ const buildPrompt = (userProfile, docs) => {
       <rules>
         - You should ask clarifying QUESTIONS; don't make ASSUMPTIONS.
         - Your responses should be thought provoking and on topic.
-        - Keep your responses to about 100 words.
         - Your responses should be conversational, not just suggestions or solutions. 
         - You should be empathetic to the user.
         - You should conclude after giving a response. No further conversation.
         - You should keep your answers short.
         - ONLY provide ONE response, if there is more than one remove them.
+        - Keep your responses to about 100 words.
       </rules>
 
       <summary>
@@ -336,6 +336,8 @@ export const handler = async (event) => {
   const result = await chain.call({
     input: response,
   });
+
+  console.log(result);
 
   console.log("sending sms");
   const inputSMS = {
