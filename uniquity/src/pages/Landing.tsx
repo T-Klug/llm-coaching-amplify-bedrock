@@ -19,6 +19,7 @@ import getToKnowImage from '../assets/get-to-know.jpg';
 import roleplayImage from '../assets/roleplay.jpg';
 import adhocImage from '../assets/adhoc.jpg';
 import goalImage from '../assets/goals.jpg';
+import docImage from '../assets/documents.jpg';
 import StreakCounter from '../components/landing/StreakCounter/StreakCounter';
 import Slide from '@mui/material/Slide';
 import { generateUserSummaryCall } from '../helpers/ChatHelpers';
@@ -233,10 +234,7 @@ export default function Landing() {
           alignContent: 'center',
         }}
       >
-        <Card
-          raised
-          sx={{ borderRadius: 6, marginTop: 5, width: '85%', marginBottom: 5 }}
-        >
+        <Card raised sx={{ borderRadius: 6, marginTop: 5, width: '85%' }}>
           <CardMedia
             height={200}
             component="img"
@@ -320,6 +318,36 @@ export default function Landing() {
                 </>
               )}
             </Box>
+          </CardContent>
+        </Card>
+        <Card
+          raised
+          sx={{ borderRadius: 6, marginTop: 5, marginBottom: 5, width: '85%' }}
+        >
+          <CardMedia
+            height={200}
+            component="img"
+            alt="Document Image"
+            image={docImage}
+          />
+          <CardContent>
+            <div style={{ marginBottom: 10 }}>
+              <Typography variant="h5">Context documents</Typography>
+              <Divider flexItem variant="middle" />
+            </div>
+            <Typography>
+              Upload documents to help personalize your AI coach (e.g. resume,
+              performance review, engagement report, leadership training
+              materials)
+            </Typography>
+
+            <Button
+              variant="contained"
+              sx={{ margin: 3 }}
+              onClick={() => navigate('/documents')}
+            >
+              Start Uploading
+            </Button>
           </CardContent>
         </Card>
 
