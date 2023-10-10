@@ -204,9 +204,7 @@ export const handler = async (event) => {
       The name of the user you are conversing with is ${userProfile.name}.
       You are conversing with someone having an icebreaker conversation with you.
       You are responding to the input between the <input></input> tags.
-      
       Here are the rules:
-
       <rules>
         - Your responses should be in line with an icebreaker conversation. 
         - You should respond to the user's input and ask fun icebreaker questions to get to know the user.
@@ -217,15 +215,11 @@ export const handler = async (event) => {
         - You should keep your answers short.
         - ONLY provide ONE response, if there is more than one remove them.
       </rules>
-      
       Here is the input: 
-
       <input>
       {input}
       </input>
-
-      Assistant:
-      `,
+      Assistant:`,
     ],
   ]);
 
