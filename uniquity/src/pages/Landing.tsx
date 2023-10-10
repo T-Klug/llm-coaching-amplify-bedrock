@@ -176,7 +176,7 @@ export default function Landing() {
     },
     {
       label: 'What is your professional background',
-      description: `Describe your background, copy in your resume, or copy in your linkedin profile contents`,
+      description: `Describe your background. A small paragraph about your current position.`,
       component: (
         <TextField
           fullWidth
