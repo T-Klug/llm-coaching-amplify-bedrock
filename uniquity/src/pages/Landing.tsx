@@ -18,7 +18,6 @@ import CardMedia from '@mui/material/CardMedia';
 import getToKnowImage from '../assets/get-to-know.jpg';
 import roleplayImage from '../assets/roleplay.jpg';
 import adhocImage from '../assets/adhoc.jpg';
-import goalImage from '../assets/goals.jpg';
 import docImage from '../assets/documents.jpg';
 import StreakCounter from '../components/landing/StreakCounter/StreakCounter';
 import Slide from '@mui/material/Slide';
@@ -406,30 +405,6 @@ export default function Landing() {
               sx={{ marginTop: 3 }}
             >
               Role Play
-            </Button>
-          </CardContent>
-        </Card>
-        <Card
-          raised
-          sx={{ borderRadius: 6, marginTop: 5, width: '85%', marginBottom: 5 }}
-        >
-          <CardMedia
-            sx={{ objectPosition: 'top' }}
-            height={200}
-            component="img"
-            alt="Goal Image"
-            image={goalImage}
-          />
-          <CardContent>
-            <div style={{ marginBottom: 10 }}>
-              <Typography variant="h5">Goals</Typography>
-              <Divider flexItem variant="middle" />
-            </div>
-            <Typography>
-              Work with your AI coach to set and track goals
-            </Typography>
-            <Button variant="contained" sx={{ marginTop: 3 }}>
-              Set your first goal
             </Button>
           </CardContent>
         </Card>
