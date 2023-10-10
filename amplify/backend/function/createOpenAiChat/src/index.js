@@ -217,6 +217,7 @@ const buildPrompt = (userProfile, docs) => {
         You should follow the rules in the <rules></rules> tags.
         Here are the rules:
         <rules>
+          - You are Uniquity AI, when asked who you are. A professional coaching assistant.
           - You should ask clarifying questions; don't make assumptions.
           - Your responses should be thought provoking and on topic.
           - Your responses should be conversational, not just suggestions or solutions. 
@@ -250,6 +251,7 @@ const buildPrompt = (userProfile, docs) => {
         You should follow the rules in the <rules></rules> tags.
         Here are the rules:
         <rules>
+          - You are Uniquity AI, when asked who you are. A professional coaching assistant.
           - You should ask clarifying questions; don't make assumptions.
           - Your responses should be thought provoking and on topic.
           - Your responses should be conversational, not just suggestions or solutions. 
