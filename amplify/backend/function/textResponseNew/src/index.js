@@ -116,36 +116,7 @@ const getUserProfile = async (phonenumber) => {
 
 // Prompt builder (Probably should do checks on username and summary)
 const buildPrompt = (userProfile, docs) => {
-  if (!userProfile) {
-    return ChatPromptTemplate.fromMessages([
-      new MessagesPlaceholder("history"),
-      [
-        "human",
-        `You are Uniquity AI, a professional coaching assistant.
-        You are conversing with someone seeking professional coaching.
-        You are responding to the input between the <input></input> tags.
-        You should follow the rules in the <rules></rules> tags.
-        Here are the rules:
-        <rules>
-          - You are Uniquity AI, when asked who you are. A professional coaching assistant.
-          - You should ask clarifying questions; don't make assumptions.
-          - Your responses should be thought provoking and on topic.
-          - Keep your responses to about 100 words.
-          - Your responses should be conversational, not just suggestions or solutions. 
-          - You should be empathetic to the user.
-          - You should conclude after giving a response. No further conversation.
-          - You should keep your answers short.
-          - ONLY provide ONE response, if there is more than one remove them.
-        </rules>
-        Here is the input:
-        <input>
-        {input}
-        </input>
-        Assistant:`,
-      ],
-    ]);
-  }
-  // User Profile Present
+  // User Profile Present & docs
   if (docs && docs.length > 0) {
     return ChatPromptTemplate.fromMessages([
       new MessagesPlaceholder("history"),
@@ -199,6 +170,7 @@ const buildPrompt = (userProfile, docs) => {
       ],
     ]);
   } else {
+    // No docs
     return ChatPromptTemplate.fromMessages([
       new MessagesPlaceholder("history"),
       [
@@ -246,6 +218,13 @@ export const handler = async (event) => {
   const chatbotPhoneNumber = message.destinationNumber;
   const response = message.messageBody.toLowerCase();
 
+  const userProfile = await getUserProfile(customerPhoneNumber);
+
+  // Do not text anyone number not associated to a user.
+  if (!userProfile) {
+    return;
+  }
+
   const client = new SSMClient();
   const input = {
     Name: SECRET_PATH,
@@ -253,8 +232,6 @@ export const handler = async (event) => {
   };
   const command = new GetParameterCommand(input);
   const { Parameter } = await client.send(command);
-
-  const userProfile = await getUserProfile(customerPhoneNumber);
 
   const memory = new BufferWindowMemory({
     k: 5,
@@ -278,52 +255,47 @@ export const handler = async (event) => {
   });
 
   let chatPrompt;
-  if (userProfile) {
-    const clientOS = new Client({
-      ...AwsSigv4Signer({
-        region: "us-east-1",
-        service: "es", // 'aoss' for OpenSearch Serverless
-        // Must return a Promise that resolve to an AWS.Credentials object.
-        // This function is used to acquire the credentials when the client start and
-        // when the credentials are expired.
-        // The Client will refresh the Credentials only when they are expired.
-        // With AWS SDK V2, Credentials.refreshPromise is used when available to refresh the credentials.
+  const clientOS = new Client({
+    ...AwsSigv4Signer({
+      region: "us-east-1",
+      service: "es", // 'aoss' for OpenSearch Serverless
+      // Must return a Promise that resolve to an AWS.Credentials object.
+      // This function is used to acquire the credentials when the client start and
+      // when the credentials are expired.
+      // The Client will refresh the Credentials only when they are expired.
+      // With AWS SDK V2, Credentials.refreshPromise is used when available to refresh the credentials.
 
-        // Example with AWS SDK V3:
-        getCredentials: () => {
-          // Any other method to acquire a new Credentials object can be used.
-          const credentialsProvider = defaultProvider();
-          return credentialsProvider();
-        },
-      }),
-      node: OPENSEARCH_URL,
-    });
-    const vectorStore = new OpenSearchVectorStore(
-      new OpenAIEmbeddings({
-        openAIApiKey: Parameter.Value,
-      }),
-      {
-        client: clientOS,
-        indexName: userProfile.owner.split("::")[0],
-      }
-    );
-    if (await vectorStore.doesIndexExist()) {
-      console.log("DOING A CONTEXT RICH CHAIN");
-      const retriever = ScoreThresholdRetriever.fromVectorStore(vectorStore, {
-        minSimilarityScore: 0.66,
-        maxK: 20,
-        kIncrement: 2,
-      });
-      const docs = await retriever.getRelevantDocuments(response);
-      // Profile and Docs
-      chatPrompt = buildPrompt(userProfile, docs);
-    } else {
-      // Profile no Docs
-      chatPrompt = buildPrompt(userProfile, undefined);
+      // Example with AWS SDK V3:
+      getCredentials: () => {
+        // Any other method to acquire a new Credentials object can be used.
+        const credentialsProvider = defaultProvider();
+        return credentialsProvider();
+      },
+    }),
+    node: OPENSEARCH_URL,
+  });
+  const vectorStore = new OpenSearchVectorStore(
+    new OpenAIEmbeddings({
+      openAIApiKey: Parameter.Value,
+    }),
+    {
+      client: clientOS,
+      indexName: userProfile.owner.split("::")[0],
     }
+  );
+  if (await vectorStore.doesIndexExist()) {
+    console.log("DOING A CONTEXT RICH CHAIN");
+    const retriever = ScoreThresholdRetriever.fromVectorStore(vectorStore, {
+      minSimilarityScore: 0.66,
+      maxK: 20,
+      kIncrement: 2,
+    });
+    const docs = await retriever.getRelevantDocuments(response);
+    // Profile and Docs
+    chatPrompt = buildPrompt(userProfile, docs);
   } else {
-    // No Profile, No Docs
-    chatPrompt = buildPrompt(undefined, undefined);
+    // Profile no Docs
+    chatPrompt = buildPrompt(userProfile, undefined);
   }
 
   const chain = new ConversationChain({
