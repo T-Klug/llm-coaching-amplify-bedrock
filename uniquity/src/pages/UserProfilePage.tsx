@@ -13,11 +13,16 @@ import { useEffect, useState } from 'react';
 import { LazyUserProfile, UserProfile } from '../models';
 import InfoOutlined from '@mui/icons-material/InfoOutlined';
 import profileImage from '../assets/profile.jpg';
-import { generateUserSummaryCall } from '../helpers/ChatHelpers';
 
 export default function UserProfilePage() {
-  const [userProfile, setUserProfile] = useState<LazyUserProfile>();
-  const [buttonDisabled, setButtonsDisabled] = useState<boolean>(false);
+  const [userProfile, setUserProfile] = useState<LazyUserProfile>(
+    new UserProfile({
+      name: '',
+      personalityTest: '',
+      background: '',
+      phone: '',
+    }),
+  );
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [assess, setAssess] = useState<any>();
   // Snack Bar
@@ -90,7 +95,7 @@ export default function UserProfilePage() {
             <TextField
               label="Name"
               fullWidth
-              value={userProfile && userProfile.name ? userProfile.name : ''}
+              value={userProfile.name}
               onChange={event => {
                 setUserProfile(
                   UserProfile.copyOf(userProfile!, draft => {
@@ -105,7 +110,7 @@ export default function UserProfilePage() {
               label="Phone number"
               fullWidth
               helperText="1231231234"
-              value={userProfile && userProfile.phone ? userProfile.phone : ''}
+              value={userProfile.phone}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -134,11 +139,7 @@ export default function UserProfilePage() {
               fullWidth
               multiline
               minRows={10}
-              value={
-                userProfile && userProfile.background
-                  ? userProfile.background
-                  : ''
-              }
+              value={userProfile.background}
               onChange={event => {
                 setUserProfile(
                   UserProfile.copyOf(userProfile!, draft => {
@@ -154,11 +155,7 @@ export default function UserProfilePage() {
               fullWidth
               multiline
               minRows={10}
-              value={
-                userProfile && userProfile.userSummary
-                  ? userProfile.userSummary
-                  : ''
-              }
+              value={userProfile.userSummary}
               onChange={event => {
                 setUserProfile(
                   UserProfile.copyOf(userProfile!, draft => {
@@ -170,7 +167,6 @@ export default function UserProfilePage() {
           </Grid>
           <Grid item xs={12}>
             <Button
-              disabled={buttonDisabled}
               onClick={async () => {
                 await DataStore.save(userProfile!);
                 setSnackBarOpen(true);
@@ -179,19 +175,6 @@ export default function UserProfilePage() {
               variant="contained"
             >
               Save
-            </Button>
-            <Button
-              disabled={buttonDisabled}
-              onClick={async () => {
-                setButtonsDisabled(true);
-                const result = await generateUserSummaryCall();
-                setButtonsDisabled(false);
-                console.log(result);
-              }}
-              sx={{ mr: 3, float: 'right' }}
-              variant="contained"
-            >
-              Regenerate Summary
             </Button>
           </Grid>
           <Grid mb={5} item xs={12}>

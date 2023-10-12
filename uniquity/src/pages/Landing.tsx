@@ -22,6 +22,7 @@ import docImage from '../assets/documents.jpg';
 import StreakCounter from '../components/landing/StreakCounter/StreakCounter';
 import Slide from '@mui/material/Slide';
 import { generateUserSummaryCall } from '../helpers/ChatHelpers';
+import { useAuthenticator } from '@aws-amplify/ui-react';
 
 const assessment = [
   {
@@ -83,6 +84,7 @@ const assessment = [
 
 export default function Landing() {
   const [activeStep, setActiveStep] = useState(0);
+  const { user } = useAuthenticator();
   const navigate = useNavigate();
   const [userProfile, setUserProfile] = useState<LazyUserProfile>(
     new UserProfile({
@@ -96,7 +98,10 @@ export default function Landing() {
     const sub = DataStore.observeQuery(UserProfile).subscribe(({ items }) => {
       if (items && items.length > 0) {
         setUserProfile(items[0]);
-        setAssess(JSON.parse(items[0].personalityTest!));
+        if (items[0].personalityTest) {
+          setAssess(JSON.parse(items[0].personalityTest!));
+        }
+
         if (!items[0].name) {
           setActiveStep(0);
         } else if (
@@ -307,13 +312,18 @@ export default function Landing() {
                     minRows={5}
                   />
 
-                  <Button
-                    variant="contained"
-                    onClick={handleReset}
-                    sx={{ mt: 1, mr: 1 }}
-                  >
-                    Restart
-                  </Button>
+                  {user
+                    .getSignInUserSession()
+                    ?.getAccessToken()
+                    .payload['cognito:groups']?.includes('Admin') && (
+                    <Button
+                      variant="contained"
+                      onClick={handleReset}
+                      sx={{ mt: 1, mr: 1 }}
+                    >
+                      Restart
+                    </Button>
+                  )}
                 </>
               )}
             </Box>
