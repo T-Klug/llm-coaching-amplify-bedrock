@@ -200,9 +200,8 @@ export const handler = async (event) => {
       Assessment: ${userProfile.personalityTest}
       Background: ${userProfile.background}
       </user>
-      
-      Assistant:
-      `,
+      You should only respond with the paragraph summary.
+      Assistant:`,
   });
 
   await updateProfile(userProfile, result);
