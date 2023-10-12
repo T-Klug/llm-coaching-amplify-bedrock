@@ -9,10 +9,30 @@ import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { DataStore } from 'aws-amplify';
-import { useEffect, useState } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 import { LazyUserProfile, UserProfile } from '../models';
 import InfoOutlined from '@mui/icons-material/InfoOutlined';
 import profileImage from '../assets/profile.jpg';
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Link,
+  Slide,
+} from '@mui/material';
+import { TransitionProps } from '@mui/material/transitions';
+
+const Transition = forwardRef(function Transition(
+  props: TransitionProps & {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    children: React.ReactElement<any, any>;
+  },
+  ref: React.Ref<unknown>,
+) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 export default function UserProfilePage() {
   const [userProfile, setUserProfile] = useState<LazyUserProfile>(
@@ -23,6 +43,7 @@ export default function UserProfilePage() {
       phone: '',
     }),
   );
+  const [textModal, setTextModal] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [assess, setAssess] = useState<any>();
   // Snack Bar
@@ -66,6 +87,31 @@ export default function UserProfilePage() {
         alignContent: 'center',
       }}
     >
+      <Dialog
+        PaperProps={{ sx: { borderRadius: 6 } }}
+        open={textModal}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={() => setTextModal(false)}
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle>{'Texting Enabled'}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            Thank you for signing up for text messaging, you can now text your
+            coach! Send a hello to{' '}
+            <Link href="tel:1-844-353-8764">1-844-353-8764</Link> and be sure to
+            save it in your contacts. If at any point you wish to unsubscribe
+            your number simply remove your phone number from your profile, or
+            text STOP.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="contained" onClick={() => setTextModal(false)}>
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
       <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         open={snackbarOpen}
@@ -168,6 +214,9 @@ export default function UserProfilePage() {
           <Grid item xs={12}>
             <Button
               onClick={async () => {
+                if (userProfile.phone) {
+                  setTextModal(true);
+                }
                 await DataStore.save(userProfile!);
                 setSnackBarOpen(true);
               }}
