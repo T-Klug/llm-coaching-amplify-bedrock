@@ -32,7 +32,7 @@ export default function DocumentContext() {
       <Typography mb={3} variant="body1">
         Upload documents to help personalize your AI coach (e.g. resume,
         performance review, engagement report, leadership training materials).
-        Note only pdf and docx formats are currently supported.
+        Note only pdf formats are currently supported.
       </Typography>
       <StorageManager
         accessLevel="private"
@@ -40,7 +40,7 @@ export default function DocumentContext() {
         path={`${user.username}/`}
         acceptedFileTypes={[
           'application/pdf',
-          'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+          //'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
         ]}
       />
       <Typography variant="h5" textAlign="center" mt={10}>
