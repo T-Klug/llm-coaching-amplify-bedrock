@@ -20,6 +20,8 @@ import {
   Image,
   Theme,
   defaultTheme,
+  Text,
+  Link,
 } from '@aws-amplify/ui-react';
 // Amplify and Pinpoint Messaging
 import { withInAppMessaging } from '@aws-amplify/ui-react-notifications';
@@ -143,6 +145,22 @@ function App() {
             alt="Uniquity Logo"
             src={prefersDarkMode ? DarkLogo : LightLogo}
           />
+        </View>
+      );
+    },
+    Footer() {
+      const { tokens } = useTheme();
+
+      return (
+        <View textAlign="center" padding={tokens.space.large}>
+          <Text color={tokens.colors.neutral[80]}>
+            Copyright © 2023 Uniquity - All Rights Reserved
+            <br />
+            <Link href="https://uniquity.ai/privacy">
+              Privacy Policy
+            </Link> -{' '}
+            <Link href="https://uniquity.ai/tos">Terms of Service</Link>
+          </Text>
         </View>
       );
     },
