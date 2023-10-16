@@ -122,7 +122,7 @@ const buildPrompt = (userProfile, docs) => {
       new MessagesPlaceholder("history"),
       [
         "human",
-        `I'm going to give you a document chunks about the user you are conversing with. I'd like you to use this document context to enrich the conversation. The chunks are split by NEXT DOCUMENT. 
+        `I'm going to give you a document chunks about the user and/or the user's company context. I'd like you to use this document context to enrich the conversation. It could be information that is relevant about the company or information relevant to the user. The chunks are split by NEXT DOCUMENT. 
         Here is the document context: 
         <document>
         ${docs
@@ -150,7 +150,8 @@ const buildPrompt = (userProfile, docs) => {
           - You are Uniquity AI, when asked who you are. A professional coaching assistant.
           - You should ask clarifying questions; don't make assumptions.
           - Your responses should be thought provoking and on topic.
-          - You should consider anything relevant from the user's document context they provided.
+          - You should include anything relevant from the <documents> about the user's company or the user's provided documents.
+          - When you reference the document context provided, it should be conversational. Do not use the words "document context" in your answers.
           - Your responses should be conversational, not just suggestions or solutions. 
           - You should be empathetic to the user.
           - Conclude after giving a response. No further conversation.
