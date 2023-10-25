@@ -18,7 +18,8 @@
       },
       "api": {
         "amplifypoc": {},
-        "AdminQueries": {}
+        "AdminQueries": {},
+        "restapi": {}
       },
       "function": {
         "openaiFunction": {},
@@ -67,6 +68,12 @@
           "s3Key": "amplify-builds/generateRoleplaySummary-472b666b69542f677a38-build.zip",
           "secretsPathAmplifyAppId": "d1wywebcdb6lm1",
           "opensearchUrl": "https://search-uniquity-4qxk4pyedoxbwxacrrcfxavoiy.us-east-1.es.amazonaws.com"
+        },
+        "stripewebhook": {
+          "secretsPathAmplifyAppId": "d1wywebcdb6lm1",
+          "userpoolId": "us-east-1_G1vBY8jKI",
+          "deploymentBucketName": "amplify-amplify7b34b316c3924-staging-130519-deployment",
+          "s3Key": "amplify-builds/stripewebhook-48355a4f624e396b6965-build.zip"
         }
       },
       "analytics": {

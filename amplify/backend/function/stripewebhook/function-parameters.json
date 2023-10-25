@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "api": {
+      "AdminQueries": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "amplifypoc": [
+        "Query",
+        "Mutation"
+      ]
+    }
+  },
+  "lambdaLayers": [],
+  "secretNames": [
+    "accountSecret",
+    "endpointSecret"
+  ],
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "userpoolId",
+      "environmentVariableName": "userpoolId"
+    }
+  ]
+}

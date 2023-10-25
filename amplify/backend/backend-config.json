@@ -55,6 +55,20 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "AppSync"
+    },
+    "restapi": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "stripewebhook"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
     }
   },
   "auth": {
@@ -191,6 +205,29 @@
     "roleplayChat": {
       "build": true,
       "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ],
+          "category": "api",
+          "resourceName": "amplifypoc"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "stripewebhook": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "ApiName",
+            "ApiId"
+          ],
+          "category": "api",
+          "resourceName": "AdminQueries"
+        },
         {
           "attributes": [
             "GraphQLAPIIdOutput",
@@ -427,6 +464,38 @@
         {
           "category": "function",
           "resourceName": "roleplayChat"
+        }
+      ]
+    },
+    "AMPLIFY_function_stripewebhook_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "stripewebhook"
+        }
+      ]
+    },
+    "AMPLIFY_function_stripewebhook_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "stripewebhook"
+        }
+      ]
+    },
+    "AMPLIFY_function_stripewebhook_secretsPathAmplifyAppId": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "stripewebhook"
+        }
+      ]
+    },
+    "AMPLIFY_function_stripewebhook_userpoolId": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "stripewebhook"
         }
       ]
     },
