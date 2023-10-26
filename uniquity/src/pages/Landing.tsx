@@ -19,8 +19,6 @@ import getToKnowImage from '../assets/get-to-know.jpg';
 import roleplayImage from '../assets/roleplay.jpg';
 import adhocImage from '../assets/adhoc.jpg';
 import docImage from '../assets/documents.jpg';
-import StreakCounter from '../components/landing/StreakCounter/StreakCounter';
-import Slide from '@mui/material/Slide';
 import { generateUserSummaryCall } from '../helpers/ChatHelpers';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 
@@ -359,15 +357,6 @@ export default function Landing() {
             </Button>
           </CardContent>
         </Card>
-
-        <Slide
-          direction="left"
-          in={activeStep === steps.length}
-          mountOnEnter
-          unmountOnExit
-        >
-          <StreakCounter />
-        </Slide>
         <Card raised sx={{ borderRadius: 6, marginTop: 5, width: '85%' }}>
           <CardMedia
             height={200}
