@@ -409,7 +409,9 @@
           "Statement": [
             {
               "Action": [
-                "cognito-idp:AdminCreateUser"
+                "cognito-idp:AdminCreateUser",
+                "cognito-idp:AdminEnableUser",
+                "cognito-idp:AdminDisableUser"
               ],
               "Resource": [
                 "arn:aws:cognito-idp:us-east-1:210396912496:userpool/us-east-1_G1vBY8jKI"

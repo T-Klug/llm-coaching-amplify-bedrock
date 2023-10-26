@@ -10,6 +10,8 @@ import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
 import {
   CognitoIdentityProviderClient,
   AdminCreateUserCommand,
+  AdminDisableUserCommand,
+  AdminEnableUserCommand,
 } from "@aws-sdk/client-cognito-identity-provider";
 import Stripe from "stripe";
 
@@ -61,6 +63,7 @@ export const handler = async (event) => {
       body: JSON.stringify("Bad Arguement"),
     };
   }
+  const cognitoClient = new CognitoIdentityProviderClient();
 
   switch (stripeEvent.type) {
     case "checkout.session.completed":
@@ -84,11 +87,52 @@ export const handler = async (event) => {
         ],
       };
       const newUserCommand = new AdminCreateUserCommand(userInput);
-      const cognitoClient = new CognitoIdentityProviderClient();
       await cognitoClient.send(newUserCommand);
 
       // Then define and call a function to handle the event checkout.session.completed
       break;
+    case "customer.subscription.deleted":
+    case "customer.subscription.updated":
+      const subscriptionEvent = stripeEvent.data.object;
+      const customer = await stripe.customers.retrieve(
+        subscriptionEvent.customer
+      );
+      switch (subscriptionEvent.status) {
+        case "canceled":
+        case "past_due":
+        case "unpaid":
+          const disableUserInput = {
+            UserPoolId: USER_POOL_ID,
+            Username: customer.email,
+          };
+          const disableUserCommand = new AdminDisableUserCommand(
+            disableUserInput
+          );
+          await cognitoClient.send(disableUserCommand);
+          break;
+        case "active":
+          const enableUserInput = {
+            UserPoolId: USER_POOL_ID,
+            Username: customer.email,
+          };
+          const enableUserCommand = new AdminEnableUserCommand(enableUserInput);
+          await cognitoClient.send(enableUserCommand);
+          break;
+        default:
+          console.log(
+            `Unhandled subscritption update ${subscriptionEvent.type}`
+          );
+          return {
+            statusCode: 400,
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Headers": "*",
+            },
+            body: JSON.stringify("Unhandled Event"),
+          };
+      }
+      break;
+
     // ... handle other event types
     default:
       console.log(`Unhandled event type ${event.type}`);
