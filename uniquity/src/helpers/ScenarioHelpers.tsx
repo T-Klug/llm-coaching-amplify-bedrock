@@ -8,8 +8,14 @@ export const scenarios = [
     image: performanceImage,
     title: 'One on one',
     scenario: 'You will act as an employee in a one on one chat',
+    message: 'Practice having a one on one with one of your direct reports',
+  },
+  {
+    image: disputeImage,
+    title: 'Dispute',
+    scenario: 'You will act as an employee in a dispute with a coworker',
     message:
-      'You are tasked with having a one on one with one of your employees',
+      'Practice addressing a concern with one of your direct reports and coming up with a solution',
   },
   {
     image: pipImage,
@@ -17,21 +23,14 @@ export const scenarios = [
     scenario:
       'You will act as an employee receiving a performance improvement plan',
     message:
-      'You are tasked with giving your employee a performance improvement plan. Work through giving the news.',
+      'Practice talking with an employee that isn"t meeting expectations at work',
   },
   {
     image: firingImage,
     scenario: 'You will act as an employee being informed about termination',
     title: 'Termination',
     message:
-      'You need to inform your employee about the difficult decision to let them go. Handle the conversation with sensitivity and professionalism.',
-  },
-  {
-    image: disputeImage,
-    title: 'Dispute',
-    scenario: 'You will act as an employee in a dispute with a coworker',
-    message:
-      'You need to address a concern with an employee named Alex. Discuss the issue and find a solution.',
+      'Practice informing an employee about the difficult decision to let them go',
   },
 ];
 
