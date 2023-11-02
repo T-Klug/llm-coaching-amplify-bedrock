@@ -137,7 +137,11 @@ export default function RoleplayChatPage() {
     }
     if (!selectedId) setSelectedId(response.id);
     setChatLoading(true);
-    await submitRoleplayChat(response);
+    try {
+      await submitRoleplayChat(response);
+    } catch (ex) {
+      console.log(ex);
+    }
     setChatLoading(false);
   };
 

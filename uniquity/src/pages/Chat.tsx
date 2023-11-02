@@ -123,7 +123,11 @@ export default function Chat() {
     }
     if (!selectedId) setSelectedId(response.id);
     setChatLoading(true);
-    await submitOpenAI(response);
+    try {
+      await submitOpenAI(response);
+    } catch (ex) {
+      console.log(ex);
+    }
     setChatLoading(false);
   };
 

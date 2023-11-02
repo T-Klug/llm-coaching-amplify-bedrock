@@ -132,7 +132,11 @@ export default function IceBreakerChatPage() {
     }
     if (!selectedId) setSelectedId(response.id);
     setChatLoading(true);
-    await submitIceBreaker(response);
+    try {
+      await submitIceBreaker(response);
+    } catch (ex) {
+      console.log(ex);
+    }
     setChatLoading(false);
   };
 
