@@ -61,7 +61,7 @@ export default function SummaryModal(props: SummaryModalProps) {
         <DialogTitle>{'Roleplay Summary'}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            Thanks for participating in the role play excersise. Here are some
+            Thanks for participating in the role play excercise. Here are some
             suggestions based on the chat to improve upon!
           </DialogContentText>
           <DialogContent>
