@@ -12,7 +12,7 @@ export const scenarios = [
   },
   {
     image: disputeImage,
-    title: 'Dispute',
+    title: 'Critical feedback',
     scenario: 'You will act as an employee in a dispute with a coworker',
     message:
       'Practice addressing a concern with one of your direct reports and coming up with a solution',
