@@ -78,6 +78,10 @@ export const handler = async (event) => {
             Name: "email",
             Value: checkoutSessionCompleted.customer_details.email,
           },
+          {
+            Name: "email_verified",
+            Value: "True",
+          },
         ],
         ValidationData: [
           {
