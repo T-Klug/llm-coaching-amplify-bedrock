@@ -114,7 +114,7 @@ const getUserProfile = async (phonenumber) => {
   return undefined;
 };
 
-// Prompt builder (Probably should do checks on username and summary)
+// Prompt builder
 const buildPrompt = (userProfile, docs) => {
   // User Profile Present & docs
   if (docs && docs.length > 0) {
@@ -176,7 +176,6 @@ const buildPrompt = (userProfile, docs) => {
     return ChatPromptTemplate.fromMessages([
       new MessagesPlaceholder("history"),
       [
-        "human",
         "human",
         `You are Uniquity AI, a professional coaching assistant.
         You are conversing with someone seeking professional coaching.
@@ -286,6 +285,7 @@ export const handler = async (event) => {
       indexName: userProfile.owner.split("::")[0],
     }
   );
+
   if (await vectorStore.doesIndexExist()) {
     console.log("DOING A CONTEXT RICH CHAIN");
     const retriever = ScoreThresholdRetriever.fromVectorStore(vectorStore, {
@@ -305,6 +305,7 @@ export const handler = async (event) => {
     llm: chat,
     prompt: chatPrompt,
     memory: memory,
+    verbose: true,
   });
 
   const result = await chain.call({
