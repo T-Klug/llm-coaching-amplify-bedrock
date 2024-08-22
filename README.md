@@ -1,3 +1,6 @@
+![image](https://github.com/user-attachments/assets/da697288-b049-4454-a9b1-23d4be0ba014)
+
+
 # Amplify POC
 
 The amplify POC is the home of both the frontend and backend of Uniquity's application. It is built on [Vite](https://vitejs.dev/).
